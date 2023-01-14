@@ -1,0 +1,22 @@
+{
+    "compilerOptions": {
+        "baseUrl": "./",
+        "paths": {
+            "@config": [
+                "src/config"
+            ],
+            "@constants": [
+                "src/constants"
+            ],
+            "@types": [
+                "src/types"
+            ],
+            "@themes": [
+                "src/themes"
+            ],
+            "@view": [
+                "src/view"
+            ]
+        }
+    }
+}
