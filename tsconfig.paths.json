@@ -16,7 +16,11 @@
             ],
             "@view": [
                 "src/view"
+            ],
+            "@utils": [
+                "src/utils"
             ]
+
         }
     }
 }
