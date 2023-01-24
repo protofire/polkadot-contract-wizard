@@ -10,7 +10,9 @@ import { Settings } from './types';
 
 // ==============================|| DEFAULT THEME - PALETTE  ||============================== //
 
-const Palette = ({mode, skin}: Settings): Theme => {
+type LookSettings = Pick<Settings, 'mode' | 'skin'>
+
+const Palette = ({mode}: LookSettings): Theme => {
     const colors = presetPalettes;
 
     const greyPrimary = [

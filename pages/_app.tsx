@@ -9,6 +9,7 @@ import { MainLayout } from 'src/view/layout';
 import { buildEmotionCache } from '@utils';
 import { EmotionCache } from '@emotion/cache';
 import { CacheProvider } from '@emotion/react';
+import { SettingsConsumer } from 'src/context/settingsTheme';
 
 type CustomAppProps = AppProps & {
   emotionCache: EmotionCache
@@ -22,6 +23,8 @@ const clientEmotionCache = buildEmotionCache()
 export default function App(props: CustomAppProps) {
   const { Component, emotionCache = clientEmotionCache, pageProps } = props
   
+  const getLayout = Component.getLayout ?? ((page) => <MainLayout>{page}</MainLayout>)
+
   return (
     <CacheProvider value={emotionCache}>
       <Head>
@@ -34,11 +37,17 @@ export default function App(props: CustomAppProps) {
         <meta name="viewport" content="initial-scale=1, width=device-width" />
       </Head>
 
-      <ThemeCustomization >
-        <MainLayout >  
-          <Component {...pageProps} />
-        </MainLayout>   
-      </ThemeCustomization>
+      <SettingsConsumer>
+        {({ settings }) => {
+          return (
+            <ThemeCustomization settings={settings}>
+              <MainLayout >  
+                {getLayout(<Component {...pageProps} />)}
+              </MainLayout>   
+            </ThemeCustomization>
+          )
+        }}
+      </SettingsConsumer>
 
     </CacheProvider>
   );
