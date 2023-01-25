@@ -1,24 +1,18 @@
 import { ReactNode, useMemo } from 'react';
-
-// material-ui
 import { CssBaseline, StyledEngineProvider } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
-// project import
 import Palette from './palette';
 import Typography from './typography';
 import CustomShadows from './shadows';
 import { Settings } from 'src/themes/types';
-// import componentsOverride from './overrides';
+import componentsOverride from './overrides';
 
 // ==============================|| DEFAULT THEME - MAIN  ||============================== //
-
-
 export default function ThemeCustomization({ children, settings }: { children: ReactNode, settings: Settings}) {
     const { mode, skin } = settings
     const theme = Palette({ mode, skin });
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     const themeTypography = Typography(['Public Sans', 'sans-serif'].join(','));
     const themeCustomShadows = useMemo(() => CustomShadows(theme), [theme]);
 
@@ -48,7 +42,7 @@ export default function ThemeCustomization({ children, settings }: { children: R
     );
 
     const themes = createTheme(themeOptions);
-    // themes.components = componentsOverride(themes);
+    themes.components = componentsOverride(themes);
 
     return (
         <StyledEngineProvider injectFirst>
@@ -59,5 +53,3 @@ export default function ThemeCustomization({ children, settings }: { children: R
         </StyledEngineProvider>
     );
 }
-
-

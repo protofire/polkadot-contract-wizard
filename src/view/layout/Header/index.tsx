@@ -1,17 +1,12 @@
-import { useTheme } from '@mui/material/styles';
+import { MouseEventHandler } from 'react';
 import { AppBar, IconButton, Toolbar, useMediaQuery } from '@mui/material';
-
-// project import
-// import AppBarStyled from './AppBarStyled';
-// import HeaderContent from './HeaderContent';
-
-// assets
+import { useTheme } from '@mui/material/styles';
 import { Menu, MenuOpen } from '@mui/icons-material';
-import { Dispatch, SetStateAction } from 'react';
 
-// ==============================|| MAIN LAYOUT - HEADER ||============================== //
+import AppBarStyled from './AppBarStyled';
+import HeaderContent from './HeaderContent';
 
-const Header = ({ open, handleDrawerToggle }: {open: boolean, handleDrawerToggle: Dispatch<SetStateAction<boolean>>}) => {
+const Header = ({ open, handleDrawerToggle, drawerWidth = 260 }: {open: boolean, handleDrawerToggle: MouseEventHandler<HTMLButtonElement>, drawerWidth?: number}) => {
     const theme = useTheme();
     const matchDownMD = useMediaQuery(theme.breakpoints.down('lg'));
 
@@ -22,7 +17,7 @@ const Header = ({ open, handleDrawerToggle }: {open: boolean, handleDrawerToggle
     const mainHeader = (
         <Toolbar>
             <IconButton
-                // onClick={handleDrawerToggle}
+                onClick={handleDrawerToggle}
                 disableRipple
                 aria-label="open drawer"
                 edge="start"
@@ -31,7 +26,7 @@ const Header = ({ open, handleDrawerToggle }: {open: boolean, handleDrawerToggle
             >
                 {!open ? <Menu /> : <MenuOpen />}
             </IconButton>
-            {/* <HeaderContent /> */}
+            <HeaderContent />
         </Toolbar>
     );
 
@@ -48,13 +43,13 @@ const Header = ({ open, handleDrawerToggle }: {open: boolean, handleDrawerToggle
 
     return (
         <>
-            {/* {!matchDownMD ? (
-                <AppBarStyled open={open} {...appBar}>
+            {!matchDownMD ? (
+                <AppBarStyled open={open} drawerWidth={drawerWidth} {...appBar}>
                     {mainHeader}
                 </AppBarStyled>
-            ) : ( */}
+            ) : (
                 <AppBar {...appBar}>{mainHeader}</AppBar>
-            {/* )} */}
+            )}
         </>
     );
 };

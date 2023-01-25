@@ -2,6 +2,9 @@
     "compilerOptions": {
         "baseUrl": "./",
         "paths": {
+            "@components": [
+                "src/view/components"
+            ],
             "@config": [
                 "src/config"
             ],
@@ -19,8 +22,13 @@
             ],
             "@utils": [
                 "src/utils"
+            ],
+            "@context": [
+                "src/context"
+            ],
+            "@hooks": [
+                "src/hooks"
             ]
-
         }
     }
 }

@@ -15,6 +15,7 @@ const defaultSettings: Settings = {
     navCollapsed : false,
     mode: 'dark',
     skin: 'default',
+    drawerWidth: 260,
 }
 
 export const SettingsThemeContext = createContext<SettingsContextValue>({

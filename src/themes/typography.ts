@@ -1,5 +1,3 @@
-// ==============================|| DEFAULT THEME - TYPOGRAPHY  ||============================== //
-
 const Typography = (fontFamily: string) => ({
     htmlFontSize: 16,
     fontFamily,

@@ -767,6 +767,11 @@ callsites@^3.0.0:
   resolved "https://registry.yarnpkg.com/callsites/-/callsites-3.1.0.tgz#b3630abd8943432f54b3f0519238e33cd7df2f73"
   integrity sha512-P8BjAsXvZS+VIDUI11hHCQEv74YT67YUi5JJFNWIqL235sBmjX4+qx9Muvls5ivyNENctx46xQLQ3aTuE7ssaQ==
 
+can-use-dom@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/can-use-dom/-/can-use-dom-0.1.0.tgz#22cc4a34a0abc43950f42c6411024a3f6366b45a"
+  integrity sha512-ceOhN1DL7Y4O6M0j9ICgmTYziV89WMd96SvSl0REd8PMgrY0B/WBOPoed5S1KUmJqXgUXh8gzSe6E3ae27upsQ==
+
 caniuse-lite@^1.0.30001406:
   version "1.0.30001442"
   resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001442.tgz#40337f1cf3be7c637b061e2f78582dc1daec0614"
@@ -2250,6 +2255,13 @@ queue-microtask@^1.2.2:
   resolved "https://registry.yarnpkg.com/queue-microtask/-/queue-microtask-1.2.3.tgz#4929228bbc724dfac43e0efb058caf7b6cfb6243"
   integrity sha512-NuaNSa6flKT5JaSYQzJok04JzTL1CA6aGhv5rfLW3PgqA+M2ChpZQnAC8h8i4ZFkBS8X5RqkDBHA7r4hej3K9A==
 
+react-device-detect@^2.2.2:
+  version "2.2.2"
+  resolved "https://registry.yarnpkg.com/react-device-detect/-/react-device-detect-2.2.2.tgz#dbabbce798ec359c83f574c3edb24cf1cca641a5"
+  integrity sha512-zSN1gIAztUekp5qUT/ybHwQ9fmOqVT1psxpSlTn1pe0CO+fnJHKRLOWWac5nKxOxvOpD/w84hk1I+EydrJp7SA==
+  dependencies:
+    ua-parser-js "^1.0.2"
+
 react-dom@18.2.0:
   version "18.2.0"
   resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-18.2.0.tgz#22aaf38708db2674ed9ada224ca4aa708d821e3d"
@@ -2422,6 +2434,21 @@ side-channel@^1.0.4:
     call-bind "^1.0.0"
     get-intrinsic "^1.0.2"
     object-inspect "^1.9.0"
+
+simplebar-core@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/simplebar-core/-/simplebar-core-1.2.0.tgz#3f109ba472f9c576032564d0fabb6013847f2160"
+  integrity sha512-OgF3poOTi3mzj6HmNvuJfPtvMH/7OsMC+2H3HXQUzddyRDxUifpjHx1/3ozziWWAGTrJejLtu4E8h/kK3eboWQ==
+  dependencies:
+    can-use-dom "^0.1.0"
+    lodash "^4.17.21"
+
+simplebar-react@^3.2.0:
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/simplebar-react/-/simplebar-react-3.2.0.tgz#0316c0220f85f6f29d7e7c4830fdd98aca294ec0"
+  integrity sha512-rsKUAAARhZ/w5f/uoUf3PWjNVQN7CsFrOPMqJSsXtM2lTyXmiN5femuPLHeY0+95EF2QcQigKQABq9A2a6EvJg==
+  dependencies:
+    simplebar-core "^1.2.0"
 
 slash@^3.0.0:
   version "3.0.0"
@@ -2638,6 +2665,11 @@ typescript@4.9.4:
   version "4.9.4"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.9.4.tgz#a2a3d2756c079abda241d75f149df9d561091e78"
   integrity sha512-Uz+dTXYzxXXbsFpM86Wh3dKCxrQqUcVMxwU54orwlJjOpO3ao8L7j5lH+dWfTwgCwIuM9GQ2kvVotzYJMXTBZg==
+
+ua-parser-js@^1.0.2:
+  version "1.0.33"
+  resolved "https://registry.yarnpkg.com/ua-parser-js/-/ua-parser-js-1.0.33.tgz#f21f01233e90e7ed0f059ceab46eb190ff17f8f4"
+  integrity sha512-RqshF7TPTE0XLYAqmjlu5cLLuGdKrNu9O1KLA/qp39QtbZwuzwv1dT46DZSopoUMsYgXpB3Cv8a03FI8b74oFQ==
 
 unbox-primitive@^1.0.2:
   version "1.0.2"

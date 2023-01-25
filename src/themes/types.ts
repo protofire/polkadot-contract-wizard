@@ -6,4 +6,5 @@ export type Settings = {
     navCollapsed: boolean
     mode: PaletteMode
     skin: Skin
+    drawerWidth?: number
 }
