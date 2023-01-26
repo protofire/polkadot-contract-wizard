@@ -6,11 +6,11 @@ import {
   CardHeader,
   CardProps,
   Divider,
+  SxProps,
   Typography,
 } from '@mui/material';
 
-// // project import
-// import Highlighter from './third-party/Highlighter';
+import Highlighter from 'src/view/components/third-party/Hightlighter';
 
 // header style
 const headerSX = {
@@ -18,30 +18,43 @@ const headerSX = {
   '& .MuiCardHeader-action': { m: '0px auto', alignSelf: 'center' },
 };
 
-type CustomMainCardProps = CardProps & {};
+type CustomMainCardProps = Pick<CardProps, 'sx' | 'children'> & {
+  border?: boolean;
+  boxShadow?: boolean;
+  shadow?: string;
+  darkTitle?: boolean;
+  secondary?: React.ReactNode;
+  divider?: boolean;
+  contentSX?: SxProps;
+  content?: boolean;
+  codeHighlight?: boolean;
+  elevation?: number;
+  title?: string;
+};
 
 const MainCard = forwardRef(function MainCard(
   props: CustomMainCardProps,
   ref: Ref<HTMLDivElement>,
 ) {
   const {
-    // border = true,
-    // boxShadow,
+    border = true,
+    boxShadow,
     children,
-    // content = true,
-    // contentSX = {},
-    // darkTitle,
-    // divider = true,
+    content = true,
+    contentSX = {},
+    darkTitle,
+    divider = true,
     elevation,
-    // secondary,
-    // shadow,
+    secondary,
+    shadow,
     sx = {},
     title,
-    // codeHighlight,
+    codeHighlight,
     ...others
   } = props;
   const theme = useTheme();
-  boxShadow = theme.palette.mode === 'dark' ? boxShadow || true : boxShadow;
+  const _boxShadow =
+    theme.palette.mode === 'dark' ? boxShadow || true : boxShadow;
 
   return (
     <Card
@@ -55,13 +68,13 @@ const MainCard = forwardRef(function MainCard(
         borderColor:
           theme.palette.mode === 'dark'
             ? theme.palette.divider
-            : theme.palette.grey.A800,
+            : theme.palette.grey.A700,
         boxShadow:
-          boxShadow && (!border || theme.palette.mode === 'dark')
-            ? shadow || theme.customShadows.z1
+          _boxShadow && (!border || theme.palette.mode === 'dark')
+            ? shadow || theme.shadows[9]
             : 'inherit',
         ':hover': {
-          boxShadow: boxShadow ? shadow || theme.customShadows.z1 : 'inherit',
+          boxShadow: _boxShadow ? shadow || theme.shadows[9] : 'inherit',
         },
         '& pre': {
           m: 0,
@@ -99,29 +112,11 @@ const MainCard = forwardRef(function MainCard(
       {codeHighlight && (
         <>
           <Divider sx={{ borderStyle: 'dashed' }} />
-          <Highlighter codeHighlight={codeHighlight} main>
-            {children}
-          </Highlighter>
+          <Highlighter codeHighlight={codeHighlight}>{children}</Highlighter>
         </>
       )}
     </Card>
   );
 });
-
-MainCard.propTypes = {
-  border: PropTypes.bool,
-  boxShadow: PropTypes.bool,
-  contentSX: PropTypes.object,
-  darkTitle: PropTypes.bool,
-  divider: PropTypes.bool,
-  elevation: PropTypes.number,
-  secondary: PropTypes.node,
-  shadow: PropTypes.string,
-  sx: PropTypes.object,
-  title: PropTypes.string,
-  codeHighlight: PropTypes.bool,
-  content: PropTypes.bool,
-  children: PropTypes.node,
-};
 
 export default MainCard;
