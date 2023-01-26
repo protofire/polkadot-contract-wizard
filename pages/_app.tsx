@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import { NextPage } from 'next';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
@@ -12,18 +12,19 @@ import { CacheProvider } from '@emotion/react';
 import { SettingsConsumer } from 'src/context/settingsTheme';
 
 type CustomAppProps = AppProps & {
-  emotionCache: EmotionCache
+  emotionCache: EmotionCache;
   Component: NextPage & {
-    getLayout?: (_page: React.ReactElement) => React.ReactNode
-  }
-}
+    getLayout?: (_page: React.ReactElement) => React.ReactNode;
+  };
+};
 
-const clientEmotionCache = buildEmotionCache()
+const clientEmotionCache = buildEmotionCache();
 
 export default function App(props: CustomAppProps) {
-  const { Component, emotionCache = clientEmotionCache, pageProps } = props
-  
-  const getLayout = Component.getLayout ?? ((page) => <MainLayout>{page}</MainLayout>)
+  const { Component, emotionCache = clientEmotionCache, pageProps } = props;
+
+  const getLayout =
+    Component.getLayout ?? (page => <MainLayout>{page}</MainLayout>);
 
   return (
     <CacheProvider value={emotionCache}>
@@ -41,14 +42,11 @@ export default function App(props: CustomAppProps) {
         {({ settings }) => {
           return (
             <ThemeCustomization settings={settings}>
-              <MainLayout >  
-                {getLayout(<Component {...pageProps} />)}
-              </MainLayout>   
+              <MainLayout>{getLayout(<Component {...pageProps} />)}</MainLayout>
             </ThemeCustomization>
-          )
+          );
         }}
       </SettingsConsumer>
-
     </CacheProvider>
   );
 }

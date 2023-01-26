@@ -1,5 +1,8 @@
-import { useContext } from 'react'
-import { SettingsThemeContext, SettingsContextValue } from 'src/context/settingsTheme'
+import { useContext } from 'react';
+import {
+  SettingsThemeContext,
+  SettingsContextValue,
+} from 'src/context/settingsTheme';
 
-export const useUserThemeSettings = (): SettingsContextValue => useContext(SettingsThemeContext)
-
+export const useUserThemeSettings = (): SettingsContextValue =>
+  useContext(SettingsThemeContext);

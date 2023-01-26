@@ -1,1 +1,1 @@
-export * as Transitions from './Transitions'
+export * as Transitions from './Transitions';
