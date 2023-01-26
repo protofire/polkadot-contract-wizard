@@ -1,7 +1,5 @@
 import { Box, IconButton, Link, Theme, useMediaQuery } from '@mui/material';
-import { GitHub } from '@mui/icons-material';
 
-// project import
 // import Search from './Search';
 // import Profile from './Profile';
 // import Notification from './Notification';
@@ -18,18 +16,6 @@ const HeaderContent = () => {
     <>
       {/* {!matchesXs && <Search />} */}
       {matchesXs && <Box sx={{ width: '100%', ml: 1 }} />}
-
-      <IconButton
-        component={Link}
-        href="https://github.com/codedthemes/mantis-free-react-admin-template"
-        target="_blank"
-        disableRipple
-        color="secondary"
-        title="Download Free Version"
-        sx={{ color: 'text.primary', bgcolor: 'grey.100' }}
-      >
-        <GitHub />
-      </IconButton>
 
       {/* <Notification /> */}
       {/* {!matchesXs && <Profile />} */}

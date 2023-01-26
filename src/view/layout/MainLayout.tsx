@@ -15,10 +15,11 @@ export const MainLayout = ({ children }: Props): JSX.Element => {
   const theme = useTheme();
   const matchDownLG = useMediaQuery(theme.breakpoints.down('xl'));
   const { settings, saveSettings } = useUserThemeSettings();
-  const [open, setOpen] = useState(settings.navCollapsed);
+  // const [open, setOpen] = useState(!settings.navCollapsed);
+  const open = !settings.navCollapsed
 
   const handleDrawerToggle = () => {
-    setOpen(!open);
+    // setOpen(!open);
     saveSettings({ ...settings, navCollapsed: !open });
   };
 

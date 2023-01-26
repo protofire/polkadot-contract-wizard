@@ -26,15 +26,15 @@ const Header = ({
     <Toolbar>
       <IconButton
         onClick={handleDrawerToggle}
-        disableRipple
-        aria-label="open drawer"
-        edge="start"
-        color="secondary"
-        sx={{
-          color: 'text.primary',
-          bgcolor: open ? iconBackColorOpen : iconBackColor,
-          ml: { xs: 0, lg: -2 },
-        }}
+        // disableRipple
+        // aria-label="open drawer"
+        // edge="start"
+        // color="secondary"
+        // sx={{
+        //   color: 'text.primary',
+        //   bgcolor: open ? iconBackColorOpen : iconBackColor,
+        //   ml: { xs: 0, lg: -2 },
+        // }}
       >
         {!open ? <Menu /> : <MenuOpen />}
       </IconButton>
@@ -49,7 +49,7 @@ const Header = ({
     elevation: 0,
     sx: {
       borderBottom: `1px solid ${theme.palette.divider}`,
-      // boxShadow: theme.customShadows.z1
+      boxShadow: theme.shadows[3]
     },
   };
 
