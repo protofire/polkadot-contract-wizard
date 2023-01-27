@@ -41,14 +41,15 @@ export default function ThemeCustomization({
           paddingBottom: 8,
         },
       },
+      palette: theme.palette,
       customShadows: themeCustomShadows,
       typography: themeTypography,
     }),
-    [themeTypography, themeCustomShadows],
+    [theme.palette, themeCustomShadows, themeTypography],
   );
 
   let themes = createTheme(themeOptions);
-  themes = createTheme(themes, {...componentsOverride(themes)})
+  themes = createTheme(themes, { ...componentsOverride(themes) });
 
   return (
     <StyledEngineProvider injectFirst>

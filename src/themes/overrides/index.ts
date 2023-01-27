@@ -11,13 +11,21 @@ import ListItemIcon from './ListItemIcon';
 // ==============================|| OVERRIDES ||============================== //
 
 function ComponentsOverrides(theme: Theme) {
-  const badge = Badge(theme)
-  const button = Button(theme)
-  const cardContent = CardContent()
-  const chip = Chip(theme)
-  const iconButton = IconButton(theme)
+  const badge = Badge(theme);
+  const button = Button(theme);
+  const cardContent = CardContent();
+  const chip = Chip(theme);
+  const iconButton = IconButton(theme);
 
-  return Object.assign(badge, button, cardContent, chip, iconButton, ListItemIcon, Typography);
+  return Object.assign(
+    badge,
+    button,
+    cardContent,
+    chip,
+    iconButton,
+    ListItemIcon,
+    Typography,
+  );
 }
 
 export default ComponentsOverrides;

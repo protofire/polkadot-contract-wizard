@@ -11,24 +11,23 @@ type Props = {
 };
 
 export const MainLayout = ({ children }: Props): JSX.Element => {
-  const isMobile = useMatchDownSM()
+  const isMobile = useMatchDownSM();
   const { settings, saveSettings } = useUserThemeSettings();
-  const isOpen = useRef<boolean>(settings.navOpen)
-  
+  const isOpen = useRef<boolean>(settings.navOpen);
+
   useEffect(() => {
     if (isMobile) {
       if (settings.navOpen) {
-        saveSettings({ ...settings, navOpen: false })
-        isOpen.current = false 
-      }     
-    } 
+        saveSettings({ ...settings, navOpen: false });
+        isOpen.current = false;
+      }
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isMobile])
-
+  }, [isMobile]);
 
   const handleDrawerToggle = () => {
     saveSettings({ ...settings, navOpen: !isOpen.current });
-    isOpen.current = !isOpen.current
+    isOpen.current = !isOpen.current;
   };
 
   return (

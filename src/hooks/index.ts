@@ -1,2 +1,2 @@
-export * from './useMatchDownSM'
-export * from './useThemeSettings'
+export * from './useMatchDownSM';
+export * from './useThemeSettings';
