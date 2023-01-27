@@ -20,75 +20,43 @@ const MainDrawer = ({
   drawerwidth = 260,
 }: Props) => {
   const theme = useTheme();
-  console.log('theme', theme.palette)
-  const matchDownMD = useMediaQuery(theme.breakpoints.down('lg'));
 
-  // responsive drawer container
-  const container =
-    typeof window !== 'undefined' ? () => window.document.body : undefined;
-
-  // header content
   const drawerContent = useMemo(() => <DrawerContent />, []);
   const drawerHeader = useMemo(() => <DrawerHeader open={open} />, [open]);
 
   const mobileProps = {
     open,
-    onOpen: () => handleDrawerToggle(true),
-    // onClose: () => setNavVisible(false),
     ModalProps: {
-      keepMounted: true, // Better open performance on mobile.
+      keepMounted: true,
     },
+    onClose: () => handleDrawerToggle,
+  }
+  
+  const desktopProps = {
+    open: true,
+    onClose: () => handleDrawerToggle,
   }
 
   return (
       <Drawer
         variant={isMobile ? 'temporary' : 'permanent'}
         {...(isMobile ? { open } : { open: true })}
+        {...(isMobile ? { ...mobileProps } : { ...desktopProps })}
         sx={{
-          width: open ? drawerwidth : 150,
+          width: open ? drawerwidth : 0,
         }}
         PaperProps={{
           sx: {
+          ...(!isMobile && !open ? { boxShadow: 10 } : {}),
             backgroundColor: theme.palette.primary.dark,
+            width: open  ? drawerwidth : 0,
           },
         }}
       >
-        {drawerHeader}
+        {open && drawerHeader}
+        {open && drawerContent}
       </Drawer>
   );
 };
-{
-  /* {!matchDownMD ? (
-        <MiniDrawerStyled
-          variant="permanent"
-          open={open}
-          drawerwidth={drawerwidth}
-        >
-          {drawerHeader}
-          {drawerContent}
-        </MiniDrawerStyled>
-      ) : (
-        <Drawer
-          container={container}
-          variant="temporary"
-          open={open}
-          onClose={handleDrawerToggle}
-          ModalProps={{ keepMounted: true }}
-          sx={{
-            display: { xs: 'block', lg: 'none' },
-            '& .MuiDrawer-paper': {
-              boxSizing: 'border-box',
-              width: drawerwidth,
-              borderRight: `1px solid ${theme.palette.divider}`,
-              backgroundImage: 'none',
-              boxShadow: 'inherit',
-            },
-          }}
-        >
-          {open && drawerHeader}
-          {open && drawerContent}
-        </Drawer>
-      )} */
-}
 
 export default MainDrawer;
