@@ -1,7 +1,8 @@
-import { ListItem, ListItemButton, ListItemIcon, MenuItem as MuiMenuItem, MenuItemProps, styled, Stack, Paper, Typography } from '@mui/material';
+import { ListItem, ListItemButton, ListItemIcon, MenuItem as MuiMenuItem, MenuItemProps, styled, Stack, Paper, Typography, ButtonProps, Link as MuiLink } from '@mui/material';
 import {MENU_ITEMS, NavLink} from '@constants';
+import NextLink from 'next/link';
 
-export const MenuItem = styled(MuiMenuItem)<MenuItemProps>({
+export const MenuItem = styled(MuiMenuItem)<ButtonProps>({
     "&.MuiMenuItem-root": {
         color: "blue",
         padding: "10px",
@@ -15,14 +16,17 @@ export const MenuItem = styled(MuiMenuItem)<MenuItemProps>({
 })
 
 const NavItem = (props: NavLink) => {
-    const { title, icon: IconTag } = props
+    const { title, icon: IconTag, url } = props
+
     return (
-        <MenuItem>
-            <ListItemIcon>
-                <IconTag />
-            </ListItemIcon>
-            <Typography>{title}</Typography>
-        </MenuItem>
+        <NextLink href={url}>
+            <MenuItem LinkComponent={MuiLink}>
+                <ListItemIcon>
+                    <IconTag />
+                </ListItemIcon>
+                <Typography>{title}</Typography>
+            </MenuItem>
+        </NextLink>
     )
 }
 

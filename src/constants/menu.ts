@@ -26,7 +26,7 @@ export const MENU_ITEMS: NavLink[] = [
         id: 'learn',
         title: 'Learn',
         type: 'item',
-        url: '/register',
+        url: '/learn',
         icon: icons.LocalLibrary,
         target: true
     }
