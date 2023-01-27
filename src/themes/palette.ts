@@ -53,8 +53,10 @@ const Palette = ({ mode }: LookSettings): Theme => {
       },
       divider: paletteColor.grey[200],
       background: {
-        paper: paletteColor.grey[0],
-        default: paletteColor.grey.A50,
+        paper: '#20222D',
+        default: '#202222',
+        // paper: paletteColor.grey[0],
+        // default: paletteColor.grey.A50,
       },
     },
   });
