@@ -1,4 +1,4 @@
-import { Theme } from "@mui/material"
+import { Theme } from '@mui/material';
 
 export default function IconButton(theme: Theme) {
   return {

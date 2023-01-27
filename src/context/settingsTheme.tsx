@@ -11,7 +11,7 @@ export type SettingsContextValue = {
 };
 
 const defaultSettings: Settings = {
-  navCollapsed: false,
+  navOpen: true,
   mode: 'dark',
   skin: 'default',
   drawerWidth: 260,

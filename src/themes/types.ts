@@ -3,7 +3,7 @@ import { PaletteMode } from '@mui/material';
 export type Skin = 'default';
 
 export type Settings = {
-  navCollapsed: boolean;
+  navOpen: boolean;
   mode: PaletteMode;
   skin: Skin;
   drawerWidth?: number;

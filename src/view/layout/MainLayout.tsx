@@ -1,45 +1,53 @@
-import React, { ReactNode, useState } from 'react';
-import Link from 'next/link';
-import { Box, Toolbar, useMediaQuery } from '@mui/material';
-import { useTheme } from '@mui/material/styles';
+import React, { ReactNode, useEffect, useRef } from 'react';
+import { Box, Toolbar } from '@mui/material';
 
 import Header from './Header';
-import Drawer from './Drawer';
+import MainDrawer from './MainDrawer';
 import { useUserThemeSettings } from 'src/hooks/userThemeSettings';
+import { useMatchDownSM } from '@hooks';
 
 type Props = {
   children: ReactNode;
 };
 
 export const MainLayout = ({ children }: Props): JSX.Element => {
-  const theme = useTheme();
-  const matchDownLG = useMediaQuery(theme.breakpoints.down('xl'));
+  const isMobile = useMatchDownSM();
   const { settings, saveSettings } = useUserThemeSettings();
-  // const [open, setOpen] = useState(!settings.navCollapsed);
-  const open = !settings.navCollapsed
+  const isOpen = useRef<boolean>(settings.navOpen);
+
+  useEffect(() => {
+    if (isMobile) {
+      if (settings.navOpen) {
+        saveSettings({ ...settings, navOpen: false });
+        isOpen.current = false;
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isMobile]);
 
   const handleDrawerToggle = () => {
-    // setOpen(!open);
-    saveSettings({ ...settings, navCollapsed: !open });
+    saveSettings({ ...settings, navOpen: !isOpen.current });
+    isOpen.current = !isOpen.current;
   };
 
   return (
     <Box sx={{ display: 'flex', width: '100%' }}>
-      <Header
-        open={open}
-        handleDrawerToggle={handleDrawerToggle}
-        drawerWidth={settings.drawerWidth}
-      />
-      <Drawer
-        open={open}
+      <MainDrawer
+        isMobile={isMobile}
+        open={isOpen.current}
         handleDrawerToggle={handleDrawerToggle}
         drawerwidth={settings.drawerWidth}
       />
+      {/* <Header
+        open={isOpen.current}
+        handleDrawerToggle={handleDrawerToggle}
+        drawerWidth={settings.drawerWidth}
+      /> */}
       <Box
         component="main"
         sx={{ width: '100%', flexGrow: 1, p: { xs: 2, sm: 3 } }}
       >
-        <Toolbar />
+        {/* <Toolbar /> */}
         {/* <Breadcrumbs navigation={navigation} title titleBottom card={false} divider={false} />
                 <Outlet /> */}
         {children}
