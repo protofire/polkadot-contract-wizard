@@ -47,8 +47,8 @@ export default function ThemeCustomization({
     [themeTypography, themeCustomShadows],
   );
 
-  const themes = createTheme(themeOptions);
-  themes.components = componentsOverride(themes);
+  let themes = createTheme(themeOptions);
+  themes = createTheme(themes, {...componentsOverride(themes)})
 
   return (
     <StyledEngineProvider injectFirst>

@@ -42,7 +42,7 @@ export default function App(props: CustomAppProps) {
         {({ settings }) => {
           return (
             <ThemeCustomization settings={settings}>
-              <MainLayout>{getLayout(<Component {...pageProps} />)}</MainLayout>
+              {getLayout(<Component {...pageProps} />)}
             </ThemeCustomization>
           );
         }}

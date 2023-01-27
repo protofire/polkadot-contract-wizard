@@ -35,6 +35,7 @@ const Palette = ({ mode }: LookSettings): Theme => {
 
   const paletteColor = ThemeOption(colors);
 
+  console.log('__red', paletteColor)
   return createTheme({
     palette: {
       mode,

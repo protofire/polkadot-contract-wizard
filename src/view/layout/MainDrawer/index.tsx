@@ -1,5 +1,6 @@
 import { Dispatch, SetStateAction, useMemo } from 'react';
-import { Box, Drawer, useMediaQuery, useTheme } from '@mui/material';
+import { Box, Drawer, useMediaQuery } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 
 import DrawerContent from './DrawerContent';
 import DrawerHeader from './DrawerHeader';
@@ -9,9 +10,10 @@ interface Props {
   open: boolean;
   handleDrawerToggle: Dispatch<SetStateAction<boolean>>;
   drawerwidth?: number;
+  isMobile?: boolean
 }
 
-const MainDrawer = ({ open, handleDrawerToggle, drawerwidth = 260 }: Props) => {
+const MainDrawer = ({ open, isMobile, handleDrawerToggle, drawerwidth = 260 }: Props) => {
   const theme = useTheme();
   const matchDownMD = useMediaQuery(theme.breakpoints.down('lg'));
 
@@ -19,17 +21,28 @@ const MainDrawer = ({ open, handleDrawerToggle, drawerwidth = 260 }: Props) => {
   const container =
     typeof window !== 'undefined' ? () => window.document.body : undefined;
 
-  // // header content
+  // header content
   const drawerContent = useMemo(() => <DrawerContent />, []);
   const drawerHeader = useMemo(() => <DrawerHeader open={open} />, [open]);
 
   return (
-    <Box
-      component="nav"
-      sx={{ flexShrink: { md: 0 }, zIndex: 1300 }}
-      aria-label="mailbox folders"
-    >
-      {!matchDownMD ? (
+      <Drawer
+        variant={isMobile ? 'temporary' : 'permanent'}
+        {...(isMobile ? {open} : {open: true})}
+        sx={{
+          width: open ? drawerwidth : 150 
+        }} 
+        PaperProps={{
+          sx: {
+            backgroundColor: theme.palette.primary.dark,
+          }
+        }}
+      >
+        {drawerHeader}
+      </Drawer>
+  );
+};
+      {/* {!matchDownMD ? (
         <MiniDrawerStyled
           variant="permanent"
           open={open}
@@ -56,12 +69,9 @@ const MainDrawer = ({ open, handleDrawerToggle, drawerwidth = 260 }: Props) => {
             },
           }}
         >
-          {/* {open && drawerHeader} */}
+          {open && drawerHeader}
           {open && drawerContent}
         </Drawer>
-      )}
-    </Box>
-  );
-};
+      )} */}
 
 export default MainDrawer;
