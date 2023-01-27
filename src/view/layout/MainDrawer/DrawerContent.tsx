@@ -1,3 +1,4 @@
+import { red } from '@ant-design/colors';
 import Navigation from './Navigation'
 import SimpleBar from 'src/view/components/third-party/SimpleBar';
 
@@ -7,6 +8,8 @@ const DrawerContent = () => (
       '& .simplebar-content': {
         display: 'flex',
         flexDirection: 'column',
+        width: '100%',
+        marginTop: '2rem',
       },
     }}
   >

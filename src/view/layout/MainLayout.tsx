@@ -1,7 +1,6 @@
 import React, { ReactNode, useEffect, useRef } from 'react';
-import { Box, Toolbar } from '@mui/material';
+import { Box } from '@mui/material';
 
-import Header from './Header';
 import MainDrawer from './MainDrawer';
 import { useUserThemeSettings } from 'src/hooks/userThemeSettings';
 import { useMatchDownSM } from '@hooks';
@@ -31,25 +30,17 @@ export const MainLayout = ({ children }: Props): JSX.Element => {
   };
 
   return (
-    <Box sx={{ display: 'flex', width: '100%' }}>
+    <Box sx={{ display: 'flex', width: '100%', color: 'white' }}>
       <MainDrawer
         isMobile={isMobile}
         open={isOpen.current}
         handleDrawerToggle={handleDrawerToggle}
         drawerwidth={settings.drawerWidth}
       />
-      {/* <Header
-        open={isOpen.current}
-        handleDrawerToggle={handleDrawerToggle}
-        drawerWidth={settings.drawerWidth}
-      /> */}
       <Box
         component="main"
-        sx={{ width: '100%', flexGrow: 1, p: { xs: 2, sm: 3 } }}
+        sx={{ width: '100%', flexGrow: 1, p: { xs: 2, sm: 3 }, border: '0' }}
       >
-        {/* <Toolbar /> */}
-        {/* <Breadcrumbs navigation={navigation} title titleBottom card={false} divider={false} />
-                <Outlet /> */}
         {children}
       </Box>
     </Box>
