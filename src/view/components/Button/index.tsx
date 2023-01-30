@@ -14,7 +14,6 @@ const HomeButton = styled(Button)<ButtonProps>(({ theme }) => ({
   color: 'white',
   fontSize: '1.4rem',
   borderRadius: '5rem',
-  padding: '8px 16px',
   minWidth: '100%',
   border: '2px solid',
   backgroundColor: 'transparent',
@@ -25,7 +24,6 @@ const HomeButton = styled(Button)<ButtonProps>(({ theme }) => ({
   padding: '2rem',
   boxSizing: 'border-box',
   backgroundClip: 'padding-box',
-  borderRadius: '1em',
 
 
   '&:hover': {
