@@ -9,6 +9,29 @@ interface Props {
   isBack?: boolean;
 }
 
+const HomeButton = styled(Button)<ButtonProps>(({ theme }) => ({
+  textTransform: 'uppercase',
+  color: 'white',
+  fontSize: '1.4rem',
+  borderRadius: '5rem',
+  padding: '8px 16px',
+  minWidth: '100%',
+  border: '2px solid',
+  backgroundColor: 'transparent',
+  display: 'flex',
+  alignItems: 'center',
+  margin: 'auto',
+  position: 'relative',
+  padding: '2rem',
+  boxSizing: 'border-box',
+  backgroundClip: 'padding-box',
+  borderRadius: '1em',
+
+
+  '&:hover': {
+  },
+}));
+
 const StyledBackButton = styled(Button)<ButtonProps>(({ theme }) => ({
   textTransform: 'uppercase',
   color: 'white',
@@ -45,19 +68,32 @@ const StyledButton = styled(Button)<ButtonProps>(({ theme }) => ({
 
 export default function CustomizedButtons() {
   return (
-    <Stack spacing={4} direction="row">
-      <StyledBackButton variant="outlined" size="large">
-        <ArrowBackRoundedIcon fontSize="medium" /> Back
-      </StyledBackButton>
-      <StyledButton variant="contained" size="large" disabled>
-        Next
-      </StyledButton>
-      <StyledButton variant="contained" size="large">
-        Next
-      </StyledButton>
-      <StyledButton variant="contained" size="large">
-        🚀 Deploy your contract
-      </StyledButton>
-    </Stack>
+    <>
+      <Stack spacing={4} direction="column" m={8}>
+        <HomeButton variant="contained" size="large">
+          TOKEN | PSP22
+        </HomeButton>
+        <HomeButton variant="contained" size="large">
+          NFT | PSP34
+        </HomeButton>
+        <HomeButton variant="contained" size="large">
+          MULTITOKEN | PSP37
+        </HomeButton>
+      </Stack>
+      <Stack spacing={4} direction="row" m={3}>
+        <StyledBackButton variant="outlined" size="large">
+          <ArrowBackRoundedIcon fontSize="medium" /> Back
+        </StyledBackButton>
+        <StyledButton variant="contained" size="large" disabled>
+          Next
+        </StyledButton>
+        <StyledButton variant="contained" size="large">
+          Next
+        </StyledButton>
+        <StyledButton variant="contained" size="large">
+          🚀 Deploy your contract
+        </StyledButton>
+      </Stack>
+    </>
   );
 }
