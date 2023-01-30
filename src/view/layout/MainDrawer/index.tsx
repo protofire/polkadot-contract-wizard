@@ -47,9 +47,9 @@ const MainDrawer = ({
         }}
         PaperProps={{
           sx: {
-          ...(!isMobile && !open ? { boxShadow: 10 } : {}),
-            backgroundColor: theme.palette.primary.dark,
+          ...(!isMobile && !open ? { boxShadow: 0 } : {}),
             width: open  ? drawerwidth : 0,
+            border: '0',
           },
         }}
       >

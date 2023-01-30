@@ -1,28 +1,41 @@
-import { Button, CardMedia, Link, Stack, Typography } from '@mui/material';
+import * as React from 'react';
+import Paper from '@mui/material/Paper';
+import MenuList from '@mui/material/MenuList';
+import MenuItem from '@mui/material/MenuItem';
+import ListItemText from '@mui/material/ListItemText';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import Typography from '@mui/material/Typography';
 
-import MainCard from 'src/view/components/MainCard';
-// import avatar from 'assets/images/users/avatar-group.png';
-// import AnimateButton from 'components/@extended/AnimateButton';
+import DashboardRoundedIcon from '@mui/icons-material/DashboardRounded';
+import BookmarkAddedRoundedIcon from '@mui/icons-material/BookmarkAddedRounded';
 
-// ==============================|| DRAWER CONTENT - NAVIGATION CARD ||============================== //
-
-const NavCard = () => (
-  <MainCard sx={{ bgcolor: 'grey.50', m: 3 }}>
-    <Stack alignItems="center" spacing={2.5}>
-      {/* <CardMedia component="img" image={avatar} sx={{ width: 112 }} />
-            <Stack alignItems="center">
-                <Typography variant="h5">Mantis Pro</Typography>
-                <Typography variant="h6" color="secondary">
-                    Checkout pro features
-                </Typography>
-            </Stack>
-            <AnimateButton>
-                <Button component={Link} target="_blank" href="https://mantisdashboard.io" variant="contained" color="success" size="small">
-                    Pro
-                </Button>
-            </AnimateButton> */}
-    </Stack>
-  </MainCard>
-);
-
-export default NavCard;
+export default function NavCard() {
+  return (
+    <Paper
+      sx={{ width: 280, maxWidth: '100%', mt: 3, background: 'transparent' }}
+    >
+      <MenuList>
+        <MenuItem>
+          <ListItemIcon>
+            <DashboardRoundedIcon fontSize="medium" sx={{ color: '#E6007A' }}/>
+          </ListItemIcon>
+          <ListItemText>
+            <Typography sx={{ color: '#E6007A', fontSize: '1.4rem', fontWeight: 'bold' }}>
+              Dashboard
+            </Typography>
+          </ListItemText>
+        </MenuItem>
+        <MenuItem>
+          <ListItemIcon>
+            <BookmarkAddedRoundedIcon fontSize="medium" />
+          </ListItemIcon>
+          <ListItemText>
+            <Typography sx={{ color: 'white', fontSize: '1.4rem', fontWeight: 'bold' }}>
+              Learn
+            </Typography>
+          </ListItemText>
+        </MenuItem>
+      </MenuList>
+    </Paper>
+  );
+}

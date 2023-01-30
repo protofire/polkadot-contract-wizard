@@ -1,6 +1,6 @@
 import { PalettesProps } from '@ant-design/colors';
 
-// ==============================|| PRESET THEME - THEME SELECTOR ||============================== //
+// ==============================|| Contract Wizard Theme ||============================== //
 
 const Theme = (colors: PalettesProps) => {
   const { blue, volcano, red, gold, cyan, green, grey } = colors;
@@ -27,7 +27,7 @@ const Theme = (colors: PalettesProps) => {
 
   return {
     primary: {
-      lighter: volcano[0],
+      lighter: blue[0],
       100: blue[1],
       200: blue[2],
       light: blue[3],
