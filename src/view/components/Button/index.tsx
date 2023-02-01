@@ -80,7 +80,9 @@ export default function CustomizedButtons() {
   return (
     <>
       <Stack spacing={4} direction="column" m={8}>
-        <HomeButton variant="contained">
+        <HomeButton variant="contained" onClick={() => {
+    alert('clicked');
+  }}>
           <Stack spacing={2} direction="row" alignItems="center">
             <Image alt="TOKEN | PSP22" src={TokenIcon} width={75} />
             <Stack spacing={0} direction="column" alignItems="flex-start">
