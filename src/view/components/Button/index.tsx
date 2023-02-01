@@ -50,18 +50,18 @@ const StyledBackButton = styled(Button)<ButtonProps>(({ theme }) => ({
   padding: '8px 16px',
   minWidth: '11rem',
   border: '1px solid',
-  borderColor: '#E6007A',
+  borderColor: theme.palette.primary.main,
   backgroundColor: 'transparent',
 
   '&:hover': {
-    backgroundColor: '#E6007A',
+    backgroundColor: theme.palette.primary.main,
     border: '1px solid',
   },
 }));
 
 const StyledButton = styled(Button)<ButtonProps>(({ theme }) => ({
   textTransform: 'uppercase',
-  color: '#E6007A',
+  color: theme.palette.primary.main,
   fontSize: '1.4rem',
   borderRadius: '5rem',
   padding: '8px 16px',
