@@ -13,11 +13,13 @@ const StepperWrapper = styled(Box)<BoxProps>(({ theme }) => ({
     },
   },
   '& .MuiStep-root': {
-    '& .step-label': {
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      
+    '& .MuiStepLabel-label': {
+        color: theme.palette.primary.main,
+        fontWeight: 600,
+        fontSize: '1.5rem',
+      },
+    '& .MuiStepIcon-text': {
+        fontSize: '1.5rem',
     },
     '& .step-number': {
       fontWeight: 600,
