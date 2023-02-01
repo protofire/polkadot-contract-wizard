@@ -64,8 +64,8 @@ const StyledButton = styled(Button)<ButtonProps>(({ theme }) => ({
   color: '#E6007A',
   fontSize: '1.4rem',
   borderRadius: '5rem',
-  padding: '8px 24px',
-  minWidth: '10rem',
+  padding: '8px 16px',
+  minWidth: '11rem',
   border: '1px solid',
   backgroundColor: '#e6007b2f',
 
@@ -114,7 +114,7 @@ export default function CustomizedButtons() {
           </Stack>
         </HomeButton>
       </Stack>
-      <Stack spacing={4} direction="row" m={3}>
+      <Stack spacing={4} direction="row" flexWrap="wrap" gap={2}>
         <StyledBackButton variant="outlined" size="large">
           <ArrowBackRoundedIcon fontSize="medium" /> Back
         </StyledBackButton>
