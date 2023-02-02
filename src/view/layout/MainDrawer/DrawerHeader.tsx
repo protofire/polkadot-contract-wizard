@@ -1,10 +1,14 @@
 import { useTheme } from '@mui/material/styles';
-import { Stack, Chip } from '@mui/material';
+import { Stack, IconButton } from '@mui/material';
 
 import DrawerHeaderStyled from './DrawerHeaderStyled';
 import Logo from 'src/view/components/Logo';
+import { Close as CloseIcon } from '@mui/icons-material';
 
-const DrawerHeader = ({ open }: { open: boolean }) => {
+const DrawerHeader = ({ open, handleDrawerToggle  }: { 
+  open: boolean,
+  handleDrawerToggle: () => void;
+}) => {
   const theme = useTheme();
 
   return (

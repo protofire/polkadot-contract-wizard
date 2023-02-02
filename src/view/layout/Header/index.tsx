@@ -1,40 +1,59 @@
 import { MouseEventHandler } from 'react';
-import { AppBar, IconButton, Toolbar, useMediaQuery } from '@mui/material';
-import { useTheme } from '@mui/material/styles';
+import { AppBar, IconButton, Toolbar } from '@mui/material';
 import { Menu, MenuOpen } from '@mui/icons-material';
 
-import AppBarStyled from './AppBarStyled';
 import HeaderContent from './HeaderContent';
+
+import { styled } from '@mui/material/styles';
+import { AppBarProps } from '@mui/material/AppBar';
+
+type CustomAppBarProps = AppBarProps & {
+  open: boolean;
+  ismobile: boolean;
+};
+
+const AppBarStyled = styled(AppBar, {
+  shouldForwardProp: prop => prop !== 'open',
+})<CustomAppBarProps>(({ theme, open, ismobile }) => ({
+  padding: 0,
+  flexDirection: "row-reverse",
+  transition: theme.transitions.create(['width', 'margin'], {
+    easing: theme.transitions.easing.sharp,
+    duration: theme.transitions.duration.leavingScreen,
+  }),
+  ...(open && {
+    transition: theme.transitions.create(['width', 'margin'], {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+  }),
+  // ...(ismobile && {
+  //   flexDirection: 'row-reverse',
+  // })
+}))
+
 
 const Header = ({
   open,
+  isMobile,
   handleDrawerToggle,
-  drawerWidth = 260,
 }: {
+  isMobile: boolean;
   open: boolean;
   handleDrawerToggle: MouseEventHandler<HTMLButtonElement>;
   drawerWidth?: number;
 }) => {
-  const theme = useTheme();
-  const matchDownMD = useMediaQuery(theme.breakpoints.down('lg'));
-
-  const iconBackColor = 'grey.100';
-  const iconBackColorOpen = 'grey.200';
-
   // common header
   const mainHeader = (
     <Toolbar>
       <IconButton
         onClick={handleDrawerToggle}
-        // disableRipple
-        // aria-label="open drawer"
-        // edge="start"
-        // color="secondary"
-        // sx={{
-        //   color: 'text.primary',
-        //   bgcolor: open ? iconBackColorOpen : iconBackColor,
-        //   ml: { xs: 0, lg: -2 },
-        // }}
+        disableRipple
+        aria-label="open drawer"
+        edge="start"
+        sx={{
+          ml: { xs: 0, lg: -2 },
+        }}
       >
         {!open ? <Menu /> : <MenuOpen />}
       </IconButton>
@@ -42,27 +61,11 @@ const Header = ({
     </Toolbar>
   );
 
-  // app-bar params
-  const appBar = {
-    // position: 'fixed',
-    // color: 'inherit',
-    elevation: 0,
-    sx: {
-      borderBottom: `1px solid ${theme.palette.divider}`,
-    },
-  };
-
   return (
-    <>
-      {!matchDownMD ? (
-        <AppBarStyled open={open} drawerwidth={drawerWidth} {...appBar}>
-          {mainHeader}
-        </AppBarStyled>
-      ) : (
-        <AppBar {...appBar}>{mainHeader}</AppBar>
-      )}
-    </>
-  );
-};
+    <AppBarStyled elevation={0} position='sticky' open={open} ismobile={isMobile.toString()}>
+      {mainHeader}
+    </AppBarStyled>
+  )
+}
 
 export default Header;
