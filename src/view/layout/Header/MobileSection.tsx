@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useTheme } from '@mui/material/styles';
 import {
   AppBar,
   Box,
@@ -9,14 +8,13 @@ import {
   Popper,
   Toolbar,
 } from '@mui/material';
-import { MoreVert } from '@mui/icons-material';
+import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 
 // import Profile from './Profile';
 import Transitions from 'src/view/components/Transitions';
 
 // ==============================|| HEADER CONTENT - MOBILE ||============================== //
 const MobileSection = () => {
-  const theme = useTheme();
 
   const [open, setOpen] = useState(false);
   const anchorRef = useRef<HTMLButtonElement>(null);
@@ -57,7 +55,7 @@ const MobileSection = () => {
           onClick={handleToggle}
           color="inherit"
         >
-          <MoreVert />
+          <AccountBalanceWalletIcon />
         </IconButton>
       </Box>
       <Popper

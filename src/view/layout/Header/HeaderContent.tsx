@@ -1,25 +1,13 @@
-import { Box, IconButton, Link, Theme, useMediaQuery } from '@mui/material';
+import { Box } from '@mui/material';
 
-// import Search from './Search';
-// import Profile from './Profile';
-// import Notification from './Notification';
 import MobileSection from './MobileSection';
 
-// ==============================|| HEADER - CONTENT ||============================== //
-
-const HeaderContent = () => {
-  const matchesXs = useMediaQuery((theme: Theme) =>
-    theme.breakpoints.down('md'),
-  );
-
+const HeaderContent = ({isMobile}: {isMobile: boolean}) => {
   return (
     <>
-      {/* {!matchesXs && <Search />} */}
-      {matchesXs && <Box sx={{ width: '100%', ml: 1 }} />}
+      {isMobile && <Box sx={{ width: '100%', ml: 1 }} />}
 
-      {/* <Notification /> */}
-      {/* {!matchesXs && <Profile />} */}
-      {matchesXs && <MobileSection />}
+      {isMobile && <MobileSection />}
     </>
   );
 };

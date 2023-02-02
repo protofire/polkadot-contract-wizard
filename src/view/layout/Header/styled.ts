@@ -10,6 +10,7 @@ const AppBarStyled = styled(AppBar, {
   shouldForwardProp: prop => prop !== 'open',
 })<CustomAppBarProps>(({ theme, open, drawerwidth }) => ({
   zIndex: theme.zIndex.drawer + 1,
+  border: '1px solid red',
   transition: theme.transitions.create(['width', 'margin'], {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,

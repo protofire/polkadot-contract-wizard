@@ -1,14 +1,12 @@
-import { Dispatch, SetStateAction, useMemo } from 'react';
-import { Box, Drawer, useMediaQuery } from '@mui/material';
-import { useTheme } from '@mui/material/styles';
+import { useMemo } from 'react';
+import { Drawer } from '@mui/material';
 
 import DrawerContent from './DrawerContent';
 import DrawerHeader from './DrawerHeader';
-import MiniDrawerStyled from './MiniDrawerStyled';
 
 interface Props {
   open: boolean;
-  handleDrawerToggle: Dispatch<SetStateAction<boolean>>;
+  handleDrawerToggle: () => void;
   drawerwidth?: number;
   isMobile?: boolean;
 }
@@ -19,8 +17,6 @@ const MainDrawer = ({
   handleDrawerToggle,
   drawerwidth = 260,
 }: Props) => {
-  const theme = useTheme();
-
   const drawerContent = useMemo(() => <DrawerContent />, []);
   const drawerHeader = useMemo(() => <DrawerHeader open={open} />, [open]);
 
@@ -52,6 +48,7 @@ const MainDrawer = ({
             border: '0',
           },
         }}
+        ModalProps={{ onClose: handleDrawerToggle }} 
       >
         {open && drawerHeader}
         {open && drawerContent}

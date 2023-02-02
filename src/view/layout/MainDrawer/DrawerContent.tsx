@@ -1,4 +1,3 @@
-import { red } from '@ant-design/colors';
 import Navigation from './Navigation'
 import SimpleBar from 'src/view/components/third-party/SimpleBar';
 
