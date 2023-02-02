@@ -18,7 +18,7 @@ const MainDrawer = ({
   drawerwidth = 260,
 }: Props) => {
   const drawerContent = useMemo(() => <DrawerContent />, []);
-  const drawerHeader = useMemo(() => <DrawerHeader open={open} handleDrawerToggle={handleDrawerToggle} />, [handleDrawerToggle, open]);
+  const drawerHeader = useMemo(() => <DrawerHeader open={open} />, [open]);
 
   const mobileProps = {
     open,

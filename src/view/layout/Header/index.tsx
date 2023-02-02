@@ -1,22 +1,21 @@
 import { MouseEventHandler } from 'react';
 import { AppBar, IconButton, Toolbar } from '@mui/material';
 import { Menu, MenuOpen } from '@mui/icons-material';
+import { styled } from '@mui/material/styles';
 
 import HeaderContent from './HeaderContent';
+import { shouldForwardProp } from '@types';
 
-import { styled } from '@mui/material/styles';
 import { AppBarProps } from '@mui/material/AppBar';
 
-type CustomAppBarProps = AppBarProps & {
+type CustomAppBarProps = {
   open: boolean;
-  ismobile: boolean;
 };
 
 const AppBarStyled = styled(AppBar, {
-  shouldForwardProp: prop => prop !== 'open',
-})<CustomAppBarProps>(({ theme, open, ismobile }) => ({
+  shouldForwardProp: prop =>shouldForwardProp<CustomAppBarProps>(['open'], prop)
+})<CustomAppBarProps & AppBarProps>(({ theme, open }) => ({
   padding: 0,
-  flexDirection: "row-reverse",
   transition: theme.transitions.create(['width', 'margin'], {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
@@ -27,9 +26,6 @@ const AppBarStyled = styled(AppBar, {
       duration: theme.transitions.duration.enteringScreen,
     }),
   }),
-  // ...(ismobile && {
-  //   flexDirection: 'row-reverse',
-  // })
 }))
 
 
@@ -45,7 +41,12 @@ const Header = ({
 }) => {
   // common header
   const mainHeader = (
-    <Toolbar>
+    <Toolbar sx={{
+      ...(isMobile && {
+        flexDirection: 'row-reverse',
+        width: 'inherit'
+      })
+    }}>
       <IconButton
         onClick={handleDrawerToggle}
         disableRipple
@@ -57,12 +58,12 @@ const Header = ({
       >
         {!open ? <Menu /> : <MenuOpen />}
       </IconButton>
-      <HeaderContent />
+      <HeaderContent isMobile={isMobile}  />
     </Toolbar>
   );
 
   return (
-    <AppBarStyled elevation={0} position='sticky' open={open} ismobile={isMobile.toString()}>
+    <AppBarStyled elevation={0} position='sticky' open={open}>
       {mainHeader}
     </AppBarStyled>
   )
