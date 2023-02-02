@@ -1,11 +1,17 @@
 import * as React from 'react';
-import Box from '@mui/material/Box';
-import Stepper from '@mui/material/Stepper';
-import Step from '@mui/material/Step';
-import StepLabel from '@mui/material/StepLabel';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
 import StepperWrapper from './stepperWrapper';
+import { Stack } from '@mui/system';
+import {
+  Checkbox,
+  FormControlLabel,
+  FormGroup,
+  Typography,
+  Button,
+  StepLabel,
+  Step,
+  Stepper,
+  Box,
+} from '@mui/material';
 
 const steps = ['Extensions', 'Security', 'Deploy'];
 
@@ -55,6 +61,61 @@ export default function HorizontalLinearStepper() {
     setActiveStep(0);
   };
 
+  const getStepContent = () => {
+    switch (activeStep) {
+      case 0:
+        return (
+          <Stack sx={{ mt: 2, mb: 1 }}>
+            <FormGroup>
+              <FormControlLabel
+                control={<Checkbox />}
+                label="Minteable"
+                sx={{
+                  '& .MuiSvgIcon-root': { fontSize: 32 },
+                  '& .MuiFormControlLabel-label': { fontSize: '1.7rem' },
+                }}
+              />
+              <FormControlLabel
+                control={<Checkbox />}
+                label="Burneable"
+                sx={{
+                  '& .MuiSvgIcon-root': { fontSize: 32 },
+                  '& .MuiFormControlLabel-label': { fontSize: '1.7rem' },
+                }}
+              />
+            </FormGroup>
+          </Stack>
+        );
+      case 1:
+        return (
+          <Stack sx={{ mt: 2, mb: 1 }}>
+            <FormGroup>
+              <FormControlLabel
+                control={<Checkbox />}
+                label="Owneable"
+                sx={{
+                  '& .MuiSvgIcon-root': { fontSize: 32 },
+                  '& .MuiFormControlLabel-label': { fontSize: '1.7rem' },
+                }}
+              />
+              <FormControlLabel
+                control={<Checkbox />}
+                label="Access Control"
+                sx={{
+                  '& .MuiSvgIcon-root': { fontSize: 32 },
+                  '& .MuiFormControlLabel-label': { fontSize: '1.7rem' },
+                }}
+              />
+            </FormGroup>
+          </Stack>
+        );
+      case 2:
+        return <Typography sx={{ mt: 2, mb: 1 }}>Congrats! Now you can deploy your contract!</Typography>;
+      default:
+        return null;
+    }
+  };
+
   return (
     <Box sx={{ width: '100%' }}>
       <StepperWrapper>
@@ -92,7 +153,7 @@ export default function HorizontalLinearStepper() {
         </React.Fragment>
       ) : (
         <React.Fragment>
-          <Typography sx={{ mt: 2, mb: 1 }}>Step {activeStep + 1}</Typography>
+          {getStepContent()}
           <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
             <Button
               color="inherit"
