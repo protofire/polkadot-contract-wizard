@@ -80,11 +80,32 @@ export default function HorizontalLinearStepper() {
                         fontSize: '1.7rem',
                       }}
                     >
+                      Metadata
+                    </Typography>{' '}
+                    <p>Metadata for [`PSP22`].</p>
+                  </>
+                }
+                sx={{
+                  '& .MuiSvgIcon-root': { fontSize: 32 },
+                  '& .MuiFormControlLabel-label': { fontSize: '1.2rem' },
+                }}
+              />
+              <FormControlLabel
+                control={<Checkbox />}
+                label={
+                  <>
+                    <Typography
+                      variant="h3"
+                      sx={{
+                        fontSize: '1.7rem',
+                      }}
+                    >
                       Minteable
                     </Typography>{' '}
                     <p>
                       Extension of [`PSP22`] that allows create `amount` tokens
-                      and assigns them to `account`, increasing the total supply
+                      and assigns them to `account`, increasing the total
+                      supply.
                     </p>
                   </>
                 }
@@ -106,8 +127,103 @@ export default function HorizontalLinearStepper() {
                       Burnable
                     </Typography>{' '}
                     <p>
-                      Extension of [`PSP22`] that allows create `amount` tokens
-                      and assigns them to `account`, increasing the total supply
+                      Extension of [`PSP22`] that allows token holders to
+                      destroy both their own tokens and those that they have an
+                      allowance for.
+                    </p>
+                  </>
+                }
+                sx={{
+                  '& .MuiSvgIcon-root': { fontSize: 32 },
+                  '& .MuiFormControlLabel-label': { fontSize: '1.2rem' },
+                }}
+              />
+              <FormControlLabel
+                control={<Checkbox />}
+                label={
+                  <>
+                    <Typography
+                      variant="h3"
+                      sx={{
+                        fontSize: '1.7rem',
+                      }}
+                    >
+                      Wrapper
+                    </Typography>{' '}
+                    <p>
+                      Extension of [`PSP22`] that allows you to wrap your PSP22
+                      token in a PSP22Wrapper token which can be used for
+                      example for governance.
+                    </p>
+                  </>
+                }
+                sx={{
+                  '& .MuiSvgIcon-root': { fontSize: 32 },
+                  '& .MuiFormControlLabel-label': { fontSize: '1.2rem' },
+                }}
+              />
+              <FormControlLabel
+                control={<Checkbox />}
+                label={
+                  <>
+                    <Typography
+                      variant="h3"
+                      sx={{
+                        fontSize: '1.7rem',
+                      }}
+                    >
+                      FlashMint
+                    </Typography>{' '}
+                    <p>
+                      Extension of [`PSP22`] that allows the user to perform a
+                      flash loan on the token by minting the borrowed amount and
+                      then burning it along with fees for the loan.
+                    </p>
+                  </>
+                }
+                sx={{
+                  '& .MuiSvgIcon-root': { fontSize: 32 },
+                  '& .MuiFormControlLabel-label': { fontSize: '1.2rem' },
+                }}
+              />
+              <FormControlLabel
+                control={<Checkbox />}
+                label={
+                  <>
+                    <Typography
+                      variant="h3"
+                      sx={{
+                        fontSize: '1.7rem',
+                      }}
+                    >
+                      Pausable
+                    </Typography>{' '}
+                    <p>
+                      Extension of [`PSP22`] that allows you to pause all token
+                      operations.
+                    </p>
+                  </>
+                }
+                sx={{
+                  '& .MuiSvgIcon-root': { fontSize: 32 },
+                  '& .MuiFormControlLabel-label': { fontSize: '1.2rem' },
+                }}
+              />
+              <FormControlLabel
+                control={<Checkbox />}
+                label={
+                  <>
+                    <Typography
+                      variant="h3"
+                      sx={{
+                        fontSize: '1.7rem',
+                      }}
+                    >
+                      Capped
+                    </Typography>{' '}
+                    <p>
+                      Extension of [`PSP22`] that allows you to implement with a
+                      supply cap, analogue to ERC20Capped.
                     </p>
                   </>
                 }
