@@ -93,7 +93,7 @@ export default function CustomizedButtons() {
             </Stack>
           </Stack>
         </HomeButton>
-        <HomeButton variant="contained" size="large">
+        <HomeButton variant="contained">
           <Stack spacing={2} direction="row" alignItems="center">
             <Image alt="NFT | PSP34" src={NFTIcon} height={65} />
             <Stack spacing={0} direction="column" alignItems="flex-start">
@@ -104,7 +104,7 @@ export default function CustomizedButtons() {
             </Stack>
           </Stack>
         </HomeButton>
-        <HomeButton variant="contained" size="large">
+        <HomeButton variant="contained">
           <Stack spacing={2} direction="row" alignItems="center">
             <Image alt="MULTITOKEN | PSP37" src={MultiTokenIcon} width={75} />
             <Stack spacing={0} direction="column" alignItems="flex-start">

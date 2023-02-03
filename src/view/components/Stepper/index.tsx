@@ -11,6 +11,7 @@ import {
   Step,
   Stepper,
   Box,
+  Radio,
 } from '@mui/material';
 
 const steps = ['Extensions', 'Security', 'Deploy'];
@@ -65,22 +66,52 @@ export default function HorizontalLinearStepper() {
     switch (activeStep) {
       case 0:
         return (
-          <Stack sx={{ mt: 2, mb: 1 }}>
+          <Stack sx={{ mt: 2, mb: 2 }}>
             <FormGroup>
               <FormControlLabel
                 control={<Checkbox />}
-                label="Minteable"
+                label={
+                  <>
+                    <Typography
+                      variant="h3"
+                      sx={{
+                        fontSize: '1.7rem',
+                      }}
+                    >
+                      Minteable
+                    </Typography>{' '}
+                    <p>
+                      Extension of [`PSP22`] that allows create `amount` tokens
+                      and assigns them to `account`, increasing the total supply
+                    </p>
+                  </>
+                }
                 sx={{
                   '& .MuiSvgIcon-root': { fontSize: 32 },
-                  '& .MuiFormControlLabel-label': { fontSize: '1.7rem' },
+                  '& .MuiFormControlLabel-label': { fontSize: '1.2rem' },
                 }}
               />
               <FormControlLabel
                 control={<Checkbox />}
-                label="Burneable"
+                label={
+                  <>
+                    <Typography
+                      variant="h3"
+                      sx={{
+                        fontSize: '1.7rem',
+                      }}
+                    >
+                      Burnable
+                    </Typography>{' '}
+                    <p>
+                      Extension of [`PSP22`] that allows create `amount` tokens
+                      and assigns them to `account`, increasing the total supply
+                    </p>
+                  </>
+                }
                 sx={{
                   '& .MuiSvgIcon-root': { fontSize: 32 },
-                  '& .MuiFormControlLabel-label': { fontSize: '1.7rem' },
+                  '& .MuiFormControlLabel-label': { fontSize: '1.2rem' },
                 }}
               />
             </FormGroup>
@@ -90,8 +121,17 @@ export default function HorizontalLinearStepper() {
         return (
           <Stack sx={{ mt: 2, mb: 1 }}>
             <FormGroup>
+            <FormControlLabel
+                control={<Radio />}
+                label="None"
+                checked
+                sx={{
+                  '& .MuiSvgIcon-root': { fontSize: 32 },
+                  '& .MuiFormControlLabel-label': { fontSize: '1.7rem' },
+                }}
+              />
               <FormControlLabel
-                control={<Checkbox />}
+                control={<Radio />}
                 label="Owneable"
                 sx={{
                   '& .MuiSvgIcon-root': { fontSize: 32 },
@@ -99,7 +139,7 @@ export default function HorizontalLinearStepper() {
                 }}
               />
               <FormControlLabel
-                control={<Checkbox />}
+                control={<Radio />}
                 label="Access Control"
                 sx={{
                   '& .MuiSvgIcon-root': { fontSize: 32 },
@@ -110,7 +150,11 @@ export default function HorizontalLinearStepper() {
           </Stack>
         );
       case 2:
-        return <Typography sx={{ mt: 2, mb: 1 }}>Congrats! Now you can deploy your contract!</Typography>;
+        return (
+          <Typography sx={{ mt: 2, mb: 1 }}>
+            Congrats! Now you can deploy your contract!
+          </Typography>
+        );
       default:
         return null;
     }
