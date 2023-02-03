@@ -12,6 +12,8 @@ import {
   Stepper,
   Box,
   Radio,
+  RadioGroup,
+  FormControl,
 } from '@mui/material';
 
 const steps = ['Extensions', 'Security', 'Deploy'];
@@ -67,7 +69,7 @@ export default function HorizontalLinearStepper() {
       case 0:
         return (
           <Stack sx={{ mt: 2, mb: 2 }}>
-            <FormGroup>
+            <FormGroup sx={{ gap: 3 }}>
               <FormControlLabel
                 control={<Checkbox />}
                 label={
@@ -119,34 +121,101 @@ export default function HorizontalLinearStepper() {
         );
       case 1:
         return (
-          <Stack sx={{ mt: 2, mb: 1 }}>
-            <FormGroup>
-            <FormControlLabel
-                control={<Radio />}
-                label="None"
-                checked
-                sx={{
-                  '& .MuiSvgIcon-root': { fontSize: 32 },
-                  '& .MuiFormControlLabel-label': { fontSize: '1.7rem' },
-                }}
-              />
-              <FormControlLabel
-                control={<Radio />}
-                label="Owneable"
-                sx={{
-                  '& .MuiSvgIcon-root': { fontSize: 32 },
-                  '& .MuiFormControlLabel-label': { fontSize: '1.7rem' },
-                }}
-              />
-              <FormControlLabel
-                control={<Radio />}
-                label="Access Control"
-                sx={{
-                  '& .MuiSvgIcon-root': { fontSize: 32 },
-                  '& .MuiFormControlLabel-label': { fontSize: '1.7rem' },
-                }}
-              />
-            </FormGroup>
+          <Stack sx={{ mt: 2, mb: 2 }}>
+            <FormControl>
+              <RadioGroup
+                aria-labelledby="security"
+                defaultValue="none"
+                name="radio-buttons-group"
+                sx={{ gap: 3 }}
+              >
+                <FormControlLabel
+                  control={<Radio />}
+                  label={
+                    <>
+                      <Typography
+                        variant="h3"
+                        sx={{
+                          fontSize: '1.7rem',
+                        }}
+                      >
+                        None
+                      </Typography>{' '}
+                      <p>Sample content for None value.</p>
+                    </>
+                  }
+                  value="none"
+                  sx={{
+                    '& .MuiSvgIcon-root': { fontSize: 32 },
+                    '& .MuiFormControlLabel-label': { fontSize: '1.2rem' },
+                  }}
+                />
+
+                <FormControlLabel
+                  control={<Radio />}
+                  label={
+                    <>
+                      <Typography
+                        variant="h3"
+                        sx={{
+                          fontSize: '1.7rem',
+                        }}
+                      >
+                        Ownable
+                      </Typography>{' '}
+                      <p>Sample content for Ownable value.</p>
+                    </>
+                  }
+                  value="Ownable"
+                  sx={{
+                    '& .MuiSvgIcon-root': { fontSize: 32 },
+                    '& .MuiFormControlLabel-label': { fontSize: '1.2rem' },
+                  }}
+                />
+                <FormControlLabel
+                  control={<Radio />}
+                  label={
+                    <>
+                      <Typography
+                        variant="h3"
+                        sx={{
+                          fontSize: '1.7rem',
+                        }}
+                      >
+                        Access Control
+                      </Typography>{' '}
+                      <p>Sample content for Access Control value.</p>
+                    </>
+                  }
+                  value="access_control"
+                  sx={{
+                    '& .MuiSvgIcon-root': { fontSize: 32 },
+                    '& .MuiFormControlLabel-label': { fontSize: '1.2rem' },
+                  }}
+                />
+                <FormControlLabel
+                  control={<Radio />}
+                  label={
+                    <>
+                      <Typography
+                        variant="h3"
+                        sx={{
+                          fontSize: '1.7rem',
+                        }}
+                      >
+                        Access Control Enumerable
+                      </Typography>{' '}
+                      <p>Sample content for Access Control Enumerable value.</p>
+                    </>
+                  }
+                  value="access_control_enumerable"
+                  sx={{
+                    '& .MuiSvgIcon-root': { fontSize: 32 },
+                    '& .MuiFormControlLabel-label': { fontSize: '1.2rem' },
+                  }}
+                />
+              </RadioGroup>
+            </FormControl>
           </Stack>
         );
       case 2:
