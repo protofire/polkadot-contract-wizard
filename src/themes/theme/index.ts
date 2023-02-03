@@ -3,7 +3,7 @@ import { PalettesProps } from '@ant-design/colors';
 // ==============================|| Contract Wizard Theme ||============================== //
 
 const Theme = (colors: PalettesProps) => {
-  const { blue, volcano, red, gold, cyan, green, grey } = colors;
+  const { blue, volcano, red, gold, cyan, green, grey, } = colors;
   const greyColors = {
     0: grey[0],
     50: grey[1],

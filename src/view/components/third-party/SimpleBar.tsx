@@ -14,7 +14,7 @@ const RootStyle = styled(BrowserView)({
 });
 
 // scroll bar wrapper
-const SimpleBarStyle = styled(SimpleBar)(({ theme }) => ({
+const SimpleBarStyle = styled(SimpleBar)(({ theme, }) => ({
   maxHeight: '100%',
   '& .simplebar-scrollbar': {
     '&:before': {
@@ -51,7 +51,7 @@ export default function SimpleBarScroll({
         </SimpleBarStyle>
       </RootStyle>
       <MobileView>
-        <Box sx={{ overflowX: 'auto', ...sx }} {...other}>
+        <Box sx={{ overflowX: 'auto', ...sx, }} {...other}>
           {children}
         </Box>
       </MobileView>

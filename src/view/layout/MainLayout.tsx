@@ -9,7 +9,7 @@ import Header from './Header';
 
 type Props = {
   children: ReactNode;
-}
+};
 
 const ContentWrapper = styled(Box)<BoxProps>(() => ({
   flexGrow: 1,
@@ -17,36 +17,35 @@ const ContentWrapper = styled(Box)<BoxProps>(() => ({
   display: 'flex',
   minHeight: '100vh',
   flexDirection: 'column',
-}))
+}));
 
-
-export const MainLayout = ({ children }: Props): JSX.Element => {
+export const MainLayout = ({ children, }: Props): JSX.Element => {
   const isMobile = useMatchDownSM();
-  const { settings, saveSettings } = useUserThemeSettings();
-  const [isOpen, setIsOpen] = useState(settings.navOpen)
+  const { settings, saveSettings, } = useUserThemeSettings();
+  const [isOpen, setIsOpen,] = useState(settings.navOpen);
 
   useEffect(() => {
     if (isMobile) {
       if (settings.navOpen) {
-        saveSettings({ ...settings, navOpen: false });
-        setIsOpen(false)
-      }     
+        saveSettings({ ...settings, navOpen: false, });
+        setIsOpen(false);
+      }
     } else {
       if (!isOpen) {
-        saveSettings({ ...settings, navOpen: true });
-        setIsOpen(true)
+        saveSettings({ ...settings, navOpen: true, });
+        setIsOpen(true);
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isMobile]);
+  }, [isMobile,]);
 
   const handleDrawerToggle = () => {
-    saveSettings({ ...settings, navOpen: !isOpen })
-    setIsOpen(!isOpen)
+    saveSettings({ ...settings, navOpen: !isOpen, });
+    setIsOpen(!isOpen);
   };
 
   return (
-    <Box sx={{ display: 'flex', width: '100%', color: 'white' }}>
+    <Box sx={{ display: 'flex', width: '100%', color: 'white', }}>
       <MainDrawer
         isMobile={isMobile}
         open={isOpen}
@@ -55,7 +54,7 @@ export const MainLayout = ({ children }: Props): JSX.Element => {
       />
       <ContentWrapper
         component="main"
-        sx={{ width: '100%', flexGrow: 1, border: '0' }}
+        sx={{ width: '100%', flexGrow: 1, border: '0', }}
       >
         <Header
           isMobile={isMobile}
@@ -66,7 +65,7 @@ export const MainLayout = ({ children }: Props): JSX.Element => {
         {children}
       </ContentWrapper>
     </Box>
-  )
-}
+  );
+};
 
 export default MainLayout;

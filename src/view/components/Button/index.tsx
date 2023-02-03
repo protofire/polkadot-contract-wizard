@@ -15,7 +15,7 @@ interface Props {
   isBack?: boolean;
 }
 
-const HomeButton = styled(Button)<ButtonProps>(({ theme }) => ({
+const HomeButton = styled(Button)<ButtonProps>(({ theme, }) => ({
   color: 'white',
   fontSize: '1.4rem',
   borderRadius: '1rem',
@@ -42,7 +42,7 @@ const HomeButton = styled(Button)<ButtonProps>(({ theme }) => ({
   },
 }));
 
-const StyledBackButton = styled(Button)<ButtonProps>(({ theme }) => ({
+const StyledBackButton = styled(Button)<ButtonProps>(({ theme, }) => ({
   textTransform: 'uppercase',
   color: 'white',
   fontSize: '1.4rem',
@@ -59,7 +59,7 @@ const StyledBackButton = styled(Button)<ButtonProps>(({ theme }) => ({
   },
 }));
 
-const StyledButton = styled(Button)<ButtonProps>(({ theme }) => ({
+const StyledButton = styled(Button)<ButtonProps>(({ theme, }) => ({
   textTransform: 'uppercase',
   color: '#E6007A',
   fontSize: '1.4rem',

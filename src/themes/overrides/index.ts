@@ -21,8 +21,8 @@ function ComponentsOverrides(theme: Theme) {
     cardContent,
     iconButton,
     ListItemIcon,
-    Typography,
-  )
+    Typography
+  );
 }
 
 export default ComponentsOverrides;

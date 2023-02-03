@@ -15,7 +15,7 @@ type TransitionsProps = FadeProps & {
 
 const Transitions = forwardRef(function Transition(
   props: TransitionsProps,
-  ref: Ref<unknown>,
+  ref: Ref<unknown>
 ) {
   const { children, position = 'top-left', type = 'grow', ...others } = props;
   let positionSX = {
