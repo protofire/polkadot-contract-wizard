@@ -81,13 +81,17 @@ export default function HorizontalLinearStepper() {
                       }}
                     >
                       Metadata
-                    </Typography>{' '}
-                    <p>Metadata for [`PSP22`].</p>
+                    </Typography>
+                    <Typography
+                      variant="body1"
+                      sx={{ fontSize: '1.2rem', color: '#b1b1b1' }}
+                    >
+                      Metadata for [`PSP22`].
+                    </Typography>
                   </>
                 }
                 sx={{
                   '& .MuiSvgIcon-root': { fontSize: 32 },
-                  '& .MuiFormControlLabel-label': { fontSize: '1.2rem' },
                 }}
               />
               <FormControlLabel
@@ -101,17 +105,19 @@ export default function HorizontalLinearStepper() {
                       }}
                     >
                       Minteable
-                    </Typography>{' '}
-                    <p>
+                    </Typography>
+                    <Typography
+                      variant="body1"
+                      sx={{ fontSize: '1.2rem', color: '#b1b1b1' }}
+                    >
                       Extension of [`PSP22`] that allows create `amount` tokens
                       and assigns them to `account`, increasing the total
                       supply.
-                    </p>
+                    </Typography>
                   </>
                 }
                 sx={{
                   '& .MuiSvgIcon-root': { fontSize: 32 },
-                  '& .MuiFormControlLabel-label': { fontSize: '1.2rem' },
                 }}
               />
               <FormControlLabel
@@ -125,17 +131,19 @@ export default function HorizontalLinearStepper() {
                       }}
                     >
                       Burnable
-                    </Typography>{' '}
-                    <p>
+                    </Typography>
+                    <Typography
+                      variant="body1"
+                      sx={{ fontSize: '1.2rem', color: '#b1b1b1' }}
+                    >
                       Extension of [`PSP22`] that allows token holders to
                       destroy both their own tokens and those that they have an
                       allowance for.
-                    </p>
+                    </Typography>
                   </>
                 }
                 sx={{
                   '& .MuiSvgIcon-root': { fontSize: 32 },
-                  '& .MuiFormControlLabel-label': { fontSize: '1.2rem' },
                 }}
               />
               <FormControlLabel
@@ -149,17 +157,19 @@ export default function HorizontalLinearStepper() {
                       }}
                     >
                       Wrapper
-                    </Typography>{' '}
-                    <p>
+                    </Typography>
+                    <Typography
+                      variant="body1"
+                      sx={{ fontSize: '1.2rem', color: '#b1b1b1' }}
+                    >
                       Extension of [`PSP22`] that allows you to wrap your PSP22
                       token in a PSP22Wrapper token which can be used for
                       example for governance.
-                    </p>
+                    </Typography>
                   </>
                 }
                 sx={{
                   '& .MuiSvgIcon-root': { fontSize: 32 },
-                  '& .MuiFormControlLabel-label': { fontSize: '1.2rem' },
                 }}
               />
               <FormControlLabel
@@ -173,17 +183,19 @@ export default function HorizontalLinearStepper() {
                       }}
                     >
                       FlashMint
-                    </Typography>{' '}
-                    <p>
+                    </Typography>
+                    <Typography
+                      variant="body1"
+                      sx={{ fontSize: '1.2rem', color: '#b1b1b1' }}
+                    >
                       Extension of [`PSP22`] that allows the user to perform a
                       flash loan on the token by minting the borrowed amount and
                       then burning it along with fees for the loan.
-                    </p>
+                    </Typography>
                   </>
                 }
                 sx={{
                   '& .MuiSvgIcon-root': { fontSize: 32 },
-                  '& .MuiFormControlLabel-label': { fontSize: '1.2rem' },
                 }}
               />
               <FormControlLabel
@@ -197,16 +209,18 @@ export default function HorizontalLinearStepper() {
                       }}
                     >
                       Pausable
-                    </Typography>{' '}
-                    <p>
+                    </Typography>
+                    <Typography
+                      variant="body1"
+                      sx={{ fontSize: '1.2rem', color: '#b1b1b1' }}
+                    >
                       Extension of [`PSP22`] that allows you to pause all token
                       operations.
-                    </p>
+                    </Typography>
                   </>
                 }
                 sx={{
                   '& .MuiSvgIcon-root': { fontSize: 32 },
-                  '& .MuiFormControlLabel-label': { fontSize: '1.2rem' },
                 }}
               />
               <FormControlLabel
@@ -220,16 +234,18 @@ export default function HorizontalLinearStepper() {
                       }}
                     >
                       Capped
-                    </Typography>{' '}
-                    <p>
+                    </Typography>
+                    <Typography
+                      variant="body1"
+                      sx={{ fontSize: '1.2rem', color: '#b1b1b1' }}
+                    >
                       Extension of [`PSP22`] that allows you to implement with a
                       supply cap, analogue to ERC20Capped.
-                    </p>
+                    </Typography>
                   </>
                 }
                 sx={{
                   '& .MuiSvgIcon-root': { fontSize: 32 },
-                  '& .MuiFormControlLabel-label': { fontSize: '1.2rem' },
                 }}
               />
             </FormGroup>
@@ -256,14 +272,18 @@ export default function HorizontalLinearStepper() {
                         }}
                       >
                         None
-                      </Typography>{' '}
-                      <p>Sample content for None value.</p>
+                      </Typography>
+                      <Typography
+                        variant="body1"
+                        sx={{ fontSize: '1.2rem', color: '#b1b1b1' }}
+                      >
+                        Sample content for None value.
+                      </Typography>
                     </>
                   }
                   value="none"
                   sx={{
                     '& .MuiSvgIcon-root': { fontSize: 32 },
-                    '& .MuiFormControlLabel-label': { fontSize: '1.2rem' },
                   }}
                 />
 
@@ -278,14 +298,18 @@ export default function HorizontalLinearStepper() {
                         }}
                       >
                         Ownable
-                      </Typography>{' '}
-                      <p>Sample content for Ownable value.</p>
+                      </Typography>
+                      <Typography
+                        variant="body1"
+                        sx={{ fontSize: '1.2rem', color: '#b1b1b1' }}
+                      >
+                        Sample content for Ownable value.
+                      </Typography>
                     </>
                   }
                   value="Ownable"
                   sx={{
                     '& .MuiSvgIcon-root': { fontSize: 32 },
-                    '& .MuiFormControlLabel-label': { fontSize: '1.2rem' },
                   }}
                 />
                 <FormControlLabel
@@ -299,14 +323,18 @@ export default function HorizontalLinearStepper() {
                         }}
                       >
                         Access Control
-                      </Typography>{' '}
-                      <p>Sample content for Access Control value.</p>
+                      </Typography>
+                      <Typography
+                        variant="body1"
+                        sx={{ fontSize: '1.2rem', color: '#b1b1b1' }}
+                      >
+                        Sample content for Access Control value.
+                      </Typography>
                     </>
                   }
                   value="access_control"
                   sx={{
                     '& .MuiSvgIcon-root': { fontSize: 32 },
-                    '& .MuiFormControlLabel-label': { fontSize: '1.2rem' },
                   }}
                 />
                 <FormControlLabel
@@ -321,13 +349,17 @@ export default function HorizontalLinearStepper() {
                       >
                         Access Control Enumerable
                       </Typography>{' '}
-                      <p>Sample content for Access Control Enumerable value.</p>
+                      <Typography
+                        variant="body1"
+                        sx={{ fontSize: '1.2rem', color: '#b1b1b1' }}
+                      >
+                        Sample content for Access Control Enumerable value.
+                      </Typography>
                     </>
                   }
                   value="access_control_enumerable"
                   sx={{
                     '& .MuiSvgIcon-root': { fontSize: 32 },
-                    '& .MuiFormControlLabel-label': { fontSize: '1.2rem' },
                   }}
                 />
               </RadioGroup>
