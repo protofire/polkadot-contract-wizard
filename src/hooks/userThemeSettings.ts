@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import {
   SettingsThemeContext,
-  SettingsContextValue,
+  SettingsContextValue
 } from 'src/context/settingsTheme';
 
 export const useUserThemeSettings = (): SettingsContextValue =>

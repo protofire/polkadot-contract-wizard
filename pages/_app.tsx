@@ -23,7 +23,7 @@ type CustomAppProps = AppProps & {
 const clientEmotionCache = buildEmotionCache();
 
 export default function App(props: CustomAppProps) {
-  const { Component, emotionCache = clientEmotionCache, pageProps } = props;
+  const { Component, emotionCache = clientEmotionCache, pageProps, } = props;
 
   const getLayout =
     Component.getLayout ?? (page => <MainLayout>{page}</MainLayout>);
@@ -41,7 +41,7 @@ export default function App(props: CustomAppProps) {
       </Head>
 
       <SettingsConsumer>
-        {({ settings }) => {
+        {({ settings, }) => {
           return (
             <ThemeCustomization settings={settings}>
               {getLayout(<Component {...pageProps} />)}
