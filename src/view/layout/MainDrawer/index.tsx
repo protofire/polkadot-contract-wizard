@@ -26,33 +26,33 @@ const MainDrawer = ({
       keepMounted: true,
     },
     onClose: () => handleDrawerToggle,
-  }
-  
+  };
+
   const desktopProps = {
     open: true,
     onClose: () => handleDrawerToggle,
-  }
+  };
 
   return (
-      <Drawer
-        variant={isMobile ? 'temporary' : 'permanent'}
-        {...(isMobile ? { open } : { open: true })}
-        {...(isMobile ? { ...mobileProps } : { ...desktopProps })}
-        sx={{
-          width: open ? drawerwidth : 0,
-        }}
-        PaperProps={{
-          sx: {
+    <Drawer
+      variant={isMobile ? 'temporary' : 'permanent'}
+      {...(isMobile ? { open } : { open: true })}
+      {...(isMobile ? { ...mobileProps } : { ...desktopProps })}
+      sx={{
+        width: open ? drawerwidth : 0,
+      }}
+      PaperProps={{
+        sx: {
           ...(!isMobile && !open ? { boxShadow: 0 } : {}),
-            width: open  ? drawerwidth : 0,
-            border: '0',
-          },
-        }}
-        ModalProps={{ onClose: handleDrawerToggle }} 
-      >
-        {open && drawerHeader}
-        {open && drawerContent}
-      </Drawer>
+          width: open ? drawerwidth : 0,
+          border: '0',
+        },
+      }}
+      ModalProps={{ onClose: handleDrawerToggle }}
+    >
+      {open && drawerHeader}
+      {open && drawerContent}
+    </Drawer>
   );
 };
 

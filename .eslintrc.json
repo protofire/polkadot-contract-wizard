@@ -22,6 +22,12 @@
     "ecmaVersion": 12,
     "sourceType": "module"
   },
-  "plugins": ["@typescript-eslint", "react"],
-  "ignorePatterns": [".next/*", "node_modules/*"]
+  "plugins": [
+    "@typescript-eslint",
+    "react"
+  ],
+  "ignorePatterns": [
+    ".next/*",
+    "node_modules/*"
+  ]
 }

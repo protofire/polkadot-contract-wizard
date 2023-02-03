@@ -4,9 +4,7 @@ import { Stack } from '@mui/material';
 import DrawerHeaderStyled from './DrawerHeaderStyled';
 import Logo from 'src/view/components/Logo';
 
-const DrawerHeader = ({ open  }: { 
-  open: boolean,
-}) => {
+const DrawerHeader = ({ open }: { open: boolean }) => {
   const theme = useTheme();
 
   return (

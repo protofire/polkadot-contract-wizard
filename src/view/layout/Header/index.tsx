@@ -13,7 +13,8 @@ type CustomAppBarProps = {
 };
 
 const AppBarStyled = styled(AppBar, {
-  shouldForwardProp: prop =>shouldForwardProp<CustomAppBarProps>(['open'], prop)
+  shouldForwardProp: prop =>
+    shouldForwardProp<CustomAppBarProps>(['open'], prop),
 })<CustomAppBarProps & AppBarProps>(({ theme, open }) => ({
   padding: 0,
   transition: theme.transitions.create(['width', 'margin'], {
@@ -26,8 +27,7 @@ const AppBarStyled = styled(AppBar, {
       duration: theme.transitions.duration.enteringScreen,
     }),
   }),
-}))
-
+}));
 
 const Header = ({
   open,
@@ -41,12 +41,14 @@ const Header = ({
 }) => {
   // common header
   const mainHeader = (
-    <Toolbar sx={{
-      ...(isMobile && {
-        flexDirection: 'row-reverse',
-        width: 'inherit'
-      })
-    }}>
+    <Toolbar
+      sx={{
+        ...(isMobile && {
+          flexDirection: 'row-reverse',
+          width: 'inherit',
+        }),
+      }}
+    >
       <IconButton
         onClick={handleDrawerToggle}
         disableRipple
@@ -58,15 +60,15 @@ const Header = ({
       >
         {!open ? <Menu /> : <MenuOpen />}
       </IconButton>
-      <HeaderContent isMobile={isMobile}  />
+      <HeaderContent isMobile={isMobile} />
     </Toolbar>
   );
 
   return (
-    <AppBarStyled elevation={0} position='sticky' open={open}>
+    <AppBarStyled elevation={0} position="sticky" open={open}>
       {mainHeader}
     </AppBarStyled>
-  )
-}
+  );
+};
 
 export default Header;

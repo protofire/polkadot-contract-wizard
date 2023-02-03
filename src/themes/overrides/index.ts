@@ -22,7 +22,7 @@ function ComponentsOverrides(theme: Theme) {
     iconButton,
     ListItemIcon,
     Typography,
-  )
+  );
 }
 
 export default ComponentsOverrides;

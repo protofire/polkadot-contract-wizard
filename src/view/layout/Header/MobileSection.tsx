@@ -10,12 +10,10 @@ import {
 } from '@mui/material';
 import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 
-// import Profile from './Profile';
 import Transitions from 'src/view/components/Transitions';
 
 // ==============================|| HEADER CONTENT - MOBILE ||============================== //
 const MobileSection = () => {
-
   const [open, setOpen] = useState(false);
   const anchorRef = useRef<HTMLButtonElement>(null);
 
@@ -81,7 +79,7 @@ const MobileSection = () => {
       >
         {({ TransitionProps }) => (
           <Transitions type="fade" in={open} {...TransitionProps}>
-            <Paper sx={{ }}>
+            <Paper sx={{}}>
               <ClickAwayListener onClickAway={handleClose}>
                 <AppBar color="inherit">
                   <Toolbar>{/* <Profile /> */}</Toolbar>

@@ -45,7 +45,7 @@ const NavItem = (props: NavLink) => {
 const Navigation = () => {
   return (
     <Stack direction="row" spacing={2}>
-      <Paper sx={{  backgroundColor: 'transparent', width: '100%', }}>
+      <Paper sx={{ backgroundColor: 'transparent', width: '100%' }}>
         {MENU_ITEMS.map((item, index) => (
           <NavItem key={index} {...item} />
         ))}
