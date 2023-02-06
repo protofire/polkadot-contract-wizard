@@ -2,10 +2,6 @@ import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import Button, { ButtonProps } from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
-import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackRounded';
-import TokenIcon from 'public/assets/token-psp22.png';
-import NFTIcon from 'public/assets/nft-psp34.png';
-import MultiTokenIcon from 'public/assets/multitoken-psp37.png';
 
 import Image from 'next/image';
 import { Typography } from '@mui/material';
@@ -17,7 +13,7 @@ interface Props extends ButtonProps {
     imgProps: { width?: number, height?: number }
 }
 
-const WrapperButton = styled(Button)<ButtonProps>(({ theme }) => ({
+const WrapperButton = styled(Button)<ButtonProps>(() => ({
     color: 'white',
     fontSize: '1.4rem',
     borderRadius: '1rem',

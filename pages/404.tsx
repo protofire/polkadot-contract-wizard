@@ -7,7 +7,7 @@ import Box, { BoxProps } from '@mui/material/Box';
 import Link from '@mui/material/Link';
 import BlankLayout from 'src/view/layout/BlankLayout';
 
-const BoxWrapper = styled(Box)<BoxProps>(({ theme }) => ({
+const BoxWrapper = styled(Box)<BoxProps>(({ theme, }) => ({
     [theme.breakpoints.down('md')]: {
         width: '90vw',
     },
@@ -25,7 +25,7 @@ const Page404 = () => {
             }}
         >
             <BoxWrapper>
-                <Typography variant="h1" sx={{ mb: 2.5 }}>
+                <Typography variant="h1" sx={{ mb: 2.5, }}>
                     404
                 </Typography>
                 <Typography
@@ -42,7 +42,7 @@ const Page404 = () => {
                     We think you just went to a page non-existing page.
                 </Typography>
             </BoxWrapper>
-            <Button component={Link} href="/" variant="contained" sx={{ px: 5.5 }}>
+            <Button component={Link} href="/" variant="contained" sx={{ px: 5.5, }}>
                 Back to Home
             </Button>
         </Box>

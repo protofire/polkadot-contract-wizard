@@ -1,6 +1,6 @@
 import { alpha, styled } from '@mui/material/styles';
 import { Box } from '@mui/material';
-import { SxConfig, SxProps } from '@mui/system';
+import { SxProps } from '@mui/system';
 
 import SimpleBar from 'simplebar-react';
 import { BrowserView, MobileView } from 'react-device-detect';
