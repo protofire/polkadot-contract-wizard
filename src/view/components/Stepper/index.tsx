@@ -15,14 +15,14 @@ import {
   Radio,
   RadioGroup,
   FormControl,
-  TextField,
+  TextField
 } from '@mui/material';
 
-const steps = ['Extensions', 'Security', 'Deploy'];
+const steps = ['Extensions', 'Security', 'Deploy',];
 
 export default function HorizontalLinearStepper() {
-  const [activeStep, setActiveStep] = React.useState(0);
-  const [skipped, setSkipped] = React.useState(new Set<number>());
+  const [activeStep, setActiveStep,] = React.useState(0);
+  const [skipped, setSkipped,] = React.useState(new Set<number>());
 
   const isStepOptional = (step: number) => {
     return step === 1;
@@ -70,8 +70,8 @@ export default function HorizontalLinearStepper() {
     switch (activeStep) {
       case 0:
         return (
-          <Stack sx={{ mt: 2, mb: 2 }}>
-            <FormGroup sx={{ gap: 3 }}>
+          <Stack sx={{ mt: 2, mb: 2, }}>
+            <FormGroup sx={{ gap: 3, }}>
               <FormControlLabel
                 control={<Checkbox />}
                 label={
@@ -86,17 +86,17 @@ export default function HorizontalLinearStepper() {
                     </Typography>
                     <Typography
                       variant="body1"
-                      sx={{ fontSize: '1.2rem', color: '#b1b1b1' }}
+                      sx={{ fontSize: '1.2rem', color: '#b1b1b1', }}
                     >
                       Metadata for [`PSP22`].
                     </Typography>
                   </>
                 }
                 sx={{
-                  '& .MuiSvgIcon-root': { fontSize: 32 },
+                  '& .MuiSvgIcon-root': { fontSize: 32, },
                 }}
               />
-              <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
+              <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2, }}>
                   <TextField
                     id="outlined-basic"
                     label="Name"
@@ -127,7 +127,7 @@ export default function HorizontalLinearStepper() {
                     </Typography>
                     <Typography
                       variant="body1"
-                      sx={{ fontSize: '1.2rem', color: '#b1b1b1' }}
+                      sx={{ fontSize: '1.2rem', color: '#b1b1b1', }}
                     >
                       Extension of [`PSP22`] that allows create `amount` tokens
                       and assigns them to `account`, increasing the total
@@ -136,7 +136,7 @@ export default function HorizontalLinearStepper() {
                   </>
                 }
                 sx={{
-                  '& .MuiSvgIcon-root': { fontSize: 32 },
+                  '& .MuiSvgIcon-root': { fontSize: 32, },
                 }}
               />
               <FormControlLabel
@@ -153,7 +153,7 @@ export default function HorizontalLinearStepper() {
                     </Typography>
                     <Typography
                       variant="body1"
-                      sx={{ fontSize: '1.2rem', color: '#b1b1b1' }}
+                      sx={{ fontSize: '1.2rem', color: '#b1b1b1', }}
                     >
                       Extension of [`PSP22`] that allows token holders to
                       destroy both their own tokens and those that they have an
@@ -162,7 +162,7 @@ export default function HorizontalLinearStepper() {
                   </>
                 }
                 sx={{
-                  '& .MuiSvgIcon-root': { fontSize: 32 },
+                  '& .MuiSvgIcon-root': { fontSize: 32, },
                 }}
               />
               <FormControlLabel
@@ -179,7 +179,7 @@ export default function HorizontalLinearStepper() {
                     </Typography>
                     <Typography
                       variant="body1"
-                      sx={{ fontSize: '1.2rem', color: '#b1b1b1' }}
+                      sx={{ fontSize: '1.2rem', color: '#b1b1b1', }}
                     >
                       Extension of [`PSP22`] that allows you to wrap your PSP22
                       token in a PSP22Wrapper token which can be used for
@@ -188,7 +188,7 @@ export default function HorizontalLinearStepper() {
                   </>
                 }
                 sx={{
-                  '& .MuiSvgIcon-root': { fontSize: 32 },
+                  '& .MuiSvgIcon-root': { fontSize: 32, },
                 }}
               />
               <FormControlLabel
@@ -205,7 +205,7 @@ export default function HorizontalLinearStepper() {
                     </Typography>
                     <Typography
                       variant="body1"
-                      sx={{ fontSize: '1.2rem', color: '#b1b1b1' }}
+                      sx={{ fontSize: '1.2rem', color: '#b1b1b1', }}
                     >
                       Extension of [`PSP22`] that allows the user to perform a
                       flash loan on the token by minting the borrowed amount and
@@ -214,7 +214,7 @@ export default function HorizontalLinearStepper() {
                   </>
                 }
                 sx={{
-                  '& .MuiSvgIcon-root': { fontSize: 32 },
+                  '& .MuiSvgIcon-root': { fontSize: 32, },
                 }}
               />
               <FormControlLabel
@@ -231,7 +231,7 @@ export default function HorizontalLinearStepper() {
                     </Typography>
                     <Typography
                       variant="body1"
-                      sx={{ fontSize: '1.2rem', color: '#b1b1b1' }}
+                      sx={{ fontSize: '1.2rem', color: '#b1b1b1', }}
                     >
                       Extension of [`PSP22`] that allows you to pause all token
                       operations.
@@ -239,7 +239,7 @@ export default function HorizontalLinearStepper() {
                   </>
                 }
                 sx={{
-                  '& .MuiSvgIcon-root': { fontSize: 32 },
+                  '& .MuiSvgIcon-root': { fontSize: 32, },
                 }}
               />
               <FormControlLabel
@@ -256,7 +256,7 @@ export default function HorizontalLinearStepper() {
                     </Typography>
                     <Typography
                       variant="body1"
-                      sx={{ fontSize: '1.2rem', color: '#b1b1b1' }}
+                      sx={{ fontSize: '1.2rem', color: '#b1b1b1', }}
                     >
                       Extension of [`PSP22`] that allows you to implement with a
                       supply cap, analogue to ERC20Capped.
@@ -264,7 +264,7 @@ export default function HorizontalLinearStepper() {
                   </>
                 }
                 sx={{
-                  '& .MuiSvgIcon-root': { fontSize: 32 },
+                  '& .MuiSvgIcon-root': { fontSize: 32, },
                 }}
               />
             </FormGroup>
@@ -272,13 +272,13 @@ export default function HorizontalLinearStepper() {
         );
       case 1:
         return (
-          <Stack sx={{ mt: 2, mb: 2 }}>
+          <Stack sx={{ mt: 2, mb: 2, }}>
             <FormControl>
               <RadioGroup
                 aria-labelledby="security"
                 defaultValue="none"
                 name="radio-buttons-group"
-                sx={{ gap: 3 }}
+                sx={{ gap: 3, }}
               >
                 <FormControlLabel
                   control={<Radio />}
@@ -294,7 +294,7 @@ export default function HorizontalLinearStepper() {
                       </Typography>
                       <Typography
                         variant="body1"
-                        sx={{ fontSize: '1.2rem', color: '#b1b1b1' }}
+                        sx={{ fontSize: '1.2rem', color: '#b1b1b1', }}
                       >
                         Sample content for None value.
                       </Typography>
@@ -302,7 +302,7 @@ export default function HorizontalLinearStepper() {
                   }
                   value="none"
                   sx={{
-                    '& .MuiSvgIcon-root': { fontSize: 32 },
+                    '& .MuiSvgIcon-root': { fontSize: 32, },
                   }}
                 />
 
@@ -320,7 +320,7 @@ export default function HorizontalLinearStepper() {
                       </Typography>
                       <Typography
                         variant="body1"
-                        sx={{ fontSize: '1.2rem', color: '#b1b1b1' }}
+                        sx={{ fontSize: '1.2rem', color: '#b1b1b1', }}
                       >
                         Sample content for Ownable value.
                       </Typography>
@@ -328,7 +328,7 @@ export default function HorizontalLinearStepper() {
                   }
                   value="Ownable"
                   sx={{
-                    '& .MuiSvgIcon-root': { fontSize: 32 },
+                    '& .MuiSvgIcon-root': { fontSize: 32, },
                   }}
                 />
                 <FormControlLabel
@@ -345,7 +345,7 @@ export default function HorizontalLinearStepper() {
                       </Typography>
                       <Typography
                         variant="body1"
-                        sx={{ fontSize: '1.2rem', color: '#b1b1b1' }}
+                        sx={{ fontSize: '1.2rem', color: '#b1b1b1', }}
                       >
                         Sample content for Access Control value.
                       </Typography>
@@ -353,7 +353,7 @@ export default function HorizontalLinearStepper() {
                   }
                   value="access_control"
                   sx={{
-                    '& .MuiSvgIcon-root': { fontSize: 32 },
+                    '& .MuiSvgIcon-root': { fontSize: 32, },
                   }}
                 />
                 <FormControlLabel
@@ -370,7 +370,7 @@ export default function HorizontalLinearStepper() {
                       </Typography>{' '}
                       <Typography
                         variant="body1"
-                        sx={{ fontSize: '1.2rem', color: '#b1b1b1' }}
+                        sx={{ fontSize: '1.2rem', color: '#b1b1b1', }}
                       >
                         Sample content for Access Control Enumerable value.
                       </Typography>
@@ -378,7 +378,7 @@ export default function HorizontalLinearStepper() {
                   }
                   value="access_control_enumerable"
                   sx={{
-                    '& .MuiSvgIcon-root': { fontSize: 32 },
+                    '& .MuiSvgIcon-root': { fontSize: 32, },
                   }}
                 />
               </RadioGroup>
@@ -389,7 +389,7 @@ export default function HorizontalLinearStepper() {
         return (
           <>
             <Typography>Congrats! Now you can deploy your contract!</Typography>
-            <Box sx={{ overflowY: 'scroll', height: '30rem', resize: 'both' }}>
+            <Box sx={{ overflowY: 'scroll', height: '30rem', resize: 'both', }}>
               <CopyBlock
                 language="go"
                 text={`#![cfg_attr(not(feature = "std"), no_std)]
@@ -470,7 +470,7 @@ export default function HorizontalLinearStepper() {
   };
 
   return (
-    <Box sx={{ width: '100%' }}>
+    <Box sx={{ width: '100%', }}>
       <StepperWrapper>
         <Stepper activeStep={activeStep}>
           {steps.map((label, index) => {
@@ -496,29 +496,29 @@ export default function HorizontalLinearStepper() {
       </StepperWrapper>
       {activeStep === steps.length ? (
         <React.Fragment>
-          <Typography sx={{ mt: 2, mb: 1 }}>
+          <Typography sx={{ mt: 2, mb: 1, }}>
             We are deploying your contract now.
           </Typography>
-          <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
-            <Box sx={{ flex: '1 1 auto' }} />
+          <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2, }}>
+            <Box sx={{ flex: '1 1 auto', }} />
             <Button onClick={handleReset}>Reset</Button>
           </Box>
         </React.Fragment>
       ) : (
         <React.Fragment>
           {getStepContent()}
-          <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
+          <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2, }}>
             <Button
               color="inherit"
               disabled={activeStep === 0}
               onClick={handleBack}
-              sx={{ mr: 1 }}
+              sx={{ mr: 1, }}
             >
               Back
             </Button>
-            <Box sx={{ flex: '1 1 auto' }} />
+            <Box sx={{ flex: '1 1 auto', }} />
             {isStepOptional(activeStep) && (
-              <Button color="inherit" onClick={handleSkip} sx={{ mr: 1 }}>
+              <Button color="inherit" onClick={handleSkip} sx={{ mr: 1, }}>
                 Skip
               </Button>
             )}

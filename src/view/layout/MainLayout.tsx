@@ -19,7 +19,7 @@ const MainWrapper = styled(Box)<BoxProps>(() => ({
   flexDirection: 'column',
 }));
 
-const ContentWrapper = styled(Box)<BoxProps>(({ theme }) => ({
+const ContentWrapper = styled(Box)<BoxProps>(({ theme, }) => ({
   width: '100%',
   padding: theme.spacing(3, 4),
   [theme.breakpoints.down('sm')]: {
@@ -32,10 +32,10 @@ const ContentWrapper = styled(Box)<BoxProps>(({ theme }) => ({
   },
 }));
 
-export const MainLayout = ({ children }: Props): JSX.Element => {
+export const MainLayout = ({ children, }: Props): JSX.Element => {
   const isMobile = useMatchDownSM();
-  const { settings, saveSettings } = useUserThemeSettings();
-  const [isOpen, setIsOpen] = useState(settings.navOpen);
+  const { settings, saveSettings, } = useUserThemeSettings();
+  const [isOpen, setIsOpen,] = useState(settings.navOpen);
 
   useEffect(() => {
     if (isMobile) {
