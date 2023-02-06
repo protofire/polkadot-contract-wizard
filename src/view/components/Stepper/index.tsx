@@ -15,6 +15,7 @@ import {
   Radio,
   RadioGroup,
   FormControl,
+  TextField,
 } from '@mui/material';
 
 const steps = ['Extensions', 'Security', 'Deploy'];
@@ -95,6 +96,23 @@ export default function HorizontalLinearStepper() {
                   '& .MuiSvgIcon-root': { fontSize: 32 },
                 }}
               />
+              <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
+                  <TextField
+                    id="outlined-basic"
+                    label="Name"
+                    variant="outlined"
+                  />
+                  <TextField
+                    id="outlined-basic2"
+                    label="Symbol"
+                    variant="outlined"
+                  />
+                  <TextField
+                    id="outlined-basic3"
+                    label="Decimals"
+                    variant="outlined"
+                  />
+                </Box>
               <FormControlLabel
                 control={<Checkbox />}
                 label={
@@ -370,9 +388,7 @@ export default function HorizontalLinearStepper() {
       case 2:
         return (
           <>
-            <Typography >
-              Congrats! Now you can deploy your contract!
-            </Typography>
+            <Typography>Congrats! Now you can deploy your contract!</Typography>
             <Box sx={{ overflowY: 'scroll', height: '30rem', resize: 'both' }}>
               <CopyBlock
                 language="go"
@@ -507,7 +523,9 @@ export default function HorizontalLinearStepper() {
               </Button>
             )}
             <Button onClick={handleNext}>
-              {activeStep === steps.length - 1 ? 'Deploy your contract' : 'Next'}
+              {activeStep === steps.length - 1
+                ? 'Deploy your contract'
+                : 'Next'}
             </Button>
           </Box>
         </React.Fragment>
