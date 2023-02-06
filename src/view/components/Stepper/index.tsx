@@ -370,12 +370,13 @@ export default function HorizontalLinearStepper() {
       case 2:
         return (
           <>
-            <Typography sx={{ mt: 2, mb: 1 }}>
+            <Typography >
               Congrats! Now you can deploy your contract!
             </Typography>
-            <CopyBlock
-              language="go"
-              text={`#![cfg_attr(not(feature = "std"), no_std)]
+            <Box sx={{ overflowY: 'scroll', height: '30rem', resize: 'both' }}>
+              <CopyBlock
+                language="go"
+                text={`#![cfg_attr(not(feature = "std"), no_std)]
               #![feature(min_specialization)]
                       
               #[openbrush::contract]
@@ -440,10 +441,11 @@ export default function HorizontalLinearStepper() {
                   }
                   }
               }`}
-              codeBlock
-              theme={dracula}
-              showLineNumbers={false}
-            />
+                codeBlock
+                theme={dracula}
+                showLineNumbers={false}
+              />
+            </Box>
           </>
         );
       default:
@@ -479,7 +481,7 @@ export default function HorizontalLinearStepper() {
       {activeStep === steps.length ? (
         <React.Fragment>
           <Typography sx={{ mt: 2, mb: 1 }}>
-            All steps completed - you&apos;re finished
+            We are deploying your contract now.
           </Typography>
           <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
             <Box sx={{ flex: '1 1 auto' }} />
@@ -505,7 +507,7 @@ export default function HorizontalLinearStepper() {
               </Button>
             )}
             <Button onClick={handleNext}>
-              {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
+              {activeStep === steps.length - 1 ? 'Deploy your contract' : 'Next'}
             </Button>
           </Box>
         </React.Fragment>

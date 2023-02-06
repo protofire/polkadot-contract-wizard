@@ -1,6 +1,6 @@
 // ** MUI imports
-import { styled } from '@mui/material/styles'
-import Box, { BoxProps } from '@mui/material/Box'
+import { styled } from '@mui/material/styles';
+import Box, { BoxProps } from '@mui/material/Box';
 
 // ** Util Imports
 // import { hexToRGBA } from 'src/@core/utils/hex-to-rgba'
@@ -8,49 +8,40 @@ import Box, { BoxProps } from '@mui/material/Box'
 const StepperWrapper = styled(Box)<BoxProps>(({ theme }) => ({
   [theme.breakpoints.down('md')]: {
     '& .MuiStepper-horizontal:not(.MuiStepper-alternativeLabel)': {
-      flexDirection: 'column',
-      alignItems: 'flex-start',
+      flexDirection: 'row',
+      alignItems: 'center',
+      '& .MuiStepLabel-label': {
+        fontSize: '1rem',
+      },
     },
   },
   '& .MuiStep-root': {
     '& .MuiStepLabel-label': {
-        color: theme.palette.primary.main,
-        fontWeight: 600,
-        fontSize: '1.5rem',
-      },
-    '& .MuiStepIcon-text': {
-        fontSize: '1.5rem',
-    },
-    '& .step-number': {
+      color: 'white',
       fontWeight: 600,
-      letterSpacing: 0.25,
-      fontSize: '2.125rem',
-      marginRight: theme.spacing(2.5),
-      color: 'white',
+      fontSize: '1.8rem',
     },
-    '& .step-title': {
-      fontWeight: 500,
-      fontSize: '1rem',
-      letterSpacing: '0.1px',
-      color: 'white',
+    '& .Mui-active': {
+      color: theme.palette.primary.main,
+      fontWeight: 600,
     },
-    '& .step-subtitle': {
+    '& .Mui-disable': {
+      color: theme.palette.secondary.dark,
       fontWeight: 400,
-      fontSize: '0.95rem',
-      letterSpacing: '0.4px',
+    },
+    '& .Mui-completed': {
+      color: theme.palette.primary.main,
+      fontWeight: 600,
+    },
+
+    '& .MuiStepIcon-text': {
+      fontSize: '1rem',
+    },
+    '& .MuiSvgIcon-root': {
       color: theme.palette.primary.main,
     },
-    '& .MuiStepLabel-root.Mui-disabled': {
-      '& .step-number': {
-        color: theme.palette.text.disabled,
-      },
-    },
-    '& .Mui-error': {
-      '& .MuiStepLabel-labelContainer, & .step-number, & .step-title, & .step-subtitle': {
-        color: theme.palette.error.main,
-      },
-    },
   },
+  
   '& .MuiStepConnector-root': {
     '& .MuiStepConnector-line': {
       borderWidth: 3,
@@ -61,23 +52,8 @@ const StepperWrapper = styled(Box)<BoxProps>(({ theme }) => ({
         borderColor: theme.palette.primary.main,
       },
     },
-    '&.Mui-disabled .MuiStepConnector-line': {
-      // borderColor: hexToRGBA(theme.palette.primary.main, 0.12),
-    },
   },
-  '& .MuiStepper-alternativeLabel': {
-    '& .MuiStepConnector-root': {
-      top: 10,
-    },
-    '& .MuiStepLabel-labelContainer': {
-      display: 'flex',
-      alignItems: 'center',
-      flexDirection: 'column',
-      '& > * + *': {
-        marginTop: theme.spacing(1),
-      },
-    },
-  },
+
   '& .MuiStepper-vertical': {
     '& .MuiStep-root': {
       '& .step-label': {
@@ -102,6 +78,6 @@ const StepperWrapper = styled(Box)<BoxProps>(({ theme }) => ({
       },
     },
   },
-}))
+}));
 
-export default StepperWrapper
+export default StepperWrapper;
