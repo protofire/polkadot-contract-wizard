@@ -41,43 +41,6 @@ const StyledButton = styled(Button)<ButtonProps>(({ theme, }) => ({
 export default function CustomizedButtons() {
   return (
     <>
-      <Stack spacing={4} direction="column" m={8}>
-        <HomeButton variant="contained" onClick={() => {
-    alert('clicked');
-  }}>
-          <Stack spacing={2} direction="row" alignItems="center">
-            <Image alt="TOKEN | PSP22" src={TokenIcon} width={75} />
-            <Stack spacing={0} direction="column" alignItems="flex-start">
-              <Typography variant="h3">TOKEN | PSP22</Typography>
-              <Typography variant="subtitle1">
-                Standard smart contract for a fungible token
-              </Typography>
-            </Stack>
-          </Stack>
-        </HomeButton>
-        <HomeButton variant="contained">
-          <Stack spacing={2} direction="row" alignItems="center">
-            <Image alt="NFT | PSP34" src={NFTIcon} height={65} />
-            <Stack spacing={0} direction="column" alignItems="flex-start">
-              <Typography variant="h3">NFT | PSP34</Typography>
-              <Typography variant="subtitle1">
-                Standard smart contract for a non-fungible token
-              </Typography>
-            </Stack>
-          </Stack>
-        </HomeButton>
-        <HomeButton variant="contained">
-          <Stack spacing={2} direction="row" alignItems="center">
-            <Image alt="MULTITOKEN | PSP37" src={MultiTokenIcon} width={75} />
-            <Stack spacing={0} direction="column" alignItems="flex-start">
-              <Typography variant="h3">MULTITOKEN | PSP37</Typography>
-              <Typography variant="subtitle1">
-                Standard smart contract for a Multi Token
-              </Typography>
-            </Stack>
-          </Stack>
-        </HomeButton>
-      </Stack>
       <Stack spacing={4} direction="row" flexWrap="wrap" gap={2}>
         <StyledBackButton variant="outlined" size="large">
           <ArrowBackRoundedIcon fontSize="medium" /> Back
