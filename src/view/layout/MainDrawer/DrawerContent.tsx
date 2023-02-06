@@ -1,4 +1,4 @@
-import Navigation from './Navigation'
+import Navigation from './Navigation';
 import SimpleBar from 'src/view/components/third-party/SimpleBar';
 
 const DrawerContent = () => (

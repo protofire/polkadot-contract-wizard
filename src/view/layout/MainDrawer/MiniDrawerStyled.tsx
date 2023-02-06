@@ -32,7 +32,7 @@ type CustomDrawerProps = DrawerProps & {
 
 const MiniDrawerStyled = styled(Drawer, {
   shouldForwardProp: prop => prop !== 'open',
-})<CustomDrawerProps>(({ open, drawerwidth, theme }) => ({
+})<CustomDrawerProps>(({ open, drawerwidth, theme, }) => ({
   width: drawerwidth,
   flexShrink: 0,
   whiteSpace: 'nowrap',

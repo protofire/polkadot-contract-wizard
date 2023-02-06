@@ -3,46 +3,8 @@ import { styled } from '@mui/material/styles';
 import Button, { ButtonProps } from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackRounded';
-import TokenIcon from 'public/assets/token-psp22.png';
-import NFTIcon from 'public/assets/nft-psp34.png';
-import MultiTokenIcon from 'public/assets/multitoken-psp37.png';
 
-import Image from 'next/image';
-import { Typography } from '@mui/material';
-
-interface Props {
-  isOutlined?: boolean;
-  isBack?: boolean;
-}
-
-const HomeButton = styled(Button)<ButtonProps>(({ theme }) => ({
-  color: 'white',
-  fontSize: '1.4rem',
-  borderRadius: '1rem',
-  minWidth: '100%',
-  backgroundColor: 'transparent',
-  display: 'flex',
-  alignItems: 'center',
-  margin: 'auto',
-  position: 'relative',
-  padding: '2rem',
-  border: 'solid 1px transparent',
-  backgroundImage:
-    'linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0)), linear-gradient(180deg, #B214AC, #8C7524)',
-  backgroundOrigin: 'border-box',
-  backgroundClip: 'content-box, border-box',
-  boxShadow: '2px 1000px 1px #0D0E13 inset',
-
-  '&:hover': {
-    backgroundImage:
-      'linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0)), linear-gradient(90deg, #ffffff, #ffb7ff)',
-    backgroundOrigin: 'border-box',
-    backgroundClip: 'content-box, border-box',
-    boxShadow: '2px 1000px 1px #11121a inset',
-  },
-}));
-
-const StyledBackButton = styled(Button)<ButtonProps>(({ theme }) => ({
+const StyledBackButton = styled(Button)<ButtonProps>(({ theme, }) => ({
   textTransform: 'uppercase',
   color: 'white',
   fontSize: '1.4rem',
@@ -59,7 +21,7 @@ const StyledBackButton = styled(Button)<ButtonProps>(({ theme }) => ({
   },
 }));
 
-const StyledButton = styled(Button)<ButtonProps>(({ theme }) => ({
+const StyledButton = styled(Button)<ButtonProps>(({ theme, }) => ({
   textTransform: 'uppercase',
   color: theme.palette.primary.main,
   fontSize: '1.4rem',

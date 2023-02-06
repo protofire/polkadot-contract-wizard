@@ -12,15 +12,17 @@ import BookmarkAddedRoundedIcon from '@mui/icons-material/BookmarkAddedRounded';
 export default function NavCard() {
   return (
     <Paper
-      sx={{ width: 280, maxWidth: '100%', mt: 3, background: 'transparent' }}
+      sx={{ width: 280, maxWidth: '100%', mt: 3, background: 'transparent', }}
     >
       <MenuList>
         <MenuItem>
           <ListItemIcon>
-            <DashboardRoundedIcon fontSize="medium" sx={{ color: '#E6007A' }}/>
+            <DashboardRoundedIcon fontSize="medium" sx={{ color: '#E6007A', }} />
           </ListItemIcon>
           <ListItemText>
-            <Typography sx={{ color: '#E6007A', fontSize: '1.4rem', fontWeight: 'bold' }}>
+            <Typography
+              sx={{ color: '#E6007A', fontSize: '1.4rem', fontWeight: 'bold', }}
+            >
               Dashboard
             </Typography>
           </ListItemText>
@@ -30,7 +32,9 @@ export default function NavCard() {
             <BookmarkAddedRoundedIcon fontSize="medium" />
           </ListItemIcon>
           <ListItemText>
-            <Typography sx={{ color: 'white', fontSize: '1.4rem', fontWeight: 'bold' }}>
+            <Typography
+              sx={{ color: 'white', fontSize: '1.4rem', fontWeight: 'bold', }}
+            >
               Learn
             </Typography>
           </ListItemText>
