@@ -10,7 +10,7 @@ import MultiTokenIcon from 'public/assets/multitoken-psp37.png';
 import Image from 'next/image';
 import { Typography } from '@mui/material';
 
-interface Props {
+interface Props extends ButtonProps {
     title: string
     subtitle: string
     imgPath: string
@@ -45,10 +45,10 @@ const WrapperButton = styled(Button)<ButtonProps>(({ theme }) => ({
 }));
 
 export const HomeButton = (props: Props) => {
-    const { title, subtitle, imgProps, imgPath } = props
+    const { title, subtitle, imgProps, imgPath, ...restProps } = props
 
     return (
-        <WrapperButton variant="contained">
+        <WrapperButton variant="contained" {...restProps}>
             <Stack spacing={2} direction="row" alignItems="center">
                 <Image alt={title} src={imgPath} {...imgProps} />
                 <Stack spacing={0} direction="column" alignItems="flex-start">

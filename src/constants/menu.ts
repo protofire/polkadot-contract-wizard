@@ -1,4 +1,5 @@
-import { GridView, LocalLibrary, SvgIconComponent } from '@mui/icons-material';
+import {GridView, LocalLibrary, SvgIconComponent } from '@mui/icons-material'
+import { ROUTES } from './routes'
 
 export type NavLink = {
   id: string;
@@ -15,20 +16,20 @@ const icons = {
 };
 
 export const MENU_ITEMS: NavLink[] = [
-  {
-    id: 'dashboard',
-    title: 'Dashboard',
-    type: 'item',
-    url: '/',
-    icon: icons.GridView,
-    target: true,
-  },
-  {
-    id: 'learn',
-    title: 'Learn',
-    type: 'item',
-    url: '/learn',
-    icon: icons.LocalLibrary,
-    target: true,
-  },
-];
+    {
+        id: 'dashboard',
+        title: 'Dashboard',
+        type: 'item',
+        url: ROUTES.HOME,
+        icon: icons.GridView,
+        target: true,
+    },
+    {
+        id: 'learn',
+        title: 'Learn',
+        type: 'item',
+        url: ROUTES.LEARN,
+        icon: icons.LocalLibrary,
+        target: true,
+    },
+]
