@@ -28,6 +28,7 @@ export default function Home() {
       </Stack>
 
       <CustomizedButtons></CustomizedButtons>
+      
     </>
   );
 }

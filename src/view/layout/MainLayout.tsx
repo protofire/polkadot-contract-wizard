@@ -11,12 +11,25 @@ type Props = {
   children: ReactNode;
 };
 
-const ContentWrapper = styled(Box)<BoxProps>(() => ({
+const MainWrapper = styled(Box)<BoxProps>(() => ({
   flexGrow: 1,
   minWidth: 0,
   display: 'flex',
   minHeight: '100vh',
   flexDirection: 'column',
+}));
+
+const ContentWrapper = styled(Box)<BoxProps>(({ theme, }) => ({
+  width: '100%',
+  padding: theme.spacing(3, 4),
+  [theme.breakpoints.down('sm')]: {
+    paddingLeft: theme.spacing(2),
+    paddingRight: theme.spacing(2),
+  },
+  [theme.breakpoints.down('xs')]: {
+    paddingLeft: theme.spacing(3),
+    paddingRight: theme.spacing(3),
+  },
 }));
 
 export const MainLayout = ({ children, }: Props): JSX.Element => {
@@ -52,7 +65,7 @@ export const MainLayout = ({ children, }: Props): JSX.Element => {
         handleDrawerToggle={handleDrawerToggle}
         drawerwidth={settings.drawerWidth}
       />
-      <ContentWrapper
+      <MainWrapper
         component="main"
         sx={{ width: '100%', flexGrow: 1, border: '0', }}
       >
@@ -62,8 +75,8 @@ export const MainLayout = ({ children, }: Props): JSX.Element => {
           handleDrawerToggle={handleDrawerToggle}
           drawerWidth={settings.drawerWidth}
         />
-        {children}
-      </ContentWrapper>
+        <ContentWrapper>{children}</ContentWrapper>
+      </MainWrapper>
     </Box>
   );
 };
