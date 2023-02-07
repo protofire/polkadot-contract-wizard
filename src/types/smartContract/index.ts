@@ -1,4 +1,4 @@
-const tokenTypes = ['psp22', 'psp34', 'psp37',] as const;
+const tokenTypes = ['psp22', 'psp34', 'psp37'] as const;
 export type TokenType = (typeof tokenTypes)[number];
 
 export function isOfTypeTokens(value: string | null): value is TokenType {

@@ -14,7 +14,7 @@ import Transitions from 'src/view/components/Transitions';
 
 // ==============================|| HEADER CONTENT - MOBILE ||============================== //
 const MobileSection = () => {
-  const [open, setOpen,] = useState(false);
+  const [open, setOpen] = useState(false);
   const anchorRef = useRef<HTMLButtonElement>(null);
 
   const handleToggle = () => {
@@ -36,11 +36,11 @@ const MobileSection = () => {
     }
 
     prevOpen.current = open;
-  }, [open,]);
+  }, [open]);
 
   return (
     <>
-      <Box sx={{ flexShrink: 0, ml: 0.75, }}>
+      <Box sx={{ flexShrink: 0, ml: 0.75 }}>
         <IconButton
           component="span"
           disableRipple
@@ -71,13 +71,13 @@ const MobileSection = () => {
             {
               name: 'offset',
               options: {
-                offset: [0, 9,],
+                offset: [0, 9],
               },
-            },
+            }
           ],
         }}
       >
-        {({ TransitionProps, }) => (
+        {({ TransitionProps }) => (
           <Transitions type="fade" in={open} {...TransitionProps}>
             <Paper sx={{}}>
               <ClickAwayListener onClickAway={handleClose}>

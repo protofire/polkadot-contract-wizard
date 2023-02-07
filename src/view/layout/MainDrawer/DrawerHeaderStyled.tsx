@@ -7,7 +7,7 @@ type CustomBoxProps = BoxProps & {
 
 const DrawerHeaderStyled = styled(Box, {
   shouldForwardProp: prop => prop !== 'open',
-})<CustomBoxProps>(({ theme, open, }) => ({
+})<CustomBoxProps>(({ theme, open }) => ({
   ...theme.mixins.toolbar,
   display: 'flex',
   alignItems: 'center',

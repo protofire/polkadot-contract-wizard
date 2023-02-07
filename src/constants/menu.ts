@@ -31,5 +31,5 @@ export const MENU_ITEMS: NavLink[] = [
         url: ROUTES.LEARN,
         icon: icons.LocalLibrary,
         target: true,
-    },
+    }
 ]
