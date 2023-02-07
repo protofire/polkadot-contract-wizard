@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { Stack, Typography } from '@mui/material';
 
-import CustomizedButtons from 'src/view/components/Button';
+import BasicTable from 'src/view/components/Table';
 import { HomeButton } from '@components';
 import { ROUTES, TOKEN_PATHS } from '@constants';
 import { TokenType } from '@types';
@@ -27,6 +27,7 @@ export default function Home() {
           imgPath={TOKEN_PATHS.MultiTokenIcon} imgProps={{ width: 75, height: 65 }} />
       </Stack>
 
+      <BasicTable />
     </>
   );
 }
