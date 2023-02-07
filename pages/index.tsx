@@ -20,11 +20,11 @@ export default function Home() {
       </Typography>
       <Stack spacing={4} direction="column" m={8}>
         <HomeButton LinkComponent={Link} href={`${ROUTES.WIZARD}/?token=${Token.psp22}`} title='TOKEN | PSP22' subtitle='Standard smart contract for a fungible token'
-          imgPath={TOKEN_PATHS.TokenIcon} imgProps={{ width: 75, height: 65, }} />
+          imgPath={TOKEN_PATHS.TokenIcon} imgProps={{ width: 75, height: 65 }} />
         <HomeButton LinkComponent={Link} href={`${ROUTES.WIZARD}/?token=${Token.psp34}`} title='NFT | PSP34' subtitle='Standard smart contract for a non-fungible token'
-          imgPath={TOKEN_PATHS.NFTIcon} imgProps={{ width: 75, height: 65, }} />
+          imgPath={TOKEN_PATHS.NFTIcon} imgProps={{ width: 75, height: 65 }} />
         <HomeButton LinkComponent={Link} href={`${ROUTES.WIZARD}/?token=${Token.psp37}`} title='MULTITOKEN | PSP37' subtitle='Standard smart contract for a Multi Token'
-          imgPath={TOKEN_PATHS.MultiTokenIcon} imgProps={{ width: 75, height: 65, }} />
+          imgPath={TOKEN_PATHS.MultiTokenIcon} imgProps={{ width: 75, height: 65 }} />
       </Stack>
 
       <CustomizedButtons></CustomizedButtons>

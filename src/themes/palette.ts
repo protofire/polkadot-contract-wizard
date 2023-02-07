@@ -12,7 +12,7 @@ import { Settings } from './types';
 
 type LookSettings = Pick<Settings, 'mode' | 'skin'>;
 
-const Palette = ({ mode, }: LookSettings): Theme => {
+const Palette = ({ mode }: LookSettings): Theme => {
   const colors = presetPalettes;
 
   const greyPrimary = [
@@ -26,12 +26,12 @@ const Palette = ({ mode, }: LookSettings): Theme => {
     '#595959',
     '#262626',
     '#141414',
-    '#000000',
+    '#000000'
   ];
-  const greyAscent = ['#fafafa', '#bfbfbf', '#434343', '#1f1f1f',];
-  const greyConstant = ['#fafafb', '#e6ebf1',];
+  const greyAscent = ['#fafafa', '#bfbfbf', '#434343', '#1f1f1f'];
+  const greyConstant = ['#fafafb', '#e6ebf1'];
 
-  colors.grey = [...greyPrimary, ...greyAscent, ...greyConstant,];
+  colors.grey = [...greyPrimary, ...greyAscent, ...greyConstant];
 
   const paletteColor = ThemeOption(colors);
 

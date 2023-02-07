@@ -11,7 +11,7 @@ import {
 import { MENU_ITEMS, NavLink } from '@constants';
 import NextLink from 'next/link';
 
-export const MenuItem = styled(MuiMenuItem)<ButtonProps>(({ theme, }) => ({
+export const MenuItem = styled(MuiMenuItem)<ButtonProps>(({ theme }) => ({
   '&.MuiMenuItem-root': {
     color: theme.palette.common.white,
     padding: '1rem',
@@ -25,7 +25,7 @@ export const MenuItem = styled(MuiMenuItem)<ButtonProps>(({ theme, }) => ({
 }));
 
 const NavItem = (props: NavLink) => {
-  const { title, icon: IconTag, url, } = props;
+  const { title, icon: IconTag, url } = props;
 
   return (
     <NextLink href={url}>
@@ -42,7 +42,7 @@ const NavItem = (props: NavLink) => {
 const Navigation = () => {
   return (
     <Stack direction="row" spacing={2}>
-      <Paper sx={{ backgroundColor: 'transparent', width: '100%', }}>
+      <Paper sx={{ backgroundColor: 'transparent', width: '100%' }}>
         {MENU_ITEMS.map((item, index) => (
           <NavItem key={index} {...item} />
         ))}

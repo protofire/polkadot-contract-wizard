@@ -19,7 +19,7 @@ const MainWrapper = styled(Box)<BoxProps>(() => ({
   flexDirection: 'column',
 }));
 
-const ContentWrapper = styled(Box)<BoxProps>(({ theme, }) => ({
+const ContentWrapper = styled(Box)<BoxProps>(({ theme }) => ({
   width: '100%',
   padding: theme.spacing(3, 4),
   [theme.breakpoints.down('sm')]: {
@@ -32,33 +32,33 @@ const ContentWrapper = styled(Box)<BoxProps>(({ theme, }) => ({
   },
 }));
 
-export const MainLayout = ({ children, }: Props): JSX.Element => {
+export const MainLayout = ({ children }: Props): JSX.Element => {
   const isMobile = useMatchDownSM();
-  const { settings, saveSettings, } = useUserThemeSettings();
-  const [isOpen, setIsOpen,] = useState(settings.navOpen);
+  const { settings, saveSettings } = useUserThemeSettings();
+  const [isOpen, setIsOpen] = useState(settings.navOpen);
 
   useEffect(() => {
     if (isMobile) {
       if (settings.navOpen) {
-        saveSettings({ ...settings, navOpen: false, });
+        saveSettings({ ...settings, navOpen: false });
         setIsOpen(false);
       }
     } else {
       if (!isOpen) {
-        saveSettings({ ...settings, navOpen: true, });
+        saveSettings({ ...settings, navOpen: true });
         setIsOpen(true);
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isMobile,]);
+  }, [isMobile]);
 
   const handleDrawerToggle = () => {
-    saveSettings({ ...settings, navOpen: !isOpen, });
+    saveSettings({ ...settings, navOpen: !isOpen });
     setIsOpen(!isOpen);
   };
 
   return (
-    <Box sx={{ display: 'flex', width: '100%', color: 'white', }}>
+    <Box sx={{ display: 'flex', width: '100%', color: 'white' }}>
       <MainDrawer
         isMobile={isMobile}
         open={isOpen}
@@ -67,7 +67,7 @@ export const MainLayout = ({ children, }: Props): JSX.Element => {
       />
       <MainWrapper
         component="main"
-        sx={{ width: '100%', flexGrow: 1, border: '0', }}
+        sx={{ width: '100%', flexGrow: 1, border: '0' }}
       >
         <Header
           isMobile={isMobile}

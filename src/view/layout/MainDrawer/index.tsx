@@ -18,7 +18,7 @@ const MainDrawer = ({
   drawerwidth = 260,
 }: Props) => {
   const drawerContent = useMemo(() => <DrawerContent />, []);
-  const drawerHeader = useMemo(() => <DrawerHeader open={open} />, [open,]);
+  const drawerHeader = useMemo(() => <DrawerHeader open={open} />, [open]);
 
   const mobileProps = {
     open,
@@ -36,19 +36,19 @@ const MainDrawer = ({
   return (
     <Drawer
       variant={isMobile ? 'temporary' : 'permanent'}
-      {...(isMobile ? { open, } : { open: true, })}
-      {...(isMobile ? { ...mobileProps, } : { ...desktopProps, })}
+      {...(isMobile ? { open } : { open: true })}
+      {...(isMobile ? { ...mobileProps } : { ...desktopProps })}
       sx={{
         width: open ? drawerwidth : 0,
       }}
       PaperProps={{
         sx: {
-          ...(!isMobile && !open ? { boxShadow: 0, } : {}),
+          ...(!isMobile && !open ? { boxShadow: 0 } : {}),
           width: open ? drawerwidth : 0,
           border: '0',
         },
       }}
-      ModalProps={{ onClose: handleDrawerToggle, }}
+      ModalProps={{ onClose: handleDrawerToggle }}
     >
       {open && drawerHeader}
       {open && drawerContent}

@@ -21,5 +21,5 @@ export function useQueryToken() {
     router.replace(`${pathname}?${params}`);
   }
 
-  return { tokenSelected, setTokenType, };
+  return { tokenSelected, setTokenType };
 }

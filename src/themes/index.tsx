@@ -16,11 +16,11 @@ export default function ThemeCustomization({
   children: ReactNode;
   settings: Settings;
 }) {
-  const { mode, skin, } = settings;
-  const theme = Palette({ mode, skin, });
+  const { mode, skin } = settings;
+  const theme = Palette({ mode, skin });
 
-  const themeTypography = Typography(['Inter', 'sans-serif',].join(','));
-  const themeCustomShadows = useMemo(() => CustomShadows(theme), [theme,]);
+  const themeTypography = Typography(['Inter', 'sans-serif'].join(','));
+  const themeCustomShadows = useMemo(() => CustomShadows(theme), [theme]);
 
   const themeOptions = useMemo(
     () => ({
@@ -45,11 +45,11 @@ export default function ThemeCustomization({
       customShadows: themeCustomShadows,
       typography: themeTypography,
     }),
-    [theme.palette, themeCustomShadows, themeTypography,]
+    [theme.palette, themeCustomShadows, themeTypography]
   );
 
   let themes = createTheme(themeOptions);
-  themes = createTheme(themes, { ...componentsOverride(themes), });
+  themes = createTheme(themes, { ...componentsOverride(themes) });
 
   return (
     <StyledEngineProvider injectFirst>

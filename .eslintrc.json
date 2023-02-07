@@ -31,11 +31,12 @@
     "node_modules/*"
   ],
   "rules": {
-    "comma-dangle": [
+    "comma-dangle": "off",
+    "@typescript-eslint/comma-dangle": [
       "error",
       {
-        "arrays": "always",
-        "objects": "always",
+        "arrays": "never",
+        "objects": "always-multiline",
         "imports": "never",
         "exports": "never",
         "functions": "never"

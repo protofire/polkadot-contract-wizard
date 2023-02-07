@@ -27,7 +27,7 @@ export const SettingsThemeProvider = ({
 }: {
   children: ReactNode;
 }) => {
-  const [settings, setSettings,] = useState<Settings>({ ...defaultSettings, });
+  const [settings, setSettings] = useState<Settings>({ ...defaultSettings });
   const initialSettings = getLocalStorageState<Settings>(
     ITEM_LOCAL_STORAGE,
     defaultSettings
@@ -35,7 +35,7 @@ export const SettingsThemeProvider = ({
 
   useEffect(() => {
     if (initialSettings) {
-      setSettings({ ...initialSettings, });
+      setSettings({ ...initialSettings });
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -47,7 +47,7 @@ export const SettingsThemeProvider = ({
   };
 
   return (
-    <SettingsThemeContext.Provider value={{ saveSettings, settings, }}>
+    <SettingsThemeContext.Provider value={{ saveSettings, settings }}>
       {children}
     </SettingsThemeContext.Provider>
   );

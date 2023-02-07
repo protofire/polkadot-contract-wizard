@@ -15,7 +15,7 @@ import Highlighter from 'src/view/components/third-party/Hightlighter';
 // header style
 const headerSX = {
   p: 2.5,
-  '& .MuiCardHeader-action': { m: '0px auto', alignSelf: 'center', },
+  '& .MuiCardHeader-action': { m: '0px auto', alignSelf: 'center' },
 };
 
 type CustomMainCardProps = Pick<CardProps, 'sx' | 'children'> & {
@@ -88,7 +88,7 @@ const MainCard = forwardRef(function MainCard(
       {!darkTitle && title && (
         <CardHeader
           sx={headerSX}
-          titleTypographyProps={{ variant: 'subtitle1', }}
+          titleTypographyProps={{ variant: 'subtitle1' }}
           title={title}
           action={secondary}
         />
@@ -111,7 +111,7 @@ const MainCard = forwardRef(function MainCard(
       {/* card footer - clipboard & highlighter  */}
       {codeHighlight && (
         <>
-          <Divider sx={{ borderStyle: 'dashed', }} />
+          <Divider sx={{ borderStyle: 'dashed' }} />
           <Highlighter codeHighlight={codeHighlight}>{children}</Highlighter>
         </>
       )}

@@ -22,14 +22,14 @@ const Highlighter = ({
   children: React.ReactNode;
   codeHighlight: boolean;
 }) => {
-  const [highlight, setHighlight,] = useState(codeHighlight);
+  const [highlight, setHighlight] = useState(codeHighlight);
 
   return (
-    <Box sx={{ position: 'relative', }}>
+    <Box sx={{ position: 'relative' }}>
       <CardActions
-        sx={{ justifyContent: 'flex-end', p: 1, mb: highlight ? 1 : 0, }}
+        sx={{ justifyContent: 'flex-end', p: 1, mb: highlight ? 1 : 0 }}
       >
-        <Box sx={{ display: 'flex', position: 'inherit', right: 0, top: 6, }}>
+        <Box sx={{ display: 'flex', position: 'inherit', right: 0, top: 6 }}>
           <CopyToClipboard
             text={reactElementToJSXString(children, {
               showFunctions: true,
@@ -40,7 +40,7 @@ const Highlighter = ({
               <IconButton
                 color="secondary"
                 size="small"
-                sx={{ fontSize: '0.875rem', }}
+                sx={{ fontSize: '0.875rem' }}
               >
                 <CopyAllOutlined />
               </IconButton>
@@ -50,11 +50,11 @@ const Highlighter = ({
             orientation="vertical"
             variant="middle"
             flexItem
-            sx={{ mx: 1, }}
+            sx={{ mx: 1 }}
           />
           <Tooltip title="Show the source" placement="top-end">
             <IconButton
-              sx={{ fontSize: '0.875rem', }}
+              sx={{ fontSize: '0.875rem' }}
               size="small"
               color={highlight ? 'primary' : 'secondary'}
               onClick={() => setHighlight(!highlight)}

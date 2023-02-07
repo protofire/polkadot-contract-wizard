@@ -8,7 +8,7 @@ export const getLocalStorageState = <T>(
     const storedData: string | null = window.localStorage.getItem(nameItem);
 
     if (storedData) {
-      state = { ...JSON.parse(storedData), };
+      state = { ...JSON.parse(storedData) };
     } else {
       state = defaultValue;
     }

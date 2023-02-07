@@ -4,7 +4,7 @@ import Button, { ButtonProps } from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackRounded';
 
-const StyledBackButton = styled(Button)<ButtonProps>(({ theme, }) => ({
+const StyledBackButton = styled(Button)<ButtonProps>(({ theme }) => ({
   textTransform: 'uppercase',
   color: 'white',
   fontSize: '1.4rem',
@@ -21,7 +21,7 @@ const StyledBackButton = styled(Button)<ButtonProps>(({ theme, }) => ({
   },
 }));
 
-const StyledButton = styled(Button)<ButtonProps>(({ theme, }) => ({
+const StyledButton = styled(Button)<ButtonProps>(({ theme }) => ({
   textTransform: 'uppercase',
   color: theme.palette.primary.main,
   fontSize: '1.4rem',
