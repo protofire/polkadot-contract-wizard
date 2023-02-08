@@ -1,10 +1,11 @@
-import Stepper from "src/view/components/Stepper";
+import { Box } from "@mui/material";
+import Stepper from "src/view/FormWizard";
 
-export default function Home() {
+export default function WizardPage() {
   return (
-    <>
+    <Box>
       <h1>Wizard</h1>
       <Stepper />
-    </>
+    </Box>
   );
 }

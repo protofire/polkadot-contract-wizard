@@ -1,9 +1,5 @@
-// ** MUI imports
 import { styled } from '@mui/material/styles';
 import Box, { BoxProps } from '@mui/material/Box';
-
-// ** Util Imports
-// import { hexToRGBA } from 'src/@core/utils/hex-to-rgba'
 
 const StepperWrapper = styled(Box)<BoxProps>(({ theme }) => ({
   [theme.breakpoints.down('md')]: {
@@ -41,7 +37,7 @@ const StepperWrapper = styled(Box)<BoxProps>(({ theme }) => ({
       color: theme.palette.primary.main,
     },
   },
-  
+
   '& .MuiStepConnector-root': {
     '& .MuiStepConnector-line': {
       borderWidth: 3,

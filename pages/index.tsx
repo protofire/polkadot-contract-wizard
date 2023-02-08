@@ -27,8 +27,6 @@ export default function Home() {
           imgPath={TOKEN_PATHS.MultiTokenIcon} imgProps={{ width: 75, height: 65 }} />
       </Stack>
 
-      <CustomizedButtons></CustomizedButtons>
-      
     </>
   );
 }
