@@ -7,6 +7,7 @@ import {
     TextField,
     Typography
 } from '@mui/material'
+import BackNextButton from './BackNextButtons'
 
 export default function Step1Extensions() {
     return (
@@ -194,6 +195,7 @@ export default function Step1Extensions() {
                     }}
                 />
             </FormGroup>
+            <BackNextButton backAction={console.log} nextAction={console.log} />
         </Stack>
     )
 }
