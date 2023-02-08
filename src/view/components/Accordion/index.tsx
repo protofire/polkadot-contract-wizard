@@ -11,24 +11,33 @@ const StyledAccordionContainer = styled(Box)(
             color: theme.palette.secondary.light,
             fontSize: '1.1rem',
         },
-        '& .Mui-expanded': {
-
+        '& .MuiAccordion-root::before': {
+            background: theme.palette.secondary.dark,
+        },
+        '& .MuiAccordionSummary-root :hover': {
+            color: theme.palette.primary.main,
+        },
+        '& .Mui-expanded h3': {
+            color: theme.palette.primary.main,
         },
     })
 )
 
 export default function SimpleAccordion() {
     return (
-        <StyledAccordionContainer mt={4}>
+        <StyledAccordionContainer mt={8}>
             <Accordion>
                 <AccordionSummary
                     expandIcon={<ExpandMoreIcon />}
-                    aria-controls="panel1a-content"
-                    id="panel1a-header"
+                    aria-controls="learn-section"
+                    id="learn-section"
                 >
-                    <Typography variant="h3">Polkadot Ecosystem</Typography>
+                    <Typography variant="h3">How it&apos;s work?</Typography>
                 </AccordionSummary>
                 <AccordionDetails>
+                    <Typography variant="body1">
+                        The Polkadot Contract Wizard is a non-code tool for smart contract development! It provides standard contracts (based on PSP), as well as useful contracts and macros to help you build ink! smart contracts.
+                    </Typography>
                     <Typography variant="body1">
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
                         malesuada lacus ex, sit amet blandit leo lobortis eget.
@@ -56,9 +65,40 @@ export default function SimpleAccordion() {
                     aria-controls="panel3a-content"
                     id="panel3a-header"
                 >
-                    <Typography variant="h3">Polkadot Ecosystem</Typography>
+                    <Typography variant="h3">Smarts Contracts on Polkadot</Typography>
                 </AccordionSummary>
                 <AccordionDetails>
+                    <Typography variant="body1">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
+                        malesuada lacus ex, sit amet blandit leo lobortis eget.
+                    </Typography>
+                    <Typography variant="body1">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
+                        malesuada lacus ex, sit amet blandit leo lobortis eget.
+                    </Typography>
+                    <Typography variant="body1">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
+                        malesuada lacus ex, sit amet blandit leo lobortis eget.
+                    </Typography>
+                </AccordionDetails>
+            </Accordion>
+            <Accordion>
+                <AccordionSummary
+                    expandIcon={<ExpandMoreIcon />}
+                    aria-controls="panel3a-content"
+                    id="panel3a-header"
+                >
+                    <Typography variant="h3">Deployment</Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                    <Typography variant="body1">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
+                        malesuada lacus ex, sit amet blandit leo lobortis eget.
+                    </Typography>
+                    <Typography variant="body1">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
+                        malesuada lacus ex, sit amet blandit leo lobortis eget.
+                    </Typography>
                     <Typography variant="body1">
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
                         malesuada lacus ex, sit amet blandit leo lobortis eget.
