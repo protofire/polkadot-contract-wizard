@@ -12,7 +12,7 @@ import Step1Extensions from './Step1Extensions';
 import Step2Security from './Step2Security';
 import Step3Deploy from './Step3Deploy';
 
-const steps = ['Extensions', 'Security', 'Deploy'];
+const STEPS = ['Extensions', 'Security', 'Deploy'];
 
 export default function FormWizard() {
   const [activeStep, setActiveStep] = React.useState(0);
@@ -83,7 +83,7 @@ export default function FormWizard() {
     <Box sx={{ width: '100%' }}>
       <StepperWrapper>
         <Stepper activeStep={activeStep}>
-          {steps.map((label, index) => {
+          {STEPS.map((label, index) => {
             const stepProps: { completed?: boolean } = {};
             const labelProps: {
               optional?: React.ReactNode;
@@ -104,7 +104,7 @@ export default function FormWizard() {
           })}
         </Stepper>
       </StepperWrapper>
-      {activeStep === steps.length ? (
+      {activeStep === STEPS.length ? (
         <React.Fragment>
           <Typography sx={{ mt: 2, mb: 1 }}>
             We are deploying your contract now.
@@ -117,28 +117,6 @@ export default function FormWizard() {
       ) : (
         <React.Fragment>
           {getStepContent()}
-          {/* TODO remove */}
-          {/* <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
-            <Button
-              color="inherit"
-              disabled={activeStep === 0}
-              onClick={handleBack}
-              sx={{ mr: 1 }}
-            >
-              Back
-            </Button>
-            <Box sx={{ flex: '1 1 auto' }} />
-            {isStepOptional(activeStep) && (
-              <Button color="inherit" onClick={handleSkip} sx={{ mr: 1 }}>
-                Skip
-              </Button>
-            )}
-            <Button onClick={handleNext}>
-              {activeStep === steps.length - 1
-                ? 'Deploy your contract'
-                : 'Next'}
-            </Button>
-          </Box> */}
         </React.Fragment>
       )}
     </Box>
