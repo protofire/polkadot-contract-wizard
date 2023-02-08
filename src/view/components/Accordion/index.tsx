@@ -19,6 +19,7 @@ const StyledAccordionContainer = styled(Box)(
         },
         '& .Mui-expanded h3': {
             color: theme.palette.primary.main,
+            fontWeight: '300',
         },
     })
 )
