@@ -1,7 +1,6 @@
 import Link from 'next/link';
 import { Stack, Typography } from '@mui/material';
 
-import CustomizedButtons from 'src/view/components/Button';
 import { HomeButton } from '@components';
 import { ROUTES, TOKEN_PATHS } from '@constants';
 import { TokenType } from '@types';

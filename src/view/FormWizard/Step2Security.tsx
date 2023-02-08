@@ -1,6 +1,14 @@
 import { FormControl, FormControlLabel, Radio, RadioGroup, Stack, Typography } from "@mui/material";
 
+import { useStepsSCWizard } from "@context";
+import BackNextButton from "./BackNextButtons";
+
 export default function Step2Security() {
+    const {
+        handleBack,
+        handleNext,
+    } = useStepsSCWizard()
+
     return (
         <Stack sx={{ mt: 2, mb: 2 }}>
             <FormControl>
@@ -113,6 +121,7 @@ export default function Step2Security() {
                     />
                 </RadioGroup>
             </FormControl>
+            <BackNextButton handleBack={handleBack} handleNext={handleNext} />
         </Stack>
 
     )

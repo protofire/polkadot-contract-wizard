@@ -1,23 +1,25 @@
-import { Grid } from "@mui/material"
+import { ButtonProps, Grid } from "@mui/material"
 import { Button } from "@components"
 
 type Props = {
     nextLabel?: string
-    nextAction: () => void
+    handleNext: () => void
     backLabel?: string
-    backAction: () => void
+    handleBack: () => void
     isNextDisabled?: boolean
     isDoingNext?: boolean
+    nextButtonProps?: ButtonProps
+    backButtonProps?: ButtonProps
 }
 export default function BackNextButton(props: Props) {
-    const { backAction, nextLabel = 'Next', backLabel = 'Back', isNextDisabled = false, isDoingNext = false } = props
+    const { handleNext, handleBack, nextLabel = 'Next', backLabel = 'Back', isNextDisabled = false, isDoingNext = false, nextButtonProps } = props
 
     return (
         <Grid item xs={12} mt={9} sx={{ display: 'flex', justifyContent: 'space-between' }}>
             <Button
                 size="large"
                 variant="outlined"
-                onClick={backAction}
+                onClick={handleBack}
                 disabled={isDoingNext === true}
             >
                 {backLabel}
@@ -25,8 +27,9 @@ export default function BackNextButton(props: Props) {
             <Button
                 size="large"
                 variant="contained"
-                onClick={backAction}
+                onClick={handleNext}
                 disabled={isNextDisabled}
+                {...nextButtonProps}
             >
                 {nextLabel}
             </Button>
