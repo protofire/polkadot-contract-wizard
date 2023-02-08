@@ -2,13 +2,13 @@ import { Box, Typography } from "@mui/material";
 import { CopyBlock, dracula } from "react-code-blocks";
 
 export default function Step3Deploy() {
-    return (
-        <>
-            <Typography>Congrats! Now you can deploy your contract!</Typography>
-            <Box sx={{ overflowY: 'scroll', height: '30rem', resize: 'both' }}>
-                <CopyBlock
-                    language="go"
-                    text={`#![cfg_attr(not(feature = "std"), no_std)]
+  return (
+    <>
+      <Typography>Congrats! Now you can deploy your contract!</Typography>
+      <Box sx={{ overflowY: 'scroll', height: '30rem', resize: 'both' }}>
+        <CopyBlock
+          language="go"
+          text={`#![cfg_attr(not(feature = "std"), no_std)]
           #![feature(min_specialization)]
                   
           #[openbrush::contract]
@@ -73,12 +73,12 @@ export default function Step3Deploy() {
               }
               }
           }`}
-                    codeBlock
-                    theme={dracula}
-                    showLineNumbers={false}
-                />
-            </Box>
-        </>
+          codeBlock
+          theme={dracula}
+          showLineNumbers={false}
+        />
+      </Box>
+    </>
 
-    )
+  )
 }
