@@ -17,6 +17,9 @@ const AppBarStyled = styled(AppBar, {
     shouldForwardProp<CustomAppBarProps>(['open'], prop),
 })<CustomAppBarProps & AppBarProps>(({ theme, open }) => ({
   padding: 0,
+  width: '4rem',
+  borderRadius: '0 2rem 2rem 0',
+  backgroundColor: 'transparent',
   transition: theme.transitions.create(['width', 'margin'], {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
@@ -45,7 +48,9 @@ const Header = ({
       sx={{
         ...(isMobile && {
           flexDirection: 'row-reverse',
-          width: 'inherit',
+          width: '100vw',
+          borderRadius: '0',
+          background: 'transparent',
         }),
       }}
     >
