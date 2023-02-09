@@ -17,9 +17,11 @@ const StyledAccordionContainer = styled(Box)(
         '& .MuiAccordionSummary-root :hover': {
             color: theme.palette.primary.main,
         },
+        '& .MuiAccordionSummary-content h3': {
+            fontWeight: '300',
+        },
         '& .Mui-expanded h3': {
             color: theme.palette.primary.main,
-            fontWeight: '300',
         },
     })
 )

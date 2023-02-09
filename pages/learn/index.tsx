@@ -1,5 +1,5 @@
 import { Stack, Typography } from "@mui/material";
-import Accordion from "src/view/components/Accordion";
+import Accordion from "src/view/LearnView/Accordion";
 
 export default function Home() {
   return (
