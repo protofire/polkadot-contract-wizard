@@ -1,7 +1,16 @@
-import { Box, Typography } from "@mui/material";
+import { Box, Icon, Typography } from "@mui/material";
 import { CopyBlock, dracula } from "react-code-blocks";
+import RocketLaunchIcon from '@mui/icons-material/RocketLaunch';
+
+import { useStepsSCWizard } from "@context";
+import BackNextButton from "./BackNextButtons";
 
 export default function Step3Deploy() {
+  const {
+    handleBack,
+    handleNext,
+  } = useStepsSCWizard()
+
   return (
     <>
       <Typography>Congrats! Now you can deploy your contract!</Typography>
@@ -78,6 +87,8 @@ export default function Step3Deploy() {
           showLineNumbers={false}
         />
       </Box>
+
+      <BackNextButton nextLabel="Deploy Contract" handleBack={handleBack} handleNext={handleNext} nextButtonProps={{ startIcon: "🚀" }} />
     </>
 
   )

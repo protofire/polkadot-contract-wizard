@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { Stepper as StepperWrapper } from '@components';
 import {
   Typography,
   Button,
@@ -8,9 +7,12 @@ import {
   Stepper,
   Box
 } from '@mui/material';
+
 import Step1Extensions from './Step1Extensions';
 import Step2Security from './Step2Security';
 import Step3Deploy from './Step3Deploy';
+import { Stepper as StepperWrapper } from '@components';
+import { StepsSCWizardContext } from '@context';
 
 const STEPS = ['Extensions', 'Security', 'Deploy'];
 
@@ -80,45 +82,53 @@ export default function FormWizard() {
   };
 
   return (
-    <Box sx={{ width: '100%' }}>
-      <StepperWrapper>
-        <Stepper activeStep={activeStep}>
-          {STEPS.map((label, index) => {
-            const stepProps: { completed?: boolean } = {};
-            const labelProps: {
-              optional?: React.ReactNode;
-            } = {};
-            if (isStepOptional(index)) {
-              labelProps.optional = (
-                <Typography variant="caption">Optional</Typography>
+    <StepsSCWizardContext.Provider
+      value={{
+        activeStep,
+        handleBack,
+        handleNext,
+      }}
+    >
+      <Box sx={{ width: '100%' }}>
+        <StepperWrapper>
+          <Stepper activeStep={activeStep}>
+            {STEPS.map((label, index) => {
+              const stepProps: { completed?: boolean } = {};
+              const labelProps: {
+                optional?: React.ReactNode;
+              } = {};
+              if (isStepOptional(index)) {
+                labelProps.optional = (
+                  <Typography variant="caption">Optional</Typography>
+                );
+              }
+              if (isStepSkipped(index)) {
+                stepProps.completed = false;
+              }
+              return (
+                <Step key={label} {...stepProps}>
+                  <StepLabel {...labelProps}>{label}</StepLabel>
+                </Step>
               );
-            }
-            if (isStepSkipped(index)) {
-              stepProps.completed = false;
-            }
-            return (
-              <Step key={label} {...stepProps}>
-                <StepLabel {...labelProps}>{label}</StepLabel>
-              </Step>
-            );
-          })}
-        </Stepper>
-      </StepperWrapper>
-      {activeStep === STEPS.length ? (
-        <React.Fragment>
-          <Typography sx={{ mt: 2, mb: 1 }}>
-            We are deploying your contract now.
-          </Typography>
-          <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
-            <Box sx={{ flex: '1 1 auto' }} />
-            <Button onClick={handleReset}>Reset</Button>
-          </Box>
-        </React.Fragment>
-      ) : (
-        <React.Fragment>
-          {getStepContent()}
-        </React.Fragment>
-      )}
-    </Box>
+            })}
+          </Stepper>
+        </StepperWrapper>
+        {activeStep === STEPS.length ? (
+          <React.Fragment>
+            <Typography sx={{ mt: 2, mb: 1 }}>
+              We are deploying your contract now.
+            </Typography>
+            <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
+              <Box sx={{ flex: '1 1 auto' }} />
+              <Button onClick={handleReset}>Reset</Button>
+            </Box>
+          </React.Fragment>
+        ) : (
+          <React.Fragment>
+            {getStepContent()}
+          </React.Fragment>
+        )}
+      </Box>
+    </StepsSCWizardContext.Provider>
   );
 }

@@ -7,9 +7,16 @@ import {
     TextField,
     Typography
 } from '@mui/material'
+
+import { useStepsSCWizard } from '@context'
 import BackNextButton from './BackNextButtons'
 
 export default function Step1Extensions() {
+    const {
+        handleBack,
+        handleNext,
+    } = useStepsSCWizard()
+
     return (
         <Stack sx={{ mt: 2, mb: 2 }}>
             <FormGroup sx={{ gap: 3 }}>
@@ -195,7 +202,7 @@ export default function Step1Extensions() {
                     }}
                 />
             </FormGroup>
-            <BackNextButton backAction={console.log} nextAction={console.log} />
+            <BackNextButton handleBack={handleBack} handleNext={handleNext} />
         </Stack>
     )
 }
