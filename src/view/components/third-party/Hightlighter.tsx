@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from 'react'
 import {
   Box,
   CardActions,
@@ -6,23 +6,23 @@ import {
   Divider,
   IconButton,
   Tooltip
-} from '@mui/material';
-import { CodeOutlined, CopyAllOutlined } from '@mui/icons-material';
-import { CopyToClipboard } from 'react-copy-to-clipboard';
-import reactElementToJSXString from 'react-element-to-jsx-string';
+} from '@mui/material'
+import { CodeOutlined, CopyAllOutlined } from '@mui/icons-material'
+import { CopyToClipboard } from 'react-copy-to-clipboard'
+import reactElementToJSXString from 'react-element-to-jsx-string'
 
-import SyntaxHighlight from 'src/utils/SyntaxHighlight';
+import SyntaxHighlight from 'src/utils/SyntaxHighlight'
 
 // ==============================|| CLIPBOARD & HIGHLIGHTER   ||============================== //
 
 const Highlighter = ({
   children,
-  codeHighlight,
+  codeHighlight
 }: {
-  children: React.ReactNode;
-  codeHighlight: boolean;
+  children: React.ReactNode
+  codeHighlight: boolean
 }) => {
-  const [highlight, setHighlight] = useState(codeHighlight);
+  const [highlight, setHighlight] = useState(codeHighlight)
 
   return (
     <Box sx={{ position: 'relative' }}>
@@ -33,7 +33,7 @@ const Highlighter = ({
           <CopyToClipboard
             text={reactElementToJSXString(children, {
               showFunctions: true,
-              maxInlineAttributesLineLength: 100,
+              maxInlineAttributesLineLength: 100
             })}
           >
             <Tooltip title="Copy the source" placement="top-end">
@@ -70,13 +70,13 @@ const Highlighter = ({
             {reactElementToJSXString(children, {
               showFunctions: true,
               showDefaultProps: false,
-              maxInlineAttributesLineLength: 100,
+              maxInlineAttributesLineLength: 100
             })}
           </SyntaxHighlight>
         )}
       </Collapse>
     </Box>
-  );
-};
+  )
+}
 
-export default Highlighter;
+export default Highlighter

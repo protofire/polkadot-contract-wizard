@@ -1,13 +1,13 @@
-import * as React from 'react';
-import Paper from '@mui/material/Paper';
-import MenuList from '@mui/material/MenuList';
-import MenuItem from '@mui/material/MenuItem';
-import ListItemText from '@mui/material/ListItemText';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import Typography from '@mui/material/Typography';
+import * as React from 'react'
+import Paper from '@mui/material/Paper'
+import MenuList from '@mui/material/MenuList'
+import MenuItem from '@mui/material/MenuItem'
+import ListItemText from '@mui/material/ListItemText'
+import ListItemIcon from '@mui/material/ListItemIcon'
+import Typography from '@mui/material/Typography'
 
-import DashboardRoundedIcon from '@mui/icons-material/DashboardRounded';
-import BookmarkAddedRoundedIcon from '@mui/icons-material/BookmarkAddedRounded';
+import DashboardRoundedIcon from '@mui/icons-material/DashboardRounded'
+import BookmarkAddedRoundedIcon from '@mui/icons-material/BookmarkAddedRounded'
 
 export default function NavCard() {
   return (
@@ -37,5 +37,5 @@ export default function NavCard() {
         </MenuItem>
       </MenuList>
     </Paper>
-  );
+  )
 }

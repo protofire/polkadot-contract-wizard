@@ -7,26 +7,25 @@ import {
   Typography,
   ButtonProps,
   Link as MuiLink
-} from '@mui/material';
-import { MENU_ITEMS, NavLink } from '@constants';
-import NextLink from 'next/link';
+} from '@mui/material'
+import { MENU_ITEMS, NavLink } from '@constants'
+import NextLink from 'next/link'
 
 export const MenuItem = styled(MuiMenuItem)<ButtonProps>(({ theme }) => ({
   '& p': {
     color: theme.palette.common.white,
     padding: '1rem',
-    fontSize: '1.2rem',
-  },
-  '& .Mui-selected': {
-    color: theme.palette.primary.main,
-  },
-  '& .MuiPaper-root': {
-    color: theme.palette.common.white,
-  },
-}));
+    '&.Mui-selected': {
+      color: theme.palette.common.white
+    },
+    '&:hover': {
+      color: theme.palette.common.white
+    }
+  }
+}))
 
 const NavItem = (props: NavLink) => {
-  const { title, icon: IconTag, url } = props;
+  const { title, icon: IconTag, url } = props
 
   return (
     <NextLink href={url}>
@@ -37,8 +36,8 @@ const NavItem = (props: NavLink) => {
         <Typography>{title}</Typography>
       </MenuItem>
     </NextLink>
-  );
-};
+  )
+}
 
 const Navigation = () => {
   return (
@@ -49,7 +48,7 @@ const Navigation = () => {
         ))}
       </Paper>
     </Stack>
-  );
-};
+  )
+}
 
-export default Navigation;
+export default Navigation

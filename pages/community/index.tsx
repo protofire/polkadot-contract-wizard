@@ -3,5 +3,5 @@ export default function Home() {
     <>
       <h1>Community</h1>
     </>
-  );
+  )
 }

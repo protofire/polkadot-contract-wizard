@@ -1,20 +1,20 @@
-import { MouseEventHandler } from 'react';
-import { AppBar, IconButton, Toolbar } from '@mui/material';
-import { Menu, MenuOpen } from '@mui/icons-material';
-import { styled } from '@mui/material/styles';
+import { MouseEventHandler } from 'react'
+import { AppBar, IconButton, Toolbar } from '@mui/material'
+import { Menu, MenuOpen } from '@mui/icons-material'
+import { styled } from '@mui/material/styles'
 
-import HeaderContent from './HeaderContent';
-import { shouldForwardProp } from '@types';
+import HeaderContent from './HeaderContent'
+import { shouldForwardProp } from '@types'
 
-import { AppBarProps } from '@mui/material/AppBar';
+import { AppBarProps } from '@mui/material/AppBar'
 
 type CustomAppBarProps = {
-  open: boolean;
-};
+  open: boolean
+}
 
 const AppBarStyled = styled(AppBar, {
   shouldForwardProp: prop =>
-    shouldForwardProp<CustomAppBarProps>(['open'], prop),
+    shouldForwardProp<CustomAppBarProps>(['open'], prop)
 })<CustomAppBarProps & AppBarProps>(({ theme, open }) => ({
   padding: 0,
   width: '4rem',
@@ -22,25 +22,25 @@ const AppBarStyled = styled(AppBar, {
   backgroundColor: 'transparent',
   transition: theme.transitions.create(['width', 'margin'], {
     easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.leavingScreen,
+    duration: theme.transitions.duration.leavingScreen
   }),
   ...(open && {
     transition: theme.transitions.create(['width', 'margin'], {
       easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-  }),
-}));
+      duration: theme.transitions.duration.enteringScreen
+    })
+  })
+}))
 
 const Header = ({
   open,
   isMobile,
-  handleDrawerToggle,
+  handleDrawerToggle
 }: {
-  isMobile: boolean;
-  open: boolean;
-  handleDrawerToggle: MouseEventHandler<HTMLButtonElement>;
-  drawerWidth?: number;
+  isMobile: boolean
+  open: boolean
+  handleDrawerToggle: MouseEventHandler<HTMLButtonElement>
+  drawerWidth?: number
 }) => {
   // common header
   const mainHeader = (
@@ -60,20 +60,20 @@ const Header = ({
         aria-label="open drawer"
         edge="start"
         sx={{
-          ml: { xs: 0, lg: -2 },
+          ml: { xs: 0, lg: -2 }
         }}
       >
         {!open ? <Menu /> : <MenuOpen />}
       </IconButton>
       <HeaderContent isMobile={isMobile} />
     </Toolbar>
-  );
+  )
 
   return (
     <AppBarStyled elevation={0} position="sticky" open={open}>
       {mainHeader}
     </AppBarStyled>
-  );
-};
+  )
+}
 
-export default Header;
+export default Header

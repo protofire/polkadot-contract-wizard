@@ -1,14 +1,11 @@
 import { Box, Typography } from "@mui/material";
 import { CopyBlock, atomOneDark } from "react-code-blocks";
 
-import { useStepsSCWizard } from "@context";
-import BackNextButton from "./BackNextButtons";
+import { useStepsSCWizard } from '@context'
+import BackNextButton from './BackNextButtons'
 
 export default function Step3Deploy() {
-  const {
-    handleBack,
-    handleNext,
-  } = useStepsSCWizard()
+  const { handleBack, handleNext } = useStepsSCWizard()
 
   return (
     <>
@@ -87,8 +84,12 @@ export default function Step3Deploy() {
         />
       </Box>
 
-      <BackNextButton nextLabel="Deploy Contract" handleBack={handleBack} handleNext={handleNext} nextButtonProps={{ startIcon: "🚀" }} />
+      <BackNextButton
+        nextLabel="Deploy Contract"
+        handleBack={handleBack}
+        handleNext={handleNext}
+        nextButtonProps={{ startIcon: '🚀' }}
+      />
     </>
-
   )
 }

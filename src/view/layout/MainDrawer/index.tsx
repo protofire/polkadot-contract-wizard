@@ -1,37 +1,37 @@
-import { useMemo } from 'react';
-import { Drawer } from '@mui/material';
+import { useMemo } from 'react'
+import { Drawer } from '@mui/material'
 
-import DrawerContent from './DrawerContent';
-import DrawerHeader from './DrawerHeader';
+import DrawerContent from './DrawerContent'
+import DrawerHeader from './DrawerHeader'
 
 interface Props {
-  open: boolean;
-  handleDrawerToggle: () => void;
-  drawerwidth?: number;
-  isMobile?: boolean;
+  open: boolean
+  handleDrawerToggle: () => void
+  drawerwidth?: number
+  isMobile?: boolean
 }
 
 const MainDrawer = ({
   open,
   isMobile,
   handleDrawerToggle,
-  drawerwidth = 260,
+  drawerwidth = 260
 }: Props) => {
-  const drawerContent = useMemo(() => <DrawerContent />, []);
-  const drawerHeader = useMemo(() => <DrawerHeader open={open} />, [open]);
+  const drawerContent = useMemo(() => <DrawerContent />, [])
+  const drawerHeader = useMemo(() => <DrawerHeader open={open} />, [open])
 
   const mobileProps = {
     open,
     ModalProps: {
-      keepMounted: true,
+      keepMounted: true
     },
-    onClose: () => handleDrawerToggle,
-  };
+    onClose: () => handleDrawerToggle
+  }
 
   const desktopProps = {
     open: true,
-    onClose: () => handleDrawerToggle,
-  };
+    onClose: () => handleDrawerToggle
+  }
 
   return (
     <Drawer
@@ -39,21 +39,21 @@ const MainDrawer = ({
       {...(isMobile ? { open } : { open: true })}
       {...(isMobile ? { ...mobileProps } : { ...desktopProps })}
       sx={{
-        width: open ? drawerwidth : 0,
+        width: open ? drawerwidth : 0
       }}
       PaperProps={{
         sx: {
           ...(!isMobile && !open ? { boxShadow: 0 } : {}),
           width: open ? drawerwidth : 0,
-          border: '0',
-        },
+          border: '0'
+        }
       }}
       ModalProps={{ onClose: handleDrawerToggle }}
     >
       {open && drawerHeader}
       {open && drawerContent}
     </Drawer>
-  );
-};
+  )
+}
 
-export default MainDrawer;
+export default MainDrawer
