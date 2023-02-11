@@ -29,13 +29,13 @@ export default function FormWizard({ token }: { token: TokenType }) {
   const getStepContent = () => {
     switch (activeStep) {
       case 0:
-        return <Step1Extensions />
+        return <Step1Extensions tokenType={token} />
 
       case 1:
-        return <Step2Security />
+        return <Step2Security tokenType={token} />
 
       case 2:
-        return <Step3Deploy />
+        return <Step3Deploy tokenType={token} />
 
       default:
         return null

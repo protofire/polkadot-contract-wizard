@@ -9,8 +9,9 @@ import {
 
 import { useStepsSCWizard } from '@context'
 import BackNextButton from './BackNextButtons'
+import { TokenType } from '@types'
 
-export default function Step2Security() {
+export default function Step2Security({ tokenType }: { tokenType: TokenType }) {
   const { handleBack, handleNext } = useStepsSCWizard()
 
   return (

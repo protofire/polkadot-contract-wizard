@@ -3,8 +3,9 @@ import { CopyBlock, atomOneDark } from "react-code-blocks";
 
 import { useStepsSCWizard } from '@context'
 import BackNextButton from './BackNextButtons'
+import { TokenType } from '@types'
 
-export default function Step3Deploy() {
+export default function Step3Deploy({ tokenType }: { tokenType: TokenType }) {
   const { handleBack, handleNext } = useStepsSCWizard()
 
   return (
