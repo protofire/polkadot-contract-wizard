@@ -15,8 +15,11 @@ const Token: Record<TokenType, TokenType> = {
 export default function Home() {
   return (
     <>
-      <Typography variant="h1" align="center" mt="2">
+      <Typography variant="h1" align="center">
         Start building something amazing on Polkadot
+      </Typography>
+      <Typography variant="h5" align="center" mt={2}>
+        Choose the type of contract you need 🪄
       </Typography>
       <Stack spacing={4} direction="column" m={8}>
         <HomeButton LinkComponent={Link} href={`${ROUTES.WIZARD}/?token=${Token.psp22}`} title='TOKEN | PSP22' subtitle='Standard smart contract for a fungible token'

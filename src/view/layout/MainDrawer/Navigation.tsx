@@ -12,15 +12,16 @@ import { MENU_ITEMS, NavLink } from '@constants';
 import NextLink from 'next/link';
 
 export const MenuItem = styled(MuiMenuItem)<ButtonProps>(({ theme }) => ({
-  '&.MuiMenuItem-root': {
+  '& p': {
     color: theme.palette.common.white,
     padding: '1rem',
-    '&.Mui-selected': {
-      color: theme.palette.common.white,
-    },
-    '&:hover': {
-      color: theme.palette.common.white,
-    },
+    fontSize: '1.2rem',
+  },
+  '& .Mui-selected': {
+    color: theme.palette.primary.main,
+  },
+  '& .MuiPaper-root': {
+    color: theme.palette.common.white,
   },
 }));
 
@@ -42,7 +43,7 @@ const NavItem = (props: NavLink) => {
 const Navigation = () => {
   return (
     <Stack direction="row" spacing={2}>
-      <Paper sx={{ backgroundColor: 'transparent', width: '100%' }}>
+      <Paper sx={{ width: '100%' }}>
         {MENU_ITEMS.map((item, index) => (
           <NavItem key={index} {...item} />
         ))}

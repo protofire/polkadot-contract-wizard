@@ -1,6 +1,5 @@
-import { Box, Icon, Typography } from "@mui/material";
-import { CopyBlock, dracula } from "react-code-blocks";
-import RocketLaunchIcon from '@mui/icons-material/RocketLaunch';
+import { Box, Typography } from "@mui/material";
+import { CopyBlock, atomOneDark } from "react-code-blocks";
 
 import { useStepsSCWizard } from "@context";
 import BackNextButton from "./BackNextButtons";
@@ -16,7 +15,7 @@ export default function Step3Deploy() {
       <Typography>Congrats! Now you can deploy your contract!</Typography>
       <Box sx={{ overflowY: 'scroll', height: '30rem', resize: 'both' }}>
         <CopyBlock
-          language="go"
+          language="rust"
           text={`#![cfg_attr(not(feature = "std"), no_std)]
           #![feature(min_specialization)]
                   
@@ -83,8 +82,8 @@ export default function Step3Deploy() {
               }
           }`}
           codeBlock
-          theme={dracula}
-          showLineNumbers={false}
+          theme={atomOneDark}
+          showLineNumbers={true}
         />
       </Box>
 
