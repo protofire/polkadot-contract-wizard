@@ -17,12 +17,10 @@ export default function NavCard() {
       <MenuList>
         <MenuItem>
           <ListItemIcon>
-            <DashboardRoundedIcon fontSize="medium" sx={{ color: '#E6007A' }} />
+            <DashboardRoundedIcon fontSize="medium" />
           </ListItemIcon>
           <ListItemText>
-            <Typography
-              sx={{ color: '#E6007A', fontSize: '1.4rem', fontWeight: 'bold' }}
-            >
+            <Typography>
               Dashboard
             </Typography>
           </ListItemText>
@@ -32,9 +30,7 @@ export default function NavCard() {
             <BookmarkAddedRoundedIcon fontSize="medium" />
           </ListItemIcon>
           <ListItemText>
-            <Typography
-              sx={{ color: 'white', fontSize: '1.4rem', fontWeight: 'bold' }}
-            >
+            <Typography>
               Learn
             </Typography>
           </ListItemText>
