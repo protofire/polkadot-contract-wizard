@@ -19,7 +19,8 @@ export default function BackNextButton(props: Props) {
     backLabel = 'Back',
     isNextDisabled = false,
     isDoingNext = false,
-    nextButtonProps
+    nextButtonProps,
+    backButtonProps
   } = props
 
   return (
@@ -34,6 +35,7 @@ export default function BackNextButton(props: Props) {
         variant="outlined"
         onClick={handleBack}
         disabled={isDoingNext === true}
+        {...backButtonProps}
       >
         {backLabel}
       </Button>

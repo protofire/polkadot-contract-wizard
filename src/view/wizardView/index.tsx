@@ -54,7 +54,7 @@ export default function FormWizard({ token }: { token: TokenType }) {
       <Box sx={{ width: '100%' }}>
         <StepperWrapper>
           <Stepper activeStep={activeStep}>
-            {STEPS.map((label, index) => {
+            {STEPS.map((label, _index) => {
               const stepProps: { completed?: boolean } = {}
               const labelProps: {
                 optional?: React.ReactNode

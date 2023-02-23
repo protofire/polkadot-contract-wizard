@@ -3,18 +3,23 @@ import {
   FormGroup,
   Stack,
 } from '@mui/material'
+import { useRouter } from 'next/router'
 
 import { DEFAULT_TOKEN_VALUES, useStepsSCWizard } from '@context'
 import BackNextButton from '../BackNextButtons'
 import { TokenType } from '@types'
-import { Psp22Extensions } from './psp22Extensions'
-import { Psp34Extensions } from './psp34Extensions'
-import { Psp37Extensions } from './psp37Extensions'
+import { Psp22Extensions } from './Psp22Extensions'
+import { Psp34Extensions } from './Psp34Extensions'
+import { Psp37Extensions } from './Psp37Extensions'
 import { PSP22Fungible, PSP34NonFungible, PSP37MultiToken } from 'src/types/smartContract/tokens'
+import { ROUTES } from '@constants'
 
 export default function Step1Extensions({ tokenType }: { tokenType: TokenType }) {
-  const { handleBack, handleNext } = useStepsSCWizard()
-  const [dataForm, setDataForm] = useState(DEFAULT_TOKEN_VALUES[tokenType])
+  const { handleNext } = useStepsSCWizard()
+  const [dataForm] = useState(DEFAULT_TOKEN_VALUES[tokenType])
+  const router = useRouter()
+
+  const _handleBack = () => router.push(ROUTES.HOME)
 
 
   const getExtensionFields = () => {
@@ -38,7 +43,7 @@ export default function Step1Extensions({ tokenType }: { tokenType: TokenType })
       <FormGroup sx={{ gap: 3 }}>
         {getExtensionFields()}
       </FormGroup>
-      <BackNextButton handleBack={handleBack} handleNext={handleNext} />
+      <BackNextButton handleBack={_handleBack} handleNext={handleNext} />
     </Stack>
   )
 }

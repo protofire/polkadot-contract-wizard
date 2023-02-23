@@ -10,7 +10,7 @@ export default function Step3Deploy({ tokenType }: { tokenType: TokenType }) {
 
   return (
     <>
-      <Typography>Congrats! Now you can deploy your contract!</Typography>
+      <Typography>Congrats! Now you can deploy your contract {tokenType}!</Typography>
       <Box sx={{ overflowY: 'scroll', height: '30rem', resize: 'both' }}>
         <CopyBlock
           language="rust"
