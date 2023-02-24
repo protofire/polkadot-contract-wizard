@@ -14,5 +14,5 @@ export default function Home() {
       </Stack>
       <Accordion />
     </>
-  );
+  )
 }

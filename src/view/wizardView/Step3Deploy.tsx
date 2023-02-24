@@ -1,18 +1,16 @@
 import { Box, Typography } from "@mui/material";
 import { CopyBlock, atomOneDark } from "react-code-blocks";
 
-import { useStepsSCWizard } from "@context";
-import BackNextButton from "./BackNextButtons";
+import { useStepsSCWizard } from '@context'
+import BackNextButton from './BackNextButtons'
+import { TokenType } from '@types'
 
-export default function Step3Deploy() {
-  const {
-    handleBack,
-    handleNext,
-  } = useStepsSCWizard()
+export default function Step3Deploy({ tokenType }: { tokenType: TokenType }) {
+  const { handleBack, handleNext } = useStepsSCWizard()
 
   return (
     <>
-      <Typography>Congrats! Now you can deploy your contract!</Typography>
+      <Typography>Congrats! Now you can deploy your contract {tokenType}!</Typography>
       <Box sx={{ overflowY: 'scroll', height: '30rem', resize: 'both' }}>
         <CopyBlock
           language="rust"
@@ -87,8 +85,12 @@ export default function Step3Deploy() {
         />
       </Box>
 
-      <BackNextButton nextLabel="Deploy Contract" handleBack={handleBack} handleNext={handleNext} nextButtonProps={{ startIcon: "🚀" }} />
+      <BackNextButton
+        nextLabel="Deploy Contract"
+        handleBack={handleBack}
+        handleNext={handleNext}
+        nextButtonProps={{ startIcon: '🚀' }}
+      />
     </>
-
   )
 }

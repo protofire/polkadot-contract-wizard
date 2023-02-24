@@ -11,8 +11,8 @@
     "plugin:@typescript-eslint/recommended",
     "next",
     "next/core-web-vitals",
-    "prettier",
-    "plugin:react/recommended"
+    "plugin:react/recommended",
+    "prettier"
   ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
@@ -29,18 +29,5 @@
   "ignorePatterns": [
     ".next/*",
     "node_modules/*"
-  ],
-  "rules": {
-    "comma-dangle": "off",
-    "@typescript-eslint/comma-dangle": [
-      "error",
-      {
-        "arrays": "never",
-        "objects": "always-multiline",
-        "imports": "never",
-        "exports": "never",
-        "functions": "never"
-      }
-    ]
-  }
+  ]
 }

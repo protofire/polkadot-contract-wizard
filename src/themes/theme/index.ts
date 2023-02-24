@@ -1,9 +1,9 @@
-import { PalettesProps } from '@ant-design/colors';
+import { PalettesProps } from '@ant-design/colors'
 
 // ==============================|| Contract Wizard Theme ||============================== //
 
 const Theme = (colors: PalettesProps) => {
-  const { blue, red, gold, cyan, green, grey } = colors;
+  const { blue, red, gold, cyan, green, grey } = colors
   const greyColors = {
     0: grey[0],
     50: grey[1],
@@ -21,9 +21,9 @@ const Theme = (colors: PalettesProps) => {
     A200: grey[12],
     A400: grey[13],
     A700: grey[14],
-    A800: grey[16],
-  };
-  const contrastText = '#fff';
+    A800: grey[16]
+  }
+  const contrastText = '#fff'
 
   return {
     primary: {
@@ -37,7 +37,7 @@ const Theme = (colors: PalettesProps) => {
       700: blue[7],
       darker: blue[8],
       900: blue[9],
-      contrastText,
+      contrastText
     },
     secondary: {
       lighter: greyColors[100],
@@ -53,7 +53,7 @@ const Theme = (colors: PalettesProps) => {
       A100: greyColors[0],
       A200: greyColors.A400,
       A300: greyColors.A700,
-      contrastText: greyColors[0],
+      contrastText: greyColors[0]
     },
     error: {
       lighter: red[0],
@@ -61,7 +61,7 @@ const Theme = (colors: PalettesProps) => {
       main: red[4],
       dark: red[7],
       darker: red[9],
-      contrastText,
+      contrastText
     },
     warning: {
       lighter: gold[0],
@@ -69,7 +69,7 @@ const Theme = (colors: PalettesProps) => {
       main: gold[5],
       dark: gold[7],
       darker: gold[9],
-      contrastText: greyColors[100],
+      contrastText: greyColors[100]
     },
     info: {
       lighter: cyan[0],
@@ -77,7 +77,7 @@ const Theme = (colors: PalettesProps) => {
       main: cyan[5],
       dark: cyan[7],
       darker: cyan[9],
-      contrastText,
+      contrastText
     },
     success: {
       lighter: green[0],
@@ -85,10 +85,10 @@ const Theme = (colors: PalettesProps) => {
       main: green[5],
       dark: green[7],
       darker: green[9],
-      contrastText,
+      contrastText
     },
-    grey: greyColors,
-  };
-};
+    grey: greyColors
+  }
+}
 
-export default Theme;
+export default Theme

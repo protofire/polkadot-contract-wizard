@@ -1,6 +1,6 @@
-import { Box } from '@mui/material';
+import { Box } from '@mui/material'
 
-import MobileSection from './MobileSection';
+import MobileSection from './MobileSection'
 
 const HeaderContent = ({ isMobile }: { isMobile: boolean }) => {
   return (
@@ -9,7 +9,7 @@ const HeaderContent = ({ isMobile }: { isMobile: boolean }) => {
 
       {isMobile && <MobileSection />}
     </>
-  );
-};
+  )
+}
 
-export default HeaderContent;
+export default HeaderContent

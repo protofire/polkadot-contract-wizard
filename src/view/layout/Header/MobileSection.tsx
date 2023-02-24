@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react'
 import {
   AppBar,
   Box,
@@ -7,48 +7,45 @@ import {
   Paper,
   Popper,
   Toolbar
-} from '@mui/material';
-import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
+} from '@mui/material'
+import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet'
 
-import Transitions from 'src/view/components/Transitions';
-import LogoMobile from 'src/view/components/LogoMobile';
+import Transitions from 'src/view/components/Transitions'
 
 // ==============================|| HEADER CONTENT - MOBILE ||============================== //
 const MobileSection = () => {
-  const [open, setOpen] = useState(false);
-  const anchorRef = useRef<HTMLButtonElement>(null);
+  const [open, setOpen] = useState(false)
+  const anchorRef = useRef<HTMLButtonElement>(null)
 
   const handleToggle = () => {
-    setOpen(prevOpen => !prevOpen);
-  };
+    setOpen(prevOpen => !prevOpen)
+  }
 
   const handleClose = (event: MouseEvent | TouchEvent) => {
     if (anchorRef.current?.contains(event.target as Node)) {
-      return;
+      return
     }
 
-    setOpen(false);
-  };
+    setOpen(false)
+  }
 
-  const prevOpen = useRef(open);
+  const prevOpen = useRef(open)
   useEffect(() => {
     if (prevOpen.current === true && open === false) {
-      anchorRef.current?.focus();
+      anchorRef.current?.focus()
     }
 
-    prevOpen.current = open;
-  }, [open]);
+    prevOpen.current = open
+  }, [open])
 
   return (
     <>
-      <LogoMobile />
       <Box sx={{ flexShrink: 0, mr: 0.5 }}>
         <IconButton
           component="span"
           disableRipple
           sx={{
-            bgcolor: open ? 'grey.800' : 'transparent',
-            color: open ? 'grey.100' : 'grey.100',
+            bgcolor: open ? 'grey.300' : 'grey.100'
           }}
           ref={anchorRef}
           aria-controls={open ? 'menu-list-grow' : undefined}
@@ -67,17 +64,17 @@ const MobileSection = () => {
         transition
         disablePortal
         style={{
-          width: '100%',
+          width: '100%'
         }}
         popperOptions={{
           modifiers: [
             {
               name: 'offset',
               options: {
-                offset: [0, 9],
-              },
+                offset: [0, 9]
+              }
             }
-          ],
+          ]
         }}
       >
         {({ TransitionProps }) => (
@@ -93,7 +90,7 @@ const MobileSection = () => {
         )}
       </Popper>
     </>
-  );
-};
+  )
+}
 
-export default MobileSection;
+export default MobileSection

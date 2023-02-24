@@ -1,11 +1,11 @@
-import { useTheme } from '@mui/material/styles';
-import { Stack } from '@mui/material';
+import { useTheme } from '@mui/material/styles'
+import { Stack } from '@mui/material'
 
-import DrawerHeaderStyled from './DrawerHeaderStyled';
-import Logo from 'src/view/components/Logo';
+import DrawerHeaderStyled from './DrawerHeaderStyled'
+import Logo from 'src/view/components/Logo'
 
 const DrawerHeader = ({ open }: { open: boolean }) => {
-  const theme = useTheme();
+  const theme = useTheme()
 
   return (
     <DrawerHeaderStyled theme={theme} open={open}>
@@ -13,7 +13,7 @@ const DrawerHeader = ({ open }: { open: boolean }) => {
         <Logo />
       </Stack>
     </DrawerHeaderStyled>
-  );
-};
+  )
+}
 
-export default DrawerHeader;
+export default DrawerHeader
