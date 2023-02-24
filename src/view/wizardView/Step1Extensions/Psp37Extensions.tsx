@@ -5,9 +5,10 @@ import {
     TextField,
     Typography
 } from '@mui/material'
+import { Dispatch, SetStateAction } from 'react'
 import { PSP37MultiToken } from 'src/types/smartContract/tokens'
 
-export function Psp37Extensions({ dataForm }: { dataForm: PSP37MultiToken }) {
+export function Psp37Extensions({ dataForm }: { dataForm: PSP37MultiToken, setDataForm: Dispatch<SetStateAction<PSP37MultiToken>> }) {
     return (
         <>
             <FormControlLabel

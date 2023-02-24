@@ -1,10 +1,12 @@
+import { Dispatch, createContext, SetStateAction, useContext } from 'react'
+
 import { TokenType } from '@types'
-import { createContext, useContext } from 'react'
 import { PSPTokens } from 'src/types/smartContract/tokens'
 
 export const DEFAULT_TOKEN_VALUES: Record<TokenType, PSPTokens> = {
   psp22: {
     metadata: {
+      active: false,
       name: 'Contract'
     },
     mintable: false,
@@ -16,6 +18,7 @@ export const DEFAULT_TOKEN_VALUES: Record<TokenType, PSPTokens> = {
   },
   psp34: {
     metadata: {
+      active: false,
       name: 'Contract'
     },
     mintable: false,
@@ -24,6 +27,7 @@ export const DEFAULT_TOKEN_VALUES: Record<TokenType, PSPTokens> = {
   },
   psp37: {
     metadata: {
+      active: false,
       name: 'Contract'
     },
     batch: false,
@@ -38,6 +42,7 @@ export interface StepsSmartContractWizard {
   handleBack: () => void
   handleNext: () => void
   dataForm: PSPTokens
+  setDataForm: Dispatch<SetStateAction<PSPTokens>>
 }
 
 export const StepsSCWizardContext = createContext(

@@ -9,6 +9,7 @@ interface Security {
 
 export interface PSP22Fungible extends Security {
   metadata: {
+    active: boolean
     name: string
     symbol?: string
     decimals?: number

@@ -46,6 +46,7 @@ export default function FormWizard({ token }: { token: TokenType }) {
     <StepsSCWizardContext.Provider
       value={{
         dataForm,
+        setDataForm,
         activeStep,
         handleBack,
         handleNext

@@ -5,10 +5,11 @@ import {
     TextField,
     Typography
 } from '@mui/material'
+import { Dispatch, SetStateAction } from 'react'
 
 import { PSP34NonFungible } from 'src/types/smartContract/tokens'
 
-export function Psp34Extensions({ dataForm }: { dataForm: PSP34NonFungible }) {
+export function Psp34Extensions({ dataForm }: { dataForm: PSP34NonFungible, setDataForm: Dispatch<SetStateAction<PSP34NonFungible>> }) {
     return (
         <>
             <FormControlLabel
