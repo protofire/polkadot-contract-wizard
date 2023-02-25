@@ -1,7 +1,7 @@
-type SecurityOfToken =
-  | 'Ownable'
-  | 'Access Control'
-  | 'Access Control Enumerable'
+export type SecurityOfToken =
+  | 'ownable'
+  | 'access_control'
+  | 'access_control_enumerable'
 
 interface Security {
   security?: SecurityOfToken

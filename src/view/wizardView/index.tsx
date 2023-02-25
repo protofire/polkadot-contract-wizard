@@ -32,7 +32,7 @@ export default function FormWizard({ token }: { token: TokenType }) {
         return <Step1Extensions tokenType={token} />
 
       case 1:
-        return <Step2Security tokenType={token} />
+        return <Step2Security />
 
       case 2:
         return <Step3Deploy tokenType={token} />
