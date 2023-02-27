@@ -52,9 +52,9 @@ export function Psp22Extensions({ dataForm, setDataForm }: { dataForm: PSP22Fung
       <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
         {dataForm.metadata.active && (
           <>
-            <TextField id="outlined-basic" label="Name" onChange={(event) => {
+            <TextField id="outlined-basic" label="Name" variant="outlined" onChange={(event) => {
               onChangeMetadata('name', event.currentTarget.value)
-            }} variant="outlined" defaultValue={dataForm.metadata.name} disabled={!dataForm.metadata.active} />
+            }} defaultValue={dataForm.metadata.name} disabled={!dataForm.metadata.active} />
             <TextField id="outlined-basic2" label="Symbol" variant="outlined" defaultValue={dataForm.metadata.symbol}
               onChange={(event) => {
                 onChangeMetadata('symbol', event.currentTarget.value)

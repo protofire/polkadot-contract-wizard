@@ -1,16 +1,19 @@
-type SecurityOfToken =
-  | 'Ownable'
-  | 'Access Control'
-  | 'Access Control Enumerable'
+export type SecurityOfToken =
+  | 'ownable'
+  | 'access_control'
+  | 'access_control_enumerable'
 
 interface Security {
   security?: SecurityOfToken
 }
 
+interface MedataBase {
+  active: boolean
+  name: string
+}
+
 export interface PSP22Fungible extends Security {
-  metadata: {
-    active: boolean
-    name: string
+  metadata: MedataBase & {
     symbol?: string
     decimals?: number
   }
@@ -23,9 +26,9 @@ export interface PSP22Fungible extends Security {
 }
 
 export interface PSP34NonFungible extends Security {
-  metadata: {
-    name: string
+  metadata: MedataBase & {
     symbol?: string
+    decimals?: number
   }
   mintable: boolean
   burnable: boolean
@@ -33,8 +36,7 @@ export interface PSP34NonFungible extends Security {
 }
 
 export interface PSP37MultiToken extends Security {
-  metadata: {
-    name: string
+  metadata: MedataBase & {
     uri?: string
   }
   batch: boolean

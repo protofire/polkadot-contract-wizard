@@ -8,23 +8,38 @@ import {
 } from '@mui/material'
 
 import { useStepsSCWizard } from '@context'
-import BackNextButton from './BackNextButtons'
-import { TokenType } from '@types'
+import BackNextButton from '../BackNextButtons'
+import { SecurityOfToken } from 'src/types/smartContract/tokens'
 
-export default function Step2Security({ tokenType }: { tokenType: TokenType }) {
-  const { handleBack, handleNext } = useStepsSCWizard()
+export default function Step2Security() {
+  const { handleBack, handleNext, dataForm, setDataForm } = useStepsSCWizard()
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.value === 'none') {
+      const newDataForm = { ...dataForm }
+      delete newDataForm.security
+      setDataForm(newDataForm)
+    }
+
+    setDataForm((prev) => ({ ...prev, security: event.target.value as SecurityOfToken }))
+  }
 
   return (
     <Stack sx={{ mt: 2, mb: 2 }}>
       <FormControl>
         <RadioGroup
           aria-labelledby="security"
-          defaultValue="none"
+          defaultValue={'none'}
+          value={dataForm.security}
+          onChange={handleChange}
           name="radio-buttons-group"
           sx={{ gap: 3 }}
         >
           <FormControlLabel
-            control={<Radio />}
+            control={
+              <Radio
+
+              />}
             label={
               <>
                 <Typography
@@ -69,7 +84,7 @@ export default function Step2Security({ tokenType }: { tokenType: TokenType }) {
                 </Typography>
               </>
             }
-            value="Ownable"
+            value="ownable"
             sx={{
               '& .MuiSvgIcon-root': { fontSize: 32 }
             }}
@@ -127,6 +142,6 @@ export default function Step2Security({ tokenType }: { tokenType: TokenType }) {
         </RadioGroup>
       </FormControl>
       <BackNextButton handleBack={handleBack} handleNext={handleNext} />
-    </Stack>
+    </Stack >
   )
 }

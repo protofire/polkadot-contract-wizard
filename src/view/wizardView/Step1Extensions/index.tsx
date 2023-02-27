@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useState } from 'react'
+import { Dispatch, SetStateAction } from 'react'
 import {
   FormGroup,
   Stack,
@@ -20,8 +20,8 @@ export default function Step1Extensions({ tokenType }: { tokenType: TokenType })
   const router = useRouter()
 
   const _handleBack = () => {
-    setDataForm(DEFAULT_TOKEN_VALUES[tokenType])
     router.push(ROUTES.HOME)
+    setDataForm(DEFAULT_TOKEN_VALUES[tokenType])
   }
 
   const getExtensionFields = () => {
