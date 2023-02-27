@@ -3,10 +3,19 @@ import {
   Checkbox,
   FormControlLabel,
   TextField,
-  Typography
+  Typography,
+  styled
 } from '@mui/material'
 import { Dispatch, SetStateAction } from 'react'
 import { PSP37MultiToken } from 'src/types/smartContract/tokens'
+
+const StyledTextField = styled(TextField)(
+  ({ theme }) => ({
+    '& .MuiInputBase-input': {
+      color: theme.palette.secondary.light,
+    },
+  })
+)
 
 export function Psp37Extensions({ dataForm, setDataForm }: { dataForm: PSP37MultiToken, setDataForm: Dispatch<SetStateAction<PSP37MultiToken>> }) {
   const onChangeMetadata = (key: 'active' | 'name', value?: string) => {
@@ -51,7 +60,7 @@ export function Psp37Extensions({ dataForm, setDataForm }: { dataForm: PSP37Mult
       />
       {dataForm.metadata.active && (
         <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
-          <TextField id="outlined-basic" label="Name" variant="outlined"
+          <StyledTextField id="outlined-basic" label="Name" variant="outlined"
             onChange={(event) => {
               onChangeMetadata('name', event.currentTarget.value)
             }} defaultValue={dataForm.metadata.name} disabled={!dataForm.metadata.active}

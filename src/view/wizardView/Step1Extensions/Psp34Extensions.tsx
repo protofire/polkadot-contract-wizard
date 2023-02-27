@@ -3,11 +3,20 @@ import {
   Checkbox,
   FormControlLabel,
   TextField,
-  Typography
+  Typography,
+  styled
 } from '@mui/material'
 import { Dispatch, SetStateAction } from 'react'
 
 import { PSP34NonFungible } from 'src/types/smartContract/tokens'
+
+const StyledTextField = styled(TextField)(
+  ({ theme }) => ({
+    '& .MuiInputBase-input': {
+      color: theme.palette.secondary.light,
+    },
+  })
+)
 
 export function Psp34Extensions({ dataForm, setDataForm }: { dataForm: PSP34NonFungible, setDataForm: Dispatch<SetStateAction<PSP34NonFungible>> }) {
   const onChangeMetadata = (key: 'active' | 'name' | 'symbol' | 'decimals', value?: string) => {
@@ -54,10 +63,10 @@ export function Psp34Extensions({ dataForm, setDataForm }: { dataForm: PSP34NonF
       <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
         {dataForm.metadata.active && (
           <>
-            <TextField id="outlined-basic" label="Name" variant="outlined" onChange={(event) => {
+            <StyledTextField id="outlined-basic" label="Name" variant="outlined" onChange={(event) => {
               onChangeMetadata('name', event.currentTarget.value)
             }} defaultValue={dataForm.metadata.name} disabled={!dataForm.metadata.active} />
-            <TextField id="outlined-basic2" label="Symbol" variant="outlined" defaultValue={dataForm.metadata.symbol}
+            <StyledTextField id="outlined-basic2" label="Symbol" variant="outlined" defaultValue={dataForm.metadata.symbol}
               onChange={(event) => {
                 onChangeMetadata('symbol', event.currentTarget.value)
               }}
