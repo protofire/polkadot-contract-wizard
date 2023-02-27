@@ -36,7 +36,7 @@ export default function Home() {
           title="NFT | PSP34"
           subtitle="Standard smart contract for a non-fungible token"
           imgPath={TOKEN_PATHS.NFTIcon}
-          imgProps={{ width: 75, height: 65 }}
+          imgProps={{ width: 55, height: 67 }}
         />
         <HomeButton
           LinkComponent={Link}
