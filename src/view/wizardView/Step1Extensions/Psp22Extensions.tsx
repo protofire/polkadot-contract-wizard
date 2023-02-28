@@ -3,20 +3,12 @@ import {
   Box,
   Checkbox,
   FormControlLabel,
-  TextField,
   Typography,
-  styled
 } from '@mui/material'
 
 import { PSP22Fungible } from 'src/types/smartContract/tokens'
+import StyledTextField from 'src/view/components/Input'
 
-const StyledTextField = styled(TextField)(
-  ({ theme }) => ({
-    '& .MuiInputBase-input': {
-      color: theme.palette.secondary.light,
-    },
-  })
-)
 export function Psp22Extensions({ dataForm, setDataForm }: { dataForm: PSP22Fungible, setDataForm: Dispatch<SetStateAction<PSP22Fungible>> }) {
   const onChangeMetadata = (key: 'active' | 'name' | 'symbol', value?: string) => {
     setDataForm((prev) => {

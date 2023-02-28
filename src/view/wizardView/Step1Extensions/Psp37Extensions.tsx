@@ -2,20 +2,11 @@ import {
   Box,
   Checkbox,
   FormControlLabel,
-  TextField,
   Typography,
-  styled
 } from '@mui/material'
 import { Dispatch, SetStateAction } from 'react'
 import { PSP37MultiToken } from 'src/types/smartContract/tokens'
-
-const StyledTextField = styled(TextField)(
-  ({ theme }) => ({
-    '& .MuiInputBase-input': {
-      color: theme.palette.secondary.light,
-    },
-  })
-)
+import StyledTextField from 'src/view/components/Input'
 
 export function Psp37Extensions({ dataForm, setDataForm }: { dataForm: PSP37MultiToken, setDataForm: Dispatch<SetStateAction<PSP37MultiToken>> }) {
   const onChangeMetadata = (key: 'active' | 'name', value?: string) => {
