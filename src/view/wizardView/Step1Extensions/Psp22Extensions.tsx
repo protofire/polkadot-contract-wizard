@@ -3,11 +3,11 @@ import {
   Box,
   Checkbox,
   FormControlLabel,
-  TextField,
-  Typography
+  Typography,
 } from '@mui/material'
 
 import { PSP22Fungible } from 'src/types/smartContract/tokens'
+import StyledTextField from 'src/view/components/Input'
 
 export function Psp22Extensions({ dataForm, setDataForm }: { dataForm: PSP22Fungible, setDataForm: Dispatch<SetStateAction<PSP22Fungible>> }) {
   const onChangeMetadata = (key: 'active' | 'name' | 'symbol', value?: string) => {
@@ -52,10 +52,10 @@ export function Psp22Extensions({ dataForm, setDataForm }: { dataForm: PSP22Fung
       <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
         {dataForm.metadata.active && (
           <>
-            <TextField id="outlined-basic" label="Name" variant="outlined" onChange={(event) => {
+            <StyledTextField id="outlined-basic" label="Name" variant="outlined" onChange={(event) => {
               onChangeMetadata('name', event.currentTarget.value)
             }} defaultValue={dataForm.metadata.name} disabled={!dataForm.metadata.active} />
-            <TextField id="outlined-basic2" label="Symbol" variant="outlined" defaultValue={dataForm.metadata.symbol}
+            <StyledTextField id="outlined-basic2" label="Symbol" variant="outlined" defaultValue={dataForm.metadata.symbol}
               onChange={(event) => {
                 onChangeMetadata('symbol', event.currentTarget.value)
               }}
