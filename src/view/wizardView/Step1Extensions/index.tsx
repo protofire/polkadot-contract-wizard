@@ -9,7 +9,7 @@ import BackNextButton from '../BackNextButtons'
 import { ControlsToken, ROUTES } from '@constants'
 import ExtensionCheckbox from './ExtensionCheckbox'
 
-export default function Step1Extensions({ extensionFields, constructorFields }: { extensionFields: ControlsToken, constructorFields?: ControlsToken }) {
+export default function Step1Extensions({ extensionFields }: { extensionFields: ControlsToken, constructorFields?: ControlsToken }) {
   const { dataForm, setDataForm, resetDataForm, handleNext } = useStepsSCWizard()
   const router = useRouter()
 
@@ -24,15 +24,6 @@ export default function Step1Extensions({ extensionFields, constructorFields }: 
       return { ...prev, extensions: changed }
     })
   }
-  // const getExtensionFields = () => {
-  //   switch (tokenType) {
-  //     case 'psp22':
-  //       return <Psp22Extensions dataForm={dataForm as PSP22Fungible} setDataForm={setDataForm as Dispatch<SetStateAction<PSP22Fungible>>} />
-
-  //     default:
-  //       return null
-  //   }
-  // }
 
   if (!extensionFields) return null
 
@@ -47,7 +38,6 @@ export default function Step1Extensions({ extensionFields, constructorFields }: 
             )
           })
         }
-
       </FormGroup>
       <BackNextButton handleBack={_handleBack} handleNext={handleNext} />
     </Stack>

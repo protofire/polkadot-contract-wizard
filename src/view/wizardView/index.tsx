@@ -57,7 +57,7 @@ export default function FormWizard({ token }: { token: TokenType }): JSX.Element
     switch (activeStep) {
       case 0: {
         if (!extensionFields) return
-        return <Step1Extensions extensionFields={extensionFields} constructorFields={constructorFields} />
+        return <Step1Extensions extensionFields={extensionFields} />
       }
 
       case 1:
