@@ -7,26 +7,32 @@ import Step3Deploy from './Step3Deploy'
 import { Button, Stepper as StepperWrapper } from '@components'
 import { StepsSCWizardContext } from '@context'
 import { TokenType } from '@types'
-import { TokenOptionConfig, WIZARD_CONFIG } from '@constants'
+import { ControlsToken, WIZARD_CONFIG } from '@constants'
 
 const STEPS = ['Extensions', 'Security', 'Deploy']
 
-function getInitialValues(tokenOptionsConfig: TokenOptionConfig | undefined) {
+function getInitialValues(tokenOptionsConfig: ControlsToken | undefined) {
   if (tokenOptionsConfig === undefined) return []
 
-  return tokenOptionsConfig.controls.map((controlSection) =>
-    Object.assign({},
-      ...controlSection.optionList.map((control) => ({ [control.name]: control.initState }))
-    )
+  return Object.assign({},
+    ...tokenOptionsConfig.optionList.map((control) => ({ [control.name]: control.initState }))
   )
-
 }
+
 
 export default function FormWizard({ token }: { token: TokenType }): JSX.Element {
   const [activeStep, setActiveStep] = React.useState(0)
-  const optionFields = useMemo(() => WIZARD_CONFIG.find((_token) => _token.name === token), [token])
-  const initialValues = useMemo(() => getInitialValues(optionFields), [optionFields])
-  const [dataForm, setDataForm] = React.useState({ extensions: initialValues })
+  const { extensionFields, constructorFields } = useMemo(() => {
+    const currentToken = WIZARD_CONFIG.find((_token) => _token.name === token)
+    return {
+      extensionFields: currentToken?.controls.find((options) => options.sectionName === 'Extensions'),
+      constructorFields: currentToken?.controls.find((options) => options.sectionName === 'Constructor')
+    }
+  }, [token])
+  const [dataForm, setDataForm] = React.useState({
+    extensions: getInitialValues(extensionFields),
+    constructor: getInitialValues(constructorFields)
+  })
 
   const handleNext = () => {
     setActiveStep(prevActiveStep => prevActiveStep + 1)
@@ -41,13 +47,18 @@ export default function FormWizard({ token }: { token: TokenType }): JSX.Element
   }
 
   const resetDataForm = () => {
-    setDataForm({ extensions: initialValues })
+    setDataForm({
+      extensions: getInitialValues(extensionFields),
+      constructor: getInitialValues(constructorFields)
+    })
   }
 
   const getStepContent = () => {
     switch (activeStep) {
-      case 0:
-        return <Step1Extensions optionFields={optionFields} />
+      case 0: {
+        if (!extensionFields) return
+        return <Step1Extensions extensionFields={extensionFields} constructorFields={constructorFields} />
+      }
 
       case 1:
         return <Step2Security />

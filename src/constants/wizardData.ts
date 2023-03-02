@@ -7,12 +7,13 @@ export type OptionTokenField = {
   initState: string | boolean
   tooltip?: string
 }
+export type ControlsToken = {
+  sectionName: Sections
+  optionList: OptionTokenField[]
+}
 export type TokenOptionConfig = {
   name: TokenType
-  controls: Array<{
-    sectionName: Sections
-    optionList: OptionTokenField[]
-  }>
+  controls: Array<ControlsToken>
 }
 
 /**

@@ -1,10 +1,10 @@
 import { OptionTokenField } from '@constants'
 import {
-    TextField,
     styled,
     FormControlLabel,
     Checkbox,
-    Typography
+    Typography,
+    CheckboxProps
 } from '@mui/material'
 
 const StyledFormControlLabel = styled(FormControlLabel)(
@@ -13,13 +13,11 @@ const StyledFormControlLabel = styled(FormControlLabel)(
     })
 )
 
-export default function InputFieldExtension({ extension }: { extension: OptionTokenField }) {
+export default function InputFieldExtension({ extension, checked, onChange }: { extension: OptionTokenField } & CheckboxProps) {
     return (<StyledFormControlLabel
         control={<Checkbox
-        // checked={dataForm.metadata.active}
-        // onChange={() => {
-        //     onChangeMetadata('active')
-        // }}
+            checked={checked}
+            onChange={onChange}
         />}
         label={
             <>

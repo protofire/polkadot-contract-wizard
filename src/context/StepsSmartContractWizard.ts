@@ -3,7 +3,8 @@ import { Dispatch, createContext, SetStateAction, useContext } from 'react'
 import { OptionInitState, Security } from '@types'
 
 interface PSPTokens extends Security {
-  extensions: OptionInitState[]
+  extensions: OptionInitState
+  constructor: OptionInitState
 }
 
 export interface StepsSmartContractWizard {
