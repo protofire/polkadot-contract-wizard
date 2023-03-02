@@ -16,7 +16,7 @@ import ExtensionCheckbox from './ExtensionCheckbox'
 
 export default function Step1Extensions({ optionFields }: { optionFields: TokenOptionConfig | undefined }) {
   const { dataForm, setDataForm, resetDataForm, handleNext } = useStepsSCWizard()
-  const extensions = useMemo(() => optionFields?.controls.find((options) => options.sectionName === 'Extensions'), [optionFields])
+  const extensionFields = useMemo(() => optionFields?.controls.find((options) => options.sectionName === 'Extensions'), [optionFields])
   const router = useRouter()
 
   const _handleBack = () => {
@@ -34,11 +34,12 @@ export default function Step1Extensions({ optionFields }: { optionFields: TokenO
   //   }
   // }
 
+  console.log('__dataForm', dataForm)
   return (
     <Stack sx={{ mt: 2, mb: 2 }}>
       <FormGroup sx={{ gap: 3 }}>
-        {extensions &&
-          extensions.optionList.map((extension, index) => {
+        {extensionFields &&
+          extensionFields.optionList.map((extension, index) => {
             return (
               <ExtensionCheckbox key={index} extension={extension} />
             )
