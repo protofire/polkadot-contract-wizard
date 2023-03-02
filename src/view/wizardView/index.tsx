@@ -27,6 +27,7 @@ export default function FormWizard({ token }: { token: TokenType }): JSX.Element
   const optionFields = useMemo(() => WIZARD_CONFIG.find((_token) => _token.name === token), [token])
   const initialValues = useMemo(() => getInitialValues(optionFields), [optionFields])
   const [dataForm, setDataForm] = React.useState({ extensions: initialValues })
+
   const handleNext = () => {
     setActiveStep(prevActiveStep => prevActiveStep + 1)
   }
@@ -43,7 +44,6 @@ export default function FormWizard({ token }: { token: TokenType }): JSX.Element
     setDataForm({ extensions: initialValues })
   }
 
-  console.log('__optionFields', optionFields)
   const getStepContent = () => {
     switch (activeStep) {
       case 0:

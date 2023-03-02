@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction } from 'react'
+import { useMemo } from 'react'
 import {
   FormGroup,
   Stack,
@@ -11,12 +11,12 @@ import { TokenType } from '@types'
 import { Psp22Extensions } from './Psp22Extensions'
 import { Psp34Extensions } from './Psp34Extensions'
 import { Psp37Extensions } from './Psp37Extensions'
-import { PSP22Fungible, PSP34NonFungible, PSP37MultiToken } from 'src/types/smartContract/tokens'
 import { ROUTES, TokenOptionConfig } from '@constants'
-import { WIZARD_CONFIG } from '@constants'
+import ExtensionCheckbox from './ExtensionCheckbox'
 
 export default function Step1Extensions({ optionFields }: { optionFields: TokenOptionConfig | undefined }) {
   const { dataForm, setDataForm, resetDataForm, handleNext } = useStepsSCWizard()
+  const extensions = useMemo(() => optionFields?.controls.find((options) => options.sectionName === 'Extensions'), [optionFields])
   const router = useRouter()
 
   const _handleBack = () => {
@@ -37,10 +37,10 @@ export default function Step1Extensions({ optionFields }: { optionFields: TokenO
   return (
     <Stack sx={{ mt: 2, mb: 2 }}>
       <FormGroup sx={{ gap: 3 }}>
-        {optionFields &&
-          optionFields.controls.map((item, index) => {
+        {extensions &&
+          extensions.optionList.map((extension, index) => {
             return (
-              <h2 key={index}>item</h2>
+              <ExtensionCheckbox key={index} extension={extension} />
             )
           })
         }

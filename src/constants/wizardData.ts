@@ -1,7 +1,7 @@
 import { TokenType } from '@types'
 
 type Sections = 'Constructor' | 'Extensions'
-type Option = {
+export type OptionTokenField = {
   name: string
   type: 'text' | 'checkbox'
   initState: string | boolean
@@ -11,10 +11,13 @@ export type TokenOptionConfig = {
   name: TokenType
   controls: Array<{
     sectionName: Sections
-    optionList: Option[]
+    optionList: OptionTokenField[]
   }>
 }
 
+/**
+ * Configuration data based on https://github.com/727-Ventures/openbrush-website/blob/master/data/wizardData.js
+ */
 export const WIZARD_CONFIG: Array<TokenOptionConfig> = [
   {
     name: 'psp22',
@@ -95,23 +98,6 @@ export const WIZARD_CONFIG: Array<TokenOptionConfig> = [
     name: 'psp37',
     controls: [
       {
-        sectionName: 'Constructor',
-        optionList: [
-          {
-            name: 'Name',
-            type: 'text',
-            initState: 'Contract',
-            tooltip: ''
-          },
-          {
-            name: 'URI',
-            type: 'text',
-            initState: 'https://...',
-            tooltip: ''
-          }
-        ]
-      },
-      {
         sectionName: 'Extensions',
         optionList: [
           {
@@ -120,12 +106,6 @@ export const WIZARD_CONFIG: Array<TokenOptionConfig> = [
             initState: false,
             tooltip:
               'Extension of [`PSP37`] that allows you batch transfering tokens'
-          },
-          {
-            name: 'Metadata',
-            type: 'checkbox',
-            initState: false,
-            tooltip: 'Metadata for [`PSP37`]'
           },
           {
             name: 'Mintable',
@@ -155,31 +135,8 @@ export const WIZARD_CONFIG: Array<TokenOptionConfig> = [
     name: 'psp34',
     controls: [
       {
-        sectionName: 'Constructor',
-        optionList: [
-          {
-            name: 'Name',
-            type: 'text',
-            initState: 'Contract',
-            tooltip: ''
-          },
-          {
-            name: 'Symbol',
-            type: 'text',
-            initState: 'MPSP',
-            tooltip: ''
-          }
-        ]
-      },
-      {
         sectionName: 'Extensions',
         optionList: [
-          {
-            name: 'Metadata',
-            type: 'checkbox',
-            initState: false,
-            tooltip: 'Metadata for [`PSP34`]'
-          },
           {
             name: 'Mintable',
             type: 'checkbox',
