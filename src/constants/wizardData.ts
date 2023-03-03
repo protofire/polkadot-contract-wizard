@@ -16,6 +16,10 @@ export type TokenOptionConfig = {
   controls: Array<ControlsToken>
 }
 
+export const BRUSH_NAME = 'openbrush'
+export const VERSION = 'v3.0.0'
+export const CONTRACT_NAME = 'Contract'
+
 /**
  * Configuration data based on https://github.com/727-Ventures/openbrush-website/blob/master/data/wizardData.js
  */

@@ -59,13 +59,10 @@ export default function FormWizard({ token }: { token: TokenType }): JSX.Element
         if (!extensionFields) return
         return <Step1Extensions extensionFields={extensionFields} />
       }
-
       case 1:
         return <Step2Security />
-
       case 2:
         return <Step3Deploy tokenType={token} />
-
       default:
         return null
     }

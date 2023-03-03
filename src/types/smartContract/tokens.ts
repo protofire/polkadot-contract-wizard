@@ -1,5 +1,10 @@
 import { TokenType } from '.'
 
+export interface ContractConfig extends Security {
+  extensions: OptionInitState
+  constructor: OptionInitState
+}
+
 export type OptionInitState = Record<string, string | boolean>
 export type DefaultStates = Record<TokenType, Array<OptionInitState>>
 
