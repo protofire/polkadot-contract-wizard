@@ -291,279 +291,270 @@ export function generateExtension(
       )
 
       return burnableExtension.getExtension()
-    // case 'Mintable':
-    //   const mintableExtension = new ExtensionBuilder()
-    //   mintableExtension.setName('Mintable')
-    //   mintableExtension.addBrushImport(
-    //     new Import(
-    //       `${BRUSH_NAME}::contracts::${standardName}::extensions::mintable::*`
-    //     )
-    //   )
+    case 'Mintable':
+      const mintableExtension = new ExtensionBuilder()
+      mintableExtension.setName('Mintable')
+      mintableExtension.addBrushImport(
+        new Import(
+          `${BRUSH_NAME}::contracts::${standardName}::extensions::mintable::*`
+        )
+      )
 
-    //   if (security && security !== 'none') {
-    //     const args = []
-    //     args.push('account: AccountId')
+      if (security && security !== 'none') {
+        const args = []
+        args.push('account: AccountId')
 
-    //     if (standardName === 'psp22') args.push('amount: Balance')
-    //     if (
-    //       standardName === 'psp37' ||
-    //       standardName === 'psp1155' ||
-    //       standardName === 'psp35'
-    //     )
-    //       args.push('ids_amounts: Vec<(Id, Balance)>')
-    //     if (standardName === 'psp34') args.push('id: Id')
+        if (standardName === 'psp22') args.push('amount: Balance')
+        if (standardName === 'psp37')
+          args.push('ids_amounts: Vec<(Id, Balance)>')
+        if (standardName === 'psp34') args.push('id: Id')
 
-    //     additionalMethods.push(
-    //       new Method(
-    //         BRUSH_NAME,
-    //         false,
-    //         true,
-    //         `#[ink(message)]\n\t\t#[${BRUSH_NAME}::modifiers(${
-    //           security === 'ownable' ? 'only_owner' : 'only_role(MANAGER)'
-    //         })]`,
-    //         'mint',
-    //         args,
-    //         `Result<(), ${standardName.toUpperCase()}Error>`,
-    //         `self._mint${
-    //           standardName !== 'psp22' ? '_to' : version < 'v2.3.0' ? '' : '_to'
-    //         }(account, ${
-    //           standardName === 'psp22'
-    //             ? 'amount'
-    //             : standardName === 'psp34'
-    //             ? 'id'
-    //             : 'ids_amounts'
-    //         })`
-    //       )
-    //     )
-    //   }
+        additionalMethods.push(
+          new Method(
+            BRUSH_NAME,
+            false,
+            true,
+            `#[ink(message)]\n\t\t#[${BRUSH_NAME}::modifiers(${
+              security === 'ownable' ? 'only_owner' : 'only_role(MANAGER)'
+            })]`,
+            'mint',
+            args,
+            `Result<(), ${standardName.toUpperCase()}Error>`,
+            `self._mint${
+              standardName !== 'psp22' ? '_to' : VERSION < 'v2.3.0' ? '' : '_to'
+            }(account, ${
+              standardName === 'psp22'
+                ? 'amount'
+                : standardName === 'psp34'
+                ? 'id'
+                : 'ids_amounts'
+            })`
+          )
+        )
+      }
 
-    //   mintableExtension.setImpl(
-    //     new TraitImpl(
-    //       `${standardName.toUpperCase()}Mintable`,
-    //       contractName,
-    //       additionalMethods
-    //     )
-    //   )
+      mintableExtension.setImpl(
+        new TraitImpl(
+          `${standardName.toUpperCase()}Mintable`,
+          CONTRACT_NAME,
+          additionalMethods
+        )
+      )
 
-    //   if (standardName === 'psp34') {
-    //     mintableExtension.addConstructorAction(
-    //       '_instance._mint_to(_instance.env().caller(), Id::U8(1)).expect("Can mint");'
-    //     )
-    //   }
+      if (standardName === 'psp34') {
+        mintableExtension.addConstructorAction(
+          '_instance._mint_to(_instance.env().caller(), Id::U8(1)).expect("Can mint");'
+        )
+      }
 
-    //   return mintableExtension.getExtension()
-    // case 'Enumerable':
-    //   const enumerableExtension = new ExtensionBuilder()
+      return mintableExtension.getExtension()
+    case 'Enumerable':
+      const enumerableExtension = new ExtensionBuilder()
 
-    //   enumerableExtension.setName('Enumerable')
-    //   enumerableExtension.addBrushImport(
-    //     new Import(
-    //       `${BRUSH_NAME}::contracts::${standardName}::extensions::enumerable::*`
-    //     )
-    //   )
-    //   if (version < 'v2.1.0') {
-    //     const enumerableStorage = new StorageBuilder()
-    //     enumerableStorage.constructDefaultStorage(
-    //       'Enumerable',
-    //       version,
-    //       standardName
-    //     )
-    //     enumerableExtension.setStorage(enumerableStorage.getStorage())
-    //   }
+      enumerableExtension.setName('Enumerable')
+      enumerableExtension.addBrushImport(
+        new Import(
+          `${BRUSH_NAME}::contracts::${standardName}::extensions::enumerable::*`
+        )
+      )
+      if (VERSION < 'v2.1.0') {
+        const enumerableStorage = new StorageBuilder()
+        enumerableStorage.constructDefaultStorage(
+          'Enumerable',
+          VERSION,
+          standardName
+        )
+        enumerableExtension.setStorage(enumerableStorage.getStorage())
+      }
 
-    //   enumerableExtension.setImpl(
-    //     new TraitImpl(
-    //       `${standardName.toUpperCase()}Enumerable`,
-    //       contractName,
-    //       additionalMethods
-    //     )
-    //   )
+      enumerableExtension.setImpl(
+        new TraitImpl(
+          `${standardName.toUpperCase()}Enumerable`,
+          CONTRACT_NAME,
+          additionalMethods
+        )
+      )
 
-    //   return enumerableExtension.getExtension()
-    // case 'Pausable':
-    //   const pausableExtension = new ExtensionBuilder()
+      return enumerableExtension.getExtension()
+    case 'Pausable':
+      const pausableExtension = new ExtensionBuilder()
 
-    //   pausableExtension.setName('Pausable')
-    //   pausableExtension.addBrushImport(
-    //     new Import(`${BRUSH_NAME}::contracts::pausable::*`)
-    //   )
+      pausableExtension.setName('Pausable')
+      pausableExtension.addBrushImport(
+        new Import(`${BRUSH_NAME}::contracts::pausable::*`)
+      )
 
-    //   const pausableStorage = new StorageBuilder()
-    //   pausableStorage.constructDefaultStorage('Pausable', version)
-    //   pausableExtension.setStorage(pausableStorage.getStorage())
+      const pausableStorage = new StorageBuilder()
+      pausableStorage.constructDefaultStorage('Pausable', VERSION)
+      pausableExtension.setStorage(pausableStorage.getStorage())
 
-    //   pausableExtension.setImpl(
-    //     new TraitImpl(`Pausable`, contractName, additionalMethods)
-    //   )
-    //   pausableExtension.addContractMethod(
-    //     new Method(
-    //       BRUSH_NAME,
-    //       true,
-    //       true,
-    //       `#[ink(message)]${
-    //         security
-    //           ? `\n\t\t#[${BRUSH_NAME}::modifiers(${
-    //               security === 'ownable' ? 'only_owner' : 'only_role(MANAGER)'
-    //             })]`
-    //           : ''
-    //       }`,
-    //       'change_state',
-    //       [],
-    //       `Result<(), ${standardName.toUpperCase()}Error>`,
-    //       `if self.paused() {
-    //             self._unpause()
-    //         } else {
-    //             self._pause()
-    //         }`
-    //     )
-    //   )
+      pausableExtension.setImpl(
+        new TraitImpl(`Pausable`, CONTRACT_NAME, additionalMethods)
+      )
+      pausableExtension.addContractMethod(
+        new Method(
+          BRUSH_NAME,
+          true,
+          true,
+          `#[ink(message)]${
+            security
+              ? `\n\t\t#[${BRUSH_NAME}::modifiers(${
+                  security === 'ownable' ? 'only_owner' : 'only_role(MANAGER)'
+                })]`
+              : ''
+          }`,
+          'change_state',
+          [],
+          `Result<(), ${standardName.toUpperCase()}Error>`,
+          `if self.paused() {
+                self._unpause()
+            } else {
+                self._pause()
+            }`
+        )
+      )
 
-    //   return pausableExtension.getExtension()
-    // case 'Metadata':
-    //   const metadataExtension = new ExtensionBuilder()
+      return pausableExtension.getExtension()
+    case 'Metadata':
+      const metadataExtension = new ExtensionBuilder()
 
-    //   metadataExtension.setName('Metadata')
-    //   metadataExtension.addBrushImport(
-    //     new Import(
-    //       `${BRUSH_NAME}::contracts::${standardName}::extensions::metadata::*`
-    //     )
-    //   )
+      metadataExtension.setName('Metadata')
+      metadataExtension.addBrushImport(
+        new Import(
+          `${BRUSH_NAME}::contracts::${standardName}::extensions::metadata::*`
+        )
+      )
 
-    //   const metadataStorage = new StorageBuilder()
-    //   metadataStorage.constructDefaultStorage('Metadata', version, standardName)
-    //   metadataExtension.setStorage(metadataStorage.getStorage())
+      const metadataStorage = new StorageBuilder()
+      metadataStorage.constructDefaultStorage('Metadata', VERSION, standardName)
+      metadataExtension.setStorage(metadataStorage.getStorage())
 
-    //   metadataExtension.setImpl(
-    //     new TraitImpl(
-    //       `${standardName.toUpperCase()}Metadata`,
-    //       contractName,
-    //       additionalMethods
-    //     )
-    //   )
+      metadataExtension.setImpl(
+        new TraitImpl(
+          `${standardName.toUpperCase()}Metadata`,
+          CONTRACT_NAME,
+          additionalMethods
+        )
+      )
 
-    //   if (standardName === 'psp22') {
-    //     metadataExtension.addConstructorArg('name: Option<String>')
-    //     metadataExtension.addConstructorArg('symbol: Option<String>')
-    //     metadataExtension.addConstructorArg('decimal: u8')
+      if (standardName === 'psp22') {
+        metadataExtension.addConstructorArg('name: Option<String>')
+        metadataExtension.addConstructorArg('symbol: Option<String>')
+        metadataExtension.addConstructorArg('decimal: u8')
 
-    //     metadataExtension.addConstructorAction(
-    //       '_instance.metadata.name = name;'
-    //     )
-    //     metadataExtension.addConstructorAction(
-    //       '_instance.metadata.symbol = symbol;'
-    //     )
-    //     metadataExtension.addConstructorAction(
-    //       '_instance.metadata.decimals = decimal;'
-    //     )
-    //   }
+        metadataExtension.addConstructorAction(
+          '_instance.metadata.name = name;'
+        )
+        metadataExtension.addConstructorAction(
+          '_instance.metadata.symbol = symbol;'
+        )
+        metadataExtension.addConstructorAction(
+          '_instance.metadata.decimals = decimal;'
+        )
+      }
 
-    //   if (
-    //     version < 'v2.1.0' &&
-    //     (standardName === 'psp37' ||
-    //       standardName === 'psp35' ||
-    //       standardName === 'psp1155')
-    //   ) {
-    //     metadataExtension.addConstructorArg('uri: Option<String>')
-    //     metadataExtension.addConstructorAction('_instance.metadata.uri = uri;')
-    //   }
+      if (VERSION < 'v2.1.0' && standardName === 'psp37') {
+        metadataExtension.addConstructorArg('uri: Option<String>')
+        metadataExtension.addConstructorAction('_instance.metadata.uri = uri;')
+      }
 
-    //   if (standardName === 'psp34') {
-    //     metadataExtension.addConstructorAction(
-    //       'let collection_id = _instance.collection_id();'
-    //     )
-    //     metadataExtension.addConstructorAction(
-    //       `_instance._set_attribute(collection_id.clone(), String::from("name")${
-    //         version <= 'v2.2.0' ? '.into_bytes()' : ''
-    //       }, String::from("MyPSP34")${
-    //         version <= 'v2.2.0' ? '.into_bytes()' : ''
-    //       });`
-    //     )
-    //     metadataExtension.addConstructorAction(
-    //       `_instance._set_attribute(collection_id, String::from("symbol")${
-    //         version <= 'v2.2.0' ? '.into_bytes()' : ''
-    //       }, String::from("MPSP")${
-    //         version <= 'v2.2.0' ? '.into_bytes()' : ''
-    //       });`
-    //     )
-    //   }
+      if (standardName === 'psp34') {
+        metadataExtension.addConstructorAction(
+          'let collection_id = _instance.collection_id();'
+        )
+        metadataExtension.addConstructorAction(
+          `_instance._set_attribute(collection_id.clone(), String::from("name")${
+            VERSION <= 'v2.2.0' ? '.into_bytes()' : ''
+          }, String::from("MyPSP34")${
+            VERSION <= 'v2.2.0' ? '.into_bytes()' : ''
+          });`
+        )
+        metadataExtension.addConstructorAction(
+          `_instance._set_attribute(collection_id, String::from("symbol")${
+            VERSION <= 'v2.2.0' ? '.into_bytes()' : ''
+          }, String::from("MPSP")${
+            VERSION <= 'v2.2.0' ? '.into_bytes()' : ''
+          });`
+        )
+      }
 
-    //   return metadataExtension.getExtension()
-    // case 'FlashMint':
-    //   const flashMintExtension = new ExtensionBuilder()
+      return metadataExtension.getExtension()
+    case 'FlashMint':
+      const flashMintExtension = new ExtensionBuilder()
 
-    //   flashMintExtension.setName('FlashMint')
-    //   flashMintExtension.addBrushImport(
-    //     new Import(
-    //       `${BRUSH_NAME}::contracts::${standardName}::extensions::flashmint::*`
-    //     )
-    //   )
-    //   flashMintExtension.setImpl(
-    //     new TraitImpl(`FlashLender`, contractName, additionalMethods)
-    //   )
+      flashMintExtension.setName('FlashMint')
+      flashMintExtension.addBrushImport(
+        new Import(
+          `${BRUSH_NAME}::contracts::${standardName}::extensions::flashmint::*`
+        )
+      )
+      flashMintExtension.setImpl(
+        new TraitImpl(`FlashLender`, CONTRACT_NAME, additionalMethods)
+      )
 
-    //   return flashMintExtension.getExtension()
-    // case 'Wrapper':
-    //   const wrapperExtension = new ExtensionBuilder()
+      return flashMintExtension.getExtension()
+    case 'Wrapper':
+      const wrapperExtension = new ExtensionBuilder()
 
-    //   wrapperExtension.setName('Wrapper')
-    //   wrapperExtension.addBrushImport(
-    //     new Import(
-    //       `${BRUSH_NAME}::contracts::${standardName}::extensions::wrapper::*`
-    //     )
-    //   )
+      wrapperExtension.setName('Wrapper')
+      wrapperExtension.addBrushImport(
+        new Import(
+          `${BRUSH_NAME}::contracts::${standardName}::extensions::wrapper::*`
+        )
+      )
 
-    //   const wrapperStorage = new StorageBuilder()
-    //   wrapperStorage.constructDefaultStorage('Wrapper', version, standardName)
-    //   wrapperExtension.setStorage(wrapperStorage.getStorage())
+      const wrapperStorage = new StorageBuilder()
+      wrapperStorage.constructDefaultStorage('Wrapper', VERSION, standardName)
+      wrapperExtension.setStorage(wrapperStorage.getStorage())
 
-    //   wrapperExtension.setImpl(
-    //     new TraitImpl(
-    //       `${standardName.toUpperCase()}Wrapper`,
-    //       contractName,
-    //       additionalMethods
-    //     )
-    //   )
+      wrapperExtension.setImpl(
+        new TraitImpl(
+          `${standardName.toUpperCase()}Wrapper`,
+          CONTRACT_NAME,
+          additionalMethods
+        )
+      )
 
-    //   return wrapperExtension.getExtension()
-    // case 'Capped':
-    //   const cappedExtension = new ExtensionBuilder()
+      return wrapperExtension.getExtension()
+    case 'Capped':
+      const cappedExtension = new ExtensionBuilder()
 
-    //   const cappedStorage = new StorageBuilder()
-    //   cappedStorage.setName('cap')
-    //   cappedStorage.setType('Balance')
+      const cappedStorage = new StorageBuilder()
+      cappedStorage.setName('cap')
+      cappedStorage.setType('Balance')
 
-    //   cappedExtension.setStorage(cappedStorage.getStorage())
+      cappedExtension.setStorage(cappedStorage.getStorage())
 
-    //   cappedExtension.setName('Capped')
-    //   cappedExtension.addContractMethod(
-    //     new Method(
-    //       BRUSH_NAME,
-    //       true,
-    //       false,
-    //       `#[ink(message)]`,
-    //       'cap',
-    //       [],
-    //       'Balance',
-    //       `self.cap`
-    //     )
-    //   )
-    //   cappedExtension.addContractMethod(
-    //     new Method(
-    //       BRUSH_NAME,
-    //       false,
-    //       true,
-    //       null,
-    //       '_init_cap',
-    //       ['cap: Balance'],
-    //       `Result<(), ${standardName.toUpperCase()}Error>`,
-    //       `if cap <= 0 {
-    //             return Err(PSP22Error::Custom(String::from("Cap must be above 0")))
-    //         }
-    //         self.cap = cap;
-    //         Ok(())`
-    //     )
-    //   )
+      cappedExtension.setName('Capped')
+      cappedExtension.addContractMethod(
+        new Method(
+          BRUSH_NAME,
+          true,
+          false,
+          `#[ink(message)]`,
+          'cap',
+          [],
+          'Balance',
+          `self.cap`
+        )
+      )
+      cappedExtension.addContractMethod(
+        new Method(
+          BRUSH_NAME,
+          false,
+          true,
+          null,
+          '_init_cap',
+          ['cap: Balance'],
+          `Result<(), ${standardName.toUpperCase()}Error>`,
+          `if cap <= 0 {
+                return Err(PSP22Error::Custom(String::from("Cap must be above 0")))
+            }
+            self.cap = cap;
+            Ok(())`
+        )
+      )
 
-    //   return cappedExtension.getExtension()
+      return cappedExtension.getExtension()
   }
 }
