@@ -438,7 +438,7 @@ export class Import {
 export class TraitImpl {
   traitName = ''
   structName = ''
-  methods = Array<Method>
+  methods: Array<Method> = []
 
   constructor(traitName: string, structName: string, methods: Array<Method>) {
     this.traitName = traitName
