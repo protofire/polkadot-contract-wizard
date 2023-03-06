@@ -69,35 +69,31 @@ export class ExtensionBuilder {
     this.#extension.name = name
   }
 
-  addInkImport(inkImport) {
+  addInkImport(inkImport: Import) {
     this.#extension.inkImports.push(inkImport)
   }
 
-  addBrushImport(brushImport) {
+  addBrushImport(brushImport: Import) {
     this.#extension.brushImports.push(brushImport)
   }
 
-  setImpl(impl) {
+  setImpl(impl: TraitImpl) {
     this.#extension.impl = impl
   }
 
-  addAdditionalImpl(impl) {
-    this.#extension.additionalImpls.push(impl)
-  }
-
-  setStorage(storage) {
+  setStorage(storage: Storage) {
     this.#extension.storage = storage
   }
 
-  addConstructorArg(arg) {
+  addConstructorArg(arg: string) {
     this.#extension.constructorArgs.push(arg)
   }
 
-  addConstructorAction(action) {
+  addConstructorAction(action: string) {
     this.#extension.constructorActions.push(action)
   }
 
-  addContractMethod(method) {
+  addContractMethod(method: string) {
     this.#extension.contractMethods.push(method)
   }
 
@@ -113,7 +109,7 @@ export class StorageBuilder {
     this.#storage = new Storage()
   }
 
-  constructDefaultStorage(name, version, standard = '') {
+  constructDefaultStorage(name: string, version: string, standard = '') {
     this.#storage.derive =
       version < 'v2.2.0' ? `${standard.toUpperCase()}${name}Storage` : null
     this.#storage.field = `\t#[${
@@ -128,19 +124,19 @@ export class StorageBuilder {
         : `${name.toLowerCase()}::Data`
   }
 
-  setDerive(derive) {
+  setDerive(derive: string) {
     this.#storage.derive = derive
   }
 
-  setField(field) {
+  setField(field: string) {
     this.#storage.field = field
   }
 
-  setName(name) {
+  setName(name: string) {
     this.#storage.name = name
   }
 
-  setType(type) {
+  setType(type: string) {
     this.#storage.type = type
   }
 
@@ -258,7 +254,7 @@ export class Contract {
       this.extensions
         ? this.extensions
             .filter(e => e.storage)
-            .map(e => `${e.storage.toString()}`)
+            .map(e => `${(e.storage as Storage).toString()}`)
             .join('\n')
         : ''
     }`
@@ -275,7 +271,7 @@ export class Contract {
       this.extensions
         ? this.extensions
             .filter(e => e.impl)
-            .map(e => `\t${e.impl.toString()}`)
+            .map(e => `\t${(e.impl as TraitImpl).toString()}`)
             .join('\n')
         : ''
     }`
@@ -400,19 +396,19 @@ export class Contract {
 
 export class Extension {
   name: string
-  inkImports: never[]
-  brushImports: never[]
-  storage: null
-  impl: null
-  constructorArgs: never[]
-  constructorActions: never[]
-  contractMethods: never[]
+  inkImports: Import[]
+  brushImports: Import[]
+  storage: Storage | undefined
+  impl: TraitImpl | undefined
+  constructorArgs: string[]
+  constructorActions: string[]
+  contractMethods: string[]
   constructor() {
     this.name = ''
     this.inkImports = []
     this.brushImports = []
-    this.storage = null
-    this.impl = null
+    this.storage = undefined
+    this.impl = undefined
     this.constructorArgs = []
     this.constructorActions = []
     this.contractMethods = []
@@ -428,9 +424,9 @@ export class Extension {
 }
 
 export class Import {
-  path = null
+  path
 
-  constructor(path) {
+  constructor(path: string) {
     this.path = path
   }
 
@@ -442,9 +438,9 @@ export class Import {
 export class TraitImpl {
   traitName = ''
   structName = ''
-  methods = []
+  methods = Array<Method>
 
-  constructor(traitName, structName, methods) {
+  constructor(traitName: string, structName: string, methods: Array<Method>) {
     this.traitName = traitName
     this.structName = structName
     this.methods = methods
@@ -460,7 +456,7 @@ export class TraitImpl {
 }
 
 export class Storage {
-  derive: string
+  derive: string | null
   field: string
   name: string
   type: string
@@ -482,21 +478,21 @@ export class Method {
   brushName = ''
   isPublic = false
   mutating = false
-  derives = null
+  derives: string | null = null
   name = ''
-  args = []
-  return_type = null
-  body = ''
+  args: string[] = []
+  return_type: string | null = null
+  body: string | null = ''
 
   constructor(
-    brushName,
-    isPublic,
-    mutating,
-    derives,
-    name,
-    args,
-    return_type,
-    body
+    brushName: string,
+    isPublic: boolean,
+    mutating: boolean,
+    derives: string | null,
+    name: string,
+    args: string[],
+    return_type: string,
+    body: string | null
   ) {
     this.brushName = brushName
     this.isPublic = isPublic
