@@ -57,139 +57,62 @@ export function getExtensions(data: ContractConfig, standardName: TokenType) {
 
     usesStandardExtensions = true
   }
-  //   // Mintable extension
-  //   if (
-  //     output.currentControlsState.find(
-  //       (x: { name: string }) => x.name === 'Mintable'
-  //     )?.state
-  //   ) {
-  //     extensions.push(
-  //       generateExtension(
-  //         'Mintable',
-  //         standardName,
-  //         contractName,
-  //         version,
-  //         output.security,
-  //         []
-  //       )
-  //     )
+  // Mintable extension
+  if (data.extensions.Mintable) {
+    extensions.push(
+      generateExtension('Mintable', standardName, data.security, [])
+    )
 
-  //     usesStandardExtensions = true
-  //   }
-  //   // Enumerable extension psp34 > v1.5.0
-  //   if (
-  //     output.currentControlsState.find(
-  //       (x: { name: string }) => x.name === 'Enumerable'
-  //     )?.state
-  //   ) {
-  //     extensions.push(
-  //       generateExtension(
-  //         'Enumerable',
-  //         standardName,
-  //         contractName,
-  //         version,
-  //         output.security,
-  //         []
-  //       )
-  //     )
+    usesStandardExtensions = true
+  }
+  // Enumerable extension psp34 > v1.5.0
+  if (data.extensions.Enumerable === true) {
+    extensions.push(
+      generateExtension('Enumerable', standardName, data.security, [])
+    )
 
-  //     usesStandardExtensions = true
-  //   }
-  //   // Pausable extension
-  //   if (
-  //     output.currentControlsState.find(
-  //       (x: { name: string }) => x.name === 'Pausable'
-  //     )?.state
-  //   ) {
-  //     extensions.push(
-  //       generateExtension(
-  //         'Pausable',
-  //         standardName,
-  //         contractName,
-  //         version,
-  //         output.security,
-  //         []
-  //       )
-  //     )
+    usesStandardExtensions = true
+  }
+  // Pausable extension
+  if (data.extensions.Pausable) {
+    extensions.push(
+      generateExtension('Pausable', standardName, data.security, [])
+    )
 
-  //     usesStandardExtensions = true
-  //   }
-  //   // Metadata extension
-  //   if (
-  //     output.currentControlsState.find(
-  //       (x: { name: string }) => x.name === 'Metadata'
-  //     )?.state
-  //   ) {
-  //     extensions.push(
-  //       generateExtension(
-  //         'Metadata',
-  //         standardName,
-  //         contractName,
-  //         version,
-  //         output.security,
-  //         []
-  //       )
-  //     )
+    usesStandardExtensions = true
+  }
+  // Metadata extension
+  if (data.extensions.Metadata) {
+    extensions.push(
+      generateExtension('Metadata', standardName, data.security, [])
+    )
 
-  //     usesStandardExtensions = true
-  //   }
-  //   // Flashmint extension
-  //   if (
-  //     output.currentControlsState.find(
-  //       (x: { name: string }) => x.name === 'FlashMint'
-  //     )?.state
-  //   ) {
-  //     extensions.push(
-  //       generateExtension(
-  //         'FlashMint',
-  //         standardName,
-  //         contractName,
-  //         version,
-  //         output.security,
-  //         []
-  //       )
-  //     )
+    usesStandardExtensions = true
+  }
+  // Flashmint extension
+  if (data.extensions.FlashMint) {
+    extensions.push(
+      generateExtension('FlashMint', standardName, data.security, [])
+    )
 
-  //     usesStandardExtensions = true
-  //   }
-  //   // Wrapper extension
-  //   if (
-  //     output.currentControlsState.find(
-  //       (x: { name: string }) => x.name === 'Wrapper'
-  //     )?.state
-  //   ) {
-  //     extensions.push(
-  //       generateExtension(
-  //         'Wrapper',
-  //         standardName,
-  //         contractName,
-  //         version,
-  //         output.security,
-  //         []
-  //       )
-  //     )
+    usesStandardExtensions = true
+  }
+  // Wrapper extension
+  if (data.extensions.Wrapper) {
+    extensions.push(
+      generateExtension('Wrapper', standardName, data.security, [])
+    )
 
-  //     usesStandardExtensions = true
-  //   }
-  //   // Capped extension
-  //   if (
-  //     output.currentControlsState.find(
-  //       (x: { name: string }) => x.name === 'Capped'
-  //     )?.state
-  //   ) {
-  //     extensions.push(
-  //       generateExtension(
-  //         'Capped',
-  //         standardName,
-  //         contractName,
-  //         version,
-  //         output.security,
-  //         []
-  //       )
-  //     )
+    usesStandardExtensions = true
+  }
+  // Capped extension
+  if (data.extensions.Capped) {
+    extensions.push(
+      generateExtension('Capped', standardName, data.security, [])
+    )
 
-  //     usesStandardExtensions = true
-  //   }
+    usesStandardExtensions = true
+  }
 
   return { extensions, usesStandardExtensions }
 }
