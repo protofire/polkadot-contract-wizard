@@ -43,25 +43,12 @@ export function getExtensions(data: ContractConfig, standardName: TokenType) {
     usesStandardExtensions = true
   }
 
-  //   // Batch extension
-  //   if (
-  //     output.currentControlsState.find(
-  //       (x: { name: string }) => x.name === 'Batch'
-  //     )?.state
-  //   ) {
-  //     extensions.push(
-  //       generateExtension(
-  //         'Batch',
-  //         standardName,
-  //         contractName,
-  //         version,
-  //         output.security,
-  //         []
-  //       )
-  //     )
+  // Batch extension
+  if (data.extensions.Batch === true) {
+    extensions.push(generateExtension('Batch', standardName, data.security, []))
 
-  //     usesStandardExtensions = true
-  //   }
+    usesStandardExtensions = true
+  }
   //   // Burnable extension
   //   if (
   //     output.currentControlsState.find(
@@ -220,8 +207,8 @@ export function getExtensions(data: ContractConfig, standardName: TokenType) {
 
 export function securityImports(
   extensionName: string,
-  standardName: TokenType | undefined,
-  security: string,
+  standardName: TokenType,
+  security: string | undefined,
   additionalMethods: Method[]
 ) {
   switch (extensionName) {
@@ -321,8 +308,8 @@ export function securityImports(
 
 export function generateExtension(
   extensionName: string,
-  standardName: TokenType | undefined,
-  security: string,
+  standardName: TokenType,
+  security: string | undefined,
   additionalMethods: Method[]
 ) {
   switch (extensionName) {
@@ -337,429 +324,338 @@ export function generateExtension(
       batchExtension.setImpl(
         new TraitImpl(
           `${standardName.toUpperCase()}Batch`,
-          contractName,
+          CONTRACT_NAME,
           additionalMethods
         )
       )
 
       return batchExtension.getExtension()
-    case 'Burnable':
-      const burnableExtension = new ExtensionBuilder()
-      burnableExtension.setName('Burnable')
-      burnableExtension.addBrushImport(
-        new Import(
-          `${BRUSH_NAME}::contracts::${standardName}::extensions::burnable::*`
-        )
-      )
-
-      if (security && security !== 'none') {
-        const args = []
-        args.push('account: AccountId')
-
-        if (standardName === 'psp22') args.push('amount: Balance')
-        if (
-          standardName === 'psp37' ||
-          standardName === 'psp1155' ||
-          standardName === 'psp35'
-        )
-          args.push('ids_amounts: Vec<(Id, Balance)>')
-        if (standardName === 'psp34') args.push('id: Id')
-
-        additionalMethods.push(
-          new Method(
-            BRUSH_NAME,
-            false,
-            true,
-            `#[ink(message)]\n\t\t#[${BRUSH_NAME}::modifiers(${
-              security === 'ownable' ? 'only_owner' : 'only_role(MANAGER)'
-            })]`,
-            'burn',
-            args,
-            `Result<(), ${standardName.toUpperCase()}Error>`,
-            `self._burn_from(account, ${
-              standardName === 'psp22'
-                ? 'amount'
-                : standardName === 'psp34'
-                ? 'id'
-                : 'ids_amounts'
-            })`
-          )
-        )
-      }
-
-      burnableExtension.setImpl(
-        new TraitImpl(
-          `${standardName.toUpperCase()}Burnable`,
-          contractName,
-          additionalMethods
-        )
-      )
-
-      return burnableExtension.getExtension()
-    case 'Mintable':
-      const mintableExtension = new ExtensionBuilder()
-      mintableExtension.setName('Mintable')
-      mintableExtension.addBrushImport(
-        new Import(
-          `${BRUSH_NAME}::contracts::${standardName}::extensions::mintable::*`
-        )
-      )
-
-      if (security && security !== 'none') {
-        const args = []
-        args.push('account: AccountId')
-
-        if (standardName === 'psp22') args.push('amount: Balance')
-        if (
-          standardName === 'psp37' ||
-          standardName === 'psp1155' ||
-          standardName === 'psp35'
-        )
-          args.push('ids_amounts: Vec<(Id, Balance)>')
-        if (standardName === 'psp34') args.push('id: Id')
-
-        additionalMethods.push(
-          new Method(
-            BRUSH_NAME,
-            false,
-            true,
-            `#[ink(message)]\n\t\t#[${BRUSH_NAME}::modifiers(${
-              security === 'ownable' ? 'only_owner' : 'only_role(MANAGER)'
-            })]`,
-            'mint',
-            args,
-            `Result<(), ${standardName.toUpperCase()}Error>`,
-            `self._mint${
-              standardName !== 'psp22' ? '_to' : version < 'v2.3.0' ? '' : '_to'
-            }(account, ${
-              standardName === 'psp22'
-                ? 'amount'
-                : standardName === 'psp34'
-                ? 'id'
-                : 'ids_amounts'
-            })`
-          )
-        )
-      }
-
-      mintableExtension.setImpl(
-        new TraitImpl(
-          `${standardName.toUpperCase()}Mintable`,
-          contractName,
-          additionalMethods
-        )
-      )
-
-      if (standardName === 'psp34') {
-        mintableExtension.addConstructorAction(
-          '_instance._mint_to(_instance.env().caller(), Id::U8(1)).expect("Can mint");'
-        )
-      }
-
-      return mintableExtension.getExtension()
-    // case 'ownable':
-    //   const ownableExtension = new ExtensionBuilder()
-    //   ownableExtension.setName('Ownable')
-    //   ownableExtension.addBrushImport(
-    //     new Import(`${BRUSH_NAME}::contracts::ownable::*`)
-    //   )
-
-    //   const ownableStorage = new StorageBuilder()
-    //   ownableStorage.constructDefaultStorage('Ownable', version)
-    //   ownableExtension.setStorage(ownableStorage.getStorage())
-
-    //   ownableExtension.setImpl(
-    //     new TraitImpl(`Ownable`, contractName, additionalMethods)
-    //   )
-    //   ownableExtension.addConstructorAction(
-    //     '_instance._init_with_owner(_instance.env().caller());'
-    //   )
-
-    //   return ownableExtension.getExtension()
-    // case 'access_control':
-    //   const accessControlExtension = new ExtensionBuilder()
-
-    //   accessControlExtension.setName('AccessControl')
-    //   accessControlExtension.addBrushImport(
-    //     new Import(`${BRUSH_NAME}::contracts::access_control::*`)
-    //   )
-
-    //   const accessControlStorage = new StorageBuilder()
-    //   accessControlStorage.constructDefaultStorage('AccessControl', version)
-    //   if (version > 'v2.1.0')
-    //     accessControlStorage.setType('access_control::Data')
-    //   accessControlStorage.setName('access')
-    //   accessControlExtension.setStorage(accessControlStorage.getStorage())
-
-    //   accessControlExtension.setImpl(
-    //     new TraitImpl(`AccessControl`, contractName, additionalMethods)
-    //   )
-    //   accessControlExtension.addConstructorAction(
-    //     '_instance._init_with_admin(_instance.env().caller());'
-    //   )
-    //   accessControlExtension.addConstructorAction(
-    //     '_instance.grant_role(MANAGER, _instance.env().caller()).expect("Should grant MANAGER role");'
-    //   )
-
-    //   return accessControlExtension.getExtension()
-    // case 'access_control_enumerable':
-    //   const accessControlEnumerableExtension = new ExtensionBuilder()
-    //   accessControlEnumerableExtension.setName('AccessControlEnumerable')
-    //   accessControlEnumerableExtension.addBrushImport(
+    // case 'Burnable':
+    //   const burnableExtension = new ExtensionBuilder()
+    //   burnableExtension.setName('Burnable')
+    //   burnableExtension.addBrushImport(
     //     new Import(
-    //       `${BRUSH_NAME}::contracts::access_control::extensions::enumerable::*`
+    //       `${BRUSH_NAME}::contracts::${standardName}::extensions::burnable::*`
     //     )
     //   )
 
-    //   const accessControlEnumerableStorage = new StorageBuilder()
+    //   if (security && security !== 'none') {
+    //     const args = []
+    //     args.push('account: AccountId')
 
-    //   if (version < 'v2.2.0')
-    //     accessControlEnumerableStorage.setDerive('AccessControlStorage')
-    //   accessControlEnumerableStorage.setField(
-    //     `\t#[${
-    //       version < 'v2.2.0' ? 'AccessControlStorageField' : 'storage_field'
-    //     }]`
-    //   )
-    //   accessControlEnumerableStorage.setName('access')
-    //   accessControlEnumerableStorage.setType(
-    //     `${
-    //       version < 'v2.2.0'
-    //         ? 'AccessControlData<EnumerableMembers>'
-    //         : 'access_control::Data<Members>'
-    //     }`
-    //   )
+    //     if (standardName === 'psp22') args.push('amount: Balance')
+    //     if (
+    //       standardName === 'psp37' ||
+    //       standardName === 'psp1155' ||
+    //       standardName === 'psp35'
+    //     )
+    //       args.push('ids_amounts: Vec<(Id, Balance)>')
+    //     if (standardName === 'psp34') args.push('id: Id')
 
-    //   accessControlEnumerableExtension.setStorage(
-    //     accessControlEnumerableStorage.getStorage()
-    //   )
+    //     additionalMethods.push(
+    //       new Method(
+    //         BRUSH_NAME,
+    //         false,
+    //         true,
+    //         `#[ink(message)]\n\t\t#[${BRUSH_NAME}::modifiers(${
+    //           security === 'ownable' ? 'only_owner' : 'only_role(MANAGER)'
+    //         })]`,
+    //         'burn',
+    //         args,
+    //         `Result<(), ${standardName.toUpperCase()}Error>`,
+    //         `self._burn_from(account, ${
+    //           standardName === 'psp22'
+    //             ? 'amount'
+    //             : standardName === 'psp34'
+    //             ? 'id'
+    //             : 'ids_amounts'
+    //         })`
+    //       )
+    //     )
+    //   }
 
-    //   accessControlEnumerableExtension.setImpl(
+    //   burnableExtension.setImpl(
     //     new TraitImpl(
-    //       `AccessControlEnumerable`,
+    //       `${standardName.toUpperCase()}Burnable`,
     //       contractName,
     //       additionalMethods
     //     )
     //   )
-    //   accessControlEnumerableExtension.addConstructorAction(
-    //     '_instance._init_with_admin(_instance.env().caller());'
+
+    //   return burnableExtension.getExtension()
+    // case 'Mintable':
+    //   const mintableExtension = new ExtensionBuilder()
+    //   mintableExtension.setName('Mintable')
+    //   mintableExtension.addBrushImport(
+    //     new Import(
+    //       `${BRUSH_NAME}::contracts::${standardName}::extensions::mintable::*`
+    //     )
     //   )
-    //   accessControlEnumerableExtension.addConstructorAction(
-    //     '_instance.grant_role(MANAGER, _instance.env().caller()).expect("Should grant MANAGER role");'
+
+    //   if (security && security !== 'none') {
+    //     const args = []
+    //     args.push('account: AccountId')
+
+    //     if (standardName === 'psp22') args.push('amount: Balance')
+    //     if (
+    //       standardName === 'psp37' ||
+    //       standardName === 'psp1155' ||
+    //       standardName === 'psp35'
+    //     )
+    //       args.push('ids_amounts: Vec<(Id, Balance)>')
+    //     if (standardName === 'psp34') args.push('id: Id')
+
+    //     additionalMethods.push(
+    //       new Method(
+    //         BRUSH_NAME,
+    //         false,
+    //         true,
+    //         `#[ink(message)]\n\t\t#[${BRUSH_NAME}::modifiers(${
+    //           security === 'ownable' ? 'only_owner' : 'only_role(MANAGER)'
+    //         })]`,
+    //         'mint',
+    //         args,
+    //         `Result<(), ${standardName.toUpperCase()}Error>`,
+    //         `self._mint${
+    //           standardName !== 'psp22' ? '_to' : version < 'v2.3.0' ? '' : '_to'
+    //         }(account, ${
+    //           standardName === 'psp22'
+    //             ? 'amount'
+    //             : standardName === 'psp34'
+    //             ? 'id'
+    //             : 'ids_amounts'
+    //         })`
+    //       )
+    //     )
+    //   }
+
+    //   mintableExtension.setImpl(
+    //     new TraitImpl(
+    //       `${standardName.toUpperCase()}Mintable`,
+    //       contractName,
+    //       additionalMethods
+    //     )
     //   )
 
-    //   return accessControlEnumerableExtension.getExtension()
-    case 'Enumerable':
-      const enumerableExtension = new ExtensionBuilder()
+    //   if (standardName === 'psp34') {
+    //     mintableExtension.addConstructorAction(
+    //       '_instance._mint_to(_instance.env().caller(), Id::U8(1)).expect("Can mint");'
+    //     )
+    //   }
 
-      enumerableExtension.setName('Enumerable')
-      enumerableExtension.addBrushImport(
-        new Import(
-          `${BRUSH_NAME}::contracts::${standardName}::extensions::enumerable::*`
-        )
-      )
-      if (version < 'v2.1.0') {
-        const enumerableStorage = new StorageBuilder()
-        enumerableStorage.constructDefaultStorage(
-          'Enumerable',
-          version,
-          standardName
-        )
-        enumerableExtension.setStorage(enumerableStorage.getStorage())
-      }
+    //   return mintableExtension.getExtension()
+    // case 'Enumerable':
+    //   const enumerableExtension = new ExtensionBuilder()
 
-      enumerableExtension.setImpl(
-        new TraitImpl(
-          `${standardName.toUpperCase()}Enumerable`,
-          contractName,
-          additionalMethods
-        )
-      )
+    //   enumerableExtension.setName('Enumerable')
+    //   enumerableExtension.addBrushImport(
+    //     new Import(
+    //       `${BRUSH_NAME}::contracts::${standardName}::extensions::enumerable::*`
+    //     )
+    //   )
+    //   if (version < 'v2.1.0') {
+    //     const enumerableStorage = new StorageBuilder()
+    //     enumerableStorage.constructDefaultStorage(
+    //       'Enumerable',
+    //       version,
+    //       standardName
+    //     )
+    //     enumerableExtension.setStorage(enumerableStorage.getStorage())
+    //   }
 
-      return enumerableExtension.getExtension()
-    case 'Pausable':
-      const pausableExtension = new ExtensionBuilder()
+    //   enumerableExtension.setImpl(
+    //     new TraitImpl(
+    //       `${standardName.toUpperCase()}Enumerable`,
+    //       contractName,
+    //       additionalMethods
+    //     )
+    //   )
 
-      pausableExtension.setName('Pausable')
-      pausableExtension.addBrushImport(
-        new Import(`${BRUSH_NAME}::contracts::pausable::*`)
-      )
+    //   return enumerableExtension.getExtension()
+    // case 'Pausable':
+    //   const pausableExtension = new ExtensionBuilder()
 
-      const pausableStorage = new StorageBuilder()
-      pausableStorage.constructDefaultStorage('Pausable', version)
-      pausableExtension.setStorage(pausableStorage.getStorage())
+    //   pausableExtension.setName('Pausable')
+    //   pausableExtension.addBrushImport(
+    //     new Import(`${BRUSH_NAME}::contracts::pausable::*`)
+    //   )
 
-      pausableExtension.setImpl(
-        new TraitImpl(`Pausable`, contractName, additionalMethods)
-      )
-      pausableExtension.addContractMethod(
-        new Method(
-          BRUSH_NAME,
-          true,
-          true,
-          `#[ink(message)]${
-            security
-              ? `\n\t\t#[${BRUSH_NAME}::modifiers(${
-                  security === 'ownable' ? 'only_owner' : 'only_role(MANAGER)'
-                })]`
-              : ''
-          }`,
-          'change_state',
-          [],
-          `Result<(), ${standardName.toUpperCase()}Error>`,
-          `if self.paused() {
-                self._unpause()
-            } else {
-                self._pause()
-            }`
-        )
-      )
+    //   const pausableStorage = new StorageBuilder()
+    //   pausableStorage.constructDefaultStorage('Pausable', version)
+    //   pausableExtension.setStorage(pausableStorage.getStorage())
 
-      return pausableExtension.getExtension()
-    case 'Metadata':
-      const metadataExtension = new ExtensionBuilder()
+    //   pausableExtension.setImpl(
+    //     new TraitImpl(`Pausable`, contractName, additionalMethods)
+    //   )
+    //   pausableExtension.addContractMethod(
+    //     new Method(
+    //       BRUSH_NAME,
+    //       true,
+    //       true,
+    //       `#[ink(message)]${
+    //         security
+    //           ? `\n\t\t#[${BRUSH_NAME}::modifiers(${
+    //               security === 'ownable' ? 'only_owner' : 'only_role(MANAGER)'
+    //             })]`
+    //           : ''
+    //       }`,
+    //       'change_state',
+    //       [],
+    //       `Result<(), ${standardName.toUpperCase()}Error>`,
+    //       `if self.paused() {
+    //             self._unpause()
+    //         } else {
+    //             self._pause()
+    //         }`
+    //     )
+    //   )
 
-      metadataExtension.setName('Metadata')
-      metadataExtension.addBrushImport(
-        new Import(
-          `${BRUSH_NAME}::contracts::${standardName}::extensions::metadata::*`
-        )
-      )
+    //   return pausableExtension.getExtension()
+    // case 'Metadata':
+    //   const metadataExtension = new ExtensionBuilder()
 
-      const metadataStorage = new StorageBuilder()
-      metadataStorage.constructDefaultStorage('Metadata', version, standardName)
-      metadataExtension.setStorage(metadataStorage.getStorage())
+    //   metadataExtension.setName('Metadata')
+    //   metadataExtension.addBrushImport(
+    //     new Import(
+    //       `${BRUSH_NAME}::contracts::${standardName}::extensions::metadata::*`
+    //     )
+    //   )
 
-      metadataExtension.setImpl(
-        new TraitImpl(
-          `${standardName.toUpperCase()}Metadata`,
-          contractName,
-          additionalMethods
-        )
-      )
+    //   const metadataStorage = new StorageBuilder()
+    //   metadataStorage.constructDefaultStorage('Metadata', version, standardName)
+    //   metadataExtension.setStorage(metadataStorage.getStorage())
 
-      if (standardName === 'psp22') {
-        metadataExtension.addConstructorArg('name: Option<String>')
-        metadataExtension.addConstructorArg('symbol: Option<String>')
-        metadataExtension.addConstructorArg('decimal: u8')
+    //   metadataExtension.setImpl(
+    //     new TraitImpl(
+    //       `${standardName.toUpperCase()}Metadata`,
+    //       contractName,
+    //       additionalMethods
+    //     )
+    //   )
 
-        metadataExtension.addConstructorAction(
-          '_instance.metadata.name = name;'
-        )
-        metadataExtension.addConstructorAction(
-          '_instance.metadata.symbol = symbol;'
-        )
-        metadataExtension.addConstructorAction(
-          '_instance.metadata.decimals = decimal;'
-        )
-      }
+    //   if (standardName === 'psp22') {
+    //     metadataExtension.addConstructorArg('name: Option<String>')
+    //     metadataExtension.addConstructorArg('symbol: Option<String>')
+    //     metadataExtension.addConstructorArg('decimal: u8')
 
-      if (
-        version < 'v2.1.0' &&
-        (standardName === 'psp37' ||
-          standardName === 'psp35' ||
-          standardName === 'psp1155')
-      ) {
-        metadataExtension.addConstructorArg('uri: Option<String>')
-        metadataExtension.addConstructorAction('_instance.metadata.uri = uri;')
-      }
+    //     metadataExtension.addConstructorAction(
+    //       '_instance.metadata.name = name;'
+    //     )
+    //     metadataExtension.addConstructorAction(
+    //       '_instance.metadata.symbol = symbol;'
+    //     )
+    //     metadataExtension.addConstructorAction(
+    //       '_instance.metadata.decimals = decimal;'
+    //     )
+    //   }
 
-      if (standardName === 'psp34') {
-        metadataExtension.addConstructorAction(
-          'let collection_id = _instance.collection_id();'
-        )
-        metadataExtension.addConstructorAction(
-          `_instance._set_attribute(collection_id.clone(), String::from("name")${
-            version <= 'v2.2.0' ? '.into_bytes()' : ''
-          }, String::from("MyPSP34")${
-            version <= 'v2.2.0' ? '.into_bytes()' : ''
-          });`
-        )
-        metadataExtension.addConstructorAction(
-          `_instance._set_attribute(collection_id, String::from("symbol")${
-            version <= 'v2.2.0' ? '.into_bytes()' : ''
-          }, String::from("MPSP")${
-            version <= 'v2.2.0' ? '.into_bytes()' : ''
-          });`
-        )
-      }
+    //   if (
+    //     version < 'v2.1.0' &&
+    //     (standardName === 'psp37' ||
+    //       standardName === 'psp35' ||
+    //       standardName === 'psp1155')
+    //   ) {
+    //     metadataExtension.addConstructorArg('uri: Option<String>')
+    //     metadataExtension.addConstructorAction('_instance.metadata.uri = uri;')
+    //   }
 
-      return metadataExtension.getExtension()
-    case 'FlashMint':
-      const flashMintExtension = new ExtensionBuilder()
+    //   if (standardName === 'psp34') {
+    //     metadataExtension.addConstructorAction(
+    //       'let collection_id = _instance.collection_id();'
+    //     )
+    //     metadataExtension.addConstructorAction(
+    //       `_instance._set_attribute(collection_id.clone(), String::from("name")${
+    //         version <= 'v2.2.0' ? '.into_bytes()' : ''
+    //       }, String::from("MyPSP34")${
+    //         version <= 'v2.2.0' ? '.into_bytes()' : ''
+    //       });`
+    //     )
+    //     metadataExtension.addConstructorAction(
+    //       `_instance._set_attribute(collection_id, String::from("symbol")${
+    //         version <= 'v2.2.0' ? '.into_bytes()' : ''
+    //       }, String::from("MPSP")${
+    //         version <= 'v2.2.0' ? '.into_bytes()' : ''
+    //       });`
+    //     )
+    //   }
 
-      flashMintExtension.setName('FlashMint')
-      flashMintExtension.addBrushImport(
-        new Import(
-          `${BRUSH_NAME}::contracts::${standardName}::extensions::flashmint::*`
-        )
-      )
-      flashMintExtension.setImpl(
-        new TraitImpl(`FlashLender`, contractName, additionalMethods)
-      )
+    //   return metadataExtension.getExtension()
+    // case 'FlashMint':
+    //   const flashMintExtension = new ExtensionBuilder()
 
-      return flashMintExtension.getExtension()
-    case 'Wrapper':
-      const wrapperExtension = new ExtensionBuilder()
+    //   flashMintExtension.setName('FlashMint')
+    //   flashMintExtension.addBrushImport(
+    //     new Import(
+    //       `${BRUSH_NAME}::contracts::${standardName}::extensions::flashmint::*`
+    //     )
+    //   )
+    //   flashMintExtension.setImpl(
+    //     new TraitImpl(`FlashLender`, contractName, additionalMethods)
+    //   )
 
-      wrapperExtension.setName('Wrapper')
-      wrapperExtension.addBrushImport(
-        new Import(
-          `${BRUSH_NAME}::contracts::${standardName}::extensions::wrapper::*`
-        )
-      )
+    //   return flashMintExtension.getExtension()
+    // case 'Wrapper':
+    //   const wrapperExtension = new ExtensionBuilder()
 
-      const wrapperStorage = new StorageBuilder()
-      wrapperStorage.constructDefaultStorage('Wrapper', version, standardName)
-      wrapperExtension.setStorage(wrapperStorage.getStorage())
+    //   wrapperExtension.setName('Wrapper')
+    //   wrapperExtension.addBrushImport(
+    //     new Import(
+    //       `${BRUSH_NAME}::contracts::${standardName}::extensions::wrapper::*`
+    //     )
+    //   )
 
-      wrapperExtension.setImpl(
-        new TraitImpl(
-          `${standardName.toUpperCase()}Wrapper`,
-          contractName,
-          additionalMethods
-        )
-      )
+    //   const wrapperStorage = new StorageBuilder()
+    //   wrapperStorage.constructDefaultStorage('Wrapper', version, standardName)
+    //   wrapperExtension.setStorage(wrapperStorage.getStorage())
 
-      return wrapperExtension.getExtension()
-    case 'Capped':
-      const cappedExtension = new ExtensionBuilder()
+    //   wrapperExtension.setImpl(
+    //     new TraitImpl(
+    //       `${standardName.toUpperCase()}Wrapper`,
+    //       contractName,
+    //       additionalMethods
+    //     )
+    //   )
 
-      const cappedStorage = new StorageBuilder()
-      cappedStorage.setName('cap')
-      cappedStorage.setType('Balance')
+    //   return wrapperExtension.getExtension()
+    // case 'Capped':
+    //   const cappedExtension = new ExtensionBuilder()
 
-      cappedExtension.setStorage(cappedStorage.getStorage())
+    //   const cappedStorage = new StorageBuilder()
+    //   cappedStorage.setName('cap')
+    //   cappedStorage.setType('Balance')
 
-      cappedExtension.setName('Capped')
-      cappedExtension.addContractMethod(
-        new Method(
-          BRUSH_NAME,
-          true,
-          false,
-          `#[ink(message)]`,
-          'cap',
-          [],
-          'Balance',
-          `self.cap`
-        )
-      )
-      cappedExtension.addContractMethod(
-        new Method(
-          BRUSH_NAME,
-          false,
-          true,
-          null,
-          '_init_cap',
-          ['cap: Balance'],
-          `Result<(), ${standardName.toUpperCase()}Error>`,
-          `if cap <= 0 {
-                return Err(PSP22Error::Custom(String::from("Cap must be above 0")))
-            }
-            self.cap = cap;
-            Ok(())`
-        )
-      )
+    //   cappedExtension.setStorage(cappedStorage.getStorage())
 
-      return cappedExtension.getExtension()
+    //   cappedExtension.setName('Capped')
+    //   cappedExtension.addContractMethod(
+    //     new Method(
+    //       BRUSH_NAME,
+    //       true,
+    //       false,
+    //       `#[ink(message)]`,
+    //       'cap',
+    //       [],
+    //       'Balance',
+    //       `self.cap`
+    //     )
+    //   )
+    //   cappedExtension.addContractMethod(
+    //     new Method(
+    //       BRUSH_NAME,
+    //       false,
+    //       true,
+    //       null,
+    //       '_init_cap',
+    //       ['cap: Balance'],
+    //       `Result<(), ${standardName.toUpperCase()}Error>`,
+    //       `if cap <= 0 {
+    //             return Err(PSP22Error::Custom(String::from("Cap must be above 0")))
+    //         }
+    //         self.cap = cap;
+    //         Ok(())`
+    //     )
+    //   )
+
+    //   return cappedExtension.getExtension()
   }
 }
