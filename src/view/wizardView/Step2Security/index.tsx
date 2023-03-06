@@ -29,17 +29,14 @@ export default function Step2Security() {
       <FormControl>
         <RadioGroup
           aria-labelledby="security"
-          defaultValue={'none'}
-          value={dataForm.security}
+          value={dataForm.security ?? 'none'}
           onChange={handleChange}
           name="radio-buttons-group"
           sx={{ gap: 3 }}
         >
           <FormControlLabel
             control={
-              <Radio
-
-              />}
+              <Radio />}
             label={
               <>
                 <Typography

@@ -1,48 +1,14 @@
 import { Dispatch, createContext, SetStateAction, useContext } from 'react'
 
-import { TokenType } from '@types'
-import { PSPTokens } from 'src/types/smartContract/tokens'
-
-export const DEFAULT_TOKEN_VALUES: Record<TokenType, PSPTokens> = {
-  psp22: {
-    metadata: {
-      active: false,
-      name: 'Contract'
-    },
-    mintable: false,
-    burnable: false,
-    wrapper: false,
-    flashMint: false,
-    pausable: false,
-    capped: false
-  },
-  psp34: {
-    metadata: {
-      active: false,
-      name: 'Contract'
-    },
-    mintable: false,
-    burnable: false,
-    enumerable: false
-  },
-  psp37: {
-    metadata: {
-      active: false,
-      name: 'Contract'
-    },
-    batch: false,
-    mintable: false,
-    burnable: false,
-    enumerable: false
-  }
-}
+import { ContractConfig } from '@types'
 
 export interface StepsSmartContractWizard {
   activeStep: number
   handleBack: () => void
   handleNext: () => void
-  dataForm: PSPTokens
-  setDataForm: Dispatch<SetStateAction<PSPTokens>>
+  dataForm: ContractConfig
+  setDataForm: Dispatch<SetStateAction<ContractConfig>>
+  resetDataForm: () => void
 }
 
 export const StepsSCWizardContext = createContext(

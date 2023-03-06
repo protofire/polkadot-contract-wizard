@@ -1,18 +1,38 @@
-import * as React from 'react'
+import React, { useMemo } from 'react'
 import { Typography, StepLabel, Step, Stepper, Box } from '@mui/material'
 
 import Step1Extensions from './Step1Extensions'
 import Step2Security from './Step2Security'
 import Step3Deploy from './Step3Deploy'
 import { Button, Stepper as StepperWrapper } from '@components'
-import { DEFAULT_TOKEN_VALUES, StepsSCWizardContext } from '@context'
+import { StepsSCWizardContext } from '@context'
 import { TokenType } from '@types'
+import { ControlsToken, WIZARD_CONFIG } from '@constants'
 
 const STEPS = ['Extensions', 'Security', 'Deploy']
 
-export default function FormWizard({ token }: { token: TokenType }) {
+function getInitialValues(tokenOptionsConfig: ControlsToken | undefined) {
+  if (tokenOptionsConfig === undefined) return []
+
+  return Object.assign({},
+    ...tokenOptionsConfig.optionList.map((control) => ({ [control.name]: control.initState }))
+  )
+}
+
+
+export default function FormWizard({ token }: { token: TokenType }): JSX.Element {
   const [activeStep, setActiveStep] = React.useState(0)
-  const [dataForm, setDataForm] = React.useState(DEFAULT_TOKEN_VALUES[token])
+  const { extensionFields, constructorFields } = useMemo(() => {
+    const currentToken = WIZARD_CONFIG.find((_token) => _token.name === token)
+    return {
+      extensionFields: currentToken?.controls.find((options) => options.sectionName === 'Extensions'),
+      constructorFields: currentToken?.controls.find((options) => options.sectionName === 'Constructor')
+    }
+  }, [token])
+  const [dataForm, setDataForm] = React.useState({
+    extensions: getInitialValues(extensionFields),
+    constructor: getInitialValues(constructorFields)
+  })
 
   const handleNext = () => {
     setActiveStep(prevActiveStep => prevActiveStep + 1)
@@ -26,17 +46,23 @@ export default function FormWizard({ token }: { token: TokenType }) {
     setActiveStep(0)
   }
 
+  const resetDataForm = () => {
+    setDataForm({
+      extensions: getInitialValues(extensionFields),
+      constructor: getInitialValues(constructorFields)
+    })
+  }
+
   const getStepContent = () => {
     switch (activeStep) {
-      case 0:
-        return <Step1Extensions tokenType={token} />
-
+      case 0: {
+        if (!extensionFields) return
+        return <Step1Extensions extensionFields={extensionFields} />
+      }
       case 1:
         return <Step2Security />
-
       case 2:
         return <Step3Deploy tokenType={token} />
-
       default:
         return null
     }
@@ -49,13 +75,14 @@ export default function FormWizard({ token }: { token: TokenType }) {
         setDataForm,
         activeStep,
         handleBack,
-        handleNext
+        handleNext,
+        resetDataForm,
       }}
     >
       <Box sx={{ width: '100%' }}>
         <StepperWrapper>
           <Stepper activeStep={activeStep}>
-            {STEPS.map((label, _index) => {
+            {STEPS.map((label) => {
               const stepProps: { completed?: boolean } = {}
               const labelProps: {
                 optional?: React.ReactNode
