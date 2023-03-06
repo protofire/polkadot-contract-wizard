@@ -5,51 +5,51 @@ export class ContractBuilder {
     this.#contract = new Contract()
   }
 
-  setContractName(name) {
+  setContractName(name: string) {
     this.#contract.contractName = name
   }
 
-  setVersion(version) {
+  setVersion(version: string) {
     this.#contract.version = version
   }
 
-  setBrushName(brushName) {
+  setBrushName(brushName: string) {
     this.#contract.brushName = brushName
   }
 
-  setStandardName(standardName) {
+  setStandardName(standardName: string) {
     this.#contract.standardName = standardName
   }
 
-  addInkImport(inkImport) {
+  addInkImport(inkImport: Import) {
     this.#contract.inkImports.push(inkImport)
   }
 
-  addBrushImport(brushImport) {
+  addBrushImport(brushImport: Import) {
     this.#contract.brushImports.push(brushImport)
   }
 
-  setImpl(impl) {
+  setImpl(impl: TraitImpl) {
     this.#contract.impl = impl
   }
 
-  addAdditionalImpl(impl) {
+  addAdditionalImpl(impl: TraitImpl) {
     this.#contract.additionalImpls.push(impl)
   }
 
-  setStorage(storage) {
+  setStorage(storage: Storage) {
     this.#contract.storage = storage
   }
 
-  addExtension(extension) {
+  addExtension(extension: Extension) {
     this.#contract.extensions.push(extension)
   }
 
-  addConstructorArg(arg) {
+  addConstructorArg(arg: string) {
     this.#contract.constructorArgs.push(arg)
   }
 
-  addConstructorAction(action) {
+  addConstructorAction(action: string) {
     this.#contract.constructorActions.push(action)
   }
 
@@ -59,13 +59,13 @@ export class ContractBuilder {
 }
 
 export class ExtensionBuilder {
-  #extension = null
+  #extension
 
   constructor() {
     this.#extension = new Extension()
   }
 
-  setName(name) {
+  setName(name: string) {
     this.#extension.name = name
   }
 
@@ -107,7 +107,7 @@ export class ExtensionBuilder {
 }
 
 export class StorageBuilder {
-  #storage = null
+  #storage
 
   constructor() {
     this.#storage = new Storage()
@@ -154,14 +154,14 @@ export class Contract {
   version: string
   brushName: string
   standardName: string
-  inkImports: []
-  brushImports: []
-  impl: []
-  additionalImpls: any
-  storage: any
-  extensions: any
-  constructorArgs: any
-  constructorActions: any
+  inkImports: Array<Import>
+  brushImports: Array<Import>
+  impl: TraitImpl | undefined
+  additionalImpls: Array<TraitImpl>
+  storage: Storage | undefined
+  extensions: Array<Extension>
+  constructorArgs: Array<string>
+  constructorActions: Array<string>
 
   constructor() {
     this.version = ''
@@ -169,9 +169,9 @@ export class Contract {
     this.standardName = ''
     this.inkImports = []
     this.brushImports = []
-    this.impl = null
+    this.impl = undefined
     this.additionalImpls = []
-    this.storage = null
+    this.storage = undefined
     this.extensions = []
     this.constructorArgs = []
     this.constructorActions = []

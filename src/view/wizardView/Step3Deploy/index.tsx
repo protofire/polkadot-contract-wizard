@@ -32,6 +32,7 @@ function generateCode(standardName: TokenType, data: ContractConfig) {
   contract.setStorage(storage.getStorage())
 
   extensions.map((e) => {
+    if (!e) return
     contract.addExtension(e)
   })
 
