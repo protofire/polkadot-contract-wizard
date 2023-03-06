@@ -49,25 +49,14 @@ export function getExtensions(data: ContractConfig, standardName: TokenType) {
 
     usesStandardExtensions = true
   }
-  //   // Burnable extension
-  //   if (
-  //     output.currentControlsState.find(
-  //       (x: { name: string }) => x.name === 'Burnable'
-  //     )?.state
-  //   ) {
-  //     extensions.push(
-  //       generateExtension(
-  //         'Burnable',
-  //         standardName,
-  //         contractName,
-  //         version,
-  //         output.security,
-  //         []
-  //       )
-  //     )
+  // Burnable extension
+  if (data.extensions.Burnable === true) {
+    extensions.push(
+      generateExtension('Burnable', standardName, data.security, [])
+    )
 
-  //     usesStandardExtensions = true
-  //   }
+    usesStandardExtensions = true
+  }
   //   // Mintable extension
   //   if (
   //     output.currentControlsState.find(
@@ -330,59 +319,55 @@ export function generateExtension(
       )
 
       return batchExtension.getExtension()
-    // case 'Burnable':
-    //   const burnableExtension = new ExtensionBuilder()
-    //   burnableExtension.setName('Burnable')
-    //   burnableExtension.addBrushImport(
-    //     new Import(
-    //       `${BRUSH_NAME}::contracts::${standardName}::extensions::burnable::*`
-    //     )
-    //   )
+    case 'Burnable':
+      const burnableExtension = new ExtensionBuilder()
+      burnableExtension.setName('Burnable')
+      burnableExtension.addBrushImport(
+        new Import(
+          `${BRUSH_NAME}::contracts::${standardName}::extensions::burnable::*`
+        )
+      )
 
-    //   if (security && security !== 'none') {
-    //     const args = []
-    //     args.push('account: AccountId')
+      if (security && security !== 'none') {
+        const args = []
+        args.push('account: AccountId')
 
-    //     if (standardName === 'psp22') args.push('amount: Balance')
-    //     if (
-    //       standardName === 'psp37' ||
-    //       standardName === 'psp1155' ||
-    //       standardName === 'psp35'
-    //     )
-    //       args.push('ids_amounts: Vec<(Id, Balance)>')
-    //     if (standardName === 'psp34') args.push('id: Id')
+        if (standardName === 'psp22') args.push('amount: Balance')
+        if (standardName === 'psp37')
+          args.push('ids_amounts: Vec<(Id, Balance)>')
+        if (standardName === 'psp34') args.push('id: Id')
 
-    //     additionalMethods.push(
-    //       new Method(
-    //         BRUSH_NAME,
-    //         false,
-    //         true,
-    //         `#[ink(message)]\n\t\t#[${BRUSH_NAME}::modifiers(${
-    //           security === 'ownable' ? 'only_owner' : 'only_role(MANAGER)'
-    //         })]`,
-    //         'burn',
-    //         args,
-    //         `Result<(), ${standardName.toUpperCase()}Error>`,
-    //         `self._burn_from(account, ${
-    //           standardName === 'psp22'
-    //             ? 'amount'
-    //             : standardName === 'psp34'
-    //             ? 'id'
-    //             : 'ids_amounts'
-    //         })`
-    //       )
-    //     )
-    //   }
+        additionalMethods.push(
+          new Method(
+            BRUSH_NAME,
+            false,
+            true,
+            `#[ink(message)]\n\t\t#[${BRUSH_NAME}::modifiers(${
+              security === 'ownable' ? 'only_owner' : 'only_role(MANAGER)'
+            })]`,
+            'burn',
+            args,
+            `Result<(), ${standardName.toUpperCase()}Error>`,
+            `self._burn_from(account, ${
+              standardName === 'psp22'
+                ? 'amount'
+                : standardName === 'psp34'
+                ? 'id'
+                : 'ids_amounts'
+            })`
+          )
+        )
+      }
 
-    //   burnableExtension.setImpl(
-    //     new TraitImpl(
-    //       `${standardName.toUpperCase()}Burnable`,
-    //       contractName,
-    //       additionalMethods
-    //     )
-    //   )
+      burnableExtension.setImpl(
+        new TraitImpl(
+          `${standardName.toUpperCase()}Burnable`,
+          CONTRACT_NAME,
+          additionalMethods
+        )
+      )
 
-    //   return burnableExtension.getExtension()
+      return burnableExtension.getExtension()
     // case 'Mintable':
     //   const mintableExtension = new ExtensionBuilder()
     //   mintableExtension.setName('Mintable')
