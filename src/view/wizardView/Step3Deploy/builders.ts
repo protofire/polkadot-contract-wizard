@@ -1,5 +1,4 @@
-import { BRUSH_NAME } from '@constants'
-import { isGreaterVer, isSmallerVer } from 'src/utils/comparisonString'
+import { isGreaterVer, isSmallerVer } from '@utils'
 
 export class ContractBuilder {
   #contract
@@ -113,18 +112,18 @@ export class StorageBuilder {
   }
 
   constructDefaultStorage(name: string, version: string, standard = '') {
-    this.#storage.derive =
-      version < 'v2.2.0' ? `${standard.toUpperCase()}${name}Storage` : null
+    this.#storage.derive = isSmallerVer(version, 'v2.2.0')
+      ? `${standard.toUpperCase()}${name}Storage`
+      : null
     this.#storage.field = `\t#[${
-      version < 'v2.2.0'
+      isSmallerVer(version, 'v2.2.0')
         ? `${standard.toUpperCase()}${name}StorageField`
         : 'storage_field'
     }]`
     this.#storage.name = name.toLowerCase()
-    this.#storage.type =
-      version < 'v2.2.0'
-        ? `${standard.toUpperCase()}${name}Data`
-        : `${name.toLowerCase()}::Data`
+    this.#storage.type = isSmallerVer(version, 'v2.2.0')
+      ? `${standard.toUpperCase()}${name}Data`
+      : `${name.toLowerCase()}::Data`
   }
 
   setDerive(derive: string) {
@@ -373,7 +372,7 @@ export class Contract {
             e.name === 'AccessControl' || e.name === 'AccessControlEnumerable'
         ) !== undefined
           ? `\n\n\tconst MANAGER: RoleType = ink${
-              this.version < 'v3.0.0-beta' ? '_lang' : ''
+              isSmallerVer(this.version, 'v3.0.0-beta') ? '_lang' : ''
             }::selector_id!("MANAGER");`
           : ''
       }
