@@ -1,4 +1,5 @@
 import { BRUSH_NAME } from '@constants'
+import { isGreaterVer, isSmallerVer } from 'src/utils/comparisonString'
 
 export class ContractBuilder {
   #contract
@@ -303,7 +304,9 @@ export class Contract {
     return `${
       this.constructorActions?.length
         ? '\n\t\t\t' +
-          (this.version === 'v1.3.0' || this.version > 'v2.3.0' ? '' : '\t') +
+          (this.version === 'v1.3.0' || isGreaterVer(this.version, 'v2.3.0')
+            ? ''
+            : '\t') +
           this.constructorActions.join('\n\t\t\t\t')
         : ''
     }${
@@ -317,7 +320,8 @@ export class Contract {
                   .map(
                     a =>
                       `${
-                        this.version === 'v1.3.0' || this.version > 'v2.3.0'
+                        this.version === 'v1.3.0' ||
+                        isGreaterVer(this.version, 'v2.3.0')
                           ? ''
                           : '\t'
                       }\t\t\t${a}`
@@ -357,7 +361,7 @@ export class Contract {
       ${this.collectBrushImports()}
       #[ink(storage)]
       #[derive(Default${
-        this.version === 'v1.3.0' || this.version > 'v2.3.0'
+        this.version === 'v1.3.0' || isGreaterVer(this.version, 'v2.3.0')
           ? ''
           : ', SpreadAllocate'
       }${this.collectStorageDerives()})]
@@ -380,13 +384,15 @@ export class Contract {
           #[ink(constructor)]
           pub fn new(${this.collectConstructorArgs()}) -> Self {
               ${
-                this.version === 'v1.3.0' || this.version > 'v2.3.0'
+                this.version === 'v1.3.0' ||
+                isGreaterVer(this.version, 'v2.3.0')
                   ? 'let mut _instance = Self::default();'
                   : `ink${
-                      this.version < 'v3.0.0-beta' ? '_lang' : ''
+                      isSmallerVer(this.version, 'v3.0.0-beta') ? '_lang' : ''
                     }::codegen::initialize_contract(|_instance: &mut Contract|{`
               }${this.collectConstructorActions()}${
-      this.version > 'v1.3.0' && this.version < 'v3.0.0-beta'
+      isGreaterVer(this.version, 'v1.3.0') &&
+      isSmallerVer(this.version, 'v3.0.0-beta')
         ? '\n\t\t\t})'
         : '\n\t\t\t_instance'
     }

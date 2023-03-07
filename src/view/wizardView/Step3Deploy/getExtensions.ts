@@ -7,6 +7,11 @@ import {
   TraitImpl
 } from './builders'
 import { BRUSH_NAME, CONTRACT_NAME, VERSION } from '@constants'
+import {
+  isGreaterVer,
+  isSmallerOrEqual,
+  isSmallerVer
+} from 'src/utils/comparisonString'
 
 export function getExtensions(data: ContractConfig, standardName: TokenType) {
   const extensions = []
@@ -153,7 +158,7 @@ export function securityImports(
 
       const accessControlStorage = new StorageBuilder()
       accessControlStorage.constructDefaultStorage('AccessControl', VERSION)
-      if (VERSION > 'v2.1.0')
+      if (isGreaterVer(VERSION, 'v2.1.0'))
         accessControlStorage.setType('access_control::Data')
       accessControlStorage.setName('access')
       accessControlExtension.setStorage(accessControlStorage.getStorage())
@@ -180,17 +185,19 @@ export function securityImports(
 
       const accessControlEnumerableStorage = new StorageBuilder()
 
-      if (VERSION < 'v2.2.0')
+      if (isSmallerVer(VERSION, 'v2.2.0'))
         accessControlEnumerableStorage.setDerive('AccessControlStorage')
       accessControlEnumerableStorage.setField(
         `\t#[${
-          VERSION < 'v2.2.0' ? 'AccessControlStorageField' : 'storage_field'
+          isSmallerVer(VERSION, 'v2.2.0')
+            ? 'AccessControlStorageField'
+            : 'storage_field'
         }]`
       )
       accessControlEnumerableStorage.setName('access')
       accessControlEnumerableStorage.setType(
         `${
-          VERSION < 'v2.2.0'
+          isSmallerVer(VERSION, 'v2.2.0')
             ? 'AccessControlData<EnumerableMembers>'
             : 'access_control::Data<Members>'
         }`
@@ -321,7 +328,11 @@ export function generateExtension(
             args,
             `Result<(), ${standardName.toUpperCase()}Error>`,
             `self._mint${
-              standardName !== 'psp22' ? '_to' : VERSION < 'v2.3.0' ? '' : '_to'
+              standardName !== 'psp22'
+                ? '_to'
+                : isSmallerVer(VERSION, 'v2.3.0')
+                ? ''
+                : '_to'
             }(account, ${
               standardName === 'psp22'
                 ? 'amount'
@@ -357,7 +368,7 @@ export function generateExtension(
           `${BRUSH_NAME}::contracts::${standardName}::extensions::enumerable::*`
         )
       )
-      if (VERSION < 'v2.1.0') {
+      if (isSmallerVer(VERSION, 'v2.1.0')) {
         const enumerableStorage = new StorageBuilder()
         enumerableStorage.constructDefaultStorage(
           'Enumerable',
@@ -453,7 +464,7 @@ export function generateExtension(
         )
       }
 
-      if (VERSION < 'v2.1.0' && standardName === 'psp37') {
+      if (isSmallerVer(VERSION, 'v2.1.0') && standardName === 'psp37') {
         metadataExtension.addConstructorArg('uri: Option<String>')
         metadataExtension.addConstructorAction('_instance.metadata.uri = uri;')
       }
@@ -464,16 +475,16 @@ export function generateExtension(
         )
         metadataExtension.addConstructorAction(
           `_instance._set_attribute(collection_id.clone(), String::from("name")${
-            VERSION <= 'v2.2.0' ? '.into_bytes()' : ''
+            isSmallerOrEqual(VERSION, 'v2.2.0') ? '.into_bytes()' : ''
           }, String::from("MyPSP34")${
-            VERSION <= 'v2.2.0' ? '.into_bytes()' : ''
+            isSmallerOrEqual(VERSION, 'v2.2.0') ? '.into_bytes()' : ''
           });`
         )
         metadataExtension.addConstructorAction(
           `_instance._set_attribute(collection_id, String::from("symbol")${
-            VERSION <= 'v2.2.0' ? '.into_bytes()' : ''
+            isSmallerOrEqual(VERSION, 'v2.2.0') ? '.into_bytes()' : ''
           }, String::from("MPSP")${
-            VERSION <= 'v2.2.0' ? '.into_bytes()' : ''
+            isSmallerOrEqual(VERSION, 'v2.2.0') ? '.into_bytes()' : ''
           });`
         )
       }

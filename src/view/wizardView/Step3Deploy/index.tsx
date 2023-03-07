@@ -7,6 +7,7 @@ import { ContractConfig, TokenType } from '@types'
 import { getExtensions } from "./getExtensions";
 import { BRUSH_NAME, CONTRACT_NAME, VERSION } from "@constants";
 import { ContractBuilder, Import, Method, StorageBuilder, TraitImpl } from "./builders";
+import { isGreaterVer, isSmallerVer } from "src/utils/comparisonString";
 
 function generateCode(standardName: TokenType, data: ContractConfig) {
 
@@ -21,12 +22,12 @@ function generateCode(standardName: TokenType, data: ContractConfig) {
 
   const isEnumerable = data.extensions.Enumerable === true
   const storage = new StorageBuilder()
-  storage.setDerive(`${VERSION < 'v2.2.0' ? standardName.toUpperCase() : ''}Storage`)
-  storage.setField(`#[${VERSION < 'v2.2.0' ? standardName.toUpperCase() + 'StorageField' : 'storage_field'}]`)
+  storage.setDerive(`${isSmallerVer(VERSION, 'v2.2.0') ? standardName.toUpperCase() : ''}Storage`)
+  storage.setField(`#[${isSmallerVer(VERSION, 'v2.2.0') ? standardName.toUpperCase() + 'StorageField' : 'storage_field'}]`)
   storage.setName(standardName)
   storage.setType(
-    (VERSION < 'v2.2.0' ? `${standardName.toUpperCase()}Data` : `${standardName}::Data`) +
-    (isEnumerable && VERSION > 'v2.0.0' ? (VERSION < 'v2.2.0' ? '<EnumerableBalances>' : '<Balances>') : '')
+    (isSmallerVer(VERSION, 'v2.2.0') ? `${standardName.toUpperCase()}Data` : `${standardName}::Data`) +
+    (isEnumerable && isGreaterVer(VERSION, 'v2.0.0') ? (isSmallerVer(VERSION, 'v2.2.0') ? '<EnumerableBalances>' : '<Balances>') : '')
   )
 
   contract.setStorage(storage.getStorage())
@@ -45,12 +46,12 @@ function generateCode(standardName: TokenType, data: ContractConfig) {
   if (isCapped || isPausable) {
     contract.addBrushImport(
       new Import(
-        `${BRUSH_NAME}::contracts::${standardName}::${VERSION < 'v2.2.0' ? standardName.toUpperCase() : ''}${VERSION < 'v1.6.0' ? 'Internal' : 'Transfer'
+        `${BRUSH_NAME}::contracts::${standardName}::${isSmallerVer(VERSION, 'v2.2.0') ? standardName.toUpperCase() : ''}${isSmallerVer(VERSION, 'v1.6.0') ? 'Internal' : 'Transfer'
         }`
       )
     )
     contract.addAdditionalImpl(
-      new TraitImpl(`${VERSION < 'v2.2.0' ? standardName.toUpperCase() : ''}${VERSION < 'v1.6.0' ? 'Internal' : 'Transfer'}`, 'Contract', [
+      new TraitImpl(`${isSmallerVer(VERSION, 'v2.2.0') ? standardName.toUpperCase() : ''}${isSmallerVer(VERSION, 'v1.6.0') ? 'Internal' : 'Transfer'}`, 'Contract', [
         new Method(
           BRUSH_NAME,
           false,
@@ -73,29 +74,29 @@ function generateCode(standardName: TokenType, data: ContractConfig) {
   if (standardName === 'psp22') {
     contract.addConstructorArg('initial_supply: Balance')
     contract.addConstructorAction(
-      `_instance._mint${VERSION < 'v2.3.0' ? '' : '_to'}(_instance.env().caller(), initial_supply).expect("Should mint"); `
+      `_instance._mint${isSmallerVer(VERSION, 'v2.3.0') ? '' : '_to'}(_instance.env().caller(), initial_supply).expect("Should mint"); `
     )
   }
 
   if (isCapped || isThereMetadata) {
-    if (VERSION < 'v2.3.0') contract.addInkImport(new Import(`ink${VERSION < 'v3.0.0-beta' ? '_' : '::'}prelude::string::String`))
+    if (isSmallerVer(VERSION, 'v2.3.0')) contract.addInkImport(new Import(`ink${isSmallerVer(VERSION, 'v3.0.0-beta') ? '_' : '::'}prelude::string::String`))
     else {
       contract.addBrushImport(new Import(`${BRUSH_NAME}::traits::String`))
     }
   }
 
   if (data.security && standardName === 'psp37' && (isMintable || isBurnable)) {
-    contract.addInkImport(new Import(`ink${VERSION < 'v3.0.0-beta' ? '_' : '::'}prelude::vec::Vec`))
+    contract.addInkImport(new Import(`ink${isSmallerVer(VERSION, 'v3.0.0-beta') ? '_' : '::'}prelude::vec::Vec`))
   }
 
-  if (VERSION > 'v1.3.0' && VERSION < 'v3.0.0-beta')
-    contract.addInkImport(new Import(`ink${VERSION < 'v3.0.0-beta' ? '_' : '::'}storage::traits::SpreadAllocate`))
+  if (isGreaterVer(VERSION, 'v1.3.0') && isSmallerVer(VERSION, 'v3.0.0-beta'))
+    contract.addInkImport(new Import(`ink${isSmallerVer(VERSION, 'v3.0.0-beta') ? '_' : '::'}storage::traits::SpreadAllocate`))
 
   if (!usesStandardExtensions) {
     contract.addBrushImport(new Import(`${BRUSH_NAME}::contracts::${standardName}::*`))
   }
 
-  if (VERSION > 'v2.1.0') contract.addBrushImport(new Import(`${BRUSH_NAME}::traits::Storage`))
+  if (isGreaterVer(VERSION, 'v2.1.0')) contract.addBrushImport(new Import(`${BRUSH_NAME}::traits::Storage`))
 
   return contract.getContract().toString()
 }
