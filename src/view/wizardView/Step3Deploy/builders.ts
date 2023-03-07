@@ -1,3 +1,5 @@
+import { BRUSH_NAME } from '@constants'
+
 export class ContractBuilder {
   #contract
 
@@ -93,7 +95,7 @@ export class ExtensionBuilder {
     this.#extension.constructorActions.push(action)
   }
 
-  addContractMethod(method: string) {
+  addContractMethod(method: Method) {
     this.#extension.contractMethods.push(method)
   }
 
@@ -371,9 +373,9 @@ export class Contract {
             }::selector_id!("MANAGER");`
           : ''
       }
-      
+
       ${this.collectTraitImpls()}${this.collectAdditionalImpls()}
-       
+
       impl ${this.contractName} {
           #[ink(constructor)]
           pub fn new(${this.collectConstructorArgs()}) -> Self {
@@ -402,7 +404,7 @@ export class Extension {
   impl: TraitImpl | undefined
   constructorArgs: string[]
   constructorActions: string[]
-  contractMethods: string[]
+  contractMethods: Method[]
   constructor() {
     this.name = ''
     this.inkImports = []
