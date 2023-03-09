@@ -254,14 +254,14 @@ export class Contract {
     return lines
   }
 
-  collectAdditionalImpls(): string[] {
-    return [
-      `${
-        this.additionalImpls.length
-          ? `\n\n\t${this.additionalImpls.map(e => e.toString()).join('\n')}`
-          : ''
-      }`
-    ]
+  collectAdditionalImpls(): unknown[] {
+    const lines = []
+
+    if (this.additionalImpls.length) {
+      lines.push(this.additionalImpls.map(e => e.toString()))
+    }
+
+    return lines
   }
 
   collectConstructorArgs() {
@@ -363,62 +363,90 @@ export class Contract {
               }`
             ],
             this.collectTraitImpls(),
-            this.collectAdditionalImpls()
+            this.collectAdditionalImpls() as string[],
+            [
+              `impl ${this.contractName} {`,
+              [
+                `#[ink(constructor)]`,
+                `pub fn new(${this.collectConstructorArgs()}) -> Self {`,
+                [
+                  `${
+                    this.version === 'v1.3.0' ||
+                    isGreaterVer(this.version, 'v2.3.0')
+                      ? 'let mut _instance = Self::default();'
+                      : `ink${
+                          isSmallerVer(this.version, 'v3.0.0-beta')
+                            ? '_lang'
+                            : ''
+                        }::codegen::initialize_contract(|_instance: &mut Contract|{`
+                  }${this.collectConstructorActions()}${
+                    isGreaterVer(this.version, 'v1.3.0') &&
+                    isSmallerVer(this.version, 'v3.0.0-beta')
+                      ? '\n\t\t\t})'
+                      : '\n\t\t\t_instance'
+                  }`,
+                  `}`,
+                  this.collectContractMethods()
+                ],
+                `}`
+              ],
+              `}`
+            ]
           ),
           `}`
         ]
       )
     )
   }
-  // toString() {
-  //   return `#![cfg_attr(not(feature = "std"), no_std)]
-  // #![feature(min_specialization)]
+  toStringDeprecated() {
+    return `#![cfg_attr(not(feature = "std"), no_std)]
+  #![feature(min_specialization)]
 
-  // #[${this.brushName}::contract]
-  // pub mod my_${this.standardName} {
-  //     ${this.collectInkImports()}
-  //     ${this.collectBrushImports()}
-  //     #[ink(storage)]
-  //     #[derive(Default${
-  //       this.version === 'v1.3.0' || isGreaterVer(this.version, 'v2.3.0')
-  //         ? ''
-  //         : ', SpreadAllocate'
-  //     }${this.collectStorageDerives()})]
-  //     pub struct ${this.contractName} {
-  //     ${this.collectStorageFields()}
-  //     }${
-  //       this.extensions.find(
-  //         e =>
-  //           e.name === 'AccessControl' || e.name === 'AccessControlEnumerable'
-  //       ) !== undefined
-  //         ? `\n\n\tconst MANAGER: RoleType = ink${
-  //             isSmallerVer(this.version, 'v3.0.0-beta') ? '_lang' : ''
-  //           }::selector_id!("MANAGER");`
-  //         : ''
-  //     }
+  #[${this.brushName}::contract]
+  pub mod my_${this.standardName} {
+      ${this.collectInkImports()}
+      ${this.collectBrushImports()}
+      #[ink(storage)]
+      #[derive(Default${
+        this.version === 'v1.3.0' || isGreaterVer(this.version, 'v2.3.0')
+          ? ''
+          : ', SpreadAllocate'
+      }${this.collectStorageDerives()})]
+      pub struct ${this.contractName} {
+      ${this.collectStorageFields()}
+      }${
+        this.extensions.find(
+          e =>
+            e.name === 'AccessControl' || e.name === 'AccessControlEnumerable'
+        ) !== undefined
+          ? `\n\n\tconst MANAGER: RoleType = ink${
+              isSmallerVer(this.version, 'v3.0.0-beta') ? '_lang' : ''
+            }::selector_id!("MANAGER");`
+          : ''
+      }
 
-  //     ${this.collectTraitImpls()}${this.collectAdditionalImpls()}
+      ${this.collectTraitImpls()}${this.collectAdditionalImpls()}
 
-  //     impl ${this.contractName} {
-  //         #[ink(constructor)]
-  //         pub fn new(${this.collectConstructorArgs()}) -> Self {
-  //             ${
-  //               this.version === 'v1.3.0' ||
-  //               isGreaterVer(this.version, 'v2.3.0')
-  //                 ? 'let mut _instance = Self::default();'
-  //                 : `ink${
-  //                     isSmallerVer(this.version, 'v3.0.0-beta') ? '_lang' : ''
-  //                   }::codegen::initialize_contract(|_instance: &mut Contract|{`
-  //             }${this.collectConstructorActions()}${
-  //     isGreaterVer(this.version, 'v1.3.0') &&
-  //     isSmallerVer(this.version, 'v3.0.0-beta')
-  //       ? '\n\t\t\t})'
-  //       : '\n\t\t\t_instance'
-  //   }
-  //         }${this.collectContractMethods()}
-  //     }
-  // }`
-  // }
+      impl ${this.contractName} {
+          #[ink(constructor)]
+          pub fn new(${this.collectConstructorArgs()}) -> Self {
+              ${
+                this.version === 'v1.3.0' ||
+                isGreaterVer(this.version, 'v2.3.0')
+                  ? 'let mut _instance = Self::default();'
+                  : `ink${
+                      isSmallerVer(this.version, 'v3.0.0-beta') ? '_lang' : ''
+                    }::codegen::initialize_contract(|_instance: &mut Contract|{`
+              }${this.collectConstructorActions()}${
+      isGreaterVer(this.version, 'v1.3.0') &&
+      isSmallerVer(this.version, 'v3.0.0-beta')
+        ? '\n\t\t\t})'
+        : '\n\t\t\t_instance'
+    }
+          }${this.collectContractMethods()}
+      }
+  }`
+  }
 }
 
 export class Extension {
