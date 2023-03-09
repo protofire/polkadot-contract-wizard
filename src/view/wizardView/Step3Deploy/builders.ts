@@ -1,4 +1,5 @@
 import { isGreaterVer, isSmallerVer } from '@utils'
+import { formatLines, indentEach, spaceBetween } from 'src/utils/formatString'
 
 export class ContractBuilder {
   #contract
@@ -115,7 +116,7 @@ export class StorageBuilder {
     this.#storage.derive = isSmallerVer(version, 'v2.2.0')
       ? `${standard.toUpperCase()}${name}Storage`
       : null
-    this.#storage.field = `\t#[${
+    this.#storage.field = `#[${
       isSmallerVer(version, 'v2.2.0')
         ? `${standard.toUpperCase()}${name}StorageField`
         : 'storage_field'
@@ -176,51 +177,32 @@ export class Contract {
     this.contractName = ''
   }
 
-  collectInkImports() {
+  collectInkImports(): string[] {
     if (
       this.inkImports.length === 0 &&
       (!this.extensions ||
         this.extensions.filter(e => e.inkImports && e.inkImports.length)
           .length === 0)
     )
-      return ''
+      return []
 
-    return `// imports from ink!\n${this.inkImports
-      .map(i => '\t' + i.toString())
-      .join('\n')}${
-      this.inkImports.length &&
-      this.extensions &&
-      this.extensions.filter(e => e.inkImports && e.inkImports.length).length
-        ? '\n'
-        : ''
-    }${
-      this.extensions
-        ? this.extensions
-            .filter(e => e.inkImports && e.inkImports.length)
-            .map(e => `\t${e.collectInkImports()}`)
-            .join('\n') + '\n'
-        : ''
-    }`
+    return [
+      `// imports from ink!`,
+      `${this.inkImports.map(i => i.toString())}`,
+      `${this.extensions
+        .filter(e => e.inkImports && e.inkImports.length)
+        .map(e => `${e.collectInkImports()}`)}`
+    ]
   }
 
-  collectBrushImports() {
-    return `// imports from openbrush\n${this.brushImports
-      .map(i => '\t' + i.toString())
-      .join('\n')}${
-      this.brushImports.length &&
-      this.extensions &&
-      this.extensions.filter(e => e.brushImports && e.brushImports.length)
-        .length
-        ? '\n'
-        : ''
-    }${
-      this.extensions
-        ? this.extensions
-            .filter(e => e.brushImports && e.brushImports.length)
-            .map(e => `\t${e.collectBrushImports()}`)
-            .join('\n') + '\n'
-        : ''
-    }`
+  collectBrushImports(): string[] {
+    return [
+      `// imports from openbrush`,
+      ...this.brushImports.map(i => i.toString()),
+      ...this.extensions
+        .filter(e => e.brushImports && e.brushImports.length)
+        .map(e => [...indentEach(0, e.collectBrushImports(), 0)].join('\n'))
+    ]
   }
 
   collectStorageDerives() {
@@ -245,46 +227,41 @@ export class Contract {
     }`
   }
 
-  collectStorageFields() {
-    return `${this.storage ? this.storage.toString() : ''}${
-      this.storage &&
-      this.extensions &&
-      this.extensions.filter(e => e.storage).length
-        ? '\n'
-        : ''
-    }${
-      this.extensions
-        ? this.extensions
-            .filter(e => e.storage)
-            .map(e => `${(e.storage as Storage).toString()}`)
-            .join('\n')
-        : ''
-    }`
+  collectStorageFields(): string[] {
+    let lines: string[] = []
+    if (this.storage) {
+      lines = lines.concat(this.storage.toString())
+    }
+
+    this.extensions
+      .filter(e => e.storage && e.storage instanceof Storage)
+      .forEach(e => lines.push(...(e.storage as Storage).toString()))
+
+    return lines
   }
 
-  collectTraitImpls() {
-    return `// Section contains default implementation without any modifications\n\t${
-      this.impl ? this.impl.toString() : ''
-    }${
-      this.impl && this.extensions && this.extensions.filter(e => e.impl).length
-        ? '\n'
-        : ''
-    }${
-      this.extensions
-        ? this.extensions
-            .filter(e => e.impl)
-            .map(e => `\t${(e.impl as TraitImpl).toString()}`)
-            .join('\n')
-        : ''
-    }`
+  collectTraitImpls(): Array<string[] | string | Array<string[] | string>> {
+    const lines: Array<string[] | string | Array<string[] | string>> = [
+      `// Section contains default implementation without any modifications`
+    ]
+
+    if (this.impl) lines.push(...this.impl.toString())
+
+    this.extensions
+      .filter(e => e.impl instanceof TraitImpl)
+      .forEach(e => lines.push(...(e.impl as TraitImpl).toString()))
+
+    return lines
   }
 
-  collectAdditionalImpls() {
-    return `${
-      this.additionalImpls.length
-        ? `\n\n\t${this.additionalImpls.map(e => e.toString()).join('\n')}`
-        : ''
-    }`
+  collectAdditionalImpls(): string[] {
+    return [
+      `${
+        this.additionalImpls.length
+          ? `\n\n\t${this.additionalImpls.map(e => e.toString()).join('\n')}`
+          : ''
+      }`
+    ]
   }
 
   collectConstructorArgs() {
@@ -351,54 +328,97 @@ export class Contract {
   }
 
   toString() {
-    return `#![cfg_attr(not(feature = "std"), no_std)]
-  #![feature(min_specialization)]
-          
-  #[${this.brushName}::contract]
-  pub mod my_${this.standardName} {
-      ${this.collectInkImports()}
-      ${this.collectBrushImports()}
-      #[ink(storage)]
-      #[derive(Default${
-        this.version === 'v1.3.0' || isGreaterVer(this.version, 'v2.3.0')
-          ? ''
-          : ', SpreadAllocate'
-      }${this.collectStorageDerives()})]
-      pub struct ${this.contractName} {
-      ${this.collectStorageFields()}
-      }${
-        this.extensions.find(
-          e =>
-            e.name === 'AccessControl' || e.name === 'AccessControlEnumerable'
-        ) !== undefined
-          ? `\n\n\tconst MANAGER: RoleType = ink${
-              isSmallerVer(this.version, 'v3.0.0-beta') ? '_lang' : ''
-            }::selector_id!("MANAGER");`
-          : ''
-      }
-
-      ${this.collectTraitImpls()}${this.collectAdditionalImpls()}
-
-      impl ${this.contractName} {
-          #[ink(constructor)]
-          pub fn new(${this.collectConstructorArgs()}) -> Self {
-              ${
-                this.version === 'v1.3.0' ||
-                isGreaterVer(this.version, 'v2.3.0')
-                  ? 'let mut _instance = Self::default();'
-                  : `ink${
+    return formatLines(
+      ...spaceBetween(
+        [
+          `#![cfg_attr(not(feature = "std"), no_std)]`,
+          `#![feature(min_specialization)]`
+        ],
+        [
+          `#[${this.brushName}::contract]`,
+          `pub mod my_${this.standardName} {`,
+          this.collectInkImports(),
+          this.collectBrushImports()
+        ],
+        [
+          spaceBetween(
+            [
+              `#[ink(storage)]`,
+              `#[derive(Default${this.collectStorageDerives()})]`,
+              `pub struct ${this.contractName} {`,
+              this.collectStorageFields(),
+              `}`
+            ],
+            [
+              `${
+                this.extensions.find(
+                  e =>
+                    e.name === 'AccessControl' ||
+                    e.name === 'AccessControlEnumerable'
+                ) !== undefined
+                  ? `const MANAGER: RoleType = ink${
                       isSmallerVer(this.version, 'v3.0.0-beta') ? '_lang' : ''
-                    }::codegen::initialize_contract(|_instance: &mut Contract|{`
-              }${this.collectConstructorActions()}${
-      isGreaterVer(this.version, 'v1.3.0') &&
-      isSmallerVer(this.version, 'v3.0.0-beta')
-        ? '\n\t\t\t})'
-        : '\n\t\t\t_instance'
-    }
-          }${this.collectContractMethods()}
-      }
-  }`
+                    }::selector_id!("MANAGER");`
+                  : ''
+              }`
+            ],
+            this.collectTraitImpls(),
+            this.collectAdditionalImpls()
+          ),
+          `}`
+        ]
+      )
+    )
   }
+  // toString() {
+  //   return `#![cfg_attr(not(feature = "std"), no_std)]
+  // #![feature(min_specialization)]
+
+  // #[${this.brushName}::contract]
+  // pub mod my_${this.standardName} {
+  //     ${this.collectInkImports()}
+  //     ${this.collectBrushImports()}
+  //     #[ink(storage)]
+  //     #[derive(Default${
+  //       this.version === 'v1.3.0' || isGreaterVer(this.version, 'v2.3.0')
+  //         ? ''
+  //         : ', SpreadAllocate'
+  //     }${this.collectStorageDerives()})]
+  //     pub struct ${this.contractName} {
+  //     ${this.collectStorageFields()}
+  //     }${
+  //       this.extensions.find(
+  //         e =>
+  //           e.name === 'AccessControl' || e.name === 'AccessControlEnumerable'
+  //       ) !== undefined
+  //         ? `\n\n\tconst MANAGER: RoleType = ink${
+  //             isSmallerVer(this.version, 'v3.0.0-beta') ? '_lang' : ''
+  //           }::selector_id!("MANAGER");`
+  //         : ''
+  //     }
+
+  //     ${this.collectTraitImpls()}${this.collectAdditionalImpls()}
+
+  //     impl ${this.contractName} {
+  //         #[ink(constructor)]
+  //         pub fn new(${this.collectConstructorArgs()}) -> Self {
+  //             ${
+  //               this.version === 'v1.3.0' ||
+  //               isGreaterVer(this.version, 'v2.3.0')
+  //                 ? 'let mut _instance = Self::default();'
+  //                 : `ink${
+  //                     isSmallerVer(this.version, 'v3.0.0-beta') ? '_lang' : ''
+  //                   }::codegen::initialize_contract(|_instance: &mut Contract|{`
+  //             }${this.collectConstructorActions()}${
+  //     isGreaterVer(this.version, 'v1.3.0') &&
+  //     isSmallerVer(this.version, 'v3.0.0-beta')
+  //       ? '\n\t\t\t})'
+  //       : '\n\t\t\t_instance'
+  //   }
+  //         }${this.collectContractMethods()}
+  //     }
+  // }`
+  // }
 }
 
 export class Extension {
@@ -421,12 +441,12 @@ export class Extension {
     this.contractMethods = []
   }
 
-  collectInkImports() {
-    return `${this.inkImports.map(i => i.toString()).join('\n')}`
+  collectInkImports(): string[] {
+    return this.inkImports.map(i => i.toString())
   }
 
-  collectBrushImports() {
-    return `${this.brushImports.map(i => i.toString()).join('\n')}`
+  collectBrushImports(): string[] {
+    return this.brushImports.map(i => i.toString()) || []
   }
 }
 
@@ -453,12 +473,18 @@ export class TraitImpl {
     this.methods = methods
   }
 
-  toString() {
-    return `impl ${this.traitName} for ${this.structName} {${
-      this.methods.length
-        ? `\n${this.methods.map(m => m.toString()).join('\n')}\n\t`
-        : ''
-    }}`
+  toString(): Array<string[] | string | Array<string[] | string>> {
+    const lines: Array<string[] | string | Array<string[] | string>> = [
+      `impl ${this.traitName} for ${this.structName} {`
+    ]
+
+    if (this.methods.length) {
+      lines.push(...this.methods.map(m => m.toString()))
+    }
+
+    if (lines.length > 1) return lines.concat('}')
+
+    return [lines[0] + `}`]
   }
 }
 
@@ -474,10 +500,12 @@ export class Storage {
     this.type = ''
   }
 
-  toString() {
-    return `${this.field ? `\t${this.field}\n` : ''}\t\t${this.name}: ${
-      this.type
-    },`
+  toString(): string[] {
+    const rows = []
+    if (this.field) rows.push(this.field)
+
+    rows.push(`${this.name}: ${this.type},`)
+    return rows
   }
 }
 
@@ -485,7 +513,7 @@ export class Method {
   brushName = ''
   isPublic = false
   mutating = false
-  derives: string | null = null
+  derives: string[] | null = null
   name = ''
   args: string[] = []
   return_type: string | null = null
@@ -495,7 +523,7 @@ export class Method {
     brushName: string,
     isPublic: boolean,
     mutating: boolean,
-    derives: string | null,
+    derives: string[] | null,
     name: string,
     args: string[],
     return_type: string,
@@ -511,26 +539,31 @@ export class Method {
     this.body = body
   }
 
-  toString() {
-    let result = ''
+  toString(): Array<string[] | string> {
+    const lines: Array<string[] | string> = []
 
-    result += `${this.derives ? `\t\t${this.derives}\n` : ''}`
+    if (this.derives) lines.push(...this.derives)
 
+    let argsString = ''
     if (this.args.length < 2) {
-      result += `\t\t${this.isPublic ? 'pub ' : ''}fn ${this.name}(&${
-        this.mutating ? 'mut ' : ''
-      }self${this.args.length ? ', ' : ''}${this.args
-        .map(a => a.toString())
-        .join(', ')})${this.return_type ? ` -> ${this.return_type}` : ''} {`
+      argsString = `&${this.mutating ? 'mut ' : ''}self${
+        this.args.length ? ', ' : ''
+      }${this.args.map(a => a.toString()).join(', ')}`
     } else {
-      result += `\t\t${this.isPublic ? 'pub ' : ''}fn ${this.name}(
-              &${this.mutating ? 'mut ' : ''}self,
-              ${this.args.map(a => a.toString()).join(',\n\t\t\t')}
-          )${this.return_type ? ` -> ${this.return_type}` : ''} {`
+      argsString = `&${this.mutating ? 'mut ' : ''}self, ${this.args
+        .map(a => a.toString())
+        .join(', ')}`
     }
+    const returnTypeString = this.return_type ? ` -> ${this.return_type}` : ''
+    lines.push(
+      `${this.isPublic ? 'pub ' : ''}fn ${
+        this.name
+      }(${argsString})${returnTypeString} {`
+    )
 
-    result += `${this.body ? `\n\t\t\t${this.body}\n\t\t}` : '}'}`
+    if (this.body) lines.push([this.body.toString()])
 
-    return result
+    lines.push('}')
+    return lines
   }
 }

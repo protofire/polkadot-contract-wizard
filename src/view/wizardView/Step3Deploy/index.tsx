@@ -56,7 +56,7 @@ function generateCode(standardName: TokenType, data: ContractConfig) {
           BRUSH_NAME,
           false,
           true,
-          isPausable ? `#[${BRUSH_NAME}::modifiers(when_not_paused)]` : null,
+          isPausable ? [`#[${BRUSH_NAME}::modifiers(when_not_paused)]`] : [],
           '_before_token_transfer',
           ['_from: Option<&AccountId>', '_to: Option<&AccountId>', '_amount: &Balance'],
           `Result<(), ${standardName.toUpperCase()}Error>`,

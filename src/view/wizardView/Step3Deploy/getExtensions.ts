@@ -272,9 +272,12 @@ export function generateExtension(
             BRUSH_NAME,
             false,
             true,
-            `#[ink(message)]\n\t\t#[${BRUSH_NAME}::modifiers(${
-              security === 'ownable' ? 'only_owner' : 'only_role(MANAGER)'
-            })]`,
+            [
+              `#[ink(message)]`,
+              `#[${BRUSH_NAME}::modifiers(${
+                security === 'ownable' ? 'only_owner' : 'only_role(MANAGER)'
+              })]`
+            ],
             'burn',
             args,
             `Result<(), ${standardName.toUpperCase()}Error>`,
@@ -321,9 +324,12 @@ export function generateExtension(
             BRUSH_NAME,
             false,
             true,
-            `#[ink(message)]\n\t\t#[${BRUSH_NAME}::modifiers(${
-              security === 'ownable' ? 'only_owner' : 'only_role(MANAGER)'
-            })]`,
+            [
+              `#[ink(message)]`,
+              `#[${BRUSH_NAME}::modifiers(${
+                security === 'ownable' ? 'only_owner' : 'only_role(MANAGER)'
+              })]`
+            ],
             'mint',
             args,
             `Result<(), ${standardName.toUpperCase()}Error>`,
@@ -407,13 +413,16 @@ export function generateExtension(
           BRUSH_NAME,
           true,
           true,
-          `#[ink(message)]${
-            security
-              ? `\n\t\t#[${BRUSH_NAME}::modifiers(${
-                  security === 'ownable' ? 'only_owner' : 'only_role(MANAGER)'
-                })]`
-              : ''
-          }`,
+          [
+            `#[ink(message)]`,
+            `${
+              security
+                ? `#[${BRUSH_NAME}::modifiers(${
+                    security === 'ownable' ? 'only_owner' : 'only_role(MANAGER)'
+                  })]`
+                : ''
+            }`
+          ],
           'change_state',
           [],
           `Result<(), ${standardName.toUpperCase()}Error>`,
@@ -542,7 +551,7 @@ export function generateExtension(
           BRUSH_NAME,
           true,
           false,
-          `#[ink(message)]`,
+          [`#[ink(message)]`],
           'cap',
           [],
           'Balance',
