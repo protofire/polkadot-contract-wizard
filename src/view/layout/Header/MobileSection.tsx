@@ -11,6 +11,7 @@ import {
 import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet'
 
 import Transitions from 'src/view/components/Transitions'
+import LogoMobile from 'src/view/components/LogoMobile';
 
 // ==============================|| HEADER CONTENT - MOBILE ||============================== //
 const MobileSection = () => {
@@ -40,6 +41,7 @@ const MobileSection = () => {
 
   return (
     <>
+      <LogoMobile />
       <Box sx={{ flexShrink: 0, mr: 0.5 }}>
         <IconButton
           component="span"

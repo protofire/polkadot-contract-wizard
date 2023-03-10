@@ -1,3 +1,4 @@
+import { LineStyle } from '@mui/icons-material'
 import { isGreaterVer, isSmallerVer } from '@utils'
 import {
   formatLines,
@@ -300,12 +301,30 @@ export class Contract {
       e => e.contractMethods?.length
     )
 
-    if (extensionsWithContractMethods) {
+    if (extensionsWithContractMethods.length) {
       lines.push('')
       extensionsWithContractMethods.forEach(e =>
         e.contractMethods.forEach(m => lines.push(...m.toString()))
       )
     }
+
+    return lines
+  }
+
+  printManager(): Lines[] {
+    const lines: Lines[] = []
+
+    const isAccessControl =
+      this.extensions.find(
+        e => e.name === 'AccessControl' || e.name === 'AccessControlEnumerable'
+      ) !== undefined
+
+    if (isAccessControl)
+      lines.push(
+        `const MANAGER: RoleType = ink${
+          isSmallerVer(this.version, 'v3.0.0-beta') ? '_lang' : ''
+        }::selector_id!("MANAGER");`
+      )
 
     return lines
   }
@@ -332,19 +351,7 @@ export class Contract {
               this.collectStorageFields(),
               `}`
             ],
-            [
-              `${
-                this.extensions.find(
-                  e =>
-                    e.name === 'AccessControl' ||
-                    e.name === 'AccessControlEnumerable'
-                ) !== undefined
-                  ? `const MANAGER: RoleType = ink${
-                      isSmallerVer(this.version, 'v3.0.0-beta') ? '_lang' : ''
-                    }::selector_id!("MANAGER");`
-                  : ''
-              }`
-            ],
+            this.printManager(),
             this.collectTraitImpls(),
             this.collectAdditionalImpls(),
             [
