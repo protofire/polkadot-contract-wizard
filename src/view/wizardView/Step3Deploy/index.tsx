@@ -51,7 +51,7 @@ function generateCode(standardName: TokenType, data: ContractConfig) {
       )
     )
     contract.addAdditionalImpl(
-      new TraitImpl(`${isSmallerVer(VERSION, 'v2.2.0') ? standardName.toUpperCase() : ''}${isSmallerVer(VERSION, 'v1.6.0') ? 'Internal' : 'Transfer'}`, 'Contract', [
+      new TraitImpl(`${isSmallerVer(VERSION, 'v2.2.0') ? standardName.toUpperCase() : ''}${isSmallerVer(VERSION, 'v1.6.0') ? 'Internal' : 'Transfer'}`, CONTRACT_NAME, [
         new Method(
           BRUSH_NAME,
           false,

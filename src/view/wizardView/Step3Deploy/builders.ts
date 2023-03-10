@@ -1,5 +1,10 @@
 import { isGreaterVer, isSmallerVer } from '@utils'
-import { formatLines, indentEach, spaceBetween } from 'src/utils/formatString'
+import {
+  formatLines,
+  indentEach,
+  Lines,
+  spaceBetween
+} from 'src/utils/formatString'
 
 export class ContractBuilder {
   #contract
@@ -240,8 +245,8 @@ export class Contract {
     return lines
   }
 
-  collectTraitImpls(): Array<string[] | string | Array<string[] | string>> {
-    const lines: Array<string[] | string | Array<string[] | string>> = [
+  collectTraitImpls(): Lines[] {
+    const lines: Lines[] = [
       `// Section contains default implementation without any modifications`
     ]
 
@@ -254,11 +259,11 @@ export class Contract {
     return lines
   }
 
-  collectAdditionalImpls(): unknown[] {
-    const lines = []
+  collectAdditionalImpls(): Lines[] {
+    const lines: Lines[] = []
 
     if (this.additionalImpls.length) {
-      lines.push(this.additionalImpls.map(e => e.toString()))
+      this.additionalImpls.map(e => lines.push(...e.toString()))
     }
 
     return lines
@@ -276,55 +281,33 @@ export class Contract {
       .join(', ')}`
   }
 
-  collectConstructorActions() {
-    return `${
-      this.constructorActions?.length
-        ? '\n\t\t\t' +
-          (this.version === 'v1.3.0' || isGreaterVer(this.version, 'v2.3.0')
-            ? ''
-            : '\t') +
-          this.constructorActions.join('\n\t\t\t\t')
-        : ''
-    }${
-      this.extensions &&
-      this.extensions.filter(e => e.constructorActions?.length).length
-        ? `\n${this.extensions
-            .filter(e => e.constructorActions?.length)
-            .map(
-              e =>
-                `${e.constructorActions
-                  .map(
-                    a =>
-                      `${
-                        this.version === 'v1.3.0' ||
-                        isGreaterVer(this.version, 'v2.3.0')
-                          ? ''
-                          : '\t'
-                      }\t\t\t${a}`
-                  )
-                  .join('\n')}`
-            )
-            .join('\n')}`
-        : ''
-    }`
+  collectConstructorActions(): Lines[] {
+    const lines: Lines[] = []
+
+    this.constructorActions.forEach(a => lines.push(a))
+
+    this.extensions
+      .filter(e => e.constructorActions.length)
+      .forEach(e => lines.push(...e.constructorActions))
+
+    return lines
   }
 
-  collectContractMethods() {
-    return `${
-      this.extensions &&
-      this.extensions.filter(e => e.contractMethods?.length).length
-        ? '\n\n'
-        : ''
-    }${
-      this.extensions
-        ? this.extensions
-            .filter(e => e.contractMethods?.length)
-            .map(
-              e => `${e.contractMethods.map(m => m.toString()).join('\n\n')}`
-            )
-            .join('\n\n')
-        : ''
-    }`
+  collectContractMethods(): Lines[] {
+    const lines: Lines = []
+
+    const extensionsWithContractMethods = this.extensions.filter(
+      e => e.contractMethods?.length
+    )
+
+    if (extensionsWithContractMethods) {
+      lines.push('')
+      extensionsWithContractMethods.forEach(e =>
+        e.contractMethods.forEach(m => lines.push(...m.toString()))
+      )
+    }
+
+    return lines
   }
 
   toString() {
@@ -363,34 +346,21 @@ export class Contract {
               }`
             ],
             this.collectTraitImpls(),
-            this.collectAdditionalImpls() as string[],
+            this.collectAdditionalImpls(),
             [
               `impl ${this.contractName} {`,
               [
                 `#[ink(constructor)]`,
                 `pub fn new(${this.collectConstructorArgs()}) -> Self {`,
                 [
-                  `${
-                    this.version === 'v1.3.0' ||
-                    isGreaterVer(this.version, 'v2.3.0')
-                      ? 'let mut _instance = Self::default();'
-                      : `ink${
-                          isSmallerVer(this.version, 'v3.0.0-beta')
-                            ? '_lang'
-                            : ''
-                        }::codegen::initialize_contract(|_instance: &mut Contract|{`
-                  }${this.collectConstructorActions()}${
-                    isGreaterVer(this.version, 'v1.3.0') &&
-                    isSmallerVer(this.version, 'v3.0.0-beta')
-                      ? '\n\t\t\t})'
-                      : '\n\t\t\t_instance'
-                  }`,
-                  `}`,
-                  this.collectContractMethods()
+                  'let mut _instance = Self::default();',
+                  ...this.collectConstructorActions(),
+                  '_instance'
                 ],
                 `}`
               ],
-              `}`
+              this.collectContractMethods(),
+              `}` // Close Contract impl
             ]
           ),
           `}`
@@ -501,18 +471,16 @@ export class TraitImpl {
     this.methods = methods
   }
 
-  toString(): Array<string[] | string | Array<string[] | string>> {
-    const lines: Array<string[] | string | Array<string[] | string>> = [
-      `impl ${this.traitName} for ${this.structName} {`
-    ]
+  toString(): Lines[] {
+    const lines: Lines[] = [`impl ${this.traitName} for ${this.structName} {`]
 
     if (this.methods.length) {
       lines.push(...this.methods.map(m => m.toString()))
     }
 
-    if (lines.length > 1) return lines.concat('}')
+    if (lines.length > 1) return [...lines, `}`]
 
-    return [lines[0] + `}`]
+    return [`${lines}}`]
   }
 }
 
@@ -567,8 +535,8 @@ export class Method {
     this.body = body
   }
 
-  toString(): Array<string[] | string> {
-    const lines: Array<string[] | string> = []
+  toString(): Lines[] {
+    const lines: Lines[] = []
 
     if (this.derives) lines.push(...this.derives)
 
