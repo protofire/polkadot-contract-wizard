@@ -50,8 +50,8 @@ const Header = ({
           flexDirection: 'row-reverse',
           width: '100vw',
           borderRadius: '0',
-          background: 'transparent',
-        }),
+          background: 'transparent'
+        })
       }}
     >
       <IconButton

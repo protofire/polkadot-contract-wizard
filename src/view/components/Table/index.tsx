@@ -1,5 +1,14 @@
 import * as React from 'react'
-import { Table, TableBody, TableCell, TableContainer, TableContainerProps, TableHead, TableRow, Typography } from '@mui/material'
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableContainerProps,
+  TableHead,
+  TableRow,
+  Typography
+} from '@mui/material'
 
 import { styled } from '@mui/material/styles'
 import CopyToClipboardButton from '../CopyButton'
@@ -11,13 +20,13 @@ const StyledTableContainer = styled(TableContainer)<TableContainerProps>(
     },
     '& .MuiTable-root': {
       margin: '2rem auto',
-      width: '80%',
+      width: '80%'
     },
     '& .MuiTableCell-root': {
       color: theme.palette.secondary.light,
       fontSize: '1.1rem',
-      fontFeatureSettings: '"ss01", "ss02"',
-    },
+      fontFeatureSettings: '"ss01", "ss02"'
+    }
   })
 )
 
@@ -35,7 +44,9 @@ const rows = [
 export default function BasicTable() {
   return (
     <>
-      <Typography variant="h3" align="center" mt="2">Deployed contracts</Typography>
+      <Typography variant="h3" align="center" mt="2">
+        Deployed contracts
+      </Typography>
       <StyledTableContainer>
         <Table aria-label="simple table">
           <TableHead>
@@ -55,12 +66,15 @@ export default function BasicTable() {
                   {row.type}
                 </TableCell>
                 <TableCell>{row.name}</TableCell>
-                <TableCell>{row.address}<CopyToClipboardButton /></TableCell>
+                <TableCell>
+                  {row.address}
+                  <CopyToClipboardButton />
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
-      </StyledTableContainer >
+      </StyledTableContainer>
     </>
   )
 }

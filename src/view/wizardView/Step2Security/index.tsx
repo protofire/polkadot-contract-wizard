@@ -21,7 +21,10 @@ export default function Step2Security() {
       setDataForm(newDataForm)
     }
 
-    setDataForm((prev) => ({ ...prev, security: event.target.value as SecurityOfToken }))
+    setDataForm(prev => ({
+      ...prev,
+      security: event.target.value as SecurityOfToken
+    }))
   }
 
   return (
@@ -35,8 +38,7 @@ export default function Step2Security() {
           sx={{ gap: 3 }}
         >
           <FormControlLabel
-            control={
-              <Radio />}
+            control={<Radio />}
             label={
               <>
                 <Typography
@@ -139,6 +141,6 @@ export default function Step2Security() {
         </RadioGroup>
       </FormControl>
       <BackNextButton handleBack={handleBack} handleNext={handleNext} />
-    </Stack >
+    </Stack>
   )
 }

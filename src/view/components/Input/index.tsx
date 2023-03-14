@@ -1,14 +1,9 @@
-import {
-    TextField,
-    styled
-} from '@mui/material'
+import { TextField, styled } from '@mui/material'
 
-const StyledTextField = styled(TextField)(
-    ({ theme }) => ({
-        '& .MuiInputBase-input': {
-            color: theme.palette.secondary.light,
-        },
-    })
-)
+const StyledTextField = styled(TextField)(({ theme }) => ({
+  '& .MuiInputBase-input': {
+    color: theme.palette.secondary.light
+  }
+}))
 
 export default StyledTextField

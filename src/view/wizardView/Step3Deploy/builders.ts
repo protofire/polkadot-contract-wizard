@@ -1,4 +1,3 @@
-import { LineStyle } from '@mui/icons-material'
 import { isGreaterVer, isSmallerVer } from '@utils'
 import {
   formatLines,

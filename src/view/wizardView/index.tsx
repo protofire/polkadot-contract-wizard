@@ -14,19 +14,29 @@ const STEPS = ['Extensions', 'Security', 'Deploy']
 function getInitialValues(tokenOptionsConfig: ControlsToken | undefined) {
   if (tokenOptionsConfig === undefined) return []
 
-  return Object.assign({},
-    ...tokenOptionsConfig.optionList.map((control) => ({ [control.name]: control.initState }))
+  return Object.assign(
+    {},
+    ...tokenOptionsConfig.optionList.map(control => ({
+      [control.name]: control.initState
+    }))
   )
 }
 
-
-export default function FormWizard({ token }: { token: TokenType }): JSX.Element {
+export default function FormWizard({
+  token
+}: {
+  token: TokenType
+}): JSX.Element {
   const [activeStep, setActiveStep] = React.useState(0)
   const { extensionFields, constructorFields } = useMemo(() => {
-    const currentToken = WIZARD_CONFIG.find((_token) => _token.name === token)
+    const currentToken = WIZARD_CONFIG.find(_token => _token.name === token)
     return {
-      extensionFields: currentToken?.controls.find((options) => options.sectionName === 'Extensions'),
-      constructorFields: currentToken?.controls.find((options) => options.sectionName === 'Constructor')
+      extensionFields: currentToken?.controls.find(
+        options => options.sectionName === 'Extensions'
+      ),
+      constructorFields: currentToken?.controls.find(
+        options => options.sectionName === 'Constructor'
+      )
     }
   }, [token])
   const [dataForm, setDataForm] = React.useState({
@@ -76,13 +86,13 @@ export default function FormWizard({ token }: { token: TokenType }): JSX.Element
         activeStep,
         handleBack,
         handleNext,
-        resetDataForm,
+        resetDataForm
       }}
     >
       <Box sx={{ width: '100%' }}>
         <StepperWrapper>
           <Stepper activeStep={activeStep}>
-            {STEPS.map((label) => {
+            {STEPS.map(label => {
               const stepProps: { completed?: boolean } = {}
               const labelProps: {
                 optional?: React.ReactNode
