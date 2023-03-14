@@ -34,14 +34,14 @@ The Polkadot Contract Wizard is a smart contract creation tool that allows users
 
 4. Your application should now be running on the specified port. You can access it by visiting `localhost:<EXTERNAL_PORT>` in your browser.
 
-> Stop the all the running containers with the following command:
+> ✋ Stop the all the running containers with the following command:
 > `docker-compose stop`
 
 #### B. Local Stack
 
 - ⚠️ Requirements:
-    a. node >= 16
-    b. yarn >= 1.20
+  - node >= 16
+  - yarn >= 1.20
 
 1. Open a command-line interface in the application's root directory and install the packages with the command:
 
@@ -59,7 +59,7 @@ The Polkadot Contract Wizard is a smart contract creation tool that allows users
 
 3. Once the development server is running, you can access the application from your web browser at the address [http://localhost:3000](http://localhost:3000).
 
-> Stop the Server
+> ✋ Stop the Server
 > To stop the development server, press `Ctrl + C` in the terminal.
 
 ## License
