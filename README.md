@@ -2,7 +2,7 @@
 
 ## Overview
 
-The Polkadot Contract Wizard is a smart contract creation tool that allows users to create their own smart contracts in minutes. This tool is designed to adhere to the Polkadot Standards (PSP22, PSP34, and PSP37) and provides useful extensions with custom logic such as Ownable, Roles, Mintable, Burnable, Timelock, and Payment Splitter. Additionally, it contains useful macros to simplify the development process such as function modifiers, storage definition, and trait definitions. With the Polkadot Contract Wizard, users can easily create their own smart contracts in just three steps: 1. Choose your contract features, 2. Deploy your smart contract and 3. Use your smart contract.
+The Polkadot Contract Wizard is a smart contract creation tool that allows users to create their own smart contracts in minutes. This tool is designed to adhere to the Polkadot Standards (**PSP22**, **PSP34**, and **PSP37**) and provides useful extensions with custom logic such as Ownable, Roles, Mintable, Burnable, Timelock, and Payment Splitter. Additionally, it contains useful macros to simplify the development process such as function modifiers, storage definition, and trait definitions. With the Polkadot Contract Wizard, users can easily create their own smart contracts in just three steps: 1. Choose your contract features, 2. Deploy your smart contract and 3. Use your smart contract.
 
 ## Built with
 
