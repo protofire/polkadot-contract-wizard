@@ -10,35 +10,57 @@ The Polkadot Contract Wizard is a smart contract creation tool that allows users
 - 📘 React framework.
 - 🧪 Jest for unit testing.
 - 🔍 ESLint for code linting and formating.
-🐳 Docker for development and testing operations.
+- 🐳 Docker for development and testing operations.
 
 ## Getting Started
 
 ### 🚀 Run app
 
-#### 1. With Docker
+#### A. With Docker
 
-1. Make sure you have the latest version of Docker installed on your system.
+- ⚠️ Requirements:
+    a. docker >= 20
+    b. docker-compose >= 2.15
 
-2. Open a command-line interface and change the directory to the location of the docker-compose.yml file.
+1. Make sure your daemon `docker` is running in your system.
 
-3. Open a command-line interface and change the directory to the location of the `docker-compose.yml` file.
+2. (Optional) Set the environment variables for the container on [.docker.env](./.docker/dev/.docker.env). These will be used to configure the application.
 
-4. Set the environment variables for the container. These will be used to configure the application.
-
-5. Run the following command to build the container:
-
-    ```bash
-    docker-compose build
-    ```
-
-6. Run the following command to start the container:
+3. Run the following command to start the container (Will do a build previously in the first run):
 
     ```bash
-    docker-compose up
+    docker-compose --file .docker/docker-compose.yml --env-file .docker/dev/.docker.env up
     ```
 
-7. Your application should now be running on the specified port. You can access it by visiting `localhost:<EXTERNAL_PORT>` in your browser.
+4. Your application should now be running on the specified port. You can access it by visiting `localhost:<EXTERNAL_PORT>` in your browser.
+
+> Stop the all the running containers with the following command:
+> `docker-compose stop`
+
+#### B. Local Stack
+
+- ⚠️ Requirements:
+    a. node >= 16
+    b. yarn >= 1.20
+
+1. Open a command-line interface in the application's root directory and install the packages with the command:
+
+    ```bash
+        yarn install
+    ```
+
+2. To start the app, use:
+
+    ```bash
+    yarn dev
+    ```
+
+    > This will start a Next.js development server on the default port (3000).
+
+3. Once the development server is running, you can access the application from your web browser at the address [http://localhost:3000](http://localhost:3000).
+
+> Stop the Server
+> To stop the development server, press `Ctrl + C` in the terminal.
 
 ## License
 
@@ -48,13 +70,10 @@ Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
 
-    http://www.apache.org/licenses/LICENSE-2.0
+<http://www.apache.org/licenses/LICENSE-2.0>
 
 Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
-
-<!-- MARKDOWN LINKS & IMAGES -->
-<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
