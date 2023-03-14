@@ -19,8 +19,8 @@ The Polkadot Contract Wizard is a smart contract creation tool that allows users
 #### A. With Docker
 
 - ⚠️ Requirements:
-    a. docker >= 20
-    b. docker-compose >= 2.15
+  - docker >= 20
+  - docker-compose >= 2.15
 
 1. Make sure your daemon `docker` is running in your system.
 
