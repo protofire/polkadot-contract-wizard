@@ -24,14 +24,14 @@ export default function InputFieldExtension({
           <Typography
             variant="h3"
             sx={{
-              fontSize: '1.7rem'
+              fontSize: '1.4rem'
             }}
           >
             {extension.name}
           </Typography>
           <Typography
             variant="body1"
-            sx={{ fontSize: '1.2rem', color: '#b1b1b1' }}
+            sx={{ fontSize: '1rem', color: '#b1b1b1' }}
           >
             {extension.tooltip}
           </Typography>

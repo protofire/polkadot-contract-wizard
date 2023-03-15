@@ -1,10 +1,11 @@
-import { FormGroup, Stack } from '@mui/material'
+import { FormGroup, Grid, Typography } from '@mui/material'
 import { useRouter } from 'next/router'
 
 import { useStepsSCWizard } from '@context'
 import BackNextButton from '../BackNextButtons'
 import { ControlsToken, ROUTES } from '@constants'
 import ExtensionCheckbox from './ExtensionCheckbox'
+import Security from './Security'
 
 export default function Step1Extensions({
   extensionFields
@@ -31,21 +32,30 @@ export default function Step1Extensions({
   if (!extensionFields) return null
 
   return (
-    <Stack sx={{ mt: 2, mb: 2 }}>
-      <FormGroup sx={{ gap: 3 }}>
-        {extensionFields &&
-          extensionFields.optionList.map((extension, index) => {
-            return (
-              <ExtensionCheckbox
-                key={index}
-                checked={dataForm.extensions[extension.name] ? true : false}
-                extension={extension}
-                onChange={() => onChangeExtensions(extension.name)}
-              />
-            )
-          })}
-      </FormGroup>
+    <>
+      <Grid container columns={{ xs: 12, md: 12 }} spacing={6}>
+        <Grid item sm={12} md={8}>
+          <Typography variant="h3">Functionalities</Typography>
+          <FormGroup sx={{ gap: 3 }}>
+            {extensionFields &&
+              extensionFields.optionList.map((extension, index) => {
+                return (
+                  <ExtensionCheckbox
+                    key={index}
+                    checked={dataForm.extensions[extension.name] ? true : false}
+                    extension={extension}
+                    onChange={() => onChangeExtensions(extension.name)}
+                  />
+                )
+              })}
+          </FormGroup>
+        </Grid>
+        <Grid item sm={12} md={4}>
+          <Typography variant="h3">Security</Typography>
+          <Security />
+        </Grid>
+      </Grid>
       <BackNextButton handleBack={_handleBack} handleNext={handleNext} />
-    </Stack>
+    </>
   )
 }

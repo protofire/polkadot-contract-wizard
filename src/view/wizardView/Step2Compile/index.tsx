@@ -162,7 +162,7 @@ function generateCode(standardName: TokenType, data: ContractConfig) {
   return contract.getContract().toString()
 }
 
-export default function Step3Compile({ tokenType }: { tokenType: TokenType }) {
+export default function Step2Compile({ tokenType }: { tokenType: TokenType }) {
   const { handleBack, handleNext, dataForm } = useStepsSCWizard()
 
   return (

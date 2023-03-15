@@ -5,7 +5,7 @@ import BackNextButton from '../BackNextButtons'
 import { TokenType } from '@types'
 import StyledTextField from '../../components/Input'
 
-export default function Step4Deploy({ tokenType }: { tokenType: TokenType }) {
+export default function Step3Deploy({ tokenType }: { tokenType: TokenType }) {
   const { handleBack, handleNext } = useStepsSCWizard()
 
   return (

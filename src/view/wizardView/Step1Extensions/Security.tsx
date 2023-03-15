@@ -8,11 +8,10 @@ import {
 } from '@mui/material'
 
 import { useStepsSCWizard } from '@context'
-import BackNextButton from '../BackNextButtons'
 import { SecurityOfToken } from 'src/types/smartContract/tokens'
 
-export default function Step2Security() {
-  const { handleBack, handleNext, dataForm, setDataForm } = useStepsSCWizard()
+export default function Security() {
+  const { dataForm, setDataForm } = useStepsSCWizard()
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.value === 'none') {
@@ -44,14 +43,14 @@ export default function Step2Security() {
                 <Typography
                   variant="h3"
                   sx={{
-                    fontSize: '1.7rem'
+                    fontSize: '1.4rem'
                   }}
                 >
                   None
                 </Typography>
                 <Typography
                   variant="body1"
-                  sx={{ fontSize: '1.2rem', color: '#b1b1b1' }}
+                  sx={{ fontSize: '1rem', color: '#b1b1b1' }}
                 >
                   Sample content for None value.
                 </Typography>
@@ -70,14 +69,14 @@ export default function Step2Security() {
                 <Typography
                   variant="h3"
                   sx={{
-                    fontSize: '1.7rem'
+                    fontSize: '1.4rem'
                   }}
                 >
                   Ownable
                 </Typography>
                 <Typography
                   variant="body1"
-                  sx={{ fontSize: '1.2rem', color: '#b1b1b1' }}
+                  sx={{ fontSize: '1rem', color: '#b1b1b1' }}
                 >
                   Sample content for Ownable value.
                 </Typography>
@@ -95,14 +94,14 @@ export default function Step2Security() {
                 <Typography
                   variant="h3"
                   sx={{
-                    fontSize: '1.7rem'
+                    fontSize: '1.4rem'
                   }}
                 >
                   Access Control
                 </Typography>
                 <Typography
                   variant="body1"
-                  sx={{ fontSize: '1.2rem', color: '#b1b1b1' }}
+                  sx={{ fontSize: '1rem', color: '#b1b1b1' }}
                 >
                   Sample content for Access Control value.
                 </Typography>
@@ -120,14 +119,14 @@ export default function Step2Security() {
                 <Typography
                   variant="h3"
                   sx={{
-                    fontSize: '1.7rem'
+                    fontSize: '1.4rem'
                   }}
                 >
                   Access Control Enumerable
                 </Typography>{' '}
                 <Typography
                   variant="body1"
-                  sx={{ fontSize: '1.2rem', color: '#b1b1b1' }}
+                  sx={{ fontSize: '1rem', color: '#b1b1b1' }}
                 >
                   Sample content for Access Control Enumerable value.
                 </Typography>
@@ -140,7 +139,6 @@ export default function Step2Security() {
           />
         </RadioGroup>
       </FormControl>
-      <BackNextButton handleBack={handleBack} handleNext={handleNext} />
     </Stack>
   )
 }
