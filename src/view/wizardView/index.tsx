@@ -3,13 +3,14 @@ import { Typography, StepLabel, Step, Stepper, Box } from '@mui/material'
 
 import Step1Extensions from './Step1Extensions'
 import Step2Security from './Step2Security'
-import Step3Deploy from './Step3Deploy'
+import Step3Compile from './Step3Compile'
+import Step4Deploy from './Step4Deploy'
 import { Button, Stepper as StepperWrapper } from '@components'
 import { StepsSCWizardContext } from '@context'
 import { TokenType } from '@types'
 import { ControlsToken, WIZARD_CONFIG } from '@constants'
 
-const STEPS = ['Extensions', 'Security', 'Deploy']
+const STEPS = ['Extensions', 'Security', 'Compile', 'Deploy']
 
 function getInitialValues(tokenOptionsConfig: ControlsToken | undefined) {
   if (tokenOptionsConfig === undefined) return []
@@ -72,7 +73,9 @@ export default function FormWizard({
       case 1:
         return <Step2Security />
       case 2:
-        return <Step3Deploy tokenType={token} />
+        return <Step3Compile tokenType={token} />
+      case 3:
+        return <Step4Deploy tokenType={token} />
       default:
         return null
     }

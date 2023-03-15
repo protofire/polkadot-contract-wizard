@@ -162,13 +162,13 @@ function generateCode(standardName: TokenType, data: ContractConfig) {
   return contract.getContract().toString()
 }
 
-export default function Step3Deploy({ tokenType }: { tokenType: TokenType }) {
+export default function Step3Compile({ tokenType }: { tokenType: TokenType }) {
   const { handleBack, handleNext, dataForm } = useStepsSCWizard()
 
   return (
     <>
-      <Typography>
-        Congrats! Now you can deploy your contract {tokenType}!
+      <Typography variant="h4">
+        Excelent! Now you need to compile contract {tokenType}!
       </Typography>
       <Box sx={{ overflowY: 'scroll', height: '45rem', resize: 'both' }}>
         <CopyBlock
@@ -181,10 +181,10 @@ export default function Step3Deploy({ tokenType }: { tokenType: TokenType }) {
       </Box>
 
       <BackNextButton
-        nextLabel="Deploy Contract"
+        nextLabel="Compile Contract"
         handleBack={handleBack}
         handleNext={handleNext}
-        nextButtonProps={{ startIcon: '🚀' }}
+        nextButtonProps={{ startIcon: '⚙️' }}
       />
     </>
   )

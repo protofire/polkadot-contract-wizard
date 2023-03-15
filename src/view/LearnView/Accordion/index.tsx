@@ -40,7 +40,7 @@ export default function SimpleAccordion() {
           aria-controls="learn-section"
           id="learn-section"
         >
-          <Typography variant="h3">How it&apos;s work?</Typography>
+          <Typography variant="h3">How does it work?</Typography>
         </AccordionSummary>
         <AccordionDetails>
           <Typography variant="body1">
