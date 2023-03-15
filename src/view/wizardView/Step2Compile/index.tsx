@@ -170,7 +170,7 @@ export default function Step2Compile({ tokenType }: { tokenType: TokenType }) {
       <Typography variant="h4">
         Excelent! Now you need to compile contract {tokenType}!
       </Typography>
-      <Box sx={{ overflowY: 'scroll', height: '45rem', resize: 'both' }}>
+      <Box sx={{ overflowY: 'scroll', height: '60vh', resize: 'both' }}>
         <CopyBlock
           language="rust"
           text={generateCode(tokenType, dataForm)}

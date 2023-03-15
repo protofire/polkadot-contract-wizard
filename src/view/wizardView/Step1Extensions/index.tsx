@@ -1,4 +1,4 @@
-import { FormGroup, Grid, Typography } from '@mui/material'
+import { FormGroup, Grid, Stack, Typography } from '@mui/material'
 import { useRouter } from 'next/router'
 
 import { useStepsSCWizard } from '@context'
@@ -36,19 +36,23 @@ export default function Step1Extensions({
       <Grid container columns={{ xs: 12, md: 12 }} spacing={6}>
         <Grid item sm={12} md={8}>
           <Typography variant="h3">Functionalities</Typography>
-          <FormGroup sx={{ gap: 3 }}>
-            {extensionFields &&
-              extensionFields.optionList.map((extension, index) => {
-                return (
-                  <ExtensionCheckbox
-                    key={index}
-                    checked={dataForm.extensions[extension.name] ? true : false}
-                    extension={extension}
-                    onChange={() => onChangeExtensions(extension.name)}
-                  />
-                )
-              })}
-          </FormGroup>
+          <Stack sx={{ mt: 2, mb: 2 }}>
+            <FormGroup sx={{ gap: 3 }}>
+              {extensionFields &&
+                extensionFields.optionList.map((extension, index) => {
+                  return (
+                    <ExtensionCheckbox
+                      key={index}
+                      checked={
+                        dataForm.extensions[extension.name] ? true : false
+                      }
+                      extension={extension}
+                      onChange={() => onChangeExtensions(extension.name)}
+                    />
+                  )
+                })}
+            </FormGroup>
+          </Stack>
         </Grid>
         <Grid item sm={12} md={4}>
           <Typography variant="h3">Security</Typography>

@@ -2,6 +2,7 @@ import { styled } from '@mui/material/styles'
 import Box, { BoxProps } from '@mui/material/Box'
 
 const StepperWrapper = styled(Box)<BoxProps>(({ theme }) => ({
+  margin: '0 0 1rem 0',
   [theme.breakpoints.down('md')]: {
     '& .MuiStepper-horizontal:not(.MuiStepper-alternativeLabel)': {
       flexDirection: 'row',
