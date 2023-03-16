@@ -32,8 +32,8 @@ export default function Step3Deploy({
         []
     }
   }, [constructorFields?.optionList, dataForm.extensions.Metadata])
-
-  console.log('mada', mandatoryFields, 'meta', metadataFields)
+  const areThereParameters =
+    mandatoryFields.length > 0 || metadataFields.length > 0
 
   return (
     <>
@@ -72,7 +72,7 @@ export default function Step3Deploy({
             </Stack>
           </Stack>
         </Grid>
-        {(mandatoryFields.length || metadataFields.length) && (
+        {areThereParameters && (
           <Grid item sm={12} md={6}>
             <Stack
               sx={{ display: 'flex', flexDirection: 'column', gap: '1.2rem' }}
