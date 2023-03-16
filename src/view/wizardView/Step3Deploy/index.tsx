@@ -1,16 +1,37 @@
+import { useMemo } from 'react'
 import { Grid, Stack, Typography } from '@mui/material'
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
+import Image from 'next/image'
 
 import { useStepsSCWizard } from '@context'
 import BackNextButton from '../BackNextButtons'
 import { TokenType } from '@types'
 import StyledTextField from '../../components/Input'
-import Image from 'next/image'
-
 import { CompilingAnimation } from 'src/constants/images'
+import { ConstructorTokenField, ControlsToken } from '@constants'
 
-export default function Step3Deploy({ tokenType }: { tokenType: TokenType }) {
-  const { handleBack, handleNext } = useStepsSCWizard()
+export default function Step3Deploy({
+  tokenType,
+  constructorFields
+}: {
+  tokenType: TokenType
+  constructorFields?: ControlsToken
+}) {
+  const { handleBack, handleNext, dataForm } = useStepsSCWizard()
+  const { mandatoryFields, metadataFields } = useMemo(() => {
+    return {
+      mandatoryFields: constructorFields?.optionList.filter(
+        field => (field as ConstructorTokenField).required
+      ),
+      metadataFields:
+        dataForm.extensions.Metadata &&
+        constructorFields?.optionList.filter(
+          field => !(field as ConstructorTokenField).required
+        )
+    }
+  }, [constructorFields?.optionList, dataForm.extensions.Metadata])
+
+  console.log('mada', mandatoryFields, 'meta', metadataFields)
 
   return (
     <>

@@ -7,9 +7,18 @@ export type OptionTokenField = {
   initState: string | boolean
   tooltip?: string
 }
-export type ControlsToken = {
+export type ConstructorTokenField = OptionTokenField & {
+  fieldName: string
+  required?: boolean
+}
+
+type OptionListType<T extends Sections> = T extends 'Extensions'
+  ? OptionTokenField[]
+  : ConstructorTokenField[]
+
+export interface ControlsToken {
   sectionName: Sections
-  optionList: OptionTokenField[]
+  optionList: OptionListType<this['sectionName']>
 }
 export type TokenOptionConfig = {
   name: TokenType
@@ -31,16 +40,36 @@ export const WIZARD_CONFIG: Array<TokenOptionConfig> = [
         sectionName: 'Constructor',
         optionList: [
           {
+            name: 'Initial Supply',
+            type: 'text',
+            initState: '',
+            tooltip: '',
+            required: true,
+            fieldName: 'initial_supply'
+          },
+          {
             name: 'Name',
             type: 'text',
-            initState: 'Contract',
-            tooltip: ''
+            initState: 'MyToken',
+            tooltip: '',
+            required: false,
+            fieldName: 'name'
           },
           {
             name: 'Symbol',
             type: 'text',
-            initState: 'MPSP',
-            tooltip: ''
+            initState: 'MTK',
+            tooltip: '',
+            required: false,
+            fieldName: 'symbol'
+          },
+          {
+            name: 'Decimal',
+            type: 'text',
+            initState: '18',
+            tooltip: '',
+            required: false,
+            fieldName: 'decimal'
           }
         ]
       },
@@ -113,6 +142,12 @@ export const WIZARD_CONFIG: Array<TokenOptionConfig> = [
               'Extension of [`PSP37`] that allows you batch transfering tokens'
           },
           {
+            name: 'Metadata',
+            type: 'checkbox',
+            initState: false,
+            tooltip: 'Metadata for [`PSP37`]'
+          },
+          {
             name: 'Mintable',
             type: 'checkbox',
             initState: false,
@@ -142,6 +177,12 @@ export const WIZARD_CONFIG: Array<TokenOptionConfig> = [
       {
         sectionName: 'Extensions',
         optionList: [
+          {
+            name: 'Metadata',
+            type: 'checkbox',
+            initState: false,
+            tooltip: 'Metadata for [`PSP34`]'
+          },
           {
             name: 'Mintable',
             type: 'checkbox',

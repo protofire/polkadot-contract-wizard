@@ -7,7 +7,7 @@ import Step3Deploy from './Step3Deploy'
 import { Button, Stepper as StepperWrapper } from '@components'
 import { StepsSCWizardContext } from '@context'
 import { TokenType } from '@types'
-import { ControlsToken, WIZARD_CONFIG } from '@constants'
+import { ConstructorTokenField, ControlsToken, WIZARD_CONFIG } from '@constants'
 
 const STEPS = ['Extensions', 'Compile', 'Deploy']
 
@@ -63,6 +63,7 @@ export default function FormWizard({
     })
   }
 
+  console.log('__constructor', constructorFields)
   const getStepContent = () => {
     switch (activeStep) {
       case 0: {
@@ -72,7 +73,12 @@ export default function FormWizard({
       case 1:
         return <Step2Compile tokenType={token} />
       case 2:
-        return <Step3Deploy tokenType={token} />
+        return (
+          <Step3Deploy
+            tokenType={token}
+            constructorFields={constructorFields}
+          />
+        )
       default:
         return null
     }
