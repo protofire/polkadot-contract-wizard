@@ -1,16 +1,39 @@
+import { useMemo } from 'react'
 import { Grid, Stack, Typography } from '@mui/material'
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
+import Image from 'next/image'
 
 import { useStepsSCWizard } from '@context'
 import BackNextButton from '../BackNextButtons'
 import { TokenType } from '@types'
 import StyledTextField from '../../components/Input'
-import Image from 'next/image'
-
 import { CompilingAnimation } from 'src/constants/images'
+import { ConstructorTokenField, ControlsToken } from '@constants'
 
-export default function Step3Deploy({ tokenType }: { tokenType: TokenType }) {
-  const { handleBack, handleNext } = useStepsSCWizard()
+export default function Step3Deploy({
+  tokenType,
+  constructorFields
+}: {
+  tokenType: TokenType
+  constructorFields?: ControlsToken
+}) {
+  const { handleBack, handleNext, dataForm } = useStepsSCWizard()
+  const { mandatoryFields, metadataFields } = useMemo(() => {
+    return {
+      mandatoryFields:
+        constructorFields?.optionList.filter(
+          field => (field as ConstructorTokenField).required
+        ) || [],
+      metadataFields:
+        (dataForm.extensions.Metadata &&
+          constructorFields?.optionList.filter(
+            field => !(field as ConstructorTokenField).required
+          )) ||
+        []
+    }
+  }, [constructorFields?.optionList, dataForm.extensions.Metadata])
+  const areThereParameters =
+    mandatoryFields.length > 0 || metadataFields.length > 0
 
   return (
     <>
@@ -49,16 +72,29 @@ export default function Step3Deploy({ tokenType }: { tokenType: TokenType }) {
             </Stack>
           </Stack>
         </Grid>
-        <Grid item sm={12} md={6}>
-          <Stack
-            sx={{ display: 'flex', flexDirection: 'column', gap: '1.2rem' }}
-          >
-            <StyledTextField label="Name"></StyledTextField>
-            <StyledTextField label="Decimals"></StyledTextField>
-            <StyledTextField label="Symbol"></StyledTextField>
-            <StyledTextField label="Initial supply"></StyledTextField>
-          </Stack>
-        </Grid>
+        {areThereParameters && (
+          <Grid item sm={12} md={6}>
+            <Stack
+              sx={{ display: 'flex', flexDirection: 'column', gap: '1.2rem' }}
+            >
+              {mandatoryFields.map(field => (
+                <StyledTextField
+                  key={field.name}
+                  label={field.name}
+                  required
+                  type={field.type}
+                ></StyledTextField>
+              ))}
+              {metadataFields.map(field => (
+                <StyledTextField
+                  key={field.name}
+                  label={field.name}
+                  type={field.type}
+                ></StyledTextField>
+              ))}
+            </Stack>
+          </Grid>
+        )}
       </Grid>
       <BackNextButton
         nextLabel="Deploy Contract"
