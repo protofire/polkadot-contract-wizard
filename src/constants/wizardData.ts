@@ -1,9 +1,10 @@
+import { HTMLInputTypeAttribute } from 'react'
 import { TokenType } from '@types'
 
 type Sections = 'Constructor' | 'Extensions'
 export type OptionTokenField = {
   name: string
-  type: 'text' | 'checkbox'
+  type: HTMLInputTypeAttribute
   initState: string | boolean
   tooltip?: string
 }
@@ -41,7 +42,7 @@ export const WIZARD_CONFIG: Array<TokenOptionConfig> = [
         optionList: [
           {
             name: 'Initial Supply',
-            type: 'text',
+            type: 'number',
             initState: '',
             tooltip: '',
             required: true,
@@ -65,7 +66,7 @@ export const WIZARD_CONFIG: Array<TokenOptionConfig> = [
           },
           {
             name: 'Decimal',
-            type: 'text',
+            type: 'number',
             initState: '18',
             tooltip: '',
             required: false,

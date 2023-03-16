@@ -81,12 +81,15 @@ export default function Step3Deploy({
                 <StyledTextField
                   key={field.name}
                   label={field.name}
+                  required
+                  type={field.type}
                 ></StyledTextField>
               ))}
               {metadataFields.map(field => (
                 <StyledTextField
                   key={field.name}
                   label={field.name}
+                  type={field.type}
                 ></StyledTextField>
               ))}
             </Stack>
