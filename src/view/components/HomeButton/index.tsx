@@ -17,11 +17,11 @@ const WrapperButton = styled(Button)<ButtonProps>(() => ({
   color: 'white',
   fontSize: '1.4rem',
   borderRadius: '1rem',
-  minWidth: '100%',
+  width: '85%',
   backgroundColor: 'transparent',
   display: 'flex',
   alignItems: 'center',
-  margin: 'auto',
+  margin: '0',
   position: 'relative',
   padding: '2rem',
   border: 'solid 1px transparent',
@@ -36,7 +36,8 @@ const WrapperButton = styled(Button)<ButtonProps>(() => ({
       'linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0)), linear-gradient(90deg, #ffffff, #ffb7ff)',
     backgroundOrigin: 'border-box',
     backgroundClip: 'content-box, border-box',
-    boxShadow: '2px 1000px 1px #11121a inset'
+    boxShadow:
+      '2px 1000px 1px #11121a inset, 0 4px 20px 2px rgba(241, 83, 255, 0.25)'
   }
 }))
 
