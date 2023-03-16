@@ -63,7 +63,6 @@ export default function FormWizard({
     })
   }
 
-  console.log('__constructor', constructorFields)
   const getStepContent = () => {
     switch (activeStep) {
       case 0: {

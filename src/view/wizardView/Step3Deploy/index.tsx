@@ -20,14 +20,16 @@ export default function Step3Deploy({
   const { handleBack, handleNext, dataForm } = useStepsSCWizard()
   const { mandatoryFields, metadataFields } = useMemo(() => {
     return {
-      mandatoryFields: constructorFields?.optionList.filter(
-        field => (field as ConstructorTokenField).required
-      ),
-      metadataFields:
-        dataForm.extensions.Metadata &&
+      mandatoryFields:
         constructorFields?.optionList.filter(
-          field => !(field as ConstructorTokenField).required
-        )
+          field => (field as ConstructorTokenField).required
+        ) || [],
+      metadataFields:
+        (dataForm.extensions.Metadata &&
+          constructorFields?.optionList.filter(
+            field => !(field as ConstructorTokenField).required
+          )) ||
+        []
     }
   }, [constructorFields?.optionList, dataForm.extensions.Metadata])
 
@@ -70,16 +72,26 @@ export default function Step3Deploy({
             </Stack>
           </Stack>
         </Grid>
-        <Grid item sm={12} md={6}>
-          <Stack
-            sx={{ display: 'flex', flexDirection: 'column', gap: '1.2rem' }}
-          >
-            <StyledTextField label="Name"></StyledTextField>
-            <StyledTextField label="Decimals"></StyledTextField>
-            <StyledTextField label="Symbol"></StyledTextField>
-            <StyledTextField label="Initial supply"></StyledTextField>
-          </Stack>
-        </Grid>
+        {(mandatoryFields.length || metadataFields.length) && (
+          <Grid item sm={12} md={6}>
+            <Stack
+              sx={{ display: 'flex', flexDirection: 'column', gap: '1.2rem' }}
+            >
+              {mandatoryFields.map(field => (
+                <StyledTextField
+                  key={field.name}
+                  label={field.name}
+                ></StyledTextField>
+              ))}
+              {metadataFields.map(field => (
+                <StyledTextField
+                  key={field.name}
+                  label={field.name}
+                ></StyledTextField>
+              ))}
+            </Stack>
+          </Grid>
+        )}
       </Grid>
       <BackNextButton
         nextLabel="Deploy Contract"
