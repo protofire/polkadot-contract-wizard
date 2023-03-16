@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 import { Grid, Stack, Typography } from '@mui/material'
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
+import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward'
 import Image from 'next/image'
 
 import { useStepsSCWizard } from '@context'
@@ -37,43 +37,46 @@ export default function Step3Deploy({
 
   return (
     <>
-      <Grid container columns={{ xs: 12, md: 12 }} spacing={6}>
-        <Grid item sm={12} md={6}>
+      <Grid container justifyContent="center" spacing={6}>
+        <Grid item>
           <Stack
             sx={{
               background: '#20222D',
               borderRadius: '1rem',
-              alignItems: 'center'
+              alignItems: 'center',
+              maxWidth: '50rem',
+              margin: '0 0 3rem 0',
+              textAlign: 'center'
             }}
           >
             <Image
-              alt="Logo polkadot"
+              alt="compiling"
               src={CompilingAnimation}
-              width={180}
-              height={180}
+              width={170}
+              height={170}
             />
-            <Typography variant="h4">
+            <Typography variant="h4" sx={{ margin: '0 2rem' }}>
               Your contract ({tokenType}) is being compiled by us.{' '}
             </Typography>
             <Stack
               sx={{
                 background: 'black',
                 borderRadius: '0 0 1rem 1rem',
-                width: '100%',
                 padding: '1rem',
                 margin: '1rem 0 0 0',
-                justifyItems: 'center'
+                alignItems: 'center'
               }}
             >
               <Typography variant="h3">
                 Meanwhile, you can start filling the form for the deployment.{' '}
-                <ArrowForwardIcon fontSize="large" />
               </Typography>
+              <ArrowDownwardIcon
+                fontSize="large"
+                sx={{ margin: '1rem 0 0 0' }}
+              />
             </Stack>
           </Stack>
-        </Grid>
-        {areThereParameters && (
-          <Grid item sm={12} md={6}>
+          {areThereParameters && (
             <Stack
               sx={{ display: 'flex', flexDirection: 'column', gap: '1.2rem' }}
             >
@@ -93,8 +96,8 @@ export default function Step3Deploy({
                 ></StyledTextField>
               ))}
             </Stack>
-          </Grid>
-        )}
+          )}
+        </Grid>
       </Grid>
       <BackNextButton
         nextLabel="Deploy Contract"
