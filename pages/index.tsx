@@ -21,7 +21,12 @@ export default function Home() {
       <Typography variant="h5" align="center" mt={2}>
         Choose the type of contract you need 🪄
       </Typography>
-      <Stack spacing={4} direction="column" alignItems="center" m={8}>
+      <Stack
+        spacing={{ xs: 1, sm: 2, md: 4 }}
+        direction="column"
+        alignItems="center"
+        m={{ xs: 2, sm: 4, md: 8 }}
+      >
         <HomeButton
           LinkComponent={Link}
           href={`${ROUTES.WIZARD}/?token=${Token.psp22}`}

@@ -13,7 +13,7 @@ interface Props extends ButtonProps {
   imgProps: { width?: number; height?: number }
 }
 
-const WrapperButton = styled(Button)<ButtonProps>(() => ({
+const WrapperButton = styled(Button)<ButtonProps>(({ theme }) => ({
   color: 'white',
   fontSize: '1.4rem',
   borderRadius: '1rem',
@@ -30,6 +30,11 @@ const WrapperButton = styled(Button)<ButtonProps>(() => ({
   backgroundOrigin: 'border-box',
   backgroundClip: 'content-box, border-box',
   boxShadow: '2px 1000px 1px #0D0E13 inset',
+  [theme.breakpoints.down('sm')]: {
+    width: '100%',
+    margin: '0.5rem !important',
+    padding: '1.5rem'
+  },
 
   '&:hover': {
     backgroundImage:
@@ -46,7 +51,11 @@ export const HomeButton = (props: Props) => {
 
   return (
     <WrapperButton variant="contained" {...restProps}>
-      <Stack spacing={2} direction="row" alignItems="center">
+      <Stack
+        spacing={{ xs: 0, sm: 2, md: 4 }}
+        direction={{ xs: 'column', lg: 'row' }}
+        alignItems="center"
+      >
         <Image alt={title} src={imgPath} {...imgProps} />
         <Stack spacing={0} direction="column" alignItems="flex-start">
           <Typography variant="h3">{title}</Typography>
