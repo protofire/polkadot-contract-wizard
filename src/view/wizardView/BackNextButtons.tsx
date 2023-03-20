@@ -1,5 +1,5 @@
-import { ButtonProps, Grid } from '@mui/material'
-import { Button } from '@components'
+import { Grid } from '@mui/material'
+import { StyledButton as Button, MyButtonProps } from '@components'
 
 type Props = {
   nextLabel?: string
@@ -8,8 +8,8 @@ type Props = {
   handleBack: () => void
   isNextDisabled?: boolean
   isDoingNext?: boolean
-  nextButtonProps?: ButtonProps
-  backButtonProps?: ButtonProps
+  nextButtonProps?: MyButtonProps
+  backButtonProps?: MyButtonProps
 }
 export default function BackNextButton(props: Props) {
   const {

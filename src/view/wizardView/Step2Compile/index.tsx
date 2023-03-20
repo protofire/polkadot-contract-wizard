@@ -14,6 +14,7 @@ import {
   TraitImpl
 } from './builders'
 import { isGreaterVer, isSmallerVer } from 'src/utils/comparisonString'
+import { useState } from 'react'
 
 function generateCode(standardName: TokenType, data: ContractConfig) {
   const { extensions, usesStandardExtensions } = getExtensions(
@@ -164,6 +165,12 @@ function generateCode(standardName: TokenType, data: ContractConfig) {
 
 export default function Step2Compile({ tokenType }: { tokenType: TokenType }) {
   const { handleBack, handleNext, dataForm } = useStepsSCWizard()
+  const [loading, setLoading] = useState<boolean>(false)
+
+  const _handleNext = () => {
+    setLoading(true)
+    // handleNext()
+  }
 
   return (
     <>
@@ -183,8 +190,8 @@ export default function Step2Compile({ tokenType }: { tokenType: TokenType }) {
       <BackNextButton
         nextLabel="Compile Contract"
         handleBack={handleBack}
-        handleNext={handleNext}
-        nextButtonProps={{ startIcon: '⚙️' }}
+        handleNext={_handleNext}
+        nextButtonProps={{ startIcon: '⚙️', loading }}
       />
     </>
   )
