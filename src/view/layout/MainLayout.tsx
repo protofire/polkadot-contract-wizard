@@ -21,7 +21,7 @@ const MainWrapper = styled(Box)<BoxProps>(() => ({
 
 const ContentWrapper = styled(Box)<BoxProps>(({ theme }) => ({
   width: '100%',
-  padding: theme.spacing(3, 4),
+  padding: theme.spacing(0, 4),
   [theme.breakpoints.down('sm')]: {
     paddingLeft: theme.spacing(2),
     paddingRight: theme.spacing(2)

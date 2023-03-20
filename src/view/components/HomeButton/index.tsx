@@ -13,15 +13,15 @@ interface Props extends ButtonProps {
   imgProps: { width?: number; height?: number }
 }
 
-const WrapperButton = styled(Button)<ButtonProps>(() => ({
+const WrapperButton = styled(Button)<ButtonProps>(({ theme }) => ({
   color: 'white',
   fontSize: '1.4rem',
   borderRadius: '1rem',
-  minWidth: '100%',
+  width: '85%',
   backgroundColor: 'transparent',
   display: 'flex',
   alignItems: 'center',
-  margin: 'auto',
+  margin: '0',
   position: 'relative',
   padding: '2rem',
   border: 'solid 1px transparent',
@@ -30,13 +30,19 @@ const WrapperButton = styled(Button)<ButtonProps>(() => ({
   backgroundOrigin: 'border-box',
   backgroundClip: 'content-box, border-box',
   boxShadow: '2px 1000px 1px #0D0E13 inset',
+  [theme.breakpoints.down('sm')]: {
+    width: '100%',
+    margin: '0.5rem !important',
+    padding: '1.5rem'
+  },
 
   '&:hover': {
     backgroundImage:
       'linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0)), linear-gradient(90deg, #ffffff, #ffb7ff)',
     backgroundOrigin: 'border-box',
     backgroundClip: 'content-box, border-box',
-    boxShadow: '2px 1000px 1px #11121a inset'
+    boxShadow:
+      '2px 1000px 1px #11121a inset, 0 4px 20px 2px rgba(241, 83, 255, 0.25)'
   }
 }))
 
@@ -45,7 +51,11 @@ export const HomeButton = (props: Props) => {
 
   return (
     <WrapperButton variant="contained" {...restProps}>
-      <Stack spacing={2} direction="row" alignItems="center">
+      <Stack
+        spacing={{ xs: 0, sm: 2, md: 4 }}
+        direction={{ xs: 'column', lg: 'row' }}
+        alignItems="center"
+      >
         <Image alt={title} src={imgPath} {...imgProps} />
         <Stack spacing={0} direction="column" alignItems="flex-start">
           <Typography variant="h3">{title}</Typography>
