@@ -4,10 +4,10 @@ import { Typography, StepLabel, Step, Stepper, Box } from '@mui/material'
 import Step1Extensions from './Step1Extensions'
 import Step2Compile from './Step2Compile'
 import Step3Deploy from './Step3Deploy'
-import { Button, Stepper as StepperWrapper } from '@components'
+import { StyledButton as Button, Stepper as StepperWrapper } from '@components'
 import { StepsSCWizardContext } from '@context'
 import { TokenType } from '@types'
-import { ConstructorTokenField, ControlsToken, WIZARD_CONFIG } from '@constants'
+import { ControlsToken, WIZARD_CONFIG } from '@constants'
 
 const STEPS = ['Extensions', 'Compile', 'Deploy']
 

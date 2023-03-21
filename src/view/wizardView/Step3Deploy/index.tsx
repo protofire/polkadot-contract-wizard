@@ -9,10 +9,8 @@ import { TokenType } from '@types'
 import StyledTextField from '../../components/Input'
 import { CompilingAnimation } from 'src/constants/images'
 import { ConstructorTokenField, ControlsToken } from '@constants'
-import { Padding } from '@mui/icons-material'
 
 export default function Step3Deploy({
-  tokenType,
   constructorFields
 }: {
   tokenType: TokenType

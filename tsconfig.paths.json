@@ -28,6 +28,9 @@
       ],
       "@hooks": [
         "src/hooks"
+      ],
+      "@data-tests": [
+        "src/tests/data"
       ]
     }
   }
