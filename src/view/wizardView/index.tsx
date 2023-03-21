@@ -8,6 +8,8 @@ import { StyledButton as Button, Stepper as StepperWrapper } from '@components'
 import { StepsSCWizardContext } from '@context'
 import { TokenType } from '@types'
 import { ControlsToken, WIZARD_CONFIG } from '@constants'
+import { HeadLine } from '../components/HeadLine'
+import { TOKEN_PATHS } from '@constants'
 
 const STEPS = ['Extensions', 'Compile', 'Deploy']
 
@@ -94,6 +96,13 @@ export default function FormWizard({
         resetDataForm
       }}
     >
+      <HeadLine
+        /* href={`${ROUTES.WIZARD}/?token=${Token.psp22}`} */
+        title="TOKEN | PSP22"
+        subtitle="Standard smart contract for a fungible token"
+        imgPath={TOKEN_PATHS.TokenIcon}
+        imgProps={{ width: 75, height: 65 }}
+      />
       <Box sx={{ width: '100%' }}>
         <StepperWrapper>
           <Stepper activeStep={activeStep}>
