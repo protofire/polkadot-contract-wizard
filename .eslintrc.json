@@ -33,6 +33,7 @@
   "ignorePatterns": [
     ".next/*",
     "node_modules/*",
-    ".docker/*"
+    ".docker/*",
+    "src/tests/data/*"
   ]
 }
