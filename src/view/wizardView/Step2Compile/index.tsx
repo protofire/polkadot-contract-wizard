@@ -169,7 +169,7 @@ function generateCode(standardName: TokenType, data: ContractConfig) {
 
 export default function Step2Compile({ tokenType }: { tokenType: TokenType }) {
   const { handleBack, handleNext, dataForm } = useStepsSCWizard()
-  const { isLoading, error, compileContract } = useCreateCompilation()
+  const { isLoading, compileContract } = useCreateCompilation()
   const [response, setResponse] = useState<DataCompiledContract>()
 
   const _handleNext = async () => {

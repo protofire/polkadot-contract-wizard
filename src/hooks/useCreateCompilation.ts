@@ -1,5 +1,5 @@
 import { GetServiceData, CompileApiResponse } from '@types'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useState } from 'react'
 import { API_RESPONSE } from '@data-tests'
 
 export type DataCompiledContract = Pick<
