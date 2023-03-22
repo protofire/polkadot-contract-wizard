@@ -4,6 +4,7 @@ import { useRouter } from 'next/router'
 import FormWizard from 'src/view/wizardView'
 import { isOfTypeTokens } from '@types'
 import LoadingSpinner from 'src/view/components/LoadingSpinner'
+import { HeadLine } from 'src/view/components/HeadLine'
 
 export default function WizardPage() {
   const router = useRouter()
@@ -18,7 +19,7 @@ export default function WizardPage() {
 
   return (
     <Box>
-      <h1>{token}</h1>
+      <HeadLine tokenType={token} />
       <FormWizard token={token} />
     </Box>
   )

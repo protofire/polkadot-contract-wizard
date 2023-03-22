@@ -4,25 +4,48 @@ import Stack, { StackProps } from '@mui/material/Stack'
 
 import Image from 'next/image'
 import { Typography } from '@mui/material'
-
+import { TOKEN_PATHS } from '@constants'
+import { TokenType } from '@types'
 interface Props extends StackProps {
   title: string
   subtitle: string
   imgPath: string
-  imgProps: { width?: number; height?: number }
+  imgProps?: { width?: number; height?: number }
+}
+
+const TitleMap: Record<TokenType, Props> = {
+  psp22: {
+    title: 'TOKEN | PSP22',
+    subtitle: 'Standard smart contract for a fungible token',
+    imgPath: TOKEN_PATHS.TokenIcon,
+    imgProps: { width: 45, height: 39 }
+  },
+  psp34: {
+    title: 'NFT | PSP34',
+    subtitle: 'Standard smart contract for a non-fungible token',
+    imgPath: TOKEN_PATHS.NFTIcon,
+    imgProps: { width: 33, height: 40 }
+  },
+  psp37: {
+    title: 'MULTITOKEN | PSP37',
+    subtitle: 'Standard smart contract for a Multi Token',
+    imgPath: TOKEN_PATHS.MultiTokenIcon,
+    imgProps: { width: 45, height: 39 }
+  }
 }
 
 const WrapperHead = styled(Stack)<StackProps>(({ theme }) => ({
   color: 'white',
-  fontSize: '1.4rem',
-  borderRadius: '1rem',
-  width: '85%',
+  width: '100%',
   backgroundColor: 'transparent',
   display: 'flex',
-  alignItems: 'center',
+  alignItems: 'flex-start',
   margin: '0',
-  position: 'relative',
-  padding: '2rem',
+  padding: '0.3rem',
+
+  '& h3': {
+    fontSize: '1rem'
+  },
 
   [theme.breakpoints.down('sm')]: {
     width: '100%',
@@ -31,18 +54,21 @@ const WrapperHead = styled(Stack)<StackProps>(({ theme }) => ({
   }
 }))
 
-export const HeadLine = (props: Props) => {
-  const { title, subtitle, imgProps, imgPath, ...restProps } = props
-
+export const HeadLine = ({ tokenType }: { tokenType: TokenType }) => {
+  const { title, subtitle, imgProps, imgPath } = TitleMap[tokenType]
   return (
-    <WrapperHead {...restProps}>
+    <WrapperHead>
       <Stack
-        spacing={{ xs: 0, sm: 2, md: 4 }}
+        spacing={1}
         direction={{ xs: 'column', lg: 'row' }}
         alignItems="center"
       >
         <Image alt={title} src={imgPath} {...imgProps} />
-        <Stack spacing={0} direction="column" alignItems="flex-start">
+        <Stack
+          spacing={2}
+          direction={{ xs: 'column', lg: 'row' }}
+          alignItems="center"
+        >
           <Typography variant="h3">{title}</Typography>
           <Typography variant="subtitle1">{subtitle}</Typography>
         </Stack>
