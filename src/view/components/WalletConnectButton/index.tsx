@@ -1,53 +1,43 @@
-import { useEffect, useRef, useState } from 'react'
+import { useState } from 'react'
+import { KeyringPair } from '@polkadot/keyring/types'
+import CopyToClipboard from 'react-copy-to-clipboard'
 
-import { NetworkAccountsContextState } from 'src/context/NetworkAccountsContext'
+import { useNetworkAccountsContext } from 'src/context/NetworkAccountsContext'
 import { DomainEvents } from 'src/domain/DomainEvents'
 import { StyledButton } from '../Button'
 import { ModalMessage } from '@components'
 
-type AccountState = Pick<
-  NetworkAccountsContextState,
-  'apiStatus' | 'accountStatus'
->
-
-async function loadCustomHook() {
-  const customHook = (await import('src/context/NetworkAccountsContext'))
-    .useNetworkAccountsContext
-
-  return customHook
-}
+const acctAddr = (acct: KeyringPair | undefined) => (acct ? acct.address : '')
 
 export const WalletConnectButton = () => {
-  const useNetworkState = useRef<() => NetworkAccountsContextState>()
-  const { apiStatus, accountStatus } =
-    useNetworkState.current !== undefined
-      ? useNetworkState.current()
-      : {
-          apiStatus: 'DISCONNECTED',
-          accountStatus: 'DISCONNECTED'
-        }
+  const {
+    state: { apiStatus, accountStatus, currentAccount }
+  } = useNetworkAccountsContext()
   const isLoading = apiStatus === 'CONNECTING' || accountStatus === 'CONNECTING'
   const [openModal, setOpenModal] = useState(false)
 
-  useEffect(() => {
-    loadCustomHook().then(hook => {
-      useNetworkState.current = hook
-    })
-  }, [])
-
   const dispatchConnect = () => {
-    if (apiStatus !== 'CONNECTED') {
-      setOpenModal(true)
-      return
-    }
     document.dispatchEvent(new CustomEvent(DomainEvents.walletConnectInit))
   }
 
   return (
     <>
-      <StyledButton loading={isLoading} size="small" onClick={dispatchConnect}>
-        Connect
-      </StyledButton>
+      {accountStatus === 'DISCONNECTED' || accountStatus === 'CONNECTING' ? (
+        <StyledButton
+          loading={isLoading}
+          size="small"
+          onClick={dispatchConnect}
+        >
+          Connect
+        </StyledButton>
+      ) : (
+        <CopyToClipboard text={acctAddr(currentAccount)}>
+          <StyledButton color={currentAccount ? 'success' : 'error'}>
+            {acctAddr(currentAccount)}
+          </StyledButton>
+        </CopyToClipboard>
+      )}
+
       <ModalMessage
         open={openModal}
         handleClose={() => setOpenModal(false)}

@@ -1,6 +1,5 @@
 import { Box } from '@mui/material'
 import { WalletConnectButton } from 'src/view/components/WalletConnectButton'
-
 import MobileSection from './MobileSection'
 
 const HeaderContent = ({ isMobile }: { isMobile: boolean }) => {

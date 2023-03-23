@@ -1,3 +1,4 @@
 export const enum DomainEvents {
-  walletConnectInit = 'walletConnectInit'
+  walletConnectInit = 'walletConnectInit',
+  changeAccountAddress = 'changeAccountAddress'
 }

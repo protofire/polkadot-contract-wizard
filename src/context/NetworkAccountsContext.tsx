@@ -4,21 +4,23 @@ import { ApiPromise, WsProvider } from '@polkadot/api'
 import jsonrpc from '@polkadot/types/interfaces/jsonrpc'
 import { isTestChain } from '@polkadot/util'
 import { keyring as KeyringUI, Keyring } from '@polkadot/ui-keyring'
+import { KeyringPair } from '@polkadot/keyring/types'
 import { TypeRegistry } from '@polkadot/types/create'
 
 import { PROVIDER_SOCKET, APP_NAME } from '@constants'
 import { DomainEvents } from 'src/domain/DomainEvents'
 import { ChainType } from '@polkadot/types/interfaces/system'
+import { accountsInPossession } from 'src/domain/KeyringAccouns'
 
 type NetworkState = 'DISCONNECTED' | 'CONNECTING' | 'CONNECTED' | 'ERROR'
 
 export interface NetworkAccountsContextState {
-  currentAccount?: string
+  currentAccount?: KeyringPair
   jsonRpc: typeof jsonrpc
   apiStatus: NetworkState
   api?: ApiPromise
   apiError?: string
-  accountStatus: NetworkState // accounts state
+  accountStatus: NetworkState // keyring state
   keyring?: Keyring
 }
 
@@ -28,7 +30,12 @@ export const initialState: NetworkAccountsContextState = {
   accountStatus: 'DISCONNECTED'
 }
 
-const NetworkAccountsContext = createContext({} as NetworkAccountsContextState)
+export const NetworkAccountsContext = createContext(
+  {} as {
+    state: NetworkAccountsContextState
+    setCurrentAccount: (account: KeyringPair) => void
+  }
+)
 
 // Connecting to the Substrate node
 const connect = (
@@ -153,8 +160,21 @@ export function NetworkAccountsContextProvider({
     }
   }, [state])
 
+  useEffect(() => {
+    if (!state.keyring || state.currentAccount !== undefined) return
+
+    const accounts = accountsInPossession(state.keyring)
+    const initialAddress = accounts.length > 0 ? accounts[0].value : ''
+    setCurrentAccount(state.keyring.getPair(initialAddress))
+  }, [state.currentAccount, state.keyring])
+
+  function setCurrentAccount(account: KeyringPair) {
+    setState(prev => ({ ...prev, currentAccount: account }))
+    document.dispatchEvent(new CustomEvent(DomainEvents.changeAccountAddress))
+  }
+
   return (
-    <NetworkAccountsContext.Provider value={state}>
+    <NetworkAccountsContext.Provider value={{ state, setCurrentAccount }}>
       {children}
     </NetworkAccountsContext.Provider>
   )
