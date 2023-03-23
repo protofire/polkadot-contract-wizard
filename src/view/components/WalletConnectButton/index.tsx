@@ -1,6 +1,6 @@
 import dynamic from 'next/dynamic'
 import { useState } from 'react'
-// import { web3Enable } from '@polkadot/extension-dapp'
+import { DomainEvents } from 'src/domain/DomainEvents'
 import { StyledButton } from '../Button'
 
 const Extensions = dynamic(() => import('./Extensions'), {
@@ -10,10 +10,13 @@ const Extensions = dynamic(() => import('./Extensions'), {
 export const WalletConnectButton = () => {
   const [showExtensions, setShowExtensions] = useState(false)
 
+  const dispatchConnect = () =>
+    document.dispatchEvent(new CustomEvent(DomainEvents.walletConnectInit))
+
   return (
     <>
       {!showExtensions ? (
-        <StyledButton onClick={() => setShowExtensions(true)}>
+        <StyledButton size="small" onClick={dispatchConnect}>
           Connect
         </StyledButton>
       ) : (

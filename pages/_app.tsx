@@ -11,6 +11,7 @@ import { buildEmotionCache } from '@utils'
 import { EmotionCache } from '@emotion/cache'
 import { CacheProvider } from '@emotion/react'
 import { SettingsConsumer } from 'src/context/settingsTheme'
+import { NetworkAccountsContextProvider } from 'src/context/NetworkAccountsContext'
 
 type CustomAppProps = AppProps & {
   emotionCache: EmotionCache
@@ -43,7 +44,9 @@ export default function App(props: CustomAppProps) {
         {({ settings }) => {
           return (
             <ThemeCustomization settings={settings}>
-              {getLayout(<Component {...pageProps} />)}
+              <NetworkAccountsContextProvider>
+                {getLayout(<Component {...pageProps} />)}
+              </NetworkAccountsContextProvider>
             </ThemeCustomization>
           )
         }}
