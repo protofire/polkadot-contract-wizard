@@ -1304,6 +1304,31 @@
     rxjs "^7.8.0"
     tslib "^2.5.0"
 
+"@polkadot/ui-keyring@^3.1.1":
+  version "3.1.1"
+  resolved "https://registry.yarnpkg.com/@polkadot/ui-keyring/-/ui-keyring-3.1.1.tgz#ed9435533dc823f8ac9715d417a40138767f444d"
+  integrity sha512-E6tCkXOFFX2obHGO9i8t1CYtyBkMRCoaUHQiYbkjPpB2lEHiTOJq/tZt9hfuth7HIn2f1TsrCME023ZGOPmyTg==
+  dependencies:
+    "@polkadot/keyring" "^11.1.1"
+    "@polkadot/ui-settings" "3.1.1"
+    "@polkadot/util" "^11.1.1"
+    "@polkadot/util-crypto" "^11.1.1"
+    mkdirp "^2.1.5"
+    rxjs "^7.8.0"
+    store "^2.0.12"
+    tslib "^2.5.0"
+
+"@polkadot/ui-settings@3.1.1", "@polkadot/ui-settings@^3.1.1":
+  version "3.1.1"
+  resolved "https://registry.yarnpkg.com/@polkadot/ui-settings/-/ui-settings-3.1.1.tgz#4eea5016956b918bf11601a851f3d0ca9196a476"
+  integrity sha512-R2fzISIKx12waJSc8cXEkCAbUNtDrs2FC1adOUflvQC81OmVyWka4uYXiLjxgdzrj90uxfHhCK13xVLFcVF5AQ==
+  dependencies:
+    "@polkadot/networks" "^11.1.1"
+    "@polkadot/util" "^11.1.1"
+    eventemitter3 "^4.0.7"
+    store "^2.0.12"
+    tslib "^2.5.0"
+
 "@polkadot/util-crypto@11.1.1", "@polkadot/util-crypto@^11.1.1":
   version "11.1.1"
   resolved "https://registry.yarnpkg.com/@polkadot/util-crypto/-/util-crypto-11.1.1.tgz#f4e4280b70fac38fc9a24f0dfbcdab5d01a56453"
@@ -4633,6 +4658,11 @@ minimist@^1.2.0, minimist@^1.2.6, minimist@~1.2.5:
   resolved "https://registry.yarnpkg.com/minimist/-/minimist-1.2.7.tgz#daa1c4d91f507390437c6a8bc01078e7000c4d18"
   integrity sha512-bzfL1YUZsP41gmu/qjrEk0Q6i2ix/cVeAhbCbqH9u3zYutS1cLg00qhrD0M2MVdCcx4Sc0UpP2eBWo9rotpq6g==
 
+mkdirp@^2.1.5:
+  version "2.1.6"
+  resolved "https://registry.yarnpkg.com/mkdirp/-/mkdirp-2.1.6.tgz#964fbcb12b2d8c5d6fbc62a963ac95a273e2cc19"
+  integrity sha512-+hEnITedc8LAtIP9u3HJDFIdcLV2vXP33sqLLIzkv1Db1zO/1OxbvYf0Y1OC/S/Qo5dxHXepofhmxL02PsKe+A==
+
 mock-socket@^9.2.1:
   version "9.2.1"
   resolved "https://registry.yarnpkg.com/mock-socket/-/mock-socket-9.2.1.tgz#cc9c0810aa4d0afe02d721dcb2b7e657c00e2282"
@@ -5613,6 +5643,11 @@ stack-utils@^2.0.3:
   integrity sha512-XlkWvfIm6RmsWtNJx+uqtKLS8eqFbxUg0ZzLXqY0caEy9l7hruX8IpiDnjsLavoBgqCCR71TqWO8MaXYheJ3RQ==
   dependencies:
     escape-string-regexp "^2.0.0"
+
+store@^2.0.12:
+  version "2.0.12"
+  resolved "https://registry.yarnpkg.com/store/-/store-2.0.12.tgz#8c534e2a0b831f72b75fc5f1119857c44ef5d593"
+  integrity sha512-eO9xlzDpXLiMr9W1nQ3Nfp9EzZieIQc10zPPMP5jsVV7bLOziSFFBP0XoDXACEIFtdI+rIz0NwWVA/QVJ8zJtw==
 
 string-argv@^0.3.1:
   version "0.3.1"

@@ -1,10 +1,9 @@
 import React, { createContext, useEffect, useState, useContext } from 'react'
 // import { web3Accounts, web3Enable } from '@polkadot/extension-dapp'
-import { ApiPromise, WsProvider, Keyring } from '@polkadot/api'
-import jsonrpc from '@polkadot/types/interfaces/rpc'
+import { ApiPromise, WsProvider } from '@polkadot/api'
+import jsonrpc from '@polkadot/types/interfaces/jsonrpc'
 import { isTestChain } from '@polkadot/util'
-// import { keyring as Keyring } from '@polkadot/ui-keyring'
-import { InjectedAccountWithMeta } from '@polkadot/extension-inject/types'
+import { keyring as KeyringUI, Keyring } from '@polkadot/ui-keyring'
 import { TypeRegistry } from '@polkadot/types/create'
 
 import { PROVIDER_SOCKET, APP_NAME } from '@constants'
@@ -21,6 +20,7 @@ interface NetworkAccountsContextState {
   api?: ApiPromise
   apiError?: string
   keyringStatus: NetworkState
+  keyring?: Keyring
 }
 
 const initialState: NetworkAccountsContextState = {
@@ -86,16 +86,19 @@ const loadAccounts = (
 ) => {
   const { api, apiStatus, keyringStatus } = state
   if (
-    apiStatus !== 'CONNECTED' &&
-    keyringStatus === 'DISCONNECTED' &&
-    keyringLoadAll
+    apiStatus !== 'CONNECTED' ||
+    keyringLoadAll ||
+    keyringStatus !== 'DISCONNECTED'
   )
     return
+  if (!api) {
+    throw Error('Api providers has an connection error')
+  }
 
   keyringLoadAll = true
   updateState(prev => ({ ...prev, keyringStatus: 'CONNECTING' }))
 
-  const asyncLoadAccounts = async () => {
+  const asyncLoadAccounts = async (_api: ApiPromise) => {
     try {
       const { web3Enable, web3Accounts } = await import(
         '@polkadot/extension-dapp'
@@ -110,27 +113,26 @@ const loadAccounts = (
       // Logics to check if the connecting chain is a dev chain, coming from polkadot-js Apps
       // ref: https://github.com/polkadot-js/apps/blob/15b8004b2791eced0dde425d5dc7231a5f86c682/packages/react-api/src/Api.tsx?_pjax=div%5Bitemtype%3D%22http%3A%2F%2Fschema.org%2FSoftwareSourceCode%22%5D%20%3E%20main#L101-L110
       const { systemChain, systemChainType } = await retrieveChainInfo(
-        api as ApiPromise
+        _api as ApiPromise
       )
       const isDevelopment =
         systemChainType.isDevelopment ||
         systemChainType.isLocal ||
         isTestChain(systemChain)
 
-      const keyring = new Keyring()
-      // keyring.loadAll({ isDevelopment }, allAccounts)
-      // updateState(prev => ({
-      //   ...prev,
-      //   keyringStatus: 'CONNECTED',
-      //   keyring: Keyring
-      // }))
+      KeyringUI.loadAll({ isDevelopment }, allAccounts)
+      updateState(prev => ({
+        ...prev,
+        keyringStatus: 'CONNECTED',
+        keyring: KeyringUI
+      }))
     } catch (e) {
       console.error(e)
       updateState(prev => ({ ...prev, keyringStatus: 'ERROR' }))
     }
   }
 
-  asyncLoadAccounts()
+  asyncLoadAccounts(api)
 }
 export function NetworkAccountsContextProvider({
   children
@@ -140,8 +142,8 @@ export function NetworkAccountsContextProvider({
   const [state, setState] = useState<NetworkAccountsContextState>(initialState)
   connect(state, setState)
 
-  console.log('__state', state)
   useEffect(() => {
+    console.log('__NewState', state)
     document.addEventListener(DomainEvents.walletConnectInit, () =>
       loadAccounts(state, setState)
     )
