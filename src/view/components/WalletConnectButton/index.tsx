@@ -1,27 +1,61 @@
-import dynamic from 'next/dynamic'
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
+
+import { NetworkAccountsContextState } from 'src/context/NetworkAccountsContext'
 import { DomainEvents } from 'src/domain/DomainEvents'
 import { StyledButton } from '../Button'
+import { ModalMessage } from '@components'
 
-const Extensions = dynamic(() => import('./Extensions'), {
-  ssr: false
-})
+type AccountState = Pick<
+  NetworkAccountsContextState,
+  'apiStatus' | 'accountStatus'
+>
+
+async function loadCustomHook() {
+  const customHook = (await import('src/context/NetworkAccountsContext'))
+    .useNetworkAccountsContext
+
+  return customHook
+}
 
 export const WalletConnectButton = () => {
-  const [showExtensions, setShowExtensions] = useState(false)
+  const useNetworkState = useRef<() => NetworkAccountsContextState>()
+  const { apiStatus, accountStatus } =
+    useNetworkState.current !== undefined
+      ? useNetworkState.current()
+      : {
+          apiStatus: 'DISCONNECTED',
+          accountStatus: 'DISCONNECTED'
+        }
+  const isLoading = apiStatus === 'CONNECTING' || accountStatus === 'CONNECTING'
+  const [openModal, setOpenModal] = useState(false)
 
-  const dispatchConnect = () =>
+  useEffect(() => {
+    loadCustomHook().then(hook => {
+      useNetworkState.current = hook
+    })
+  }, [])
+
+  const dispatchConnect = () => {
+    if (apiStatus !== 'CONNECTED') {
+      setOpenModal(true)
+      return
+    }
     document.dispatchEvent(new CustomEvent(DomainEvents.walletConnectInit))
+  }
 
   return (
     <>
-      {!showExtensions ? (
-        <StyledButton size="small" onClick={dispatchConnect}>
-          Connect
-        </StyledButton>
-      ) : (
-        <Extensions />
-      )}
+      <StyledButton loading={isLoading} size="small" onClick={dispatchConnect}>
+        Connect
+      </StyledButton>
+      <ModalMessage
+        open={openModal}
+        handleClose={() => setOpenModal(false)}
+        title="There is not Extensions available to connect to Polkadot network"
+        body="There is not polkadot wallet installed or it is possible that you
+      rejected the wallet connection (Please open the wallet and delete the
+      rejected action)."
+      />
     </>
   )
 }

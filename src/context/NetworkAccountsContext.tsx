@@ -12,22 +12,20 @@ import { ChainType } from '@polkadot/types/interfaces/system'
 
 type NetworkState = 'DISCONNECTED' | 'CONNECTING' | 'CONNECTED' | 'ERROR'
 
-interface NetworkAccountsContextState {
-  accountStatus: NetworkState
+export interface NetworkAccountsContextState {
   currentAccount?: string
   jsonRpc: typeof jsonrpc
   apiStatus: NetworkState
   api?: ApiPromise
   apiError?: string
-  keyringStatus: NetworkState
+  accountStatus: NetworkState // accounts state
   keyring?: Keyring
 }
 
-const initialState: NetworkAccountsContextState = {
-  accountStatus: 'DISCONNECTED',
+export const initialState: NetworkAccountsContextState = {
   jsonRpc: { ...jsonrpc },
   apiStatus: 'DISCONNECTED',
-  keyringStatus: 'DISCONNECTED'
+  accountStatus: 'DISCONNECTED'
 }
 
 const NetworkAccountsContext = createContext({} as NetworkAccountsContextState)
@@ -84,7 +82,7 @@ const loadAccounts = (
   state: NetworkAccountsContextState,
   updateState: React.Dispatch<React.SetStateAction<NetworkAccountsContextState>>
 ) => {
-  const { api, apiStatus, keyringStatus } = state
+  const { api, apiStatus, accountStatus: keyringStatus } = state
   if (
     apiStatus !== 'CONNECTED' ||
     keyringLoadAll ||
@@ -96,7 +94,7 @@ const loadAccounts = (
   }
 
   keyringLoadAll = true
-  updateState(prev => ({ ...prev, keyringStatus: 'CONNECTING' }))
+  updateState(prev => ({ ...prev, accountStatus: 'CONNECTING' }))
 
   const asyncLoadAccounts = async (_api: ApiPromise) => {
     try {
@@ -123,12 +121,12 @@ const loadAccounts = (
       KeyringUI.loadAll({ isDevelopment }, allAccounts)
       updateState(prev => ({
         ...prev,
-        keyringStatus: 'CONNECTED',
+        accountStatus: 'CONNECTED',
         keyring: KeyringUI
       }))
     } catch (e) {
       console.error(e)
-      updateState(prev => ({ ...prev, keyringStatus: 'ERROR' }))
+      updateState(prev => ({ ...prev, accountStatus: 'ERROR' }))
     }
   }
 
