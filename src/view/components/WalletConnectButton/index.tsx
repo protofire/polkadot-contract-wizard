@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import CopyToClipboard from 'react-copy-to-clipboard'
 
 import { useNetworkAccountsContext } from 'src/context/NetworkAccountsContext'
 import { DomainEvents } from 'src/domain/DomainEvents'
@@ -7,7 +6,6 @@ import { StyledButton } from '../Button'
 import { ModalMessage } from '@components'
 import { AccountSelect } from './AccountsSelect'
 import { accountsInPossession } from 'src/domain/KeyringAccouns'
-import { AvatarAccount } from './AvatarAccount'
 
 export const WalletConnectButton = () => {
   const {
