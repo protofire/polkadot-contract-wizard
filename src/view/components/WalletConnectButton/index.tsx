@@ -1,17 +1,18 @@
 import { useState } from 'react'
-import { KeyringPair } from '@polkadot/keyring/types'
 import CopyToClipboard from 'react-copy-to-clipboard'
 
 import { useNetworkAccountsContext } from 'src/context/NetworkAccountsContext'
 import { DomainEvents } from 'src/domain/DomainEvents'
 import { StyledButton } from '../Button'
 import { ModalMessage } from '@components'
-
-const acctAddr = (acct: KeyringPair | undefined) => (acct ? acct.address : '')
+import { AccountSelect } from './AccountsSelect'
+import { accountsInPossession } from 'src/domain/KeyringAccouns'
+import { AvatarAccount } from './AvatarAccount'
 
 export const WalletConnectButton = () => {
   const {
-    state: { apiStatus, accountStatus, currentAccount }
+    state: { apiStatus, accountStatus, currentAccount, keyring },
+    setCurrentAccount
   } = useNetworkAccountsContext()
   const isLoading = apiStatus === 'CONNECTING' || accountStatus === 'CONNECTING'
   const [openModal, setOpenModal] = useState(false)
@@ -31,11 +32,14 @@ export const WalletConnectButton = () => {
           Connect
         </StyledButton>
       ) : (
-        <CopyToClipboard text={acctAddr(currentAccount)}>
-          <StyledButton color={currentAccount ? 'success' : 'error'}>
-            {acctAddr(currentAccount)}
-          </StyledButton>
-        </CopyToClipboard>
+        keyring &&
+        currentAccount && (
+          <AccountSelect
+            currentAccount={currentAccount}
+            accounts={accountsInPossession(keyring)}
+            onChange={setCurrentAccount}
+          />
+        )
       )}
 
       <ModalMessage

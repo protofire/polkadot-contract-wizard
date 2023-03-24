@@ -1,10 +1,8 @@
 import React, { createContext, useEffect, useState, useContext } from 'react'
-// import { web3Accounts, web3Enable } from '@polkadot/extension-dapp'
 import { ApiPromise, WsProvider } from '@polkadot/api'
 import jsonrpc from '@polkadot/types/interfaces/jsonrpc'
 import { isTestChain } from '@polkadot/util'
 import { keyring as KeyringUI, Keyring } from '@polkadot/ui-keyring'
-import { KeyringPair } from '@polkadot/keyring/types'
 import { TypeRegistry } from '@polkadot/types/create'
 
 import { PROVIDER_SOCKET, APP_NAME } from '@constants'
@@ -15,7 +13,7 @@ import { accountsInPossession } from 'src/domain/KeyringAccouns'
 type NetworkState = 'DISCONNECTED' | 'CONNECTING' | 'CONNECTED' | 'ERROR'
 
 export interface NetworkAccountsContextState {
-  currentAccount?: KeyringPair
+  currentAccount?: string
   jsonRpc: typeof jsonrpc
   apiStatus: NetworkState
   api?: ApiPromise
@@ -33,7 +31,7 @@ export const initialState: NetworkAccountsContextState = {
 export const NetworkAccountsContext = createContext(
   {} as {
     state: NetworkAccountsContextState
-    setCurrentAccount: (account: KeyringPair) => void
+    setCurrentAccount: (account: string) => void
   }
 )
 
@@ -45,7 +43,7 @@ const connect = (
   if (state.apiStatus !== 'DISCONNECTED') return
 
   updateState(prev => ({ ...prev, apiStatus: 'CONNECTING' }))
-  console.log(`Connecting socket: ${PROVIDER_SOCKET}`)
+  console.info(`Connecting socket: ${PROVIDER_SOCKET}`)
 
   const provider = new WsProvider(PROVIDER_SOCKET)
   const _api = new ApiPromise({ provider, rpc: jsonrpc })
@@ -148,7 +146,6 @@ export function NetworkAccountsContextProvider({
   connect(state, setState)
 
   useEffect(() => {
-    console.log('__NewState', state)
     document.addEventListener(DomainEvents.walletConnectInit, () =>
       loadAccounts(state, setState)
     )
@@ -164,11 +161,11 @@ export function NetworkAccountsContextProvider({
     if (!state.keyring || state.currentAccount !== undefined) return
 
     const accounts = accountsInPossession(state.keyring)
-    const initialAddress = accounts.length > 0 ? accounts[0].value : ''
-    setCurrentAccount(state.keyring.getPair(initialAddress))
+    const initialAddress = accounts.length > 0 ? accounts[0].address : ''
+    setCurrentAccount(initialAddress)
   }, [state.currentAccount, state.keyring])
 
-  function setCurrentAccount(account: KeyringPair) {
+  function setCurrentAccount(account: string) {
     setState(prev => ({ ...prev, currentAccount: account }))
     document.dispatchEvent(new CustomEvent(DomainEvents.changeAccountAddress))
   }
