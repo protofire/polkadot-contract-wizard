@@ -39,9 +39,9 @@ const WrapperHead = styled(Stack)<StackProps>(({ theme }) => ({
   width: '100%',
   backgroundColor: 'transparent',
   display: 'flex',
-  alignItems: 'flex-start',
+  alignItems: 'center',
   margin: '0',
-  padding: '0.3rem',
+  padding: '0 0 0.5rem 0',
 
   '& h3': {
     fontSize: '1rem'
@@ -50,7 +50,7 @@ const WrapperHead = styled(Stack)<StackProps>(({ theme }) => ({
   [theme.breakpoints.down('sm')]: {
     width: '100%',
     margin: '0.5rem !important',
-    padding: '1.5rem'
+    padding: '1rem'
   }
 }))
 
@@ -65,7 +65,7 @@ export const HeadLine = ({ tokenType }: { tokenType: TokenType }) => {
       >
         <Image alt={title} src={imgPath} {...imgProps} />
         <Stack
-          spacing={2}
+          spacing={{ xs: '0', lg: '2' }}
           direction={{ xs: 'column', lg: 'row' }}
           alignItems="center"
         >

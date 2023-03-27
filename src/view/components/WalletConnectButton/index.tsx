@@ -1,11 +1,16 @@
 import { useState } from 'react'
-
+import { styled } from '@mui/material/styles'
 import { useNetworkAccountsContext } from 'src/context/NetworkAccountsContext'
 import { DomainEvents } from 'src/domain/DomainEvents'
-import { StyledButton } from '../Button'
+import { StyledButton, MyButtonProps } from '../Button'
 import { ModalMessage } from '@components'
 import { AccountSelect } from './AccountsSelect'
 import { accountsInPossession } from 'src/domain/KeyringAccouns'
+
+export const ConnectButton = styled(StyledButton)<MyButtonProps>(() => ({
+  padding: '0rem',
+  fontSize: '1rem'
+}))
 
 export const WalletConnectButton = () => {
   const {
@@ -22,13 +27,13 @@ export const WalletConnectButton = () => {
   return (
     <>
       {accountStatus === 'DISCONNECTED' || accountStatus === 'CONNECTING' ? (
-        <StyledButton
+        <ConnectButton
           loading={isLoading}
           size="small"
           onClick={dispatchConnect}
         >
           Connect
-        </StyledButton>
+        </ConnectButton>
       ) : (
         keyring &&
         currentAccount && (
