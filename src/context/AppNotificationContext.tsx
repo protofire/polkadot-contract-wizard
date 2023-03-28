@@ -4,6 +4,7 @@ import { AppNotificationEvents } from 'src/domain/DomainEvents'
 export interface AppNotification {
   id: number
   message: string
+  type?: 'default' | 'info' | 'success' | 'error' | 'warning'
 }
 
 export interface AppNotificationRepository {

@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react'
 import { Box, Typography } from '@mui/material'
 import { CopyBlock, atomOneDark } from 'react-code-blocks'
+import { toast } from 'react-toastify'
 
 import { useStepsSCWizard } from '@context'
 import BackNextButton from '../BackNextButtons'
@@ -185,7 +186,10 @@ export default function Step2Compile({ tokenType }: { tokenType: TokenType }) {
 
   const _handleNext = async () => {
     if (!isWalletConnected) {
-      addNotification({ message: 'You need connect to the wallet' })
+      addNotification({
+        message: 'You need connect to the wallet',
+        type: 'error'
+      })
       return
     }
 
