@@ -2,6 +2,7 @@ import React from 'react'
 import { NextPage } from 'next'
 import type { AppProps } from 'next/app'
 import Head from 'next/head'
+import dynamic from 'next/dynamic'
 import '../styles/globals.css'
 import '../public/fonts/inter.css'
 
@@ -12,6 +13,17 @@ import { EmotionCache } from '@emotion/cache'
 import { CacheProvider } from '@emotion/react'
 import { SettingsConsumer } from 'src/context/settingsTheme'
 import { NetworkAccountsContextProvider } from 'src/context/NetworkAccountsContext'
+import {
+  AppNotificationContextProvider,
+  StorageNotificationsRepository
+} from 'src/context/AppNotificationContext'
+
+const AppNotification = dynamic(
+  () => import('src/view/components/Snackbar').then(m => m.CustomSnackBar),
+  {
+    ssr: false
+  }
+)
 
 type CustomAppProps = AppProps & {
   emotionCache: EmotionCache
@@ -21,6 +33,7 @@ type CustomAppProps = AppProps & {
 }
 
 const clientEmotionCache = buildEmotionCache()
+const repositoryAppNotification = new StorageNotificationsRepository()
 
 export default function App(props: CustomAppProps) {
   const { Component, emotionCache = clientEmotionCache, pageProps } = props
@@ -30,27 +43,33 @@ export default function App(props: CustomAppProps) {
 
   return (
     <CacheProvider value={emotionCache}>
-      <Head>
-        <title>{`Polkadot Contract Wizard`}</title>
-        <meta name="description" content={`Polkadot Contract Wizard`} />
-        <meta
-          name="keywords"
-          content="Polkadot, Smart Contracts, code builder"
-        />
-        <meta name="viewport" content="initial-scale=1, width=device-width" />
-      </Head>
+      <NetworkAccountsContextProvider>
+        <AppNotificationContextProvider repository={repositoryAppNotification}>
+          <Head>
+            <title>{`Polkadot Contract Wizard`}</title>
+            <meta name="description" content={`Polkadot Contract Wizard`} />
+            <meta
+              name="keywords"
+              content="Polkadot, Smart Contracts, code builder"
+            />
+            <meta
+              name="viewport"
+              content="initial-scale=1, width=device-width"
+            />
+          </Head>
 
-      <SettingsConsumer>
-        {({ settings }) => {
-          return (
-            <ThemeCustomization settings={settings}>
-              <NetworkAccountsContextProvider>
-                {getLayout(<Component {...pageProps} />)}
-              </NetworkAccountsContextProvider>
-            </ThemeCustomization>
-          )
-        }}
-      </SettingsConsumer>
+          <SettingsConsumer>
+            {({ settings }) => {
+              return (
+                <ThemeCustomization settings={settings}>
+                  {getLayout(<Component {...pageProps} />)}
+                </ThemeCustomization>
+              )
+            }}
+          </SettingsConsumer>
+          <AppNotification />
+        </AppNotificationContextProvider>
+      </NetworkAccountsContextProvider>
     </CacheProvider>
   )
 }

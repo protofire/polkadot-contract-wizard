@@ -57,6 +57,7 @@ export const MainLayout = ({ children }: Props): JSX.Element => {
     setIsOpen(!isOpen)
   }
 
+  console.log('__MainLayout')
   return (
     <Box sx={{ display: 'flex', width: '100%', color: 'white' }}>
       <MainDrawer
