@@ -53,7 +53,7 @@ export default function Security() {
                   variant="body1"
                   sx={{ fontSize: '1rem', color: '#b1b1b1' }}
                 >
-                  Sample content for None value.
+                  {/* security for your contract. */}
                 </Typography>
               </>
             }
@@ -79,7 +79,7 @@ export default function Security() {
                   variant="body1"
                   sx={{ fontSize: '1rem', color: '#b1b1b1' }}
                 >
-                  Sample content for Ownable value.
+                  A single account authorized for all privileged actions.
                 </Typography>
               </>
             }
@@ -104,7 +104,7 @@ export default function Security() {
                   variant="body1"
                   sx={{ fontSize: '1rem', color: '#b1b1b1' }}
                 >
-                  Sample content for Access Control value.
+                  Allows to implement role-based access control mechanisms.
                 </Typography>
               </>
             }
@@ -129,7 +129,8 @@ export default function Security() {
                   variant="body1"
                   sx={{ fontSize: '1rem', color: '#b1b1b1' }}
                 >
-                  Sample content for Access Control Enumerable value.
+                  Allows to implement role-based access control mechanisms with
+                  a unique identifier.
                 </Typography>
               </>
             }
