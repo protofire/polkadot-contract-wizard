@@ -99,7 +99,7 @@ export default function SimpleAccordion() {
           aria-controls="panel3a-content"
           id="panel3a-header"
         >
-          <Typography variant="h3">Deployment</Typography>
+          <Typography variant="h3">Other networks and parachains</Typography>
         </AccordionSummary>
         <AccordionDetails>
           <Typography variant="body1">
