@@ -25,7 +25,7 @@ export function AccountSelect({
     >
       {accounts.map(a => (
         <MenuItem
-          sx={{ color: 'white', border: '1px solid red' }}
+          sx={{ color: 'white' }}
           selected={currentAccount === a.address}
           key={a.address}
           value={a.address}
