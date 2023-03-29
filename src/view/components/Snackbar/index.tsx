@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from 'react'
+import { useEffect } from 'react'
 import { ToastContainer, toast } from 'react-toastify'
 
 import {
@@ -14,20 +14,21 @@ export interface State {
   messageInfo?: SnackbarMessage
 }
 
+function createToast(notification: AppNotification, remove: () => void) {
+  toast(notification.message, {
+    type: notification.type ?? 'default',
+    onClose: remove
+  })
+}
+
 export function CustomSnackBar(): JSX.Element {
   const { appNotifications, removeFirst } = useAppNotificationContext()
-  const notifications = useMemo(() => appNotifications, [appNotifications])
 
   useEffect(() => {
-    if (notifications.length < 1) return
+    if (appNotifications.length < 1) return
 
-    notifications.map(_notification => {
-      toast(_notification.message, {
-        type: _notification.type ?? 'default',
-        onClose: removeFirst
-      })
-    })
-  }, [notifications, removeFirst])
+    createToast(appNotifications[0], removeFirst)
+  }, [appNotifications, removeFirst])
 
   return <ToastContainer theme="dark" autoClose={2000} />
 }

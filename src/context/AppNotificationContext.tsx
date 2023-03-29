@@ -1,4 +1,10 @@
-import React, { createContext, useEffect, useState, useContext } from 'react'
+import React, {
+  createContext,
+  useEffect,
+  useState,
+  useContext,
+  useCallback
+} from 'react'
 import { AppNotificationEvents } from 'src/domain/DomainEvents'
 
 export interface AppNotification {
@@ -93,19 +99,22 @@ export function AppNotificationContextProvider({
     }
   }, [repository])
 
-  function save(notification: Omit<AppNotification, 'key'>): void {
-    repository.save({ ...notification, id: new Date().getTime() })
-    document.dispatchEvent(
-      new CustomEvent(AppNotificationEvents.notificationUpdated)
-    )
-  }
+  const save = useCallback(
+    (notification: Omit<AppNotification, 'key'>) => {
+      repository.save({ ...notification, id: new Date().getTime() })
+      document.dispatchEvent(
+        new CustomEvent(AppNotificationEvents.notificationUpdated)
+      )
+    },
+    [repository]
+  )
 
-  function slice(): void {
+  const slice = useCallback(() => {
     repository.removeFirst()
     document.dispatchEvent(
       new CustomEvent(AppNotificationEvents.notificationUpdated)
     )
-  }
+  }, [repository])
 
   return (
     <AppNotificationContext.Provider
