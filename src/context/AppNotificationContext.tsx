@@ -12,6 +12,7 @@ export interface AppNotification {
   message: string
   type?: 'default' | 'info' | 'success' | 'error' | 'warning'
 }
+type NotificationWithoutId = Omit<AppNotification, 'id'>
 
 export interface AppNotificationRepository {
   search(): AppNotification[]
@@ -55,12 +56,12 @@ export class StorageNotificationsRepository
 
 const AppNotificationContext = createContext<{
   appNotifications: AppNotification[]
-  addNotification(notification: Omit<AppNotification, 'id'>): void
+  addNotification(notification: NotificationWithoutId): void
   removeFirst(): void
 }>(
   {} as {
     appNotifications: AppNotification[]
-    addNotification(notification: Omit<AppNotification, 'id'>): void
+    addNotification(notification: NotificationWithoutId): void
     removeFirst(): void
   }
 )
@@ -100,7 +101,7 @@ export function AppNotificationContextProvider({
   }, [repository])
 
   const save = useCallback(
-    (notification: Omit<AppNotification, 'key'>) => {
+    (notification: NotificationWithoutId) => {
       repository.save({ ...notification, id: new Date().getTime() })
       document.dispatchEvent(
         new CustomEvent(AppNotificationEvents.notificationUpdated)

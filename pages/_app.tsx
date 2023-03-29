@@ -37,21 +37,18 @@ export default function App(props: CustomAppProps) {
 
   return (
     <CacheProvider value={emotionCache}>
+      <Head>
+        <title>{`Polkadot Contract Wizard`}</title>
+        <meta name="description" content={`Polkadot Contract Wizard`} />
+        <meta
+          name="keywords"
+          content="Polkadot, Smart Contracts, code builder"
+        />
+        <meta name="viewport" content="initial-scale=1, width=device-width" />
+      </Head>
+
       <NetworkAccountsContextProvider>
         <AppNotificationContextProvider repository={repositoryAppNotification}>
-          <Head>
-            <title>{`Polkadot Contract Wizard`}</title>
-            <meta name="description" content={`Polkadot Contract Wizard`} />
-            <meta
-              name="keywords"
-              content="Polkadot, Smart Contracts, code builder"
-            />
-            <meta
-              name="viewport"
-              content="initial-scale=1, width=device-width"
-            />
-          </Head>
-
           <SettingsConsumer>
             {({ settings }) => {
               return (
