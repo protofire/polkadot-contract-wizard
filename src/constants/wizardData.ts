@@ -181,8 +181,7 @@ export const WIZARD_CONFIG: Array<TokenOptionConfig> = [
             name: 'Enumerable',
             type: 'checkbox',
             initState: false,
-            tooltip:
-              'Extension of [`PSP37`] that allows you to iterate over tokens'
+            tooltip: 'Add a unique number to each NFT.'
           }
         ]
       }
