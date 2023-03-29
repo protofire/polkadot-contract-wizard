@@ -97,49 +97,48 @@ export const WIZARD_CONFIG: Array<TokenOptionConfig> = [
             name: 'Metadata',
             type: 'checkbox',
             initState: false,
-            tooltip: 'Metadata for [`PSP22`] '
+            tooltip:
+              'Extra information about the token, such as its name and symbol.'
           },
           {
             name: 'Mintable',
             type: 'checkbox',
             initState: false,
             tooltip:
-              'Extension of [`PSP22`] that allows create `amount` tokens and assigns them to `account`, increasing the total supply'
+              'Capability to create new tokens increasing the total supply.'
           },
           {
             name: 'Burnable',
             type: 'checkbox',
             initState: false,
             tooltip:
-              'Extension of [`PSP22`] that allows token holders to destroy both their own tokens and those that they have an allowance for.'
+              'Ability to destroy tokens from circulation, reducing the total supply.'
           },
           {
             name: 'Wrapper',
             type: 'checkbox',
             initState: false,
             tooltip:
-              'Extension of [`PSP22`] that allows you to wrap your PSP22 token in a PSP22Wrapper token which can be used for example for governance'
+              'Wrapper to create a token backed by another equivalent token, with deposit and withdrawal methods.'
           },
           {
             name: 'FlashMint',
             type: 'checkbox',
             initState: false,
             tooltip:
-              'Extension of [`PSP22`] that allows the user to perform a flash loan on the token my minting the borrowd amount and then burning it along with fees for the loan'
+              'Ability to perform a flash loan on the token by minting the borrowed amount and then burning it.'
           },
           {
             name: 'Pausable',
             type: 'checkbox',
             initState: false,
-            tooltip:
-              'Extension of [`PSP22`] that allows you to pause all token operations'
+            tooltip: 'Ability to pause all token transfers.'
           },
           {
             name: 'Capped',
             type: 'checkbox',
             initState: false,
-            tooltip:
-              'Extension of [`PSP22`] that allows you to implement with a supply cap, analogue to ERC20Capped'
+            tooltip: 'Set a limit to the total supply when minting tokens.'
           }
         ]
       }
@@ -155,8 +154,7 @@ export const WIZARD_CONFIG: Array<TokenOptionConfig> = [
             name: 'Batch',
             type: 'checkbox',
             initState: false,
-            tooltip:
-              'Extension of [`PSP37`] that allows you batch transfering tokens'
+            tooltip: 'Allows you batch transferring tokens.'
           },
           {
             name: 'Metadata',
@@ -210,15 +208,13 @@ export const WIZARD_CONFIG: Array<TokenOptionConfig> = [
             name: 'Burnable',
             type: 'checkbox',
             initState: false,
-            tooltip:
-              'Extension of [`PSP34`] that allows token holders to destroy their tokens'
+            tooltip: 'Alows NFTs holders to destroy their NFTs.'
           },
           {
             name: 'Enumerable',
             type: 'checkbox',
             initState: false,
-            tooltip:
-              'Extension of [`PSP34`] that allows to iterate over all NFTs'
+            tooltip: 'Add a unique number to each NFT.'
           }
         ]
       }
