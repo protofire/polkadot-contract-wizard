@@ -7,7 +7,6 @@ import HeaderContent from './HeaderContent'
 import { shouldForwardProp } from '@types'
 
 import { AppBarProps } from '@mui/material/AppBar'
-import { HeadLine } from 'src/view/components/HeadLine'
 
 type CustomAppBarProps = {
   open: boolean

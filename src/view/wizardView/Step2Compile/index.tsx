@@ -1,7 +1,6 @@
 import { useMemo, useState } from 'react'
 import { Box, Typography } from '@mui/material'
 import { CopyBlock, atomOneDark } from 'react-code-blocks'
-import { toast } from 'react-toastify'
 
 import { useStepsSCWizard } from '@context'
 import BackNextButton from '../BackNextButtons'
@@ -174,7 +173,7 @@ function generateCode(standardName: TokenType, data: ContractConfig) {
 export default function Step2Compile({ tokenType }: { tokenType: TokenType }) {
   const { handleBack, handleNext, dataForm } = useStepsSCWizard()
   const { isLoading, compileContract } = useCreateCompilation()
-  const [response, setResponse] = useState<DataCompiledContract>()
+  const [_response, setResponse] = useState<DataCompiledContract>()
   const {
     state: { currentAccount }
   } = useNetworkAccountsContext()
