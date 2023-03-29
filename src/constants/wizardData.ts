@@ -160,20 +160,22 @@ export const WIZARD_CONFIG: Array<TokenOptionConfig> = [
             name: 'Metadata',
             type: 'checkbox',
             initState: false,
-            tooltip: 'Metadata for [`PSP37`]'
+            tooltip:
+              'Extra information about the token, such as its name and symbol.'
           },
           {
             name: 'Mintable',
             type: 'checkbox',
             initState: false,
-            tooltip: 'Extension of [`PSP37`] that allows minting of new tokens'
+            tooltip:
+              'Capability to create new tokens increasing the total supply.'
           },
           {
             name: 'Burnable',
             type: 'checkbox',
             initState: false,
             tooltip:
-              'Extension of [`PSP37`] that allows token holders to destroy their tokens'
+              'Ability to destroy tokens from circulation, reducing the total supply.'
           },
           {
             name: 'Enumerable',
@@ -196,13 +198,15 @@ export const WIZARD_CONFIG: Array<TokenOptionConfig> = [
             name: 'Metadata',
             type: 'checkbox',
             initState: false,
-            tooltip: 'Metadata for [`PSP34`]'
+            tooltip:
+              'Extra information about the token, such as its name and symbol.'
           },
           {
             name: 'Mintable',
             type: 'checkbox',
             initState: false,
-            tooltip: 'Extension of [`PSP34`] that exposes the mint function'
+            tooltip:
+              'Capability to create new tokens increasing the total supply.'
           },
           {
             name: 'Burnable',
