@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import { styled } from '@mui/material/styles'
 import { useNetworkAccountsContext } from 'src/context/NetworkAccountsContext'
-import { DomainEvents } from 'src/domain/DomainEvents'
 import { StyledButton, MyButtonProps } from '../Button'
+import { WalletConnectionEvents } from 'src/domain/DomainEvents'
 import { ModalMessage } from '@components'
 import { AccountSelect } from './AccountsSelect'
 import { accountsInPossession } from 'src/domain/KeyringAccouns'
@@ -21,7 +21,9 @@ export const WalletConnectButton = () => {
   const [openModal, setOpenModal] = useState(false)
 
   const dispatchConnect = () => {
-    document.dispatchEvent(new CustomEvent(DomainEvents.walletConnectInit))
+    document.dispatchEvent(
+      new CustomEvent(WalletConnectionEvents.walletConnectInit)
+    )
   }
 
   return (

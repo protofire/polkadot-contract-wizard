@@ -1,3 +1,4 @@
+import { useMemo, useState } from 'react'
 import { Box, Typography } from '@mui/material'
 import { CopyBlock, atomOneDark } from 'react-code-blocks'
 
@@ -14,11 +15,13 @@ import {
   TraitImpl
 } from './builders'
 import { isGreaterVer, isSmallerVer } from 'src/utils/comparisonString'
-import { useState } from 'react'
 import {
   DataCompiledContract,
   useCreateCompilation
 } from 'src/hooks/useCreateCompilation'
+import { useNetworkAccountsContext } from 'src/context/NetworkAccountsContext'
+import { isValidAddress } from '@utils'
+import { useAppNotificationContext } from 'src/context/AppNotificationContext'
 
 function generateCode(standardName: TokenType, data: ContractConfig) {
   const { extensions, usesStandardExtensions } = getExtensions(
@@ -170,9 +173,25 @@ function generateCode(standardName: TokenType, data: ContractConfig) {
 export default function Step2Compile({ tokenType }: { tokenType: TokenType }) {
   const { handleBack, handleNext, dataForm } = useStepsSCWizard()
   const { isLoading, compileContract } = useCreateCompilation()
-  const [response, setResponse] = useState<DataCompiledContract>()
+  const [_response, setResponse] = useState<DataCompiledContract>()
+  const {
+    state: { currentAccount }
+  } = useNetworkAccountsContext()
+  const isWalletConnected = useMemo(
+    () => isValidAddress(currentAccount),
+    [currentAccount]
+  )
+  const { addNotification } = useAppNotificationContext()
 
   const _handleNext = async () => {
+    if (!isWalletConnected) {
+      addNotification({
+        message: 'You need connect to the wallet',
+        type: 'error'
+      })
+      return
+    }
+
     const _response = await compileContract()
     setResponse(_response)
     if (_response) handleNext()

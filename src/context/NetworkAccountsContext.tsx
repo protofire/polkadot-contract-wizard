@@ -6,7 +6,7 @@ import { keyring as KeyringUI, Keyring } from '@polkadot/ui-keyring'
 import { TypeRegistry } from '@polkadot/types/create'
 
 import { PROVIDER_SOCKET, APP_NAME } from '@constants'
-import { DomainEvents } from 'src/domain/DomainEvents'
+import { WalletConnectionEvents } from 'src/domain/DomainEvents'
 import { ChainType } from '@polkadot/types/interfaces/system'
 import { accountsInPossession } from 'src/domain/KeyringAccouns'
 
@@ -146,13 +146,14 @@ export function NetworkAccountsContextProvider({
   connect(state, setState)
 
   useEffect(() => {
-    document.addEventListener(DomainEvents.walletConnectInit, () =>
+    document.addEventListener(WalletConnectionEvents.walletConnectInit, () =>
       loadAccounts(state, setState)
     )
 
     return () => {
-      document.removeEventListener(DomainEvents.walletConnectInit, () =>
-        loadAccounts(state, setState)
+      document.removeEventListener(
+        WalletConnectionEvents.walletConnectInit,
+        () => loadAccounts(state, setState)
       )
     }
   }, [state])
@@ -167,7 +168,9 @@ export function NetworkAccountsContextProvider({
 
   function setCurrentAccount(account: string) {
     setState(prev => ({ ...prev, currentAccount: account }))
-    document.dispatchEvent(new CustomEvent(DomainEvents.changeAccountAddress))
+    document.dispatchEvent(
+      new CustomEvent(WalletConnectionEvents.changeAccountAddress)
+    )
   }
 
   return (
