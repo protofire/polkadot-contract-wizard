@@ -7,11 +7,11 @@ import Step3Deploy from './Step3Deploy'
 import { StyledButton as Button, Stepper as StepperWrapper } from '@components'
 import { StepsSCWizardContext } from '@context'
 import { TokenType } from '@types'
-import { ControlsToken, WIZARD_CONFIG } from '@constants'
+import { AnyControlsToken, ControlsToken, WIZARD_CONFIG } from '@constants'
 
 const STEPS = ['Extensions', 'Compile', 'Deploy']
 
-function getInitialValues(tokenOptionsConfig: ControlsToken | undefined) {
+function getInitialValues(tokenOptionsConfig: AnyControlsToken | undefined) {
   if (tokenOptionsConfig === undefined) return []
 
   return Object.assign(
@@ -67,7 +67,11 @@ export default function FormWizard({
     switch (activeStep) {
       case 0: {
         if (!extensionFields) return
-        return <Step1Extensions extensionFields={extensionFields} />
+        return (
+          <Step1Extensions
+            extensionFields={extensionFields as ControlsToken<'Extensions'>}
+          />
+        )
       }
       case 1:
         return <Step2Compile tokenType={token} />
@@ -75,7 +79,9 @@ export default function FormWizard({
         return (
           <Step3Deploy
             tokenType={token}
-            constructorFields={constructorFields}
+            constructorFields={
+              constructorFields as ControlsToken<'Constructor'>
+            }
           />
         )
       default:

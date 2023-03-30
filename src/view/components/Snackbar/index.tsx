@@ -17,7 +17,7 @@ export interface State {
 function createToast(notification: AppNotification, remove: () => void) {
   toast(notification.message, {
     type: notification.type ?? 'default',
-    onClose: remove
+    onOpen: remove
   })
 }
 

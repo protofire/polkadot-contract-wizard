@@ -8,22 +8,37 @@ export type OptionTokenField = {
   initState: string | boolean
   tooltip?: string
 }
+
+export type ConstructorFieldName =
+  | 'initial_supply'
+  | 'name'
+  | 'symbol'
+  | 'decimal'
+
 export type ConstructorTokenField = OptionTokenField & {
-  fieldName: string
-  required?: boolean
+  fieldName: ConstructorFieldName
+  mandatory?: boolean
 }
 
-type OptionListType<T extends Sections> = T extends 'Extensions'
-  ? OptionTokenField[]
-  : ConstructorTokenField[]
-
-export interface ControlsToken {
-  sectionName: Sections
-  optionList: OptionListType<this['sectionName']>
+export interface OptionListType {
+  Extensions: OptionTokenField[]
+  Constructor: ConstructorTokenField[]
 }
+
+export interface ControlsToken<S extends Sections> {
+  sectionName: S
+  optionList: S extends 'Extensions'
+    ? OptionTokenField[]
+    : ConstructorTokenField[]
+}
+
+export type AnyControlsToken<S = Sections> = S extends Sections
+  ? ControlsToken<S>
+  : never
+
 export type TokenOptionConfig = {
   name: TokenType
-  controls: Array<ControlsToken>
+  controls: AnyControlsToken[]
 }
 
 export const BRUSH_NAME = 'openbrush'
@@ -45,7 +60,7 @@ export const WIZARD_CONFIG: Array<TokenOptionConfig> = [
             type: 'number',
             initState: '',
             tooltip: '',
-            required: true,
+            mandatory: true,
             fieldName: 'initial_supply'
           },
           {
@@ -53,7 +68,7 @@ export const WIZARD_CONFIG: Array<TokenOptionConfig> = [
             type: 'text',
             initState: 'MyToken',
             tooltip: '',
-            required: false,
+            mandatory: false,
             fieldName: 'name'
           },
           {
@@ -61,7 +76,7 @@ export const WIZARD_CONFIG: Array<TokenOptionConfig> = [
             type: 'text',
             initState: 'MTK',
             tooltip: '',
-            required: false,
+            mandatory: false,
             fieldName: 'symbol'
           },
           {
@@ -69,7 +84,7 @@ export const WIZARD_CONFIG: Array<TokenOptionConfig> = [
             type: 'number',
             initState: '18',
             tooltip: '',
-            required: false,
+            mandatory: false,
             fieldName: 'decimal'
           }
         ]

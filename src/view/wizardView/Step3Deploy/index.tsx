@@ -8,31 +8,56 @@ import BackNextButton from '../BackNextButtons'
 import { TokenType } from '@types'
 import StyledTextField from '../../components/Input'
 import { CompilingAnimation } from 'src/constants/images'
-import { ConstructorTokenField, ControlsToken } from '@constants'
+import {
+  ConstructorFieldName,
+  ConstructorTokenField,
+  ControlsToken
+} from '@constants'
+import { FormEvent } from 'src/domain/common/FormEvent'
+
+function textFieldFactory(field: ConstructorTokenField, required = true) {
+  {
+    return (
+      <StyledTextField
+        key={field.name}
+        label={field.name}
+        type={field.type}
+        required={required}
+        name={field.fieldName}
+      />
+    )
+  }
+}
 
 export default function Step3Deploy({
   constructorFields
 }: {
   tokenType: TokenType
-  constructorFields?: ControlsToken
+  constructorFields?: ControlsToken<'Constructor'>
 }) {
   const { handleBack, handleNext, dataForm } = useStepsSCWizard()
   const { mandatoryFields, metadataFields } = useMemo(() => {
     return {
       mandatoryFields:
-        constructorFields?.optionList.filter(
-          field => (field as ConstructorTokenField).required
-        ) || [],
+        constructorFields?.optionList.filter(field => field.mandatory) || [],
       metadataFields:
         (dataForm.extensions.Metadata &&
-          constructorFields?.optionList.filter(
-            field => !(field as ConstructorTokenField).required
-          )) ||
+          constructorFields?.optionList.filter(field => !field.mandatory)) ||
         []
     }
   }, [constructorFields?.optionList, dataForm.extensions.Metadata])
   const areThereParameters =
     mandatoryFields.length > 0 || metadataFields.length > 0
+
+  const handleSubmit = async (
+    event: FormEvent<{ [key in ConstructorFieldName]: string }>
+  ) => {
+    event.preventDefault()
+    const { elements } = event.target
+
+    const dataForm = mandatoryFields.map(field => elements[field.fieldName])
+    console.log('__mF')
+  }
 
   return (
     <>
@@ -60,7 +85,7 @@ export default function Step3Deploy({
             </Typography>
           </Stack>
           {areThereParameters && (
-            <>
+            <form id="deploy-form" onSubmit={handleSubmit}>
               <Stack
                 sx={{
                   padding: '1rem',
@@ -79,31 +104,21 @@ export default function Step3Deploy({
               <Stack
                 sx={{ display: 'flex', flexDirection: 'column', gap: '1.2rem' }}
               >
-                {mandatoryFields.map(field => (
-                  <StyledTextField
-                    key={field.name}
-                    label={field.name}
-                    required
-                    type={field.type}
-                  ></StyledTextField>
-                ))}
-                {metadataFields.map(field => (
-                  <StyledTextField
-                    key={field.name}
-                    label={field.name}
-                    type={field.type}
-                  ></StyledTextField>
-                ))}
+                {mandatoryFields.map(field => textFieldFactory(field))}
+                {metadataFields.map(field => textFieldFactory(field))}
               </Stack>
-            </>
+            </form>
           )}
         </Grid>
       </Grid>
       <BackNextButton
         nextLabel="Deploy Contract"
         handleBack={handleBack}
-        handleNext={handleNext}
-        nextButtonProps={{ startIcon: '🚀' }}
+        nextButtonProps={{
+          startIcon: '🚀',
+          type: 'submit',
+          form: 'deploy-form'
+        }}
       />
     </>
   )

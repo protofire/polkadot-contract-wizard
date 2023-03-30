@@ -3,7 +3,7 @@ import { StyledButton as Button, MyButtonProps } from '@components'
 
 type Props = {
   nextLabel?: string
-  handleNext: () => void
+  handleNext?: () => void
   backLabel?: string
   handleBack: () => void
   isNextDisabled?: boolean
