@@ -39,9 +39,9 @@ export default function Home() {
           First of all, you need to select what kind of contract you prefer. We
           have these options:
           <ul>
-            <li>sds</li>
-            <li>sds</li>
-            <li>sds</li>
+            <li>PSP22</li>
+            <li>PSP34</li>
+            <li>PSP37</li>
           </ul>
         </Typography>
 
@@ -65,7 +65,7 @@ export default function Home() {
           directly on Polkadot or other parachains and testnets.
         </Typography>
       </Stack>
-      <Accordion />
+      {/* <Accordion /> */}
     </Box>
   )
 }
