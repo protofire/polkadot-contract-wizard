@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react'
 import { Typography, StepLabel, Step, Stepper, Box } from '@mui/material'
+import NextLink from 'next/link'
 
 import Step1Extensions from './Step1Extensions'
 import Step2Compile from './Step2Compile'
@@ -7,7 +8,12 @@ import Step3Deploy from './Step3Deploy'
 import { StyledButton as Button, Stepper as StepperWrapper } from '@components'
 import { StepsSCWizardContext } from '@context'
 import { TokenType } from '@types'
-import { AnyControlsToken, ControlsToken, WIZARD_CONFIG } from '@constants'
+import {
+  AnyControlsToken,
+  ControlsToken,
+  ROUTES,
+  WIZARD_CONFIG
+} from '@constants'
 
 const STEPS = ['Extensions', 'Compile', 'Deploy']
 
@@ -123,7 +129,9 @@ export default function FormWizard({
             </Typography>
             <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
               <Box sx={{ flex: '1 1 auto' }} />
-              <Button onClick={handleReset}>Reset</Button>
+              <Button LinkComponent={NextLink} href={ROUTES.HOME}>
+                Back to wizard
+              </Button>
             </Box>
           </React.Fragment>
         ) : (
