@@ -73,6 +73,13 @@ export default function Step3Deploy({
   const areThereParameters =
     mandatoryFields.length > 0 || metadataFields.length > 0
   const isButtonNextDisabled = contractCompiled === undefined
+  const nextButtonProps = {
+    nextButtonProps: {
+      startIcon: isButtonNextDisabled ? '🚫' : '🚀',
+      disabled: isButtonNextDisabled,
+      ...(areThereParameters && { type: 'submit', form: 'deploy-form' })
+    }
+  }
 
   useEffect(() => {
     // TODO replace with real request
@@ -170,12 +177,12 @@ export default function Step3Deploy({
       <BackNextButton
         nextLabel="Deploy Contract"
         handleBack={handleBack}
+        handleNext={areThereParameters ? undefined : handleNext}
         hiddenBack={true}
         nextButtonProps={{
           startIcon: isButtonNextDisabled ? '🚫' : '🚀',
-          type: 'submit',
-          form: 'deploy-form',
-          disabled: isButtonNextDisabled
+          disabled: isButtonNextDisabled,
+          ...(areThereParameters && { type: 'submit', form: 'deploy-form' })
         }}
       />
     </>
