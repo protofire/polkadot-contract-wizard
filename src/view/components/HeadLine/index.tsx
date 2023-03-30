@@ -42,15 +42,21 @@ const WrapperHead = styled(Stack)<StackProps>(({ theme }) => ({
   alignItems: 'center',
   margin: '0',
   padding: '0 0 0.5rem 0',
+  textTransform: 'uppercase',
 
   '& h3': {
-    fontSize: '1rem'
+    fontSize: '1.3rem',
+    marginRight: '1rem'
   },
 
   [theme.breakpoints.down('sm')]: {
     width: '100%',
     margin: '0.5rem !important',
-    padding: '1rem'
+    padding: '1rem',
+
+    '& h3': {
+      fontSize: '1.1rem'
+    }
   }
 }))
 
