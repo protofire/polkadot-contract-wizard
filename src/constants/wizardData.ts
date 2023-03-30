@@ -5,25 +5,41 @@ type Sections = 'Constructor' | 'Extensions'
 export type OptionTokenField = {
   name: string
   type: HTMLInputTypeAttribute
-  initState: string | boolean
+  initState?: string | boolean
   tooltip?: string
+  placeholder?: string
 }
+
+export type ConstructorFieldName =
+  | 'initial_supply'
+  | 'name'
+  | 'symbol'
+  | 'decimal'
+
 export type ConstructorTokenField = OptionTokenField & {
-  fieldName: string
-  required?: boolean
+  fieldName: ConstructorFieldName
+  mandatory?: boolean
 }
 
-type OptionListType<T extends Sections> = T extends 'Extensions'
-  ? OptionTokenField[]
-  : ConstructorTokenField[]
-
-export interface ControlsToken {
-  sectionName: Sections
-  optionList: OptionListType<this['sectionName']>
+export interface OptionListType {
+  Extensions: OptionTokenField[]
+  Constructor: ConstructorTokenField[]
 }
+
+export interface ControlsToken<S extends Sections> {
+  sectionName: S
+  optionList: S extends 'Extensions'
+    ? OptionTokenField[]
+    : ConstructorTokenField[]
+}
+
+export type AnyControlsToken<S = Sections> = S extends Sections
+  ? ControlsToken<S>
+  : never
+
 export type TokenOptionConfig = {
   name: TokenType
-  controls: Array<ControlsToken>
+  controls: AnyControlsToken[]
 }
 
 export const BRUSH_NAME = 'openbrush'
@@ -43,33 +59,33 @@ export const WIZARD_CONFIG: Array<TokenOptionConfig> = [
           {
             name: 'Initial Supply',
             type: 'number',
-            initState: '',
+            placeholder: '1000000 e18',
             tooltip: '',
-            required: true,
+            mandatory: true,
             fieldName: 'initial_supply'
           },
           {
             name: 'Name',
             type: 'text',
-            initState: 'MyToken',
+            placeholder: 'MyToken',
             tooltip: '',
-            required: false,
+            mandatory: false,
             fieldName: 'name'
           },
           {
             name: 'Symbol',
             type: 'text',
-            initState: 'MTK',
+            placeholder: 'MTK',
             tooltip: '',
-            required: false,
+            mandatory: false,
             fieldName: 'symbol'
           },
           {
             name: 'Decimal',
             type: 'number',
-            initState: '18',
+            placeholder: '18',
             tooltip: '',
-            required: false,
+            mandatory: false,
             fieldName: 'decimal'
           }
         ]

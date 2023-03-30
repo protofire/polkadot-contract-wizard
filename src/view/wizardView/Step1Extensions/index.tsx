@@ -10,8 +10,7 @@ import Security from './Security'
 export default function Step1Extensions({
   extensionFields
 }: {
-  extensionFields: ControlsToken
-  constructorFields?: ControlsToken
+  extensionFields: ControlsToken<'Extensions'>
 }) {
   const { dataForm, setDataForm, resetDataForm, handleNext } =
     useStepsSCWizard()
