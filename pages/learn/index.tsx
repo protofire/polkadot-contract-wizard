@@ -4,11 +4,10 @@ import Accordion from 'src/view/LearnView/Accordion'
 export default function Home() {
   return (
     <Box
-      sx={
-        {
-          /*  width: '80%' */
-        }
-      }
+      sx={{
+        width: { sm: '90%', md: '75%', lg: '60%' },
+        margin: 'auto'
+      }}
     >
       <Typography variant="h1" align="center">
         Learn more about Polkadot Contract Wizard
