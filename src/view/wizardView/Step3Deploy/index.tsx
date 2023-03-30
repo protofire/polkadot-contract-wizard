@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Grid, Stack, Typography } from '@mui/material'
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward'
 import Image from 'next/image'
@@ -7,13 +7,21 @@ import { useStepsSCWizard } from '@context'
 import BackNextButton from '../BackNextButtons'
 import { TokenType } from '@types'
 import StyledTextField from '../../components/Input'
-import { CompilingAnimation } from 'src/constants/images'
+import {
+  GIF_COMPILING,
+  SVG_AWESOME,
+  SVG_SUCCESSFULLY
+} from 'src/constants/images'
 import {
   ConstructorFieldName,
   ConstructorTokenField,
   ControlsToken
 } from '@constants'
 import { FormEvent } from 'src/domain/common/FormEvent'
+import {
+  DataCompiledContract,
+  useCreateCompilation
+} from 'src/hooks/useCreateCompilation'
 
 function textFieldFactory(field: ConstructorTokenField, required = true) {
   {
@@ -24,9 +32,28 @@ function textFieldFactory(field: ConstructorTokenField, required = true) {
         type={field.type}
         required={required}
         name={field.fieldName}
+        placeholder={field.placeholder}
       />
     )
   }
+}
+
+function useMemoizeFields(
+  optionList: ConstructorTokenField[] | undefined,
+  hasMetadata: boolean
+) {
+  return useMemo(
+    () => ({
+      mandatoryFields:
+        (optionList && optionList.filter(field => field.mandatory)) || [],
+      metadataFields:
+        (hasMetadata &&
+          optionList &&
+          optionList.filter(field => !field.mandatory)) ||
+        []
+    }),
+    [optionList, hasMetadata]
+  )
 }
 
 export default function Step3Deploy({
@@ -36,18 +63,21 @@ export default function Step3Deploy({
   constructorFields?: ControlsToken<'Constructor'>
 }) {
   const { handleBack, handleNext, dataForm } = useStepsSCWizard()
-  const { mandatoryFields, metadataFields } = useMemo(() => {
-    return {
-      mandatoryFields:
-        constructorFields?.optionList.filter(field => field.mandatory) || [],
-      metadataFields:
-        (dataForm.extensions.Metadata &&
-          constructorFields?.optionList.filter(field => !field.mandatory)) ||
-        []
-    }
-  }, [constructorFields?.optionList, dataForm.extensions.Metadata])
+  const [contractCompiled, setContractCompiled] =
+    useState<DataCompiledContract>()
+  const { mandatoryFields, metadataFields } = useMemoizeFields(
+    constructorFields?.optionList,
+    dataForm.extensions.Metadata as boolean
+  )
+  const { compileContract } = useCreateCompilation()
   const areThereParameters =
     mandatoryFields.length > 0 || metadataFields.length > 0
+  const isButtonNextDisabled = contractCompiled === undefined
+
+  useEffect(() => {
+    // TODO replace with real request
+    compileContract().then(setContractCompiled)
+  }, [compileContract])
 
   const handleSubmit = async (
     event: FormEvent<{ [key in ConstructorFieldName]: string }>
@@ -55,8 +85,21 @@ export default function Step3Deploy({
     event.preventDefault()
     const { elements } = event.target
 
-    const dataForm = mandatoryFields.map(field => elements[field.fieldName])
-    console.log('__mF')
+    const dataForm: Array<[ConstructorFieldName, string | number]> = []
+
+    mandatoryFields.forEach(field => {
+      if (elements[field.fieldName]) {
+        dataForm.push([
+          field.fieldName,
+          field.type === 'number'
+            ? Number(elements[field.fieldName].value)
+            : elements[field.fieldName].value
+        ])
+      }
+    })
+
+    // TODO
+    handleNext()
   }
 
   return (
@@ -75,13 +118,25 @@ export default function Step3Deploy({
             }}
           >
             <Image
-              alt="compiling"
-              src={CompilingAnimation}
+              alt={contractCompiled ? 'successfully' : 'compiling'}
+              src={contractCompiled ? SVG_SUCCESSFULLY : GIF_COMPILING}
               width={150}
               height={150}
             />
             <Typography variant="h4" align="center" sx={{ margin: '0 1rem' }}>
-              Your contract is being compiled by us.{' '}
+              {contractCompiled ? (
+                <>
+                  <p>Contract successfully compiled.</p>
+                  <Image
+                    alt="awesome"
+                    src={SVG_AWESOME}
+                    width={22}
+                    height={22}
+                  />
+                </>
+              ) : (
+                <p>Your contract is being compiled by us.</p>
+              )}
             </Typography>
           </Stack>
           {areThereParameters && (
@@ -93,7 +148,8 @@ export default function Step3Deploy({
                 }}
               >
                 <Typography variant="h3" align="center">
-                  Meanwhile, you can start filling the form for the deployment.{' '}
+                  You need to fill the constructor parameters for the
+                  deployment.
                 </Typography>
                 <ArrowDownwardIcon
                   fontSize="large"
@@ -114,10 +170,12 @@ export default function Step3Deploy({
       <BackNextButton
         nextLabel="Deploy Contract"
         handleBack={handleBack}
+        hiddenBack={true}
         nextButtonProps={{
-          startIcon: '🚀',
+          startIcon: isButtonNextDisabled ? '🚫' : '🚀',
           type: 'submit',
-          form: 'deploy-form'
+          form: 'deploy-form',
+          disabled: isButtonNextDisabled
         }}
       />
     </>

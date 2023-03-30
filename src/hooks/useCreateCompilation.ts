@@ -23,6 +23,7 @@ export const useCreateCompilation = (): ReturnValue & {
 
       return new Promise(resolve => {
         setTimeout(() => {
+          setIsLoading(false)
           resolve(API_RESPONSE.contract)
         }, DELAY)
       })

@@ -5,8 +5,9 @@ type Sections = 'Constructor' | 'Extensions'
 export type OptionTokenField = {
   name: string
   type: HTMLInputTypeAttribute
-  initState: string | boolean
+  initState?: string | boolean
   tooltip?: string
+  placeholder?: string
 }
 
 export type ConstructorFieldName =
@@ -58,7 +59,7 @@ export const WIZARD_CONFIG: Array<TokenOptionConfig> = [
           {
             name: 'Initial Supply',
             type: 'number',
-            initState: '',
+            placeholder: '1000000 e18',
             tooltip: '',
             mandatory: true,
             fieldName: 'initial_supply'
@@ -66,7 +67,7 @@ export const WIZARD_CONFIG: Array<TokenOptionConfig> = [
           {
             name: 'Name',
             type: 'text',
-            initState: 'MyToken',
+            placeholder: 'MyToken',
             tooltip: '',
             mandatory: false,
             fieldName: 'name'
@@ -74,7 +75,7 @@ export const WIZARD_CONFIG: Array<TokenOptionConfig> = [
           {
             name: 'Symbol',
             type: 'text',
-            initState: 'MTK',
+            placeholder: 'MTK',
             tooltip: '',
             mandatory: false,
             fieldName: 'symbol'
@@ -82,7 +83,7 @@ export const WIZARD_CONFIG: Array<TokenOptionConfig> = [
           {
             name: 'Decimal',
             type: 'number',
-            initState: '18',
+            placeholder: '18',
             tooltip: '',
             mandatory: false,
             fieldName: 'decimal'

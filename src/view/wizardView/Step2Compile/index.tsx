@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useMemo } from 'react'
 import { Box, Typography } from '@mui/material'
 import { CopyBlock, atomOneDark } from 'react-code-blocks'
 
@@ -15,10 +15,6 @@ import {
   TraitImpl
 } from './builders'
 import { isGreaterVer, isSmallerVer } from 'src/utils/comparisonString'
-import {
-  DataCompiledContract,
-  useCreateCompilation
-} from 'src/hooks/useCreateCompilation'
 import { useNetworkAccountsContext } from 'src/context/NetworkAccountsContext'
 import { isValidAddress } from '@utils'
 import { useAppNotificationContext } from 'src/context/AppNotificationContext'
@@ -171,9 +167,7 @@ function generateCode(standardName: TokenType, data: ContractConfig) {
 }
 
 export default function Step2Compile({ tokenType }: { tokenType: TokenType }) {
-  const { handleBack, handleNext, dataForm } = useStepsSCWizard()
-  const { isLoading, compileContract } = useCreateCompilation()
-  const [_response, setResponse] = useState<DataCompiledContract>()
+  const { handleBack, handleNext, dataForm, setDataForm } = useStepsSCWizard()
   const {
     state: { currentAccount }
   } = useNetworkAccountsContext()
@@ -186,15 +180,14 @@ export default function Step2Compile({ tokenType }: { tokenType: TokenType }) {
   const _handleNext = async () => {
     if (!isWalletConnected) {
       addNotification({
-        message: 'You need connect to the wallet',
+        message: 'You need connect your wallet',
         type: 'error'
       })
       return
     }
 
-    const _response = await compileContract()
-    setResponse(_response)
-    if (_response) handleNext()
+    setDataForm(prev => ({ ...prev, currentAccount }))
+    handleNext()
   }
 
   return (
@@ -216,7 +209,7 @@ export default function Step2Compile({ tokenType }: { tokenType: TokenType }) {
         nextLabel="Compile Contract"
         handleBack={handleBack}
         handleNext={_handleNext}
-        nextButtonProps={{ startIcon: '⚙️', loading: isLoading }}
+        nextButtonProps={{ startIcon: '⚙️' }}
       />
     </>
   )

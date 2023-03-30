@@ -3,6 +3,7 @@ import { TokenType } from '.'
 export interface ContractConfig extends Security {
   extensions: OptionInitState
   constructor: OptionInitState
+  currentAccount?: string
 }
 
 export type OptionInitState = Record<string, string | boolean>
