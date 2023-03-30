@@ -25,17 +25,18 @@ export function AccountSelect({
     >
       {accounts.map(a => (
         <MenuItem
+          sx={{ color: 'white' }}
           selected={currentAccount === a.address}
           key={a.address}
           value={a.address}
         >
-          <>
+          <Stack sx={{ display: 'flex', flexDirection: 'row' }}>
             <AvatarAccount address={a.address} />
             <Stack>
               <span>{a.label}</span>
               <p>{truncateAddress(a.address)}</p>
             </Stack>
-          </>
+          </Stack>
         </MenuItem>
       ))}
     </Select>

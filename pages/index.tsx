@@ -52,8 +52,8 @@ export default function Home() {
           imgProps={{ width: 75, height: 65 }}
         />
       </Stack>
-
-      <BasicTable />
+      {/* To Do: implement the smart contract list */}
+      {/*  <BasicTable /> */}
     </>
   )
 }

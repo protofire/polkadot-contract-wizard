@@ -33,7 +33,7 @@ export default function Step1Extensions({
   return (
     <>
       <Grid container columns={{ xs: 12, md: 12 }} spacing={6}>
-        <Grid item sm={12} md={8}>
+        <Grid item sm={12} md={6} lg={7}>
           <Typography variant="h3">Functionalities</Typography>
           <Stack sx={{ mt: 2, mb: 2 }}>
             <FormGroup sx={{ gap: 3 }}>
@@ -53,7 +53,7 @@ export default function Step1Extensions({
             </FormGroup>
           </Stack>
         </Grid>
-        <Grid item sm={12} md={4}>
+        <Grid item sm={12} md={6} lg={5}>
           <Typography variant="h3">Security</Typography>
           <Security />
         </Grid>
