@@ -17,8 +17,8 @@ const icons = {
 
 export const MENU_ITEMS: NavLink[] = [
   {
-    id: 'dashboard',
-    title: 'Dashboard',
+    id: 'home',
+    title: 'Home',
     type: 'item',
     url: ROUTES.HOME,
     icon: icons.GridView,
