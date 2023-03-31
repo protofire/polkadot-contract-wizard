@@ -59,7 +59,7 @@ export const WIZARD_CONFIG: Array<TokenOptionConfig> = [
           {
             name: 'Initial Supply',
             type: 'number',
-            placeholder: '1000000 e18',
+            placeholder: '1000000',
             tooltip: '',
             mandatory: true,
             fieldName: 'initial_supply'

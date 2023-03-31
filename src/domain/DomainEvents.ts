@@ -6,3 +6,7 @@ export const enum WalletConnectionEvents {
 export const enum AppNotificationEvents {
   notificationUpdated = 'notificationUpdated'
 }
+
+export const enum SmartContractEvents {
+  'contractInstatiate' = 'contractInstatiate'
+}

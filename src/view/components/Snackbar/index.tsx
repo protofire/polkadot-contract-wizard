@@ -30,5 +30,7 @@ export function CustomSnackBar(): JSX.Element {
     createToast(appNotifications[0], removeFirst)
   }, [appNotifications, removeFirst])
 
-  return <ToastContainer theme="dark" autoClose={2000} />
+  return (
+    <ToastContainer theme="dark" autoClose={2000} position={'top-center'} />
+  )
 }

@@ -7,7 +7,7 @@ export type CompileApiResponse = {
   contract: {
     code_id: string
     metadata: string
-    wasm: number[]
+    wasm: Uint8Array
   }
   error: string | null
 }
