@@ -66,17 +66,27 @@ export const HeadLine = ({ tokenType }: { tokenType: TokenType }) => {
     <WrapperHead>
       <Stack
         spacing={1}
-        direction={{ xs: 'column', lg: 'row' }}
+        direction={{ xs: 'column', md: 'row', lg: 'row' }}
         alignItems="center"
       >
         <Image alt={title} src={imgPath} {...imgProps} />
         <Stack
           spacing={{ xs: '0', lg: '2' }}
-          direction={{ xs: 'column', lg: 'row' }}
+          direction={{ xs: 'column', md: 'row', lg: 'row' }}
           alignItems="center"
         >
           <Typography variant="h3">{title}</Typography>
-          <Typography variant="subtitle1">{subtitle}</Typography>
+          <Typography
+            variant="subtitle1"
+            align="center"
+            sx={{
+              fontSize: { xs: '0.8rem', md: '0.9rem', lg: '0.9rem' },
+              opacity: '0.6',
+              fontWeight: '400'
+            }}
+          >
+            {subtitle}
+          </Typography>
         </Stack>
       </Stack>
     </WrapperHead>
