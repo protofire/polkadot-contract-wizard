@@ -50,7 +50,7 @@ const Typography = (fontFamily: string) => ({
   },
   subtitle1: {
     fontSize: '0.875rem',
-    fontWeight: 600,
+    fontWeight: 400,
     lineHeight: 1.57
   },
   subtitle2: {

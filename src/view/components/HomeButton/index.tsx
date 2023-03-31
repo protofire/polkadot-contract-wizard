@@ -33,7 +33,7 @@ const WrapperButton = styled(Button)<ButtonProps>(({ theme }) => ({
   [theme.breakpoints.down('sm')]: {
     width: '100%',
     margin: '0.5rem !important',
-    padding: '1.5rem'
+    padding: '1.3rem'
   },
 
   '&:hover': {
@@ -52,14 +52,44 @@ export const HomeButton = (props: Props) => {
   return (
     <WrapperButton variant="contained" {...restProps}>
       <Stack
-        spacing={{ xs: 0, sm: 2, md: 4 }}
+        spacing={{ xs: 1, sm: 0, md: 4 }}
         direction={{ xs: 'column', lg: 'row' }}
         alignItems="center"
       >
-        <Image alt={title} src={imgPath} {...imgProps} />
-        <Stack spacing={0} direction="column" alignItems="flex-start">
-          <Typography variant="h3">{title}</Typography>
-          <Typography variant="subtitle1">{subtitle}</Typography>
+        <Stack
+          spacing={0}
+          direction="column"
+          alignItems="center"
+          sx={{ width: '5rem' }}
+        >
+          <Image alt={title} src={imgPath} {...imgProps} />
+        </Stack>
+        <Stack
+          direction="column"
+          alignItems={{ xs: 'center', md: 'center', lg: 'flex-start' }}
+          sx={{
+            width: { xs: '100%', md: '100%', lg: '27rem' },
+            marginTop: { sm: '1rem !important', lg: '0 !important' }
+          }}
+        >
+          <Typography
+            variant="h3"
+            sx={{
+              fontSize: { xs: '1rem', md: '1.2rem', lg: '1.4rem' }
+            }}
+          >
+            {title}
+          </Typography>
+          <Typography
+            variant="subtitle1"
+            align="center"
+            sx={{
+              fontSize: { xs: '0.8rem', md: '0.9rem', lg: '0.9rem' },
+              opacity: '0.6'
+            }}
+          >
+            {subtitle}
+          </Typography>
         </Stack>
       </Stack>
     </WrapperButton>
