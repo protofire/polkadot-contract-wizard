@@ -8,44 +8,52 @@ import {
   ButtonProps,
   Link as MuiLink
 } from '@mui/material'
-import { MENU_ITEMS, NavLink } from '@constants'
 import NextLink from 'next/link'
 
-export const MenuItem = styled(MuiMenuItem)<ButtonProps>(({ theme }) => ({
+import { MENU_ITEMS, NavLink } from '@constants'
+
+export const MenuItemStyled = styled(MuiMenuItem)<ButtonProps>(({ theme }) => ({
   '& p': {
     color: theme.palette.common.white,
     padding: '1rem',
     fontSize: '1.1rem'
   },
-  '& .Mui-selected': {
-    color: theme.palette.primary.main
+  '&.Mui-selected': {
+    backgroundColor: 'transparent',
+    p: {
+      color: theme.palette.primary.main
+    },
+    svg: {
+      color: theme.palette.primary.main
+    }
   },
-  '& .MuiPaper-root': {
+  '&.Mui-selected:hover': {
+    backgroundColor: 'transparent',
     color: theme.palette.common.white
   }
 }))
 
-const NavItem = (props: NavLink) => {
-  const { title, icon: IconTag, url } = props
+const NavItem = (props: NavLink & { currentPath: string }) => {
+  const { title, icon: IconTag, url, currentPath } = props
 
   return (
     <NextLink href={url}>
-      <MenuItem LinkComponent={MuiLink}>
+      <MenuItemStyled LinkComponent={MuiLink} selected={currentPath === url}>
         <ListItemIcon>
           <IconTag />
         </ListItemIcon>
         <Typography>{title}</Typography>
-      </MenuItem>
+      </MenuItemStyled>
     </NextLink>
   )
 }
 
-const Navigation = () => {
+const Navigation = ({ currentPath }: { currentPath: string }) => {
   return (
     <Stack direction="row" spacing={2}>
-      <Paper sx={{ width: '100%' }}>
+      <Paper sx={{ width: '100%', background: 'transparent' }}>
         {MENU_ITEMS.map((item, index) => (
-          <NavItem key={index} {...item} />
+          <NavItem key={index} currentPath={currentPath} {...item} />
         ))}
       </Paper>
     </Stack>
