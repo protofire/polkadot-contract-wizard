@@ -85,7 +85,8 @@ export const HomeButton = (props: Props) => {
             align="center"
             sx={{
               fontSize: { xs: '0.8rem', md: '0.9rem', lg: '0.9rem' },
-              opacity: '0.6'
+              opacity: '0.6',
+              fontWeight: '400'
             }}
           >
             {subtitle}
