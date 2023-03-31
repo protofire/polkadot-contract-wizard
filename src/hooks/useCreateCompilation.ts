@@ -2,10 +2,7 @@ import { GetServiceData, CompileApiResponse } from '@types'
 import { useCallback, useState } from 'react'
 import { API_RESPONSE } from '@data-tests'
 
-export type DataCompiledContract = Pick<
-  CompileApiResponse['contract'],
-  'code_id' | 'wasm'
->
+export type DataCompiledContract = CompileApiResponse['contract']
 type ReturnValue = GetServiceData
 const DELAY = 2000 // 2sec
 
@@ -24,7 +21,10 @@ export const useCreateCompilation = (): ReturnValue & {
       return new Promise(resolve => {
         setTimeout(() => {
           setIsLoading(false)
-          resolve(API_RESPONSE.contract)
+          resolve({
+            ...API_RESPONSE.contract,
+            wasm: new Uint8Array(API_RESPONSE.contract.wasm)
+          })
         }, DELAY)
       })
     }, [])

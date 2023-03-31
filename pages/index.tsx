@@ -5,6 +5,8 @@ import BasicTable from 'src/view/HomeView/Table'
 import { HomeButton } from '@components'
 import { ROUTES, TOKEN_PATHS } from '@constants'
 import { TokenType } from '@types'
+import { useNetworkAccountsContext } from 'src/context/NetworkAccountsContext'
+import { useContractsDeployedContext } from '@context'
 
 const Token: Record<TokenType, TokenType> = {
   psp22: 'psp22',
@@ -12,7 +14,12 @@ const Token: Record<TokenType, TokenType> = {
   psp37: 'psp37'
 }
 
-export default function Home() {
+function Home() {
+  const {
+    state: { currentAccount }
+  } = useNetworkAccountsContext()
+  const { contractsDeployed } = useContractsDeployedContext()
+
   return (
     <>
       <Typography variant="h1" align="center">
@@ -52,8 +59,9 @@ export default function Home() {
           imgProps={{ width: 75, height: 65 }}
         />
       </Stack>
-      {/* To Do: implement the smart contract list */}
-      {/*  <BasicTable /> */}
+      {currentAccount && <BasicTable contractsDeployed={contractsDeployed} />}
     </>
   )
 }
+
+export default Home

@@ -1,3 +1,4 @@
+import { TokenType } from '@types'
 import {
   createContext,
   useCallback,
@@ -5,10 +6,11 @@ import {
   useEffect,
   useState
 } from 'react'
+import { SmartContractEvents } from 'src/domain/DomainEvents'
 
 export interface ContractDeployed {
   id: number
-  type: string
+  type: TokenType
   address?: string
   name?: string
   blockainId?: string
@@ -68,9 +70,32 @@ export function DeployContextProvider({
     setContractsDeployed(repository.search())
   }, [repository])
 
+  // update repository
+  useEffect(() => {
+    const reloadRepository = () => {
+      setContractsDeployed(repository.search())
+    }
+
+    document.addEventListener(
+      SmartContractEvents.contractInstatiate,
+      reloadRepository
+    )
+
+    return () => {
+      document.removeEventListener(
+        SmartContractEvents.contractInstatiate,
+        reloadRepository
+      )
+    }
+  }, [repository])
+
   const save = useCallback(
     (smartContract: ContractWithoutId) => {
       repository.save({ ...smartContract, id: new Date().getTime() })
+
+      document.dispatchEvent(
+        new CustomEvent(SmartContractEvents.contractInstatiate)
+      )
     },
     [repository]
   )

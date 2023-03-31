@@ -7,11 +7,7 @@ import { useStepsSCWizard } from '@context'
 import BackNextButton from '../BackNextButtons'
 import { TokenType } from '@types'
 import StyledTextField from '../../components/Input'
-import {
-  GIF_COMPILING,
-  SVG_AWESOME,
-  SVG_SUCCESSFULLY
-} from 'src/constants/images'
+import { GIF_COMPILING, SVG_AWESOME, SVG_SUCCESSFULLY } from '@constants'
 import {
   ConstructorFieldName,
   ConstructorTokenField,
@@ -22,6 +18,9 @@ import {
   DataCompiledContract,
   useCreateCompilation
 } from 'src/hooks/useCreateCompilation'
+import { useContractsDeployedContext } from 'src/context/SCDeployedContext'
+
+type SubmitedDataForm = Array<[ConstructorFieldName, string | number]>
 
 function textFieldFactory(field: ConstructorTokenField, required = true) {
   {
@@ -55,16 +54,23 @@ function useMemoizeFields(
     [optionList, hasMetadata]
   )
 }
+const genRanHex = (size: number) =>
+  [...Array(size)]
+    .map(() => Math.floor(Math.random() * 16).toString(16))
+    .join('')
 
 export default function Step3Deploy({
-  constructorFields
+  constructorFields,
+  tokenType
 }: {
   tokenType: TokenType
   constructorFields?: ControlsToken<'Constructor'>
 }) {
+  const [argsForm, setArgsForm] = useState<SubmitedDataForm>([])
   const { handleBack, handleNext, dataForm } = useStepsSCWizard()
   const [contractCompiled, setContractCompiled] =
     useState<DataCompiledContract>()
+  const { addContract } = useContractsDeployedContext()
   const { mandatoryFields, metadataFields } = useMemoizeFields(
     constructorFields?.optionList,
     dataForm.extensions.Metadata as boolean
@@ -85,11 +91,11 @@ export default function Step3Deploy({
     event.preventDefault()
     const { elements } = event.target
 
-    const dataForm: Array<[ConstructorFieldName, string | number]> = []
+    const _dataForm: SubmitedDataForm = []
 
     mandatoryFields.forEach(field => {
       if (elements[field.fieldName]) {
-        dataForm.push([
+        _dataForm.push([
           field.fieldName,
           field.type === 'number'
             ? Number(elements[field.fieldName].value)
@@ -98,14 +104,24 @@ export default function Step3Deploy({
       }
     })
 
-    // TODO
+    setArgsForm(_dataForm)
     _handleNext()
   }
 
   const _handleNext = () => {
-    console.log('[compiledResponse]:', contractCompiled)
+    // TODO Replace real tx
+    console.log(
+      '[compiledResponse]:',
+      contractCompiled && JSON.parse(contractCompiled?.metadata)
+    )
+    addContract({
+      type: tokenType,
+      name: argsForm.find(arg => arg[0] === 'name')?.[1] as string,
+      address: genRanHex(64)
+    })
     handleNext()
   }
+
   return (
     <>
       <Grid container justifyContent="center">
@@ -175,7 +191,7 @@ export default function Step3Deploy({
         nextLabel="Deploy Contract"
         handleBack={handleBack}
         handleNext={areThereParameters ? undefined : _handleNext}
-        hiddenBack={true}
+        // hiddenBack={true}
         nextButtonProps={{
           startIcon: isButtonNextDisabled ? '🚫' : '🚀',
           disabled: isButtonNextDisabled,
