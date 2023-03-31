@@ -20,7 +20,8 @@ import { isValidAddress } from '@utils'
 import { useAppNotificationContext } from 'src/context/AppNotificationContext'
 
 const StyledCopyBlock = styled(Box)(() => ({
-  fontFamily: 'monospace'
+  fontFamily: 'var(--font-mono)',
+  fontSize: '1rem'
 }))
 
 function generateCode(standardName: TokenType, data: ContractConfig) {
