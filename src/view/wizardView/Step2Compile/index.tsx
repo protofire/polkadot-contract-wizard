@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import { Box, Typography } from '@mui/material'
+import { Box, Typography, styled } from '@mui/material'
 import { CopyBlock, atomOneDark } from 'react-code-blocks'
 
 import { useStepsSCWizard } from '@context'
@@ -18,6 +18,11 @@ import { isGreaterVer, isSmallerVer } from 'src/utils/comparisonString'
 import { useNetworkAccountsContext } from 'src/context/NetworkAccountsContext'
 import { isValidAddress } from '@utils'
 import { useAppNotificationContext } from 'src/context/AppNotificationContext'
+
+const StyledCopyBlock = styled(Box)(() => ({
+  fontFamily: 'var(--font-mono)',
+  fontSize: '1rem'
+}))
 
 function generateCode(standardName: TokenType, data: ContractConfig) {
   const { extensions, usesStandardExtensions } = getExtensions(
@@ -192,10 +197,12 @@ export default function Step2Compile({ tokenType }: { tokenType: TokenType }) {
 
   return (
     <>
-      <Typography variant="h4">
+      <Typography variant="h4" mb={2}>
         Excelent! Now you need to compile contract {tokenType}!
       </Typography>
-      <Box sx={{ overflowY: 'scroll', height: '60vh', resize: 'both' }}>
+      <StyledCopyBlock
+        sx={{ overflowY: 'scroll', height: '60vh', resize: 'both' }}
+      >
         <CopyBlock
           language="rust"
           text={generateCode(tokenType, dataForm)}
@@ -203,7 +210,7 @@ export default function Step2Compile({ tokenType }: { tokenType: TokenType }) {
           theme={atomOneDark}
           showLineNumbers={true}
         />
-      </Box>
+      </StyledCopyBlock>
 
       <BackNextButton
         nextLabel="Compile Contract"
