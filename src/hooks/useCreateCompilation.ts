@@ -4,7 +4,7 @@ import { API_RESPONSE } from '@data-tests'
 
 export type DataCompiledContract = CompileApiResponse['contract']
 type ReturnValue = GetServiceData
-const DELAY = 2000 // 2sec
+const DELAY = 6000 // 6sec
 
 // TODO , this will be pointing to a RUST backend API
 export const useCreateCompilation = (): ReturnValue & {

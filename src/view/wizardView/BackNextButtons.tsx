@@ -1,10 +1,12 @@
-import { Grid, Box } from '@mui/material'
+import { Grid, Box, styled, BoxProps } from '@mui/material'
+import { West as WestIcon, East as EastIcon } from '@mui/icons-material'
+
 import { StyledButton as Button, MyButtonProps } from '@components'
 
 type Props = {
-  nextLabel?: string
+  nextLabel?: React.ReactNode
   handleNext?: () => void
-  backLabel?: string
+  backLabel?: React.ReactNode
   handleBack: () => void
   isNextDisabled?: boolean
   isDoingNext?: boolean
@@ -12,12 +14,30 @@ type Props = {
   backButtonProps?: MyButtonProps
   hiddenBack?: boolean
 }
+
+const BoxStyled = styled(Box)<BoxProps>(() => ({
+  display: 'flex',
+  width: '100%',
+  justifyContent: 'space-evenly',
+  alignItems: 'center'
+}))
+
 export default function BackNextButton(props: Props) {
   const {
     handleNext,
     handleBack,
-    nextLabel = 'Next',
-    backLabel = 'Back',
+    nextLabel = (
+      <>
+        {'Next'}
+        <EastIcon />
+      </>
+    ),
+    backLabel = (
+      <>
+        <WestIcon />
+        {'Back'}
+      </>
+    ),
     isNextDisabled = false,
     isDoingNext = false,
     nextButtonProps,
@@ -42,7 +62,7 @@ export default function BackNextButton(props: Props) {
           disabled={isDoingNext === true}
           {...backButtonProps}
         >
-          {backLabel}
+          <BoxStyled>{backLabel}</BoxStyled>
         </Button>
       )}
       <Button
@@ -52,7 +72,7 @@ export default function BackNextButton(props: Props) {
         disabled={isNextDisabled}
         {...nextButtonProps}
       >
-        {nextLabel}
+        <BoxStyled>{nextLabel}</BoxStyled>
       </Button>
     </Grid>
   )

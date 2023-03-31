@@ -15,8 +15,8 @@ import { MENU_ITEMS, NavLink } from '@constants'
 export const MenuItemStyled = styled(MuiMenuItem)<ButtonProps>(({ theme }) => ({
   '& p': {
     color: theme.palette.common.white,
-    padding: '1rem',
-    fontSize: '1.1rem'
+    padding: '1rem 0.3rem',
+    fontSize: '1.37rem'
   },
   '&.Mui-selected': {
     backgroundColor: 'transparent',
