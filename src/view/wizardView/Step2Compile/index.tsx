@@ -216,7 +216,7 @@ export default function Step2Compile({ tokenType }: { tokenType: TokenType }) {
         nextLabel="Compile Contract"
         handleBack={handleBack}
         handleNext={_handleNext}
-        nextButtonProps={{ startIcon: '⚙️' }}
+        nextButtonProps={{ endIcon: '⚙️' }}
       />
     </>
   )
