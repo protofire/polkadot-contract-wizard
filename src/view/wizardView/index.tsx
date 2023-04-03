@@ -1,11 +1,22 @@
 import React, { useMemo } from 'react'
-import { Typography, StepLabel, Step, Stepper, Box } from '@mui/material'
+import {
+  Typography,
+  StepLabel,
+  Step,
+  Stepper,
+  Box,
+  Grid,
+  Stack
+} from '@mui/material'
+
 import NextLink from 'next/link'
 
 import Step1Extensions from './Step1Extensions'
 import Step2Compile from './Step2Compile'
 import Step3Deploy from './Step3Deploy'
 import { StyledButton as Button, Stepper as StepperWrapper } from '@components'
+import { GIF_COMPILING, SVG_AWESOME } from '@constants'
+import Image from 'next/image'
 import { StepsSCWizardContext } from '@context'
 import { TokenType } from '@types'
 import {
@@ -120,15 +131,46 @@ export default function FormWizard({
         </StepperWrapper>
         {activeStep === STEPS.length ? (
           <React.Fragment>
-            <Typography sx={{ mt: 2, mb: 1 }}>
-              We are deploying your contract now.
-            </Typography>
-            <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
-              <Box sx={{ flex: '1 1 auto' }} />
-              <Button LinkComponent={NextLink} href={ROUTES.HOME}>
-                Back to wizard
-              </Button>
-            </Box>
+            <>
+              <Grid container justifyContent="center">
+                <Grid item>
+                  <Stack
+                    sx={{
+                      background: '#38062d',
+                      borderRadius: '1rem',
+                      alignItems: 'center',
+                      maxWidth: '30rem',
+                      margin: '2rem auto 3rem auto',
+                      padding: '0 1rem',
+                      flexDirection: 'row'
+                    }}
+                  >
+                    <Image
+                      alt={'compiling'}
+                      src={GIF_COMPILING}
+                      width={150}
+                      height={150}
+                    />
+                    <Typography
+                      variant="h4"
+                      align="center"
+                      sx={{ margin: '0 1rem' }}
+                    >
+                      <p>
+                        We are working on this feature. We&apos;ll be delivering
+                        this in the next milestone. 📅
+                      </p>
+                    </Typography>
+                  </Stack>
+                </Grid>
+              </Grid>
+              <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
+                <Box sx={{ flex: '1 1 auto' }} />
+                <Button LinkComponent={NextLink} href={ROUTES.HOME}>
+                  Back to wizard
+                </Button>
+              </Box>
+            </>
           </React.Fragment>
         ) : (
           <React.Fragment>{getStepContent()}</React.Fragment>
