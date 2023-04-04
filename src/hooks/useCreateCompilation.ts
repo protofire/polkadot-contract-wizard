@@ -1,4 +1,4 @@
-import { GetServiceData, CompileApiResponse } from '@types'
+import { GetServiceData, CompileApiResponse } from '@/types'
 import { useCallback, useState } from 'react'
 import { API_RESPONSE } from 'src/data'
 

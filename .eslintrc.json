@@ -38,5 +38,15 @@
     "node_modules/*",
     ".docker/*",
     "src/tests/data/*"
+  ],
+  "overrides": [
+    {
+      "files": ["tests/*.test.js"],
+      "extends": [
+        "plugin:jest/recommended",
+        "plugin:jest/style",
+        "plugin:jest-dom/recommended"
+      ]
+    }
   ]
 }

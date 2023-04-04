@@ -1,7 +1,7 @@
 import { Stack } from '@mui/material'
 import NextLink from 'next/link'
 
-import { ROUTES } from '@constants'
+import { ROUTES } from '@/constants'
 import Image from 'next/image'
 
 import { CW_POLKADOT, LOGO_POLKADOT } from 'src/constants/images'

@@ -1,5 +1,5 @@
 import { MenuItem, Select, SelectChangeEvent, Stack } from '@mui/material'
-import { truncateAddress } from '@utils'
+import { truncateAddress } from '@/utils'
 import { KeyringAccount } from 'src/domain/KeyringAccouns'
 import { AvatarAccount } from './AvatarAccount'
 

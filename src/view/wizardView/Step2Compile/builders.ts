@@ -1,4 +1,4 @@
-import { isGreaterVer, isSmallerVer } from '@utils'
+import { isGreaterVer, isSmallerVer } from '@/utils'
 import {
   formatLines,
   indentEach,

@@ -2,11 +2,11 @@ import { useMemo } from 'react'
 import { Box, Typography, styled } from '@mui/material'
 import { CopyBlock, atomOneDark } from 'react-code-blocks'
 
-import { useStepsSCWizard } from '@context'
+import { useStepsSCWizard } from '@/context'
 import BackNextButton from '../BackNextButtons'
-import { ContractConfig, TokenType } from '@types'
+import { ContractConfig, TokenType } from '@/types'
 import { getExtensions } from './getExtensions'
-import { BRUSH_NAME, CONTRACT_NAME, VERSION } from '@constants'
+import { BRUSH_NAME, CONTRACT_NAME, VERSION } from '@/constants'
 import {
   ContractBuilder,
   Import,
@@ -16,7 +16,7 @@ import {
 } from './builders'
 import { isGreaterVer, isSmallerVer } from 'src/utils/comparisonString'
 import { useNetworkAccountsContext } from 'src/context/NetworkAccountsContext'
-import { isValidAddress } from '@utils'
+import { isValidAddress } from '@/utils'
 import { useAppNotificationContext } from 'src/context/AppNotificationContext'
 
 const StyledCopyBlock = styled(Box)(() => ({

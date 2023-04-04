@@ -1,4 +1,4 @@
-import { ContractConfig, TokenType } from '@types'
+import { ContractConfig, TokenType } from '@/types'
 import {
   ExtensionBuilder,
   Import,
@@ -6,7 +6,7 @@ import {
   StorageBuilder,
   TraitImpl
 } from './builders'
-import { BRUSH_NAME, CONTRACT_NAME, VERSION } from '@constants'
+import { BRUSH_NAME, CONTRACT_NAME, VERSION } from '@/constants'
 import {
   isGreaterVer,
   isSmallerOrEqual,

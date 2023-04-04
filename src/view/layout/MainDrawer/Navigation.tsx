@@ -10,7 +10,7 @@ import {
 } from '@mui/material'
 import NextLink from 'next/link'
 
-import { MENU_ITEMS, NavLink } from '@constants'
+import { MENU_ITEMS, NavLink } from '@/constants'
 
 export const MenuItemStyled = styled(MuiMenuItem)<ButtonProps>(({ theme }) => ({
   '& p': {

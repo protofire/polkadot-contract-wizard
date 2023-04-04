@@ -3,7 +3,7 @@ import { Box, styled } from '@mui/material'
 
 import MainDrawer from './MainDrawer'
 import { useUserThemeSettings } from 'src/hooks/userThemeSettings'
-import { useMatchDownSM } from '@hooks'
+import { useMatchDownSM } from '@/hooks'
 import { BoxProps } from '@mui/system'
 import Header from './Header'
 

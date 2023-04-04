@@ -4,8 +4,8 @@ import Stack, { StackProps } from '@mui/material/Stack'
 
 import Image from 'next/image'
 import { Typography } from '@mui/material'
-import { TOKEN_PATHS } from '@constants'
-import { TokenType } from '@types'
+import { TOKEN_PATHS } from '@/constants'
+import { TokenType } from '@/types'
 interface Props extends StackProps {
   title: string
   subtitle: string

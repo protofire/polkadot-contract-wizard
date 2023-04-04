@@ -1,6 +1,6 @@
 import { createContext, useState, ReactNode, useEffect } from 'react'
 
-import { getLocalStorageState, setLocalStorageState } from '@utils'
+import { getLocalStorageState, setLocalStorageState } from '@/utils'
 import { Settings } from 'src/themes/types'
 
 const ITEM_LOCAL_STORAGE = 'settingsTheme'

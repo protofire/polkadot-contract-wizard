@@ -2,34 +2,37 @@
   "compilerOptions": {
     "baseUrl": "./",
     "paths": {
-      "@components": [
+      "@/pages": [
         "src/view/components"
       ],
-      "@config": [
+      "@/components": [
+        "src/view/components"
+      ],
+      "@/config": [
         "src/config"
       ],
-      "@constants": [
+      "@/constants": [
         "src/constants"
       ],
-      "@types": [
+      "@/types": [
         "src/types"
       ],
-      "@themes": [
+      "@/themes": [
         "src/themes"
       ],
-      "@view": [
+      "@/view": [
         "src/view"
       ],
-      "@utils": [
+      "@/utils": [
         "src/utils"
       ],
-      "@context": [
+      "@/context": [
         "src/context"
       ],
-      "@hooks": [
+      "@/hooks": [
         "src/hooks"
       ],
-      "@data-tests": [
+      "@/data-tests": [
         "src/tests/data"
       ]
     }

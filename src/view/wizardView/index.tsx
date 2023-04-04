@@ -14,17 +14,17 @@ import NextLink from 'next/link'
 import Step1Extensions from './Step1Extensions'
 import Step2Compile from './Step2Compile'
 import Step3Deploy from './Step3Deploy'
-import { StyledButton as Button, Stepper as StepperWrapper } from '@components'
-import { GIF_COMPILING } from '@constants'
+import { StyledButton as Button, Stepper as StepperWrapper } from '@/components'
+import { GIF_COMPILING } from '@/constants'
 import Image from 'next/image'
-import { StepsSCWizardContext } from '@context'
-import { TokenType } from '@types'
+import { StepsSCWizardContext } from '@/context'
+import { TokenType } from '@/types'
 import {
   AnyControlsToken,
   ControlsToken,
   ROUTES,
   WIZARD_CONFIG
-} from '@constants'
+} from '@/constants'
 
 const STEPS = ['Extensions', 'Compile', 'Deploy']
 

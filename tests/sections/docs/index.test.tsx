@@ -1,15 +1,14 @@
 import { render, screen } from '@testing-library/react'
-import Home from '@/pages/index'
+import Docs from '@pages/docs'
 
 describe('Home', () => {
   it('renders a heading', () => {
-    render(<Home />)
+    render(<Docs />)
 
     const heading = screen.getByRole('heading', {
-      name: /welcome to next\.js!/i,
+      name: /Learn more about Polkadot Contract Wizard/i
     })
 
     expect(heading).toBeInTheDocument()
   })
 })
-

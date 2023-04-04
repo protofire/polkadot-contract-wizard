@@ -4,7 +4,7 @@ import { Menu, MenuOpen } from '@mui/icons-material'
 import { styled } from '@mui/material/styles'
 
 import HeaderContent from './HeaderContent'
-import { shouldForwardProp } from '@types'
+import { shouldForwardProp } from '@/types'
 
 import { AppBarProps } from '@mui/material/AppBar'
 

@@ -1,9 +1,10 @@
 import { useState } from 'react'
 import { styled } from '@mui/material/styles'
+
 import { useNetworkAccountsContext } from 'src/context/NetworkAccountsContext'
 import { StyledButton, MyButtonProps } from '../Button'
 import { WalletConnectionEvents } from 'src/domain/DomainEvents'
-import { ModalMessage } from '@components'
+import { ModalMessage } from '@/components'
 import { AccountSelect } from './AccountsSelect'
 import { accountsInPossession } from 'src/domain/KeyringAccouns'
 
