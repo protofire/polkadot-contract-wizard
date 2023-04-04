@@ -5,7 +5,7 @@ export default function Home() {
     <Box
       sx={{
         width: { sm: '90%', md: '75%', lg: '80%', xl: '60%' },
-        margin: '0 auto 2rem 0'
+        margin: '0 auto 2rem auto'
       }}
     >
       <Typography variant="h1" align="center">
