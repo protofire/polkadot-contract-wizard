@@ -1,0 +1,22 @@
+version: '3.8'
+
+networks:
+  polkadot-wizard:
+    name: polkadot-wizard 
+
+services:
+  web:
+    container_name: ${CONTAINER_BASE}_web
+    build:
+      context: .
+      dockerfile: .docker/web/dev.Dockerfile
+      target: runner
+    volumes:
+      - .:/home/app
+    ports:
+      - ${WEB_EXTERNAL_PORT}:3000
+    environment:
+      - NODE_ENV=${WEB_ENVIRONMENT}
+    networks:
+      - polkadot-wizard
+    command: yarn dev

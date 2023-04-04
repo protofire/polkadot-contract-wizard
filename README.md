@@ -15,6 +15,7 @@ The Polkadot Contract Wizard is a smart contract creation tool that allows users
 ## Getting Started
 
 ### 🚀 Run app
+To run the application it is necessary to copy the environment variables file `.env.example` and paste it as `.env`, in this file you will find environment variables like as the default RPC.
 
 #### A. With Docker
 
@@ -24,15 +25,15 @@ The Polkadot Contract Wizard is a smart contract creation tool that allows users
 
 1. Make sure your daemon `docker` is running in your system.
 
-2. (Optional) Set the environment variables for the container on [.docker.env](./.docker/dev/.docker.env). These will be used to configure the application.
+2. (Optional) Set the environment variables for the container on [dev.docker.env](./.docker/dev.docker.env). These will be used to configure the application.
 
 3. Run the following command to start the container (Will do a build previously in the first run):
 
     ```bash
-    docker-compose --file .docker/docker-compose.yml --env-file .docker/dev/.docker.env up
+    docker-compose --env-file .docker/dev.docker.env up
     ```
 
-4. Your application should now be running on the specified port. You can access it by visiting `localhost:<EXTERNAL_PORT>` in your browser.
+4. Your application should now be running on the specified port. You can access it by visiting `localhost:<EXTERNAL_PORT>` (Port 3000 by default) in your browser.
 
 > ✋ Stop the all the running containers with the following command:
 > `docker-compose stop`
