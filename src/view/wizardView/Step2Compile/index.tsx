@@ -24,6 +24,7 @@ const StyledCopyBlock = styled(Box)(() => ({
   fontSize: '1rem'
 }))
 
+// TODO extract and test
 function generateCode(standardName: TokenType, data: ContractConfig) {
   const { extensions, usesStandardExtensions } = getExtensions(
     data,
