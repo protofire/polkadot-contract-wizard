@@ -31,13 +31,13 @@ export default function Home() {
         </Typography>
         <Box sx={{ marginLeft: '3rem' }}>
           <ul>
-            <li>TOKEN | PSP22 STANDARD SMART CONTRACT FOR A FUNGIBLE TOKEN</li>
             <li>
-              NFT | PSP34 STANDARD SMART CONTRACT FOR A NON-FUNGIBLE TOKEN
+              TOKEN | PSP22: standard smart contract for a fungible token.
             </li>
             <li>
-              MULTITOKEN | PSP37 STANDARD SMART CONTRACT FOR A MULTI TOKEN
+              NFT | PSP34: standard smart contract for a non-fungible token.
             </li>
+            <li>MULTITOKEN | PSP37: standar contract for a multi token.</li>
           </ul>
         </Box>
 
