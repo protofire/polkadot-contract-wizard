@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react'
-import Docs from '@pages/docs'
+import Docs from '@/pages/docs/index'
 
-describe('Home', () => {
+describe('Docs sections', () => {
   it('renders a heading', () => {
     render(<Docs />)
 
