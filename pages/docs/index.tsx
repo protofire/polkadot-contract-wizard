@@ -37,7 +37,7 @@ export default function Home() {
             <li>
               NFT | PSP34: standard smart contract for a non-fungible token.
             </li>
-            <li>MULTITOKEN | PSP37: standar contract for a multi token.</li>
+            <li>MULTITOKEN | PSP37: standard contract for a multi token.</li>
           </ul>
         </Box>
 
