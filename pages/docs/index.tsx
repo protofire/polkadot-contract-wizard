@@ -4,7 +4,7 @@ export default function Home() {
   return (
     <Box
       sx={{
-        width: { sm: '90%', md: '75%', lg: '60%' },
+        width: { sm: '90%', md: '75%', lg: '80%', xl: '60%' },
         margin: '2rem auto'
       }}
     >
