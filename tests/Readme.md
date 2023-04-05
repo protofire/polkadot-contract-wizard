@@ -22,7 +22,7 @@ It is expected that the contract will include the modifications selected in the 
 ### 🕵️ Preview of Smart Contract
 ![image (24)](https://user-images.githubusercontent.com/4270166/230095533-6c1a91f9-3bd7-47e7-9c8f-3ae795d4753a.png)
 
-### Connect your wallet
+### 👜 Connect your wallet
 ![image (19)](https://user-images.githubusercontent.com/4270166/230093273-8b9e214f-4826-436b-b218-70ef81fa586c.png)
 
 ### ⚙️ Compile your smart contract
