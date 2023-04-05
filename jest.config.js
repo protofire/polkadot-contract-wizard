@@ -8,7 +8,9 @@ const customJestConfig = {
   testEnvironment: 'jest-environment-jsdom',
   testMatch: ['<rootDir>/tests/**/*.(test).(ts|tsx)'],
   moduleNameMapper: {
-    '^@/pages/(.*)$': '<rootDir>/pages/$1'
+    '^@/pages/(.*)$': '<rootDir>/pages/$1',
+    '^@/view/(.*)$': '<rootDir>/src/view/$1',
+    '^@/utils/(.*)$': '<rootDir>/src/utils/$1'
     // '^@/components/(.*)$': '<rootDir>/components/$1',
   }
 }
