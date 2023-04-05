@@ -10,7 +10,7 @@ import 'react-toastify/dist/ReactToastify.css'
 
 import ThemeCustomization from '@/themes'
 import { MainLayout } from 'src/view/layout'
-import { buildEmotionCache } from '@/utils'
+import { buildEmotionCache } from '@/utils/builderEmotionCache'
 import { SettingsConsumer } from 'src/context/settingsTheme'
 import { NetworkAccountsContextProvider } from 'src/context/NetworkAccountsContext'
 import {

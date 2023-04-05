@@ -14,7 +14,7 @@ import {
   GIF_COMPILING,
   SVG_AWESOME,
   SVG_SUCCESSFULLY
-} from '@/constants'
+} from '@/constants/index'
 import { FormEvent } from 'src/domain/common/FormEvent'
 import {
   DataCompiledContract,

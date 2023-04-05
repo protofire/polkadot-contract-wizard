@@ -1,6 +1,6 @@
 import { ContractConfig, TokenType } from '@/types'
 import { getExtensions } from './getExtensions'
-import { BRUSH_NAME, CONTRACT_NAME, VERSION } from '@/constants'
+import { BRUSH_NAME, CONTRACT_NAME, VERSION } from '@/constants/index'
 import {
   ContractBuilder,
   Import,
@@ -8,9 +8,8 @@ import {
   StorageBuilder,
   TraitImpl
 } from './builders'
-import { isGreaterVer, isSmallerVer } from '@/utils'
+import { isGreaterVer, isSmallerVer } from '@/utils/comparisonString'
 
-// TODO extract and test
 export function generateCode(standardName: TokenType, data: ContractConfig) {
   const { extensions, usesStandardExtensions } = getExtensions(
     data,

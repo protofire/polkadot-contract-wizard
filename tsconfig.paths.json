@@ -14,8 +14,8 @@
       "@/config": [
         "src/config"
       ],
-      "@/constants": [
-        "src/constants"
+      "@/constants/*": [
+        "src/constants/*"
       ],
       "@/types": [
         "src/types"
@@ -23,8 +23,8 @@
       "@/themes": [
         "src/themes"
       ],
-      "@/utils": [
-        "src/utils"
+      "@/utils/*": [
+        "src/utils/*"
       ],
       "@/context": [
         "src/context"

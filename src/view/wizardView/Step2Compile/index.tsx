@@ -6,7 +6,7 @@ import { useStepsSCWizard } from '@/context'
 import BackNextButton from '../BackNextButtons'
 import { TokenType } from '@/types'
 import { useNetworkAccountsContext } from 'src/context/NetworkAccountsContext'
-import { isValidAddress } from '@/utils'
+import { isValidAddress } from '@/utils/blockchain'
 import { useAppNotificationContext } from 'src/context/AppNotificationContext'
 import { generateCode } from './generator'
 

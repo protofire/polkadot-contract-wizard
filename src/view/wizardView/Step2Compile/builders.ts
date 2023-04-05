@@ -1,10 +1,10 @@
-import { isGreaterVer, isSmallerVer } from '@/utils'
+import { isGreaterVer, isSmallerVer } from '@/utils/comparisonString'
 import {
   formatLines,
   indentEach,
   Lines,
   spaceBetween
-} from 'src/utils/formatString'
+} from '@/utils/formatString'
 
 export class ContractBuilder {
   #contract

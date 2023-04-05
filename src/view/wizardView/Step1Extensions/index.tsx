@@ -3,7 +3,7 @@ import { useRouter } from 'next/router'
 
 import { useStepsSCWizard } from '@/context'
 import BackNextButton from '../BackNextButtons'
-import { ControlsToken, ROUTES } from '@/constants'
+import { ControlsToken, ROUTES } from '@/constants/index'
 import ExtensionCheckbox from './ExtensionCheckbox'
 import Security from './Security'
 

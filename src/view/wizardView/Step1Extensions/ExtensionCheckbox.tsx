@@ -6,7 +6,7 @@ import {
   CheckboxProps
 } from '@mui/material'
 
-import { OptionTokenField } from '@/constants'
+import { OptionTokenField } from '@/constants/index'
 
 const StyledFormControlLabel = styled(FormControlLabel)(() => ({
   '& .MuiSvgIcon-root': { fontSize: 32 }

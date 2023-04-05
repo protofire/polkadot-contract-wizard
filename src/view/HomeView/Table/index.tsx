@@ -15,7 +15,7 @@ import { styled } from '@mui/material/styles'
 import CopyToClipboardButton from '../../components/CopyButton'
 import { TokenType } from '@/types'
 import { ContractDeployed } from 'src/context/SCDeployedContext'
-import { truncateAddress } from '@/utils'
+import { truncateAddress } from '@/utils/formatString'
 
 const StyledTableContainer = styled(TableContainer)<TableContainerProps>(
   ({ theme }) => ({

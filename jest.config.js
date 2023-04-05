@@ -10,7 +10,8 @@ const customJestConfig = {
   moduleNameMapper: {
     '^@/pages/(.*)$': '<rootDir>/pages/$1',
     '^@/view/(.*)$': '<rootDir>/src/view/$1',
-    '^@/utils/(.*)$': '<rootDir>/src/utils/$1'
+    '^@/utils/(.*)$': '<rootDir>/src/utils/$1',
+    '^@/constants/(.*)$': '<rootDir>/src/constants/$1'
     // '^@/components/(.*)$': '<rootDir>/components/$1',
   }
 }
