@@ -8,7 +8,7 @@ import {
   Typography
 } from '@mui/material'
 
-import { useStepsSCWizard } from '@context'
+import { useStepsSCWizard } from '@/context'
 import { SecurityOfToken } from 'src/types/smartContract/tokens'
 
 export default function Security() {

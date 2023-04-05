@@ -1,6 +1,6 @@
 import { Dispatch, createContext, SetStateAction, useContext } from 'react'
 
-import { ContractConfig } from '@types'
+import { ContractConfig } from '@/types'
 
 export interface StepsSmartContractWizard {
   activeStep: number

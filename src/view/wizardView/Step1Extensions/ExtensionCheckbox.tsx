@@ -1,4 +1,3 @@
-import { OptionTokenField } from '@constants'
 import {
   styled,
   FormControlLabel,
@@ -6,6 +5,8 @@ import {
   Typography,
   CheckboxProps
 } from '@mui/material'
+
+import { OptionTokenField } from '@/constants/index'
 
 const StyledFormControlLabel = styled(FormControlLabel)(() => ({
   '& .MuiSvgIcon-root': { fontSize: 32 }

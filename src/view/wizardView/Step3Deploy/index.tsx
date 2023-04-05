@@ -3,16 +3,18 @@ import { Grid, Stack, Typography } from '@mui/material'
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward'
 import Image from 'next/image'
 
-import { useStepsSCWizard } from '@context'
+import { useStepsSCWizard } from '@/context'
 import BackNextButton from '../BackNextButtons'
-import { TokenType } from '@types'
+import { TokenType } from '@/types'
 import StyledTextField from '../../components/Input'
-import { GIF_COMPILING, SVG_AWESOME, SVG_SUCCESSFULLY } from '@constants'
 import {
   ConstructorFieldName,
   ConstructorTokenField,
-  ControlsToken
-} from '@constants'
+  ControlsToken,
+  GIF_COMPILING,
+  SVG_AWESOME,
+  SVG_SUCCESSFULLY
+} from '@/constants/index'
 import { FormEvent } from 'src/domain/common/FormEvent'
 import {
   DataCompiledContract,

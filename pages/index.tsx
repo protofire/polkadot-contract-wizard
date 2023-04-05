@@ -2,11 +2,11 @@ import Link from 'next/link'
 import { Stack, Typography } from '@mui/material'
 
 import BasicTable from 'src/view/HomeView/Table'
-import { HomeButton } from '@components'
-import { ROUTES, TOKEN_PATHS } from '@constants'
-import { TokenType } from '@types'
+import { HomeButton } from '@/components'
+import { ROUTES, TOKEN_PATHS } from '@/constants/index'
+import { TokenType } from '@/types'
 import { useNetworkAccountsContext } from 'src/context/NetworkAccountsContext'
-import { useContractsDeployedContext } from '@context'
+import { useContractsDeployedContext } from '@/context'
 
 const Token: Record<TokenType, TokenType> = {
   psp22: 'psp22',

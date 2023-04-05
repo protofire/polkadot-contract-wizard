@@ -1,7 +1,7 @@
 import { Grid, Box, styled, BoxProps } from '@mui/material'
 import { West as WestIcon, East as EastIcon } from '@mui/icons-material'
 
-import { StyledButton as Button, MyButtonProps } from '@components'
+import { StyledButton as Button, MyButtonProps } from '@/components'
 
 type Props = {
   nextLabel?: React.ReactNode

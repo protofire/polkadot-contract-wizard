@@ -8,36 +8,22 @@ import {
   Grid,
   Stack
 } from '@mui/material'
-
 import NextLink from 'next/link'
 
 import Step1Extensions from './Step1Extensions'
 import Step2Compile from './Step2Compile'
 import Step3Deploy from './Step3Deploy'
-import { StyledButton as Button, Stepper as StepperWrapper } from '@components'
-import { GIF_COMPILING } from '@constants'
+import { StyledButton as Button, Stepper as StepperWrapper } from '@/components'
 import Image from 'next/image'
-import { StepsSCWizardContext } from '@context'
-import { TokenType } from '@types'
+import { StepsSCWizardContext } from '@/context'
+import { TokenType } from '@/types'
+import { ControlsToken, ROUTES, GIF_COMPILING } from '@/constants/index'
 import {
-  AnyControlsToken,
-  ControlsToken,
-  ROUTES,
-  WIZARD_CONFIG
-} from '@constants'
+  factoryControlsToken,
+  factoryOptionTokenValues
+} from 'src/domain/wizard/factoriesContract'
 
 const STEPS = ['Extensions', 'Compile', 'Deploy']
-
-function getInitialValues(tokenOptionsConfig: AnyControlsToken | undefined) {
-  if (tokenOptionsConfig === undefined) return []
-
-  return Object.assign(
-    {},
-    ...tokenOptionsConfig.optionList.map(control => ({
-      [control.name]: control.initState
-    }))
-  )
-}
 
 export default function FormWizard({
   token
@@ -46,19 +32,11 @@ export default function FormWizard({
 }): JSX.Element {
   const [activeStep, setActiveStep] = React.useState(0)
   const { extensionFields, constructorFields } = useMemo(() => {
-    const currentToken = WIZARD_CONFIG.find(_token => _token.name === token)
-    return {
-      extensionFields: currentToken?.controls.find(
-        options => options.sectionName === 'Extensions'
-      ),
-      constructorFields: currentToken?.controls.find(
-        options => options.sectionName === 'Constructor'
-      )
-    }
+    return factoryControlsToken(token)
   }, [token])
   const [dataForm, setDataForm] = React.useState({
-    extensions: getInitialValues(extensionFields),
-    constructor: getInitialValues(constructorFields)
+    extensions: factoryOptionTokenValues(extensionFields),
+    constructor: factoryOptionTokenValues(constructorFields)
   })
 
   const handleNext = () => {
@@ -71,8 +49,8 @@ export default function FormWizard({
 
   const resetDataForm = () => {
     setDataForm({
-      extensions: getInitialValues(extensionFields),
-      constructor: getInitialValues(constructorFields)
+      extensions: factoryOptionTokenValues(extensionFields),
+      constructor: factoryOptionTokenValues(constructorFields)
     })
   }
 

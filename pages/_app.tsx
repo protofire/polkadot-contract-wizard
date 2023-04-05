@@ -8,9 +8,9 @@ import '../styles/globals.css'
 import '../public/fonts/inter.css'
 import 'react-toastify/dist/ReactToastify.css'
 
-import ThemeCustomization from '@themes'
+import ThemeCustomization from '@/themes'
 import { MainLayout } from 'src/view/layout'
-import { buildEmotionCache } from '@utils'
+import { buildEmotionCache } from '@/utils/builderEmotionCache'
 import { SettingsConsumer } from 'src/context/settingsTheme'
 import { NetworkAccountsContextProvider } from 'src/context/NetworkAccountsContext'
 import {
@@ -18,7 +18,7 @@ import {
   StorageNotificationsRepository
 } from 'src/context/AppNotificationContext'
 import { CustomSnackBar as AppNotification } from 'src/view/components/Snackbar'
-import { DeployContextProvider, StorageDeploysRepository } from '@context'
+import { DeployContextProvider, StorageDeploysRepository } from '@/context'
 
 type CustomAppProps = AppProps & {
   emotionCache: EmotionCache

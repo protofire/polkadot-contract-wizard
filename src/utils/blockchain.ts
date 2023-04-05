@@ -3,7 +3,7 @@ import { CodePromise } from '@polkadot/api-contract'
 import { decodeAddress, encodeAddress } from '@polkadot/keyring'
 import { hexToU8a, isHex } from '@polkadot/util'
 
-import { CompileApiResponse } from '@types'
+import { CompileApiResponse } from '@/types'
 
 export const isValidAddress = (address: string | undefined) => {
   try {

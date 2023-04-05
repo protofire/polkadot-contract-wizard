@@ -1,6 +1,6 @@
-import { GetServiceData, CompileApiResponse } from '@types'
+import { GetServiceData, CompileApiResponse } from '@/types'
 import { useCallback, useState } from 'react'
-import { API_RESPONSE } from '@data-tests'
+import { API_RESPONSE } from 'src/data'
 
 export type DataCompiledContract = CompileApiResponse['contract']
 type ReturnValue = GetServiceData

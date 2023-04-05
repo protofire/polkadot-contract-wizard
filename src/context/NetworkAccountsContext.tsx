@@ -5,7 +5,7 @@ import { isTestChain } from '@polkadot/util'
 import { keyring as KeyringUI, Keyring } from '@polkadot/ui-keyring'
 import { TypeRegistry } from '@polkadot/types/create'
 
-import { PROVIDER_SOCKET, APP_NAME } from '@constants'
+import { PROVIDER_SOCKET, APP_NAME } from '@/constants/index'
 import { WalletConnectionEvents } from 'src/domain/DomainEvents'
 import { ChainType } from '@polkadot/types/interfaces/system'
 import { accountsInPossession } from 'src/domain/KeyringAccouns'
