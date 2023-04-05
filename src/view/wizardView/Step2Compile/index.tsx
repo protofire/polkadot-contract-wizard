@@ -39,7 +39,7 @@ export default function Step2Compile({ tokenType }: { tokenType: TokenType }) {
     handleNext()
   }
 
-  console.log('__generated', tokenType, 'form', dataForm)
+  console.log('__extensions', dataForm)
   return (
     <>
       <Typography variant="h4" mb={2}>
