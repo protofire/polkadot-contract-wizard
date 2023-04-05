@@ -1,3 +1,5 @@
 export * from './menu'
 export * from './images'
 export * from './routes'
+export * from './wizardData'
+export * from './dapp'

@@ -3,7 +3,7 @@ import { Box, styled } from '@mui/material'
 
 import MainDrawer from './MainDrawer'
 import { useUserThemeSettings } from 'src/hooks/userThemeSettings'
-import { useMatchDownSM } from '@hooks'
+import { useMatchDownSM } from '@/hooks'
 import { BoxProps } from '@mui/system'
 import Header from './Header'
 
@@ -21,7 +21,7 @@ const MainWrapper = styled(Box)<BoxProps>(() => ({
 
 const ContentWrapper = styled(Box)<BoxProps>(({ theme }) => ({
   width: '100%',
-  padding: theme.spacing(3, 4),
+  padding: theme.spacing(0, 4),
   [theme.breakpoints.down('sm')]: {
     paddingLeft: theme.spacing(2),
     paddingRight: theme.spacing(2)

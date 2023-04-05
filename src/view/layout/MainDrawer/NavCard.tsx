@@ -20,9 +20,7 @@ export default function NavCard() {
             <DashboardRoundedIcon fontSize="medium" />
           </ListItemIcon>
           <ListItemText>
-            <Typography>
-              Dashboard
-            </Typography>
+            <Typography>Dashboard</Typography>
           </ListItemText>
         </MenuItem>
         <MenuItem>
@@ -30,9 +28,7 @@ export default function NavCard() {
             <BookmarkAddedRoundedIcon fontSize="medium" />
           </ListItemIcon>
           <ListItemText>
-            <Typography>
-              Learn
-            </Typography>
+            <Typography>Learn</Typography>
           </ListItemText>
         </MenuItem>
       </MenuList>

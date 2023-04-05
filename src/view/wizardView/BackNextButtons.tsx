@@ -1,26 +1,48 @@
-import { ButtonProps, Grid } from '@mui/material'
-import { Button } from '@components'
+import { Grid, Box, styled, BoxProps } from '@mui/material'
+import { West as WestIcon, East as EastIcon } from '@mui/icons-material'
+
+import { StyledButton as Button, MyButtonProps } from '@/components'
 
 type Props = {
-  nextLabel?: string
-  handleNext: () => void
-  backLabel?: string
+  nextLabel?: React.ReactNode
+  handleNext?: () => void
+  backLabel?: React.ReactNode
   handleBack: () => void
   isNextDisabled?: boolean
   isDoingNext?: boolean
-  nextButtonProps?: ButtonProps
-  backButtonProps?: ButtonProps
+  nextButtonProps?: MyButtonProps
+  backButtonProps?: MyButtonProps
+  hiddenBack?: boolean
 }
+
+const BoxStyled = styled(Box)<BoxProps>(() => ({
+  display: 'flex',
+  width: '100%',
+  justifyContent: 'space-evenly',
+  alignItems: 'center'
+}))
+
 export default function BackNextButton(props: Props) {
   const {
     handleNext,
     handleBack,
-    nextLabel = 'Next',
-    backLabel = 'Back',
+    nextLabel = (
+      <>
+        {'Next'}
+        <EastIcon />
+      </>
+    ),
+    backLabel = (
+      <>
+        <WestIcon />
+        {'Back'}
+      </>
+    ),
     isNextDisabled = false,
     isDoingNext = false,
     nextButtonProps,
-    backButtonProps
+    backButtonProps,
+    hiddenBack = false
   } = props
 
   return (
@@ -30,15 +52,19 @@ export default function BackNextButton(props: Props) {
       mt={9}
       sx={{ display: 'flex', justifyContent: 'space-between' }}
     >
-      <Button
-        size="large"
-        variant="outlined"
-        onClick={handleBack}
-        disabled={isDoingNext === true}
-        {...backButtonProps}
-      >
-        {backLabel}
-      </Button>
+      {hiddenBack ? (
+        <Box sx={{ width: '30%' }} />
+      ) : (
+        <Button
+          size="large"
+          variant="outlined"
+          onClick={handleBack}
+          disabled={isDoingNext === true}
+          {...backButtonProps}
+        >
+          <BoxStyled>{backLabel}</BoxStyled>
+        </Button>
+      )}
       <Button
         size="large"
         variant="contained"
@@ -46,7 +72,7 @@ export default function BackNextButton(props: Props) {
         disabled={isNextDisabled}
         {...nextButtonProps}
       >
-        {nextLabel}
+        <BoxStyled>{nextLabel}</BoxStyled>
       </Button>
     </Grid>
   )

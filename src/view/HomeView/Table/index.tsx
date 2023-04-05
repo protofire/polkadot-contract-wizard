@@ -1,8 +1,21 @@
 import * as React from 'react'
-import { Table, TableBody, TableCell, TableContainer, TableContainerProps, TableHead, TableRow, Typography } from '@mui/material'
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableContainerProps,
+  TableHead,
+  TableRow,
+  Typography
+} from '@mui/material'
+import { CopyToClipboard } from 'react-copy-to-clipboard'
 
 import { styled } from '@mui/material/styles'
 import CopyToClipboardButton from '../../components/CopyButton'
+import { TokenType } from '@/types'
+import { ContractDeployed } from 'src/context/SCDeployedContext'
+import { truncateAddress } from '@/utils/formatString'
 
 const StyledTableContainer = styled(TableContainer)<TableContainerProps>(
   ({ theme }) => ({
@@ -11,31 +24,32 @@ const StyledTableContainer = styled(TableContainer)<TableContainerProps>(
     },
     '& .MuiTable-root': {
       margin: '2rem auto',
-      width: '80%',
+      width: '80%'
     },
     '& .MuiTableCell-root': {
       color: theme.palette.secondary.light,
       fontSize: '1.1rem',
-      fontFeatureSettings: '"ss01", "ss02"',
-    },
+      fontFeatureSettings: '"ss01", "ss02"'
+    }
   })
 )
 
-function createData(type: string, name: string, address: string) {
-  return { type, name, address }
+const typeMap: Record<TokenType, string> = {
+  psp34: 'NFT | PSP34',
+  psp22: 'TOKEN | PSP22',
+  psp37: 'MULTI TOKEN | PSP37'
 }
 
-const rows = [
-  createData('NFT | PSP34', 'AXOLOTE', '0x2s10...3j2912'),
-  createData('TOKEN | PSP22', 'SimpleToken', '0x8s82...s82MR0k'),
-  createData('TOKEN | PSP22', 'ProtoToken', '0xa62h...s62ksd9'),
-  createData('MULTI TOKEN | PSP37', 'ULTRA-DAO', '0x1f3f3...82K91a')
-]
-
-export default function BasicTable() {
+export default function BasicTable({
+  contractsDeployed
+}: {
+  contractsDeployed: ContractDeployed[]
+}): JSX.Element | null {
   return (
     <>
-      <Typography variant="h3" align="center" mt="2">Deployed contracts</Typography>
+      <Typography variant="h3" align="center" mt="2">
+        Deployed contracts
+      </Typography>
       <StyledTableContainer>
         <Table aria-label="simple table">
           <TableHead>
@@ -46,21 +60,30 @@ export default function BasicTable() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.map(row => (
+            {contractsDeployed.map(contract => (
               <TableRow
-                key={row.name}
+                key={contract.name}
                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
               >
                 <TableCell component="th" scope="row">
-                  {row.type}
+                  {typeMap[contract.type]}
                 </TableCell>
-                <TableCell>{row.name}</TableCell>
-                <TableCell>{row.address}<CopyToClipboardButton /></TableCell>
+                <TableCell>{contract.name || `-`}</TableCell>
+                <TableCell>
+                  {contract.address && (
+                    <CopyToClipboard text={contract.address}>
+                      <>
+                        {truncateAddress(contract.address)}
+                        <CopyToClipboardButton />
+                      </>
+                    </CopyToClipboard>
+                  )}
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
-      </StyledTableContainer >
+      </StyledTableContainer>
     </>
   )
 }

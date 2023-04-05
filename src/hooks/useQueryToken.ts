@@ -1,5 +1,5 @@
 import { useRouter, useSearchParams, usePathname } from 'next/navigation'
-import { isOfTypeTokens, TokenType } from '@types'
+import { isOfTypeTokens, TokenType } from '@/types'
 
 const DEFAULT_TOKEN: TokenType = 'psp22'
 const KEY_NAME = 'token'

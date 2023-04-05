@@ -4,7 +4,7 @@ import { Menu, MenuOpen } from '@mui/icons-material'
 import { styled } from '@mui/material/styles'
 
 import HeaderContent from './HeaderContent'
-import { shouldForwardProp } from '@types'
+import { shouldForwardProp } from '@/types'
 
 import { AppBarProps } from '@mui/material/AppBar'
 
@@ -17,7 +17,6 @@ const AppBarStyled = styled(AppBar, {
     shouldForwardProp<CustomAppBarProps>(['open'], prop)
 })<CustomAppBarProps & AppBarProps>(({ theme, open }) => ({
   padding: 0,
-  width: '4rem',
   borderRadius: '0 2rem 2rem 0',
   backgroundColor: 'transparent',
   transition: theme.transitions.create(['width', 'margin'], {
@@ -46,12 +45,14 @@ const Header = ({
   const mainHeader = (
     <Toolbar
       sx={{
+        flex: 'row',
+        justifyContent: 'space-between',
         ...(isMobile && {
           flexDirection: 'row-reverse',
           width: '100vw',
           borderRadius: '0',
-          background: 'transparent',
-        }),
+          background: 'transparent'
+        })
       }}
     >
       <IconButton

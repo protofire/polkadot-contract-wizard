@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import SyntaxHighlighter from 'react-syntax-highlighter'
 import {
   Box,
   CardActions,
@@ -11,9 +12,20 @@ import { CodeOutlined, CopyAllOutlined } from '@mui/icons-material'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 import reactElementToJSXString from 'react-element-to-jsx-string'
 
-import SyntaxHighlight from 'src/utils/SyntaxHighlight'
-
 // ==============================|| CLIPBOARD & HIGHLIGHTER   ||============================== //
+
+export function SyntaxHighlight({
+  children,
+  ...others
+}: {
+  children: string | string[]
+}) {
+  return (
+    <SyntaxHighlighter language="javacript" showLineNumbers {...others}>
+      {children}
+    </SyntaxHighlighter>
+  )
+}
 
 const Highlighter = ({
   children,

@@ -24,10 +24,29 @@
   },
   "plugins": [
     "@typescript-eslint",
-    "react"
+    "react",
+    "react-hooks",
+    "prettier"
   ],
+  "rules": {
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn",
+    "prettier/prettier": "error"
+  },
   "ignorePatterns": [
     ".next/*",
-    "node_modules/*"
+    "node_modules/*",
+    ".docker/*",
+    "src/tests/data/*"
+  ],
+  "overrides": [
+    {
+      "files": ["tests/*.test.js"],
+      "extends": [
+        "plugin:jest/recommended",
+        "plugin:jest/style",
+        "plugin:jest-dom/recommended"
+      ]
+    }
   ]
 }
