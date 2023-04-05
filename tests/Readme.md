@@ -21,6 +21,8 @@ The tests are located in the `tests` [folder](../tests/), organized by sections.
 
 ### Compile your smart contract ⚙️
 ![image (21)](https://user-images.githubusercontent.com/4270166/230094117-098d8ca9-b64b-4631-ae0b-98bf14218059.png)
+
+### Connect your wallet
 ![image (22)](https://user-images.githubusercontent.com/4270166/230094180-c4d7b110-d576-4c95-8f09-16ebd4098d12.png)
 
 
