@@ -13,6 +13,7 @@ services:
       target: runner
     volumes:
       - .:/home/app
+      - /home/app/node_modules
     ports:
       - ${WEB_EXTERNAL_PORT}:3000
     environment:
