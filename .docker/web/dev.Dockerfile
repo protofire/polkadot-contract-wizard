@@ -16,7 +16,7 @@ COPY . ./
 
 ENV NEXT_TELEMETRY_DISABLED 1
 
-CMD [ "yarn", "build" ]
+RUN yarn build
 
 # Runner 
 FROM node:16-alpine AS runner 
