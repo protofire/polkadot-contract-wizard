@@ -15,7 +15,11 @@ The Polkadot Contract Wizard is a smart contract creation tool that allows users
 ## Getting Started
 
 ### 🚀 Run app
+
 To run the application it is necessary to copy the environment variables file `.env.example` and paste it as `.env`, in this file you will find environment variables like as the default RPC.
+
+> 🚨🚨🚨 It is necessary to specify the variables int the `.env` to run the application .
+>
 
 #### A. With Docker
 
@@ -41,7 +45,7 @@ To run the application it is necessary to copy the environment variables file `.
 #### B. Local Stack
 
 - ⚠️ Requirements:
-  - node >= 16
+  - node `^14.18.0` || `^16.14.0` || `>=18.0.0`
   - yarn >= 1.20
 
 1. Open a command-line interface in the application's root directory and install the packages with the command:
