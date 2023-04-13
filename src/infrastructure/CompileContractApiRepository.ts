@@ -14,9 +14,16 @@ export class CompileContractApiRepository {
   async create(
     compileContract: CreateCompileContract
   ): Promise<ContractCompiled> {
-    return request(this.backenApiConfig.routes.contract, {
-      method: 'POST',
-      body: JSON.stringify(compileContract)
+    return request(this.backenApiConfig.routes.createCompileContract.url, {
+      method: this.backenApiConfig.routes.createCompileContract.method,
+      body: JSON.stringify(this.filterNullSecurity(compileContract))
     })
+  }
+
+  private filterNullSecurity(compileContract: CreateCompileContract) {
+    return {
+      ...compileContract,
+      features: compileContract.features.filter(e => e)
+    }
   }
 }

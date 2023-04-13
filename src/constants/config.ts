@@ -14,23 +14,45 @@ export const DAPP_CONFIG: DappConfig = {
     : (process.env.NEXT_PUBLIC_PROVIDER_SOCKET_DEV as string)
 }
 
-type BackendRoutesApi =
-  | 'deployment'
-  | 'deploy'
-  | 'contract'
-  | 'contractMetadata'
+const backendRouterApi = {
+  createDeployment: {
+    pathName: 'deployments',
+    method: 'POST'
+  },
+  ListDeployment: {
+    pathName: 'deployments',
+    method: 'GET'
+  },
+  createCompileContract: {
+    pathName: 'contract',
+    method: 'POST'
+  },
+  contractMetadata: {
+    pathName: 'contract-metadata?code_id=',
+    method: 'GET'
+  }
+}
+type BackendRoutesApi = keyof typeof backendRouterApi
+type RouteApi = Record<
+  BackendRoutesApi,
+  { url: string; method: 'POST' | 'GET' }
+>
+
 export interface BackendApiConfig {
   basePath: string
-  routes: Record<BackendRoutesApi, string>
+  routes: RouteApi
 }
-
 const apiBaseUrlPath = process.env.NEXT_PUBLIC_BACKEND_API as string
 export const BACKEND_API: BackendApiConfig = {
   basePath: apiBaseUrlPath,
-  routes: {
-    deployment: createUrl(apiBaseUrlPath, 'deployment'),
-    deploy: createUrl(apiBaseUrlPath, 'deploy'),
-    contract: createUrl(apiBaseUrlPath, 'contract'),
-    contractMetadata: createUrl(apiBaseUrlPath, 'contract-metadata?code_id=')
-  }
+  routes: Object.keys(backendRouterApi).reduce((acc, key) => {
+    const currentRoute = backendRouterApi[key as BackendRoutesApi]
+    return {
+      ...acc,
+      [key]: {
+        method: currentRoute.method,
+        url: createUrl(apiBaseUrlPath, currentRoute.pathName)
+      }
+    }
+  }, {} as RouteApi)
 }
