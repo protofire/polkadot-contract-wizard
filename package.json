@@ -42,7 +42,8 @@
     "react-element-to-jsx-string": "^15.0.0",
     "react-syntax-highlighter": "^15.5.0",
     "semver": "^7.3.8",
-    "simplebar-react": "^3.2.0"
+    "simplebar-react": "^3.2.0",
+    "whatwg-url": "^12.0.1"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^5.16.5",
@@ -54,6 +55,7 @@
     "@types/react-dom": "18.0.10",
     "@types/react-toastify": "^4.1.0",
     "@types/testing-library__jest-dom": "^5.14.5",
+    "@types/whatwg-url": "^11.0.0",
     "@typescript-eslint/eslint-plugin": "^5.48.1",
     "@typescript-eslint/parser": "^5.48.1",
     "eslint": "^8.37.0",
