@@ -1,7 +1,7 @@
 import { TokenType } from '@/types'
 
 interface ContractDetails {
-  code_id: number
+  code_id: string
   type: TokenType
   status: 'compiled' | 'deployed'
   address?: string

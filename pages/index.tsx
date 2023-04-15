@@ -6,7 +6,7 @@ import { HomeButton } from '@/components'
 import { ROUTES, TOKEN_PATHS } from '@/constants/index'
 import { TokenType } from '@/types'
 import { useNetworkAccountsContext } from 'src/context/NetworkAccountsContext'
-import { useContractsContext } from '@/context'
+import { useStorageContractsContext } from '@/context'
 
 const Token: Record<TokenType, TokenType> = {
   psp22: 'psp22',
@@ -18,7 +18,7 @@ function Home() {
   const {
     state: { currentAccount }
   } = useNetworkAccountsContext()
-  const { contracts } = useContractsContext()
+  const { contracts } = useStorageContractsContext()
 
   return (
     <>

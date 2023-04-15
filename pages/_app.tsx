@@ -18,7 +18,7 @@ import {
   StorageNotificationsRepository
 } from 'src/context/AppNotificationContext'
 import { CustomSnackBar as AppNotification } from 'src/view/components/Snackbar'
-import { DeployContextProvider } from '@/context'
+import { StorageContractsProvider } from '@/context'
 import { LocalStorageContractRepository } from '@/infrastructure/LocalStorageContractRepository'
 
 type CustomAppProps = AppProps & {
@@ -52,7 +52,7 @@ export default function App(props: CustomAppProps) {
 
       <NetworkAccountsContextProvider>
         <AppNotificationContextProvider repository={repositoryAppNotification}>
-          <DeployContextProvider repository={repositoryDeploys}>
+          <StorageContractsProvider repository={repositoryDeploys}>
             <SettingsConsumer>
               {({ settings }) => {
                 return (
@@ -62,7 +62,7 @@ export default function App(props: CustomAppProps) {
                 )
               }}
             </SettingsConsumer>
-          </DeployContextProvider>
+          </StorageContractsProvider>
           <AppNotification />
         </AppNotificationContextProvider>
       </NetworkAccountsContextProvider>

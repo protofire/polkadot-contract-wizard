@@ -10,17 +10,16 @@ import { Contract, SmartContractEvents } from '@/domain'
 import { StorageContractRepository } from '@/infrastructure/LocalStorageContractRepository'
 import { useNetworkAccountsContext } from './NetworkAccountsContext'
 
-const SCDeployedContext = createContext<{
+interface StorageContractContextValues {
   contracts: Contract[]
-  addContract(accountAddress: string, smartContract: Contract): void
-}>(
-  {} as {
-    contracts: Contract[]
-    addContract(accountAddress: string, smartContract: Contract): void
-  }
+  addContractToStorage(accountAddress: string, smartContract: Contract): void
+}
+
+const StorageContractsContext = createContext<StorageContractContextValues>(
+  {} as StorageContractContextValues
 )
 
-export function DeployContextProvider({
+export function StorageContractsProvider({
   children,
   repository
 }: {
@@ -69,9 +68,12 @@ export function DeployContextProvider({
   )
 
   return (
-    <SCDeployedContext.Provider value={{ contracts, addContract: save }}>
+    <StorageContractsContext.Provider
+      value={{ contracts, addContractToStorage: save }}
+    >
       {children}
-    </SCDeployedContext.Provider>
+    </StorageContractsContext.Provider>
   )
 }
-export const useContractsContext = () => useContext(SCDeployedContext)
+export const useStorageContractsContext = () =>
+  useContext(StorageContractsContext)

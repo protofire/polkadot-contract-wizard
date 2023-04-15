@@ -15,7 +15,7 @@ import { CopyToClipboard } from 'react-copy-to-clipboard'
 import { styled } from '@mui/material/styles'
 import CopyToClipboardButton from '../../components/CopyButton'
 import { TokenType } from '@/types'
-import { truncateAddress } from '@/utils/formatString'
+import { capitalizeFirstLetter, truncateAddress } from '@/utils/formatString'
 import { Contract, isContractDeployed } from '@/domain'
 
 const StyledTableContainer = styled(TableContainer)<TableContainerProps>(
@@ -42,6 +42,8 @@ const typeMap: Record<TokenType, string> = {
 }
 
 function ContractTableRow({ contract }: { contract: Contract }) {
+  const _isContractDeployed = isContractDeployed(contract)
+
   return (
     <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
       <TableCell component="th" scope="row">
@@ -49,7 +51,7 @@ function ContractTableRow({ contract }: { contract: Contract }) {
       </TableCell>
       <TableCell>{contract.name || `-`}</TableCell>
       <TableCell>
-        {isContractDeployed(contract) && contract.address && (
+        {_isContractDeployed && contract.address && (
           <CopyToClipboard text={contract.address}>
             <>
               {truncateAddress(contract.address)}
@@ -59,7 +61,11 @@ function ContractTableRow({ contract }: { contract: Contract }) {
         )}
       </TableCell>
       <TableCell>
-        <Chip label={contract.status} color="primary" size="small" />
+        <Chip
+          label={capitalizeFirstLetter(contract.status)}
+          color={_isContractDeployed ? 'primary' : 'secondary'}
+          size="small"
+        />
       </TableCell>
     </TableRow>
   )

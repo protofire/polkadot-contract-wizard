@@ -1,2 +1,3 @@
 export * from './StepsSmartContractWizard'
-export * from './SCDeployedContext'
+export * from './StorageContractContext'
+export * from './AppNotificationContext'

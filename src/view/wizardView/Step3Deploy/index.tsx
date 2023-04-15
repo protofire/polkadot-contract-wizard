@@ -16,8 +16,7 @@ import {
   SVG_SUCCESSFULLY
 } from '@/constants/index'
 import { FormEvent } from 'src/domain/common/FormEvent'
-import { useCreateCompilation } from 'src/hooks/useCreateCompilation'
-import { useContractsContext } from 'src/context/SCDeployedContext'
+import { useCompileContract } from 'src/hooks/useCompileContract'
 import { ContractMetadata } from '@/infrastructure'
 import { generateCode } from '../Step2Compile/generator'
 
@@ -55,10 +54,6 @@ function useMemoizeFields(
     [optionList, hasMetadata]
   )
 }
-const genRanHex = (size: number) =>
-  [...Array(size)]
-    .map(() => Math.floor(Math.random() * 16).toString(16))
-    .join('')
 
 export default function Step3Deploy({
   constructorFields,
@@ -72,12 +67,11 @@ export default function Step3Deploy({
   const [contractCompiled, setContractCompiled] = useState<
     ContractMetadata | undefined
   >()
-  const { addContract } = useContractsContext()
   const { mandatoryFields, metadataFields } = useMemoizeFields(
     constructorFields?.optionList,
     dataForm.extensions.Metadata as boolean
   )
-  const { compileContract } = useCreateCompilation()
+  const { compileContract } = useCompileContract()
   const areThereParameters =
     mandatoryFields.length > 0 || metadataFields.length > 0
   const isButtonNextDisabled = contractCompiled === undefined
