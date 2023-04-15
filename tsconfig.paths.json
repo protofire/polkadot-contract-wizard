@@ -17,6 +17,12 @@
       "@/constants/*": [
         "src/constants/*"
       ],
+      "@/domain": [
+        "src/domain"
+      ],
+      "@/domain/*": [
+        "src/domain/*"
+      ],
       "@/types": [
         "src/types"
       ],

@@ -18,7 +18,7 @@ The Polkadot Contract Wizard is a smart contract creation tool that allows users
 
 To run the application it is necessary to copy the environment variables file `.env.example` and paste it as `.env`, in this file you will find environment variables like as the default RPC.
 
-> 🚨🚨🚨 It is necessary to specify the variables int the `.env` to run the application .
+> 🚨🚨🚨 It is necessary to specify the variables int the `.env` to run the application.
 >
 
 #### A. With Docker
@@ -39,7 +39,7 @@ To run the application it is necessary to copy the environment variables file `.
 
 4. Your application should now be running on the specified port. You can access it by visiting `localhost:<EXTERNAL_PORT>` (Port 3000 by default) in your browser.
 
-> ✋ Stop the all the running containers with the following command:
+> ✋ Stop the all the running containers with the following command:  
 > `docker-compose stop`
 
 #### B. Local Stack
@@ -64,7 +64,7 @@ To run the application it is necessary to copy the environment variables file `.
 
 3. Once the development server is running, you can access the application from your web browser at the address [http://localhost:3000](http://localhost:3000).
 
-> ✋ Stop the Server
+> ✋ Stop the Server  
 > To stop the development server, press `Ctrl + C` in the terminal.
 
 ## License

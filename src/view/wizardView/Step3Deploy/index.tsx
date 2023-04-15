@@ -16,8 +16,7 @@ import {
   SVG_SUCCESSFULLY
 } from '@/constants/index'
 import { FormEvent } from 'src/domain/common/FormEvent'
-import { useCreateCompilation } from 'src/hooks/useCreateCompilation'
-import { useContractsDeployedContext } from 'src/context/SCDeployedContext'
+import { useCompileContract } from 'src/hooks/useCompileContract'
 import { ContractMetadata } from '@/infrastructure'
 import { generateCode } from '../Step2Compile/generator'
 
@@ -55,10 +54,6 @@ function useMemoizeFields(
     [optionList, hasMetadata]
   )
 }
-const genRanHex = (size: number) =>
-  [...Array(size)]
-    .map(() => Math.floor(Math.random() * 16).toString(16))
-    .join('')
 
 export default function Step3Deploy({
   constructorFields,
@@ -72,12 +67,11 @@ export default function Step3Deploy({
   const [contractCompiled, setContractCompiled] = useState<
     ContractMetadata | undefined
   >()
-  const { addContract } = useContractsDeployedContext()
   const { mandatoryFields, metadataFields } = useMemoizeFields(
     constructorFields?.optionList,
     dataForm.extensions.Metadata as boolean
   )
-  const { compileContract } = useCreateCompilation()
+  const { compileContract } = useCompileContract()
   const areThereParameters =
     mandatoryFields.length > 0 || metadataFields.length > 0
   const isButtonNextDisabled = contractCompiled === undefined
@@ -85,10 +79,10 @@ export default function Step3Deploy({
     () => generateCode(tokenType, dataForm),
     [dataForm, tokenType]
   )
-  const effectRendered = useRef<boolean>(false)
+  const mustLoad = useRef<boolean>(true)
 
   useEffect(() => {
-    if (!dataForm.currentAccount || effectRendered.current) return
+    if (!dataForm.currentAccount || !mustLoad.current) return
 
     compileContract({
       address: dataForm.currentAccount,
@@ -98,7 +92,7 @@ export default function Step3Deploy({
     }).then(contract => contract && setContractCompiled(contract))
 
     return () => {
-      effectRendered.current = true
+      mustLoad.current = false
     }
   }, [
     codeGenerated,
@@ -106,7 +100,7 @@ export default function Step3Deploy({
     dataForm.currentAccount,
     dataForm.security,
     tokenType,
-    effectRendered
+    mustLoad
   ])
 
   const handleSubmit = async (
@@ -138,11 +132,6 @@ export default function Step3Deploy({
       '[compiledResponse]:',
       contractCompiled && JSON.parse(contractCompiled?.metadata)
     )
-    addContract({
-      type: tokenType,
-      name: argsForm.find(arg => arg[0] === 'name')?.[1] as string,
-      address: genRanHex(64)
-    })
     handleNext()
   }
 
