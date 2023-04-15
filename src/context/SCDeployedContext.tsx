@@ -1,4 +1,3 @@
-import { TokenType } from '@/types'
 import {
   createContext,
   useCallback,
@@ -6,52 +5,18 @@ import {
   useEffect,
   useState
 } from 'react'
-import { SmartContractEvents } from 'src/domain/DomainEvents'
 
-export interface ContractDeployed {
-  id: number
-  type: TokenType
-  address?: string
-  name?: string
-  blockainId?: string
-}
-type ContractWithoutId = Omit<ContractDeployed, 'id'>
-
-export interface SCDeployedRepository {
-  search(): ContractDeployed[]
-  save(smartContract: ContractDeployed): void
-}
-
-export class StorageDeploysRepository implements SCDeployedRepository {
-  localStorageKey = 'repositoryDeploys'
-
-  search(): ContractDeployed[] {
-    const data = localStorage.getItem(this.localStorageKey)
-
-    if (!data) {
-      return []
-    }
-
-    return JSON.parse(data) as ContractDeployed[]
-  }
-
-  save(smartContract: ContractDeployed): void {
-    const currentRepositoryWidget = this.search()
-
-    localStorage.setItem(
-      this.localStorageKey,
-      JSON.stringify(currentRepositoryWidget.concat(smartContract))
-    )
-  }
-}
+import { Contract, SmartContractEvents } from '@/domain'
+import { StorageContractRepository } from '@/infrastructure/LocalStorageContractRepository'
+import { useNetworkAccountsContext } from './NetworkAccountsContext'
 
 const SCDeployedContext = createContext<{
-  contractsDeployed: ContractDeployed[]
-  addContract(smartContract: ContractWithoutId): void
+  contracts: Contract[]
+  addContract(accountAddress: string, smartContract: Contract): void
 }>(
   {} as {
-    contractsDeployed: ContractDeployed[]
-    addContract(smartContract: ContractWithoutId): void
+    contracts: Contract[]
+    addContract(accountAddress: string, smartContract: Contract): void
   }
 )
 
@@ -60,38 +25,41 @@ export function DeployContextProvider({
   repository
 }: {
   children: React.ReactNode
-  repository: SCDeployedRepository
+  repository: StorageContractRepository
 }) {
-  const [contractsDeployed, setContractsDeployed] = useState<
-    ContractDeployed[]
-  >([])
+  const [contracts, setContracts] = useState<Contract[]>([])
+  const {
+    state: { currentAccount }
+  } = useNetworkAccountsContext()
+
+  const loadContractRepository = useCallback(() => {
+    if (!currentAccount) return
+
+    setContracts(repository.searchBy(currentAccount))
+  }, [currentAccount, repository])
 
   useEffect(() => {
-    setContractsDeployed(repository.search())
-  }, [repository])
+    loadContractRepository()
+  }, [loadContractRepository, repository])
 
-  // update repository
+  // update repository when events triggered
   useEffect(() => {
-    const reloadRepository = () => {
-      setContractsDeployed(repository.search())
-    }
-
     document.addEventListener(
       SmartContractEvents.contractInstatiate,
-      reloadRepository
+      loadContractRepository
     )
 
     return () => {
       document.removeEventListener(
         SmartContractEvents.contractInstatiate,
-        reloadRepository
+        loadContractRepository
       )
     }
-  }, [repository])
+  }, [loadContractRepository])
 
   const save = useCallback(
-    (smartContract: ContractWithoutId) => {
-      repository.save({ ...smartContract, id: new Date().getTime() })
+    (accountAddress: string, smartContract: Contract) => {
+      repository.save(accountAddress, smartContract)
 
       document.dispatchEvent(
         new CustomEvent(SmartContractEvents.contractInstatiate)
@@ -101,11 +69,9 @@ export function DeployContextProvider({
   )
 
   return (
-    <SCDeployedContext.Provider
-      value={{ contractsDeployed, addContract: save }}
-    >
+    <SCDeployedContext.Provider value={{ contracts, addContract: save }}>
       {children}
     </SCDeployedContext.Provider>
   )
 }
-export const useContractsDeployedContext = () => useContext(SCDeployedContext)
+export const useContractsContext = () => useContext(SCDeployedContext)

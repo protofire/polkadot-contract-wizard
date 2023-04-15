@@ -17,7 +17,7 @@ import {
 } from '@/constants/index'
 import { FormEvent } from 'src/domain/common/FormEvent'
 import { useCreateCompilation } from 'src/hooks/useCreateCompilation'
-import { useContractsDeployedContext } from 'src/context/SCDeployedContext'
+import { useContractsContext } from 'src/context/SCDeployedContext'
 import { ContractMetadata } from '@/infrastructure'
 import { generateCode } from '../Step2Compile/generator'
 
@@ -72,7 +72,7 @@ export default function Step3Deploy({
   const [contractCompiled, setContractCompiled] = useState<
     ContractMetadata | undefined
   >()
-  const { addContract } = useContractsDeployedContext()
+  const { addContract } = useContractsContext()
   const { mandatoryFields, metadataFields } = useMemoizeFields(
     constructorFields?.optionList,
     dataForm.extensions.Metadata as boolean
@@ -85,10 +85,10 @@ export default function Step3Deploy({
     () => generateCode(tokenType, dataForm),
     [dataForm, tokenType]
   )
-  const effectRendered = useRef<boolean>(false)
+  const mustLoad = useRef<boolean>(true)
 
   useEffect(() => {
-    if (!dataForm.currentAccount || effectRendered.current) return
+    if (!dataForm.currentAccount || !mustLoad.current) return
 
     compileContract({
       address: dataForm.currentAccount,
@@ -98,7 +98,7 @@ export default function Step3Deploy({
     }).then(contract => contract && setContractCompiled(contract))
 
     return () => {
-      effectRendered.current = true
+      mustLoad.current = false
     }
   }, [
     codeGenerated,
@@ -106,7 +106,7 @@ export default function Step3Deploy({
     dataForm.currentAccount,
     dataForm.security,
     tokenType,
-    effectRendered
+    mustLoad
   ])
 
   const handleSubmit = async (
@@ -138,11 +138,6 @@ export default function Step3Deploy({
       '[compiledResponse]:',
       contractCompiled && JSON.parse(contractCompiled?.metadata)
     )
-    addContract({
-      type: tokenType,
-      name: argsForm.find(arg => arg[0] === 'name')?.[1] as string,
-      address: genRanHex(64)
-    })
     handleNext()
   }
 
