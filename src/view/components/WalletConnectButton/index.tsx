@@ -9,7 +9,6 @@ import { AccountSelect } from './AccountsSelect'
 import { accountsInPossession } from 'src/domain/KeyringAccouns'
 
 export const ConnectButton = styled(StyledButton)<MyButtonProps>(() => ({
-  padding: '0rem',
   fontSize: '1rem'
 }))
 

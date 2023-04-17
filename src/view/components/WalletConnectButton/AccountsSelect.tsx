@@ -16,17 +16,23 @@ const StyledSelect = styled(Select)<SelectProps>(({ theme }) => ({
   display: 'flex',
   margin: '0.5rem 0',
   padding: '0',
-  height: '3.5rem',
+  height: '2.88em',
+  borderRadius: '5rem',
+
+  '& fieldset': {
+    top: '0'
+  },
 
   '& span': {
-    fontSize: '1rem',
+    fontSize: '0.8rem',
     marginLeft: '1rem'
   },
 
   '& p': {
     fontSize: '0.8rem',
     marginLeft: '1rem',
-    fontWeight: '700'
+    fontWeight: '600',
+    lineHeight: '12px'
   },
 
   '& legend': {
@@ -38,14 +44,15 @@ const StyledMenuItem = styled(MenuItem)<MenuItemProps>(({ theme }) => ({
   color: 'white',
 
   '& span': {
-    fontSize: '1rem',
+    fontSize: '0.8rem',
     marginLeft: '1rem'
   },
 
   '& p': {
     fontSize: '0.8rem',
     marginLeft: '1rem',
-    fontWeight: '700'
+    fontWeight: '600',
+    lineHeight: '12px'
   }
 }))
 
