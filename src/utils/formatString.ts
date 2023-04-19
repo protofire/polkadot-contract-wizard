@@ -72,7 +72,7 @@ function extractAccountWallet(input: string): [string, string] {
  * Example:
  *   "POLKADOT CONTRACT WIZARD (POLKADOT-JS)"
  */
-export function shortNameLonger(name: string, maxCharacters = 10): string {
+export function shortNameLonger(name: string, maxCharacters = 11): string {
   try {
     const [accountName, wallet] = extractAccountWallet(name)
     if (accountName.length <= maxCharacters) return name
