@@ -56,7 +56,7 @@ export function capitalizeFirstLetter(str: string) {
 /* ShorName longer n characters
  * Example:
  *   "POLKADOT CONTRACT WIZARD (POLKADOT-JS)"
- *
+ */
 export function shortNameLonger(name: string, maxCharacters = 10): string {
   const words = name.split(' ')
   if (words.length > 1 && words[0].length > maxCharacters) {
