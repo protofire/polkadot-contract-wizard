@@ -17,6 +17,12 @@
       "@/constants/*": [
         "src/constants/*"
       ],
+      "@/domain": [
+        "src/domain"
+      ],
+      "@/domain/*": [
+        "src/domain/*"
+      ],
       "@/types": [
         "src/types"
       ],
@@ -35,9 +41,15 @@
       "@/data": [
         "src/data"
       ],
+      "@/infrastructure": [
+        "src/infrastructure"
+      ],
+      "@/infrastructure/*": [
+        "src/infrastructure/*"
+      ],
       "@/tests/*": [
         "tests/*"
-      ]
+      ],
     }
   }
 }

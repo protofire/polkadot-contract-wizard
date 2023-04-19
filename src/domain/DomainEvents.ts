@@ -8,5 +8,6 @@ export const enum AppNotificationEvents {
 }
 
 export const enum SmartContractEvents {
+  'contractCompiled' = 'contractCompiled',
   'contractInstatiate' = 'contractInstatiate'
 }

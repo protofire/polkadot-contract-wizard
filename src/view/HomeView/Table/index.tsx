@@ -1,5 +1,6 @@
 import * as React from 'react'
 import {
+  Chip,
   Table,
   TableBody,
   TableCell,
@@ -14,8 +15,8 @@ import { CopyToClipboard } from 'react-copy-to-clipboard'
 import { styled } from '@mui/material/styles'
 import CopyToClipboardButton from '../../components/CopyButton'
 import { TokenType } from '@/types'
-import { ContractDeployed } from 'src/context/SCDeployedContext'
-import { truncateAddress } from '@/utils/formatString'
+import { capitalizeFirstLetter, truncateAddress } from '@/utils/formatString'
+import { Contract, isContractDeployed } from '@/domain'
 
 const StyledTableContainer = styled(TableContainer)<TableContainerProps>(
   ({ theme }) => ({
@@ -40,15 +41,45 @@ const typeMap: Record<TokenType, string> = {
   psp37: 'MULTI TOKEN | PSP37'
 }
 
+function ContractTableRow({ contract }: { contract: Contract }) {
+  const _isContractDeployed = isContractDeployed(contract)
+
+  return (
+    <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+      <TableCell component="th" scope="row">
+        {typeMap[contract.type]}
+      </TableCell>
+      <TableCell>{contract.name || `-`}</TableCell>
+      <TableCell>
+        {_isContractDeployed && contract.address && (
+          <CopyToClipboard text={contract.address}>
+            <>
+              {truncateAddress(contract.address)}
+              <CopyToClipboardButton />
+            </>
+          </CopyToClipboard>
+        )}
+      </TableCell>
+      <TableCell>
+        <Chip
+          label={capitalizeFirstLetter(contract.status)}
+          color={_isContractDeployed ? 'primary' : 'secondary'}
+          size="small"
+        />
+      </TableCell>
+    </TableRow>
+  )
+}
+
 export default function BasicTable({
-  contractsDeployed
+  contracts
 }: {
-  contractsDeployed: ContractDeployed[]
+  contracts: Contract[]
 }): JSX.Element | null {
   return (
     <>
       <Typography variant="h3" align="center" mt="2">
-        Deployed contracts
+        Contracts
       </Typography>
       <StyledTableContainer>
         <Table aria-label="simple table">
@@ -57,29 +88,12 @@ export default function BasicTable({
               <TableCell>TYPE</TableCell>
               <TableCell>NAME</TableCell>
               <TableCell>ADDRESS</TableCell>
+              <TableCell>STATUS</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {contractsDeployed.map(contract => (
-              <TableRow
-                key={contract.name}
-                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-              >
-                <TableCell component="th" scope="row">
-                  {typeMap[contract.type]}
-                </TableCell>
-                <TableCell>{contract.name || `-`}</TableCell>
-                <TableCell>
-                  {contract.address && (
-                    <CopyToClipboard text={contract.address}>
-                      <>
-                        {truncateAddress(contract.address)}
-                        <CopyToClipboardButton />
-                      </>
-                    </CopyToClipboard>
-                  )}
-                </TableCell>
-              </TableRow>
+            {contracts.map(contract => (
+              <ContractTableRow key={contract.code_id} contract={contract} />
             ))}
           </TableBody>
         </Table>

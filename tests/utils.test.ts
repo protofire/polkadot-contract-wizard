@@ -2,7 +2,7 @@ import {
   isSmallerVer,
   isGreaterVer,
   isSmallerOrEqual
-} from 'src/utils/comparisonString'
+} from '@/utils/comparisonString'
 
 test('first version should greater than second one', async () => {
   const v1 = 'v3.0.0'

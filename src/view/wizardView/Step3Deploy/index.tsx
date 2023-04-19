@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { Grid, Stack, Typography } from '@mui/material'
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward'
 import Image from 'next/image'
@@ -16,11 +16,9 @@ import {
   SVG_SUCCESSFULLY
 } from '@/constants/index'
 import { FormEvent } from 'src/domain/common/FormEvent'
-import {
-  DataCompiledContract,
-  useCreateCompilation
-} from 'src/hooks/useCreateCompilation'
-import { useContractsDeployedContext } from 'src/context/SCDeployedContext'
+import { useCompileContract } from 'src/hooks/useCompileContract'
+import { ContractMetadata } from '@/infrastructure'
+import { generateCode } from '../Step2Compile/generator'
 
 type SubmitedDataForm = Array<[ConstructorFieldName, string | number]>
 
@@ -56,10 +54,6 @@ function useMemoizeFields(
     [optionList, hasMetadata]
   )
 }
-const genRanHex = (size: number) =>
-  [...Array(size)]
-    .map(() => Math.floor(Math.random() * 16).toString(16))
-    .join('')
 
 export default function Step3Deploy({
   constructorFields,
@@ -70,22 +64,44 @@ export default function Step3Deploy({
 }) {
   const [argsForm, setArgsForm] = useState<SubmitedDataForm>([])
   const { handleBack, handleNext, dataForm } = useStepsSCWizard()
-  const [contractCompiled, setContractCompiled] =
-    useState<DataCompiledContract>()
-  const { addContract } = useContractsDeployedContext()
+  const [contractCompiled, setContractCompiled] = useState<
+    ContractMetadata | undefined
+  >()
   const { mandatoryFields, metadataFields } = useMemoizeFields(
     constructorFields?.optionList,
     dataForm.extensions.Metadata as boolean
   )
-  const { compileContract } = useCreateCompilation()
+  const { compileContract } = useCompileContract()
   const areThereParameters =
     mandatoryFields.length > 0 || metadataFields.length > 0
   const isButtonNextDisabled = contractCompiled === undefined
+  const codeGenerated = useMemo(
+    () => generateCode(tokenType, dataForm),
+    [dataForm, tokenType]
+  )
+  const mustLoad = useRef<boolean>(true)
 
   useEffect(() => {
-    // TODO replace with real request
-    compileContract().then(setContractCompiled)
-  }, [compileContract])
+    if (!dataForm.currentAccount || !mustLoad.current) return
+
+    compileContract({
+      address: dataForm.currentAccount,
+      tokenType,
+      code: codeGenerated,
+      ...(dataForm.security ? { security: dataForm.security } : {})
+    }).then(contract => contract && setContractCompiled(contract))
+
+    return () => {
+      mustLoad.current = false
+    }
+  }, [
+    codeGenerated,
+    compileContract,
+    dataForm.currentAccount,
+    dataForm.security,
+    tokenType,
+    mustLoad
+  ])
 
   const handleSubmit = async (
     event: FormEvent<{ [key in ConstructorFieldName]: string }>
@@ -116,11 +132,6 @@ export default function Step3Deploy({
       '[compiledResponse]:',
       contractCompiled && JSON.parse(contractCompiled?.metadata)
     )
-    addContract({
-      type: tokenType,
-      name: argsForm.find(arg => arg[0] === 'name')?.[1] as string,
-      address: genRanHex(64)
-    })
     handleNext()
   }
 
@@ -193,7 +204,7 @@ export default function Step3Deploy({
         nextLabel="Deploy Contract"
         handleBack={handleBack}
         handleNext={areThereParameters ? undefined : _handleNext}
-        hiddenBack={true}
+        // hiddenBack={true}
         nextButtonProps={{
           endIcon: isButtonNextDisabled ? '🚫' : '🚀',
           disabled: isButtonNextDisabled,

@@ -18,7 +18,8 @@ import {
   StorageNotificationsRepository
 } from 'src/context/AppNotificationContext'
 import { CustomSnackBar as AppNotification } from 'src/view/components/Snackbar'
-import { DeployContextProvider, StorageDeploysRepository } from '@/context'
+import { StorageContractsProvider } from '@/context'
+import { LocalStorageContractRepository } from '@/infrastructure/LocalStorageContractRepository'
 
 type CustomAppProps = AppProps & {
   emotionCache: EmotionCache
@@ -29,7 +30,7 @@ type CustomAppProps = AppProps & {
 
 const clientEmotionCache = buildEmotionCache()
 const repositoryAppNotification = new StorageNotificationsRepository()
-const repositoryDeploys = new StorageDeploysRepository()
+const repositoryDeploys = new LocalStorageContractRepository()
 
 export default function App(props: CustomAppProps) {
   const { Component, emotionCache = clientEmotionCache, pageProps } = props
@@ -51,7 +52,7 @@ export default function App(props: CustomAppProps) {
 
       <NetworkAccountsContextProvider>
         <AppNotificationContextProvider repository={repositoryAppNotification}>
-          <DeployContextProvider repository={repositoryDeploys}>
+          <StorageContractsProvider repository={repositoryDeploys}>
             <SettingsConsumer>
               {({ settings }) => {
                 return (
@@ -61,7 +62,7 @@ export default function App(props: CustomAppProps) {
                 )
               }}
             </SettingsConsumer>
-          </DeployContextProvider>
+          </StorageContractsProvider>
           <AppNotification />
         </AppNotificationContextProvider>
       </NetworkAccountsContextProvider>

@@ -1,4 +1,4 @@
-import { indentEach } from 'src/utils/formatString'
+import { indentEach } from '@/utils/formatString'
 
 describe('indentEach', () => {
   it('returns the string with the appropriate number of added spaces', () => {

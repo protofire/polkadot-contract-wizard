@@ -5,7 +5,7 @@ import { isTestChain } from '@polkadot/util'
 import { keyring as KeyringUI, Keyring } from '@polkadot/ui-keyring'
 import { TypeRegistry } from '@polkadot/types/create'
 
-import { PROVIDER_SOCKET, APP_NAME } from '@/constants/index'
+import { DAPP_CONFIG } from '@/constants/index'
 import { WalletConnectionEvents } from 'src/domain/DomainEvents'
 import { ChainType } from '@polkadot/types/interfaces/system'
 import { accountsInPossession } from 'src/domain/KeyringAccouns'
@@ -43,9 +43,9 @@ const connect = (
   if (state.apiStatus !== 'DISCONNECTED') return
 
   updateState(prev => ({ ...prev, apiStatus: 'CONNECTING' }))
-  console.info(`Connecting socket: ${PROVIDER_SOCKET}`)
+  console.info(`Connecting socket: ${DAPP_CONFIG.providerSocket}`)
 
-  const provider = new WsProvider(PROVIDER_SOCKET)
+  const provider = new WsProvider(DAPP_CONFIG.providerSocket)
   const _api = new ApiPromise({ provider, rpc: jsonrpc })
 
   // Set listeners for disconnection and reconnection event.
@@ -106,7 +106,7 @@ const loadAccounts = (
       const { web3Enable, web3Accounts } = await import(
         '@polkadot/extension-dapp'
       )
-      await web3Enable(APP_NAME)
+      await web3Enable(DAPP_CONFIG.name)
       let allAccounts = await web3Accounts()
       allAccounts = allAccounts.map(({ address, meta }) => ({
         address,
