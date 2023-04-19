@@ -1,7 +1,60 @@
-import { MenuItem, Select, SelectChangeEvent, Stack } from '@mui/material'
-import { truncateAddress } from '@/utils/formatString'
+import {
+  MenuItem,
+  MenuItemProps,
+  Select,
+  SelectProps,
+  SelectChangeEvent,
+  Stack,
+  styled
+} from '@mui/material'
+import { shortNameLonger, truncateAddress } from '@/utils/formatString'
 import { KeyringAccount } from 'src/domain/KeyringAccouns'
 import { AvatarAccount } from './AvatarAccount'
+
+const StyledSelect = styled(Select)<SelectProps>(({ theme }) => ({
+  color: 'white',
+  display: 'flex',
+  margin: '0.5rem 0',
+  padding: '0',
+  height: '2.88em',
+  borderRadius: '0.5rem',
+
+  '& fieldset': {
+    top: '0'
+  },
+
+  '& span': {
+    fontSize: '0.8rem',
+    marginLeft: '1rem'
+  },
+
+  '& p': {
+    fontSize: '0.8rem',
+    marginLeft: '1rem',
+    fontWeight: '600',
+    lineHeight: '12px'
+  },
+
+  '& legend': {
+    display: 'none'
+  }
+}))
+
+const StyledMenuItem = styled(MenuItem)<MenuItemProps>(({ theme }) => ({
+  color: 'white',
+
+  '& span': {
+    fontSize: '0.8rem',
+    marginLeft: '1rem'
+  },
+
+  '& p': {
+    fontSize: '0.8rem',
+    marginLeft: '1rem',
+    fontWeight: '600',
+    lineHeight: '12px'
+  }
+}))
 
 export function AccountSelect({
   accounts,
@@ -12,19 +65,18 @@ export function AccountSelect({
   currentAccount: string
   onChange: (account: string) => void
 }) {
-  const _handleChange = (event: SelectChangeEvent<string>) => {
-    onChange(event.target.value)
+  const _handleChange = (event: SelectChangeEvent<unknown>) => {
+    onChange(event.target.value as string)
   }
 
   return (
-    <Select
-      sx={{ color: 'white' }}
+    <StyledSelect
       value={currentAccount}
       placeholder="Select Account..."
       onChange={_handleChange}
     >
       {accounts.map(a => (
-        <MenuItem
+        <StyledMenuItem
           sx={{ color: 'white' }}
           selected={currentAccount === a.address}
           key={a.address}
@@ -33,12 +85,12 @@ export function AccountSelect({
           <Stack sx={{ display: 'flex', flexDirection: 'row' }}>
             <AvatarAccount address={a.address} />
             <Stack>
-              <span>{a.label}</span>
+              <span>{shortNameLonger(a.label)}</span>
               <p>{truncateAddress(a.address)}</p>
             </Stack>
           </Stack>
-        </MenuItem>
+        </StyledMenuItem>
       ))}
-    </Select>
+    </StyledSelect>
   )
 }
