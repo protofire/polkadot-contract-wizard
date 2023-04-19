@@ -7,7 +7,7 @@ import {
   Stack,
   styled
 } from '@mui/material'
-import { truncateAddress } from '@/utils/formatString'
+import { shortNameLonger, truncateAddress } from '@/utils/formatString'
 import { KeyringAccount } from 'src/domain/KeyringAccouns'
 import { AvatarAccount } from './AvatarAccount'
 
@@ -85,7 +85,7 @@ export function AccountSelect({
           <Stack sx={{ display: 'flex', flexDirection: 'row' }}>
             <AvatarAccount address={a.address} />
             <Stack>
-              <span>{a.label}</span>
+              <span>{shortNameLonger(a.label)}</span>
               <p>{truncateAddress(a.address)}</p>
             </Stack>
           </Stack>

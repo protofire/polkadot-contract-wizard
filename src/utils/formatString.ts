@@ -48,3 +48,14 @@ export function truncateAddress(
       : value
     : ''
 }
+
+export function shortNameLonger(name: string, maxCharacters = 10): string {
+  const words = name.split(' ')
+  if (words.length > 1 && words[0].length > maxCharacters) {
+    const shortened_first_word =
+      words[0].slice(0, 10) + '...' + words[0].slice(-1)
+    return `${shortened_first_word} ${words.slice(1).join(' ')}`
+  } else {
+    return name
+  }
+}
