@@ -17,7 +17,7 @@ const StyledSelect = styled(Select)<SelectProps>(({ theme }) => ({
   margin: '0.5rem 0',
   padding: '0',
   height: '2.88em',
-  borderRadius: '5rem',
+  borderRadius: '0.5rem',
 
   '& fieldset': {
     top: '0'
