@@ -1,13 +1,13 @@
-export const enum WalletConnectionEvents {
+export enum WalletConnectionEvents {
   walletConnectInit = 'walletConnectInit',
   changeAccountAddress = 'changeAccountAddress'
 }
 
-export const enum AppNotificationEvents {
+export enum AppNotificationEvents {
   notificationUpdated = 'notificationUpdated'
 }
 
-export const enum SmartContractEvents {
+export enum SmartContractEvents {
   'contractCompiled' = 'contractCompiled',
   'contractInstatiate' = 'contractInstatiate'
 }

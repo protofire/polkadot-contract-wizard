@@ -6,7 +6,7 @@ import {
   useState
 } from 'react'
 
-import { Contract, SmartContractEvents } from '@/domain'
+import { Contract, SmartContractEvents, WalletConnectionEvents } from '@/domain'
 import { StorageContractRepository } from '@/infrastructure/LocalStorageContractRepository'
 import { useNetworkAccountsContext } from './NetworkAccountsContext'
 
@@ -44,13 +44,21 @@ export function StorageContractsProvider({
   // update repository when events triggered
   useEffect(() => {
     document.addEventListener(
-      SmartContractEvents.contractInstatiate,
+      SmartContractEvents.contractCompiled,
+      loadContractRepository
+    )
+    document.addEventListener(
+      WalletConnectionEvents.changeAccountAddress,
       loadContractRepository
     )
 
     return () => {
       document.removeEventListener(
-        SmartContractEvents.contractInstatiate,
+        SmartContractEvents.contractCompiled,
+        loadContractRepository
+      )
+      document.removeEventListener(
+        WalletConnectionEvents.changeAccountAddress,
         loadContractRepository
       )
     }

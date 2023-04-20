@@ -28,7 +28,7 @@ const backendRouterApi = {
     method: 'POST'
   },
   contractMetadata: {
-    pathName: 'contract-metadata?code_id=',
+    pathName: 'contract?code_id=',
     method: 'GET'
   }
 }
