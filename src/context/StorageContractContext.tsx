@@ -9,6 +9,7 @@ import {
 import { Contract, SmartContractEvents } from '@/domain'
 import { StorageContractRepository } from '@/infrastructure/LocalStorageContractRepository'
 import { useNetworkAccountsContext } from './NetworkAccountsContext'
+import { useMultiEventListener } from 'src/hooks/useMultipleEventListener'
 
 interface StorageContractContextValues {
   contracts: Contract[]
@@ -42,26 +43,20 @@ export function StorageContractsProvider({
   }, [loadContractRepository, repository])
 
   // update repository when events triggered
-  useEffect(() => {
-    document.addEventListener(
-      SmartContractEvents.contractInstatiate,
-      loadContractRepository
-    )
-
-    return () => {
-      document.removeEventListener(
-        SmartContractEvents.contractInstatiate,
-        loadContractRepository
-      )
-    }
-  }, [loadContractRepository])
+  useMultiEventListener(
+    [
+      SmartContractEvents.contractCompiled,
+      SmartContractEvents.contractInstatiate
+    ],
+    loadContractRepository
+  )
 
   const save = useCallback(
     (accountAddress: string, smartContract: Contract) => {
       repository.save(accountAddress, smartContract)
 
       document.dispatchEvent(
-        new CustomEvent(SmartContractEvents.contractInstatiate)
+        new CustomEvent(SmartContractEvents.contractCompiled)
       )
     },
     [repository]

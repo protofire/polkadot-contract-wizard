@@ -1,6 +1,7 @@
 import { createUrl } from '@/infrastructure'
 
 export const IS_PRODUCTION = process.env.NODE_ENV === ('production' as string)
+export const IS_DEVELOPMENT = process.env.NODE_ENV === ('development' as string)
 
 export interface DappConfig {
   name: string
@@ -28,7 +29,7 @@ const backendRouterApi = {
     method: 'POST'
   },
   contractMetadata: {
-    pathName: 'contract-metadata?code_id=',
+    pathName: 'contract?code_id=',
     method: 'GET'
   }
 }
