@@ -12,6 +12,7 @@ import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet'
 
 import Transitions from 'src/view/components/Transitions'
 import LogoMobile from 'src/view/components/LogoMobile'
+import { WalletConnectButton } from '@/view/components/WalletConnectButton'
 
 // ==============================|| HEADER CONTENT - MOBILE ||============================== //
 const MobileSection = () => {
@@ -84,7 +85,9 @@ const MobileSection = () => {
             <Paper sx={{}}>
               <ClickAwayListener onClickAway={handleClose}>
                 <AppBar color="inherit">
-                  <Toolbar>{/* <Profile /> */}</Toolbar>
+                  <Toolbar>
+                    <WalletConnectButton />
+                  </Toolbar>
                 </AppBar>
               </ClickAwayListener>
             </Paper>
