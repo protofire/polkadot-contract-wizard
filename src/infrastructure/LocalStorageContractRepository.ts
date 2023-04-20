@@ -37,7 +37,12 @@ export class LocalStorageContractRepository
   save(accountAddress: string, smartContract: Contract): void {
     const accountContracts = this.searchBy(accountAddress)
 
-    this.update({ [accountAddress]: accountContracts.concat(smartContract) })
+    this.update({
+      [accountAddress]: this.addOrReplaceContract(
+        accountContracts,
+        smartContract
+      )
+    })
   }
 
   private update(accountContracts: AccountContractsMap): void {
@@ -47,5 +52,20 @@ export class LocalStorageContractRepository
       this.localStorageKey,
       JSON.stringify({ ...mapContracts, ...accountContracts })
     )
+  }
+
+  private addOrReplaceContract(contracts: Contract[], newContract: Contract) {
+    const index = contracts.findIndex(
+      item => item.code_id === newContract.code_id
+    )
+
+    if (index === -1) {
+      return [...contracts, newContract]
+    } else {
+      const updatedList = [...contracts]
+      updatedList[index] = newContract
+
+      return updatedList
+    }
   }
 }

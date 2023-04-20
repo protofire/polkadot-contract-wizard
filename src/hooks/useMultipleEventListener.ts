@@ -1,12 +1,17 @@
 import { useEffect, useRef } from 'react'
+import { IS_DEVELOPMENT } from '../constants'
+import { SmartContractEvents, WalletConnectionEvents } from '@/domain'
 
-type EventCallback<T> = (event: T) => void
+type EventCallback = () => void
+type EventNames =
+  | keyof typeof WalletConnectionEvents
+  | keyof typeof SmartContractEvents
 
-export const useMultiEventListener = <T extends Event>(
-  events: string[], // accept any array of strings as event names
-  callback: EventCallback<T>
-): void => {
-  const callbackRef = useRef<EventCallback<T>>(callback)
+export function useMultiEventListener(
+  events: EventNames[], // accept any array of strings as event names
+  callback: EventCallback
+): void {
+  const callbackRef = useRef<EventCallback>(callback)
 
   useEffect(() => {
     callbackRef.current = callback
@@ -14,17 +19,20 @@ export const useMultiEventListener = <T extends Event>(
 
   useEffect(() => {
     const handleEvent = (event: Event) => {
-      callbackRef.current(event as T) // type assertion
+      if (IS_DEVELOPMENT) {
+        console.info('Received event::', event.type)
+      }
+      callback()
     }
 
     events.forEach(eventName => {
-      window.addEventListener(eventName, handleEvent)
+      document.addEventListener(eventName, handleEvent)
     })
 
     return () => {
       events.forEach(eventName => {
-        window.removeEventListener(eventName, handleEvent)
+        document.removeEventListener(eventName, handleEvent)
       })
     }
-  }, [events])
+  }, [callback, events])
 }

@@ -11,7 +11,7 @@ import { shortNameLonger, truncateAddress } from '@/utils/formatString'
 import { KeyringAccount } from 'src/domain/KeyringAccouns'
 import { AvatarAccount } from './AvatarAccount'
 
-const StyledSelect = styled(Select)<SelectProps>(({ theme }) => ({
+const StyledSelect = styled(Select)<SelectProps>(() => ({
   color: 'white',
   display: 'flex',
   margin: '0.5rem 0',

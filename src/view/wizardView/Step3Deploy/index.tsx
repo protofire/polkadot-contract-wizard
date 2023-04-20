@@ -204,7 +204,7 @@ export default function Step3Deploy({
         nextLabel="Deploy Contract"
         handleBack={handleBack}
         handleNext={areThereParameters ? undefined : _handleNext}
-        // hiddenBack={true}
+        hiddenBack={true}
         nextButtonProps={{
           endIcon: isButtonNextDisabled ? '🚫' : '🚀',
           disabled: isButtonNextDisabled,
