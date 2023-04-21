@@ -48,7 +48,9 @@ const MobileSection = () => {
           component="span"
           disableRipple
           sx={{
-            bgcolor: open ? 'grey.300' : 'grey.100'
+            bgcolor: open ? 'grey.300' : 'grey.100',
+            background: 'transparent',
+            color: 'white'
           }}
           ref={anchorRef}
           aria-controls={open ? 'menu-list-grow' : undefined}
@@ -82,9 +84,9 @@ const MobileSection = () => {
       >
         {({ TransitionProps }) => (
           <Transitions type="fade" in={open} {...TransitionProps}>
-            <Paper sx={{}}>
+            <Paper>
               <ClickAwayListener onClickAway={handleClose}>
-                <AppBar color="inherit">
+                <AppBar>
                   <Toolbar>
                     <WalletConnectButton />
                   </Toolbar>
