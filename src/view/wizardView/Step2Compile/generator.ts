@@ -72,6 +72,9 @@ export function generateCode(standardName: TokenType, data: ContractConfig) {
         }${isSmallerVer(VERSION, 'v1.6.0') ? 'Internal' : 'Transfer'}`
       )
     )
+    contract.addBrushImport(
+      new Import(`${BRUSH_NAME}::contracts::${standardName}::*`)
+    )
     contract.addAdditionalImpl(
       new TraitImpl(
         `${isSmallerVer(VERSION, 'v2.2.0') ? standardName.toUpperCase() : ''}${
@@ -96,7 +99,7 @@ export function generateCode(standardName: TokenType, data: ContractConfig) {
                   return Err(PSP22Error::Custom(String::from("Cap exceeded")))
               }
               Ok(())`
-              : null
+              : 'Ok(())'
           )
         ]
       )
