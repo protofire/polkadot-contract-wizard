@@ -31,13 +31,26 @@ To run the application it is necessary to copy the environment variables file `.
 
 2. (Optional) Set the environment variables for the container on [dev.docker.env](./.docker/dev.docker.env). These will be used to configure the application.
 
-3. Run the following command to start the container (Will do a build previously in the first run):
+3. Clone the backend repository at the same directory as this one. 
+
+  ```bash
+    git clone https://github.com/GabrielCamba/ink-compiler-be.git ../ink-compiler-be
+  ```
+
+The file structure should be as follows:
+  ```
+  base-dir
+  \__polkadot-contract-wizard
+  \__ink-compiler-be
+  ```
+
+4. Run the following command to start the container (Will do a build previously in the first run):
 
     ```bash
     docker-compose --env-file .docker/dev.docker.env up
     ```
 
-4. Your application should now be running on the specified port. You can access it by visiting `localhost:<EXTERNAL_PORT>` (Port 3000 by default) in your browser.
+5. Your application should now be running on the specified port. You can access it by visiting `localhost:<EXTERNAL_PORT>` (Port 3000 by default) in your browser.
 
 > ✋ Stop the all the running containers with the following command:  
 > `docker-compose stop`
