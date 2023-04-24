@@ -15,12 +15,12 @@ import {
   SVG_AWESOME,
   SVG_SUCCESSFULLY
 } from '@/constants/index'
-import { FormEvent } from 'src/domain/common/FormEvent'
+import { FormEvent } from '@/domain/common/FormEvent'
 import { useCompileContract } from 'src/hooks/useCompileContract'
 import { ContractMetadata } from '@/infrastructure'
 import { generateCode } from '../Step2Compile/generator'
-
-type SubmitedDataForm = Array<[ConstructorFieldName, string | number]>
+import { useDeployContract } from 'src/hooks/useDeployContract'
+import { ContractConstructorDataForm } from '@/domain/wizard/step3DeployForm.types'
 
 function textFieldFactory(field: ConstructorTokenField, required = true) {
   {
@@ -62,7 +62,7 @@ export default function Step3Deploy({
   tokenType: TokenType
   constructorFields?: ControlsToken<'Constructor'>
 }) {
-  const [argsForm, setArgsForm] = useState<SubmitedDataForm>([])
+  const [argsForm, setArgsForm] = useState<ContractConstructorDataForm>([])
   const { handleBack, handleNext, dataForm } = useStepsSCWizard()
   const [contractCompiled, setContractCompiled] = useState<
     ContractMetadata | undefined
@@ -80,6 +80,7 @@ export default function Step3Deploy({
     [dataForm, tokenType]
   )
   const mustLoad = useRef<boolean>(true)
+  const { deployContract } = useDeployContract()
 
   useEffect(() => {
     if (!dataForm.currentAccount || !mustLoad.current) return
@@ -88,6 +89,7 @@ export default function Step3Deploy({
       address: dataForm.currentAccount,
       tokenType,
       code: codeGenerated,
+      isPausable: !!dataForm.extensions.Pausable,
       ...(dataForm.security ? { security: dataForm.security } : {})
     }).then(contract => contract && setContractCompiled(contract))
 
@@ -100,7 +102,8 @@ export default function Step3Deploy({
     dataForm.currentAccount,
     dataForm.security,
     tokenType,
-    mustLoad
+    mustLoad,
+    dataForm.extensions.Pausable
   ])
 
   const handleSubmit = async (
@@ -109,9 +112,9 @@ export default function Step3Deploy({
     event.preventDefault()
     const { elements } = event.target
 
-    const _dataForm: SubmitedDataForm = []
+    const _dataForm: ContractConstructorDataForm = []
 
-    mandatoryFields.forEach(field => {
+    mandatoryFields.concat(metadataFields).forEach(field => {
       if (elements[field.fieldName]) {
         _dataForm.push([
           field.fieldName,
@@ -123,16 +126,18 @@ export default function Step3Deploy({
     })
 
     setArgsForm(_dataForm)
-    _handleNext()
+    _handleDeploy()
   }
 
-  const _handleNext = () => {
+  const _handleDeploy = () => {
     // TODO Replace real tx
-    console.log(
-      '[compiledResponse]:',
-      contractCompiled && JSON.parse(contractCompiled?.metadata)
-    )
-    handleNext()
+    contractCompiled &&
+      deployContract({
+        wasm: contractCompiled.wasm,
+        metadata: contractCompiled.metadata,
+        argsForm
+      })
+    // handleNext()
   }
 
   return (
@@ -203,7 +208,7 @@ export default function Step3Deploy({
       <BackNextButton
         nextLabel="Deploy Contract"
         handleBack={handleBack}
-        handleNext={areThereParameters ? undefined : _handleNext}
+        handleNext={areThereParameters ? undefined : _handleDeploy}
         hiddenBack={true}
         nextButtonProps={{
           endIcon: isButtonNextDisabled ? '🚫' : '🚀',

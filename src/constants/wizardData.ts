@@ -11,7 +11,7 @@ export type OptionTokenField = {
 }
 
 export type ConstructorFieldName =
-  | 'initial_supply'
+  | 'initialSupply'
   | 'name'
   | 'symbol'
   | 'decimal'
@@ -62,7 +62,7 @@ export const WIZARD_CONFIG: Array<TokenOptionConfig> = [
             placeholder: '1000000',
             tooltip: '',
             mandatory: true,
-            fieldName: 'initial_supply'
+            fieldName: 'initialSupply'
           },
           {
             name: 'Name',

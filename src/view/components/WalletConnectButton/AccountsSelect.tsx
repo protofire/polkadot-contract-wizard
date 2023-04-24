@@ -40,7 +40,7 @@ const StyledSelect = styled(Select)<SelectProps>(() => ({
   }
 }))
 
-const StyledMenuItem = styled(MenuItem)<MenuItemProps>(({ theme }) => ({
+const StyledMenuItem = styled(MenuItem)<MenuItemProps>(() => ({
   color: 'white',
 
   '& span': {

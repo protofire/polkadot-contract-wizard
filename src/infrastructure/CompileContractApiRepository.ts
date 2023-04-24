@@ -1,11 +1,10 @@
 import { BackendApiConfig } from '@/constants/config'
-import { TokenType, SecurityOfToken } from '@/types'
-import { ContractCompiled, request } from '@/infrastructure'
+import { AllowedFeatures, ContractCompiled, request } from '@/infrastructure'
 
 export interface CompileContractBody {
   address: string
   code: string
-  features: [TokenType, SecurityOfToken?]
+  features: AllowedFeatures[]
 }
 
 /*
