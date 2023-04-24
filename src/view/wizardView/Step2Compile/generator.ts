@@ -1,5 +1,5 @@
 import { ContractConfig, TokenType } from '@/types'
-import { getExtensions } from './getExtensions'
+import { getExtensions } from '@/view/wizardView/Step2Compile/getExtensions'
 import { BRUSH_NAME, CONTRACT_NAME, VERSION } from '@/constants/index'
 import {
   ContractBuilder,
@@ -7,7 +7,7 @@ import {
   Method,
   StorageBuilder,
   TraitImpl
-} from './builders'
+} from '@/view/wizardView/Step2Compile/builders'
 import { isGreaterVer, isSmallerVer } from '@/utils/comparisonString'
 
 export function generateCode(standardName: TokenType, data: ContractConfig) {

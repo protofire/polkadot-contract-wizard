@@ -5,6 +5,7 @@
 pub mod my_psp22 {
     // imports from openbrush
     use openbrush::contracts::psp22::Transfer;
+    use openbrush::contracts::psp22::*;
     use openbrush::traits::String;
     use openbrush::traits::Storage;
     use openbrush::contracts::access_control::only_role;
@@ -61,9 +62,9 @@ pub mod my_psp22 {
         #[openbrush::modifiers(when_not_paused)]
         fn _before_token_transfer(&mut self, _from: Option<&AccountId>, _to: Option<&AccountId>, _amount: &Balance) -> Result<(), PSP22Error> {
             if _from.is_none() && (self.total_supply() + _amount) > self.cap() {
-                return Err(PSP22Error::Custom(String::from("Cap exceeded")))
-            }
-            Ok(())
+                  return Err(PSP22Error::Custom(String::from("Cap exceeded")))
+              }
+              Ok(())
         }
     }
 

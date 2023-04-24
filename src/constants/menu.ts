@@ -3,7 +3,7 @@ import {
   SvgIconComponent,
   HomeRounded
 } from '@mui/icons-material'
-import { ROUTES } from './routes'
+import { ROUTES } from '@/constants/routes'
 
 export type NavLink = {
   id: string
