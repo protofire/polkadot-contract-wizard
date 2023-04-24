@@ -13,7 +13,8 @@ const customJestConfig = {
     '^@/view/(.*)$': '<rootDir>/src/view/$1',
     '^@/utils/(.*)$': '<rootDir>/src/utils/$1',
     '^@/constants/(.*)$': '<rootDir>/src/constants/$1',
-    '^@/domain/(.*)$': '<rootDir>/domain/$1'
+    '^@/domain/(.*)$': '<rootDir>/src/domain/$1',
+    '^@/infrastructure/(.*)$': '<rootDir>/src/infrastructure/$1'
   }
 }
 module.exports = createJestConfig(customJestConfig)

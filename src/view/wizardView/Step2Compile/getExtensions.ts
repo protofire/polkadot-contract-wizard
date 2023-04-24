@@ -5,7 +5,7 @@ import {
   Method,
   StorageBuilder,
   TraitImpl
-} from './builders'
+} from '@/view/wizardView/Step2Compile/builders'
 import { BRUSH_NAME, CONTRACT_NAME, VERSION } from '@/constants/index'
 import {
   isGreaterVer,

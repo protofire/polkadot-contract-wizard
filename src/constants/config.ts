@@ -1,4 +1,4 @@
-import { createUrl } from '@/infrastructure'
+import { createUrl } from '@/infrastructure/common/request'
 
 export const IS_PRODUCTION = process.env.NODE_ENV === ('production' as string)
 export const IS_DEVELOPMENT = process.env.NODE_ENV === ('development' as string)
@@ -10,9 +10,7 @@ export interface DappConfig {
 
 export const DAPP_CONFIG: DappConfig = {
   name: 'Polkadot contract wizard',
-  providerSocket: IS_PRODUCTION
-    ? (process.env.NEXT_PUBLIC_PROVIDER_SOCKET_PROD as string)
-    : (process.env.NEXT_PUBLIC_PROVIDER_SOCKET_DEV as string)
+  providerSocket: 'wss://rococo-contracts-rpc.polkadot.io'
 }
 
 const backendRouterApi = {
