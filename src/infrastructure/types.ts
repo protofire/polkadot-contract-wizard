@@ -1,6 +1,8 @@
+import { TokenType } from '@/types'
+
 export interface RootObject<T> {
   data: T
-  error?: string
+  error?: { message: string }
 }
 
 export interface ContractMetadata {
@@ -10,3 +12,9 @@ export interface ContractMetadata {
 }
 
 export type ContractCompiled = RootObject<ContractMetadata>
+
+export type AllowedFeatures =
+  | TokenType
+  | 'pausable'
+  | 'ownable'
+  | 'access-control'

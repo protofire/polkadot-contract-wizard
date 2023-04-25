@@ -15,12 +15,14 @@ import {
   SVG_AWESOME,
   SVG_SUCCESSFULLY
 } from '@/constants/index'
-import { FormEvent } from 'src/domain/common/FormEvent'
+import { FormEvent } from '@/domain/common/FormEvent'
 import { useCompileContract } from 'src/hooks/useCompileContract'
 import { ContractMetadata } from '@/infrastructure'
 import { generateCode } from '../Step2Compile/generator'
-
-type SubmitedDataForm = Array<[ConstructorFieldName, string | number]>
+import { useDeployContract } from 'src/hooks/useDeployContract'
+import { ContractConstructorDataForm } from '@/domain/wizard/step3DeployForm.types'
+import { useNetworkAccountsContext } from 'src/context/NetworkAccountsContext'
+import { ContractDeployed } from '@/domain'
 
 function textFieldFactory(field: ConstructorTokenField, required = true) {
   {
@@ -57,12 +59,16 @@ function useMemoizeFields(
 
 export default function Step3Deploy({
   constructorFields,
-  tokenType
+  tokenType,
+  onDeployContract
 }: {
   tokenType: TokenType
   constructorFields?: ControlsToken<'Constructor'>
+  onDeployContract: (deployedContract: ContractDeployed) => void
 }) {
-  const [argsForm, setArgsForm] = useState<SubmitedDataForm>([])
+  const {
+    state: { chainInfo }
+  } = useNetworkAccountsContext()
   const { handleBack, handleNext, dataForm } = useStepsSCWizard()
   const [contractCompiled, setContractCompiled] = useState<
     ContractMetadata | undefined
@@ -80,6 +86,11 @@ export default function Step3Deploy({
     [dataForm, tokenType]
   )
   const mustLoad = useRef<boolean>(true)
+  const {
+    deployContract,
+    isLoading: isDeploying,
+    error: errorDeploying
+  } = useDeployContract()
 
   useEffect(() => {
     if (!dataForm.currentAccount || !mustLoad.current) return
@@ -88,6 +99,7 @@ export default function Step3Deploy({
       address: dataForm.currentAccount,
       tokenType,
       code: codeGenerated,
+      isPausable: !!dataForm.extensions.Pausable,
       ...(dataForm.security ? { security: dataForm.security } : {})
     }).then(contract => contract && setContractCompiled(contract))
 
@@ -100,7 +112,8 @@ export default function Step3Deploy({
     dataForm.currentAccount,
     dataForm.security,
     tokenType,
-    mustLoad
+    mustLoad,
+    dataForm.extensions.Pausable
   ])
 
   const handleSubmit = async (
@@ -109,9 +122,9 @@ export default function Step3Deploy({
     event.preventDefault()
     const { elements } = event.target
 
-    const _dataForm: SubmitedDataForm = []
+    const _dataForm: ContractConstructorDataForm = []
 
-    mandatoryFields.forEach(field => {
+    mandatoryFields.concat(metadataFields).forEach(field => {
       if (elements[field.fieldName]) {
         _dataForm.push([
           field.fieldName,
@@ -122,17 +135,27 @@ export default function Step3Deploy({
       }
     })
 
-    setArgsForm(_dataForm)
-    _handleNext()
+    _handleDeploy(_dataForm)
   }
 
-  const _handleNext = () => {
-    // TODO Replace real tx
-    console.log(
-      '[compiledResponse]:',
-      contractCompiled && JSON.parse(contractCompiled?.metadata)
-    )
-    handleNext()
+  const _handleDeploy = async (
+    constructorParams: ContractConstructorDataForm
+  ) => {
+    if (!contractCompiled || !chainInfo) return
+
+    const result = await deployContract({
+      wasm: contractCompiled.wasm,
+      metadata: contractCompiled.metadata,
+      argsForm: constructorParams,
+      code_id: contractCompiled.code_id,
+      tokenType,
+      blockchain: chainInfo.systemChain || 'unknown'
+    })
+
+    if (result) {
+      onDeployContract(result)
+      handleNext()
+    }
   }
 
   return (
@@ -203,11 +226,12 @@ export default function Step3Deploy({
       <BackNextButton
         nextLabel="Deploy Contract"
         handleBack={handleBack}
-        handleNext={areThereParameters ? undefined : _handleNext}
+        handleNext={areThereParameters ? undefined : () => _handleDeploy([])}
         hiddenBack={true}
         nextButtonProps={{
           endIcon: isButtonNextDisabled ? '🚫' : '🚀',
           disabled: isButtonNextDisabled,
+          loading: isDeploying,
           ...(areThereParameters && { type: 'submit', form: 'deploy-form' })
         }}
       />

@@ -31,6 +31,7 @@ const backendRouterApi = {
     method: 'GET'
   }
 }
+
 type BackendRoutesApi = keyof typeof backendRouterApi
 type RouteApi = Record<
   BackendRoutesApi,

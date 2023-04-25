@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React, { useMemo, useState } from 'react'
 import {
   Typography,
   StepLabel,
@@ -9,10 +9,9 @@ import {
   Stack
 } from '@mui/material'
 import NextLink from 'next/link'
+import dynamic from 'next/dynamic'
 
 import Step1Extensions from './Step1Extensions'
-import Step2Compile from './Step2Compile'
-import Step3Deploy from './Step3Deploy'
 import { StyledButton as Button, Stepper as StepperWrapper } from '@/components'
 import Image from 'next/image'
 import { StepsSCWizardContext } from '@/context'
@@ -22,15 +21,26 @@ import {
   factoryControlsToken,
   factoryOptionTokenValues
 } from 'src/domain/wizard/factoriesContract'
+import { ContractDeployed } from '@/domain'
 
 const STEPS = ['Extensions', 'Compile', 'Deploy']
+
+const Step2Compile = dynamic(
+  () => import('@/view/wizardView/Step2Compile').then(res => res.default),
+  { ssr: false }
+)
+const Step3Deploy = dynamic(
+  () => import('@/view/wizardView/Step3Deploy').then(res => res.default),
+  { ssr: false }
+)
 
 export default function FormWizard({
   token
 }: {
   token: TokenType
 }): JSX.Element {
-  const [activeStep, setActiveStep] = React.useState(0)
+  const [activeStep, setActiveStep] = useState(0)
+  const [deployedContract, setDeployedContract] = useState<ContractDeployed>()
   const { extensionFields, constructorFields } = useMemo(() => {
     return factoryControlsToken(token)
   }, [token])
@@ -52,6 +62,7 @@ export default function FormWizard({
       extensions: factoryOptionTokenValues(extensionFields),
       constructor: factoryOptionTokenValues(constructorFields)
     })
+    setDeployedContract(undefined)
   }
 
   const getStepContent = () => {
@@ -73,6 +84,7 @@ export default function FormWizard({
             constructorFields={
               constructorFields as ControlsToken<'Constructor'>
             }
+            onDeployContract={setDeployedContract}
           />
         )
       default:
@@ -123,20 +135,15 @@ export default function FormWizard({
                       flexDirection: 'row'
                     }}
                   >
-                    <Image
-                      alt={'compiling'}
-                      src={GIF_COMPILING}
-                      width={150}
-                      height={150}
-                    />
                     <Typography
                       variant="h4"
                       align="center"
                       sx={{ margin: '0 1rem' }}
                     >
                       <p>
-                        We are working on this feature. We&apos;ll be delivering
-                        this in the next milestone. 📅
+                        Your smart contract is on the network `
+                        {deployedContract?.blockchain}` and its address is `
+                        {deployedContract?.address}`
                       </p>
                     </Typography>
                   </Stack>

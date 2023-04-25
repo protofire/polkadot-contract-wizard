@@ -6,16 +6,33 @@ import {
 } from '@/infrastructure/CompileContractApiRepository'
 import { GetServiceData, TokenType, SecurityOfToken } from '@/types'
 import { BACKEND_API } from '@/constants/index'
-import { ContractMetadata } from '@/infrastructure'
+import { AllowedFeatures, ContractMetadata } from '@/infrastructure'
 import { useAppNotificationContext } from 'src/context/AppNotificationContext'
 import { useStorageContractsContext } from '@/context'
 
 type ReturnValue = GetServiceData
 
-const compilerApi = new CompileContractApiRepository(BACKEND_API)
+const compileContractApi = new CompileContractApiRepository(BACKEND_API)
 type UseCreateCompilation = Omit<CompileContractBody, 'features'> & {
   tokenType: TokenType
+  isPausable: boolean
   security?: SecurityOfToken
+}
+
+// To comply with API that receives a list of AllowedFeatures
+function getAllowedFeaturesApi(
+  tokenType: TokenType,
+  security: SecurityOfToken | undefined,
+  isPausable: boolean
+): AllowedFeatures[] {
+  const allowedFeatures = [tokenType as AllowedFeatures]
+
+  if (security === 'access_control_enumerable' || security === 'access_control')
+    allowedFeatures.push('access-control')
+
+  if (isPausable) allowedFeatures.push('pausable')
+
+  return allowedFeatures
 }
 
 export const useCompileContract = (): ReturnValue & {
@@ -33,21 +50,24 @@ export const useCompileContract = (): ReturnValue & {
       address,
       code,
       tokenType,
-      security
+      security,
+      isPausable
     }: UseCreateCompilation): Promise<ContractMetadata | void> => {
       setError(undefined)
       setIsLoading(true)
 
       try {
-        const response = await compilerApi.create({
+        const response = await compileContractApi.create({
           address,
           code,
-          features: [tokenType, security]
+          features: getAllowedFeaturesApi(tokenType, security, isPausable)
         })
 
         setIsLoading(false)
-        if (response.error) throw Error(response.error)
-
+        if (response.error) {
+          console.log(response.error.message)
+          throw Error(response.error.message)
+        }
         addContractToStorage(address, {
           code_id: response.data.code_id,
           status: 'compiled',
@@ -55,7 +75,7 @@ export const useCompileContract = (): ReturnValue & {
         })
         return response['data']
       } catch (error) {
-        const _errorMsg = `An error occurred when trying to compile the server contract on the server, ${error}`
+        const _errorMsg = `An error occurred when trying to compile the server contract on the server`
         setError(_errorMsg)
         addNotification({
           message: _errorMsg,

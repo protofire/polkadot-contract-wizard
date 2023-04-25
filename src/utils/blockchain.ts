@@ -10,3 +10,8 @@ export const isValidAddress = (address: string | undefined) => {
     return false
   }
 }
+
+export const genRanHex: (size?: number) => `0x${string}` = (size = 32) =>
+  `0x${[...Array<string>(size)]
+    .map(() => Math.floor(Math.random() * 16).toString(16))
+    .join('')}`
