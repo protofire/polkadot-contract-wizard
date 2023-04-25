@@ -31,18 +31,11 @@ To run the application it is necessary to copy the environment variables file `.
 
 2. (Optional) Set the environment variables for the container on [dev.docker.env](./.docker/dev.docker.env). These will be used to configure the application.
 
-3. Clone the backend repository at the same directory as this one. 
+3. Init the backend submodule with the following command:
 
-  ```bash
-    git clone https://github.com/GabrielCamba/ink-compiler-be.git ../ink-compiler-be
-  ```
-
-The file structure should be as follows:
-  ```
-  base-dir
-  \__polkadot-contract-wizard
-  \__ink-compiler-be
-  ```
+    ```bash
+    git submodule update --init
+    ```
 
 4. Run the following command to start the container (Will do a build previously in the first run):
 
@@ -57,6 +50,8 @@ The file structure should be as follows:
 
 #### B. Local Stack
 
+#### Frontend
+
 - ⚠️ Requirements:
   - node `^14.18.0` || `^16.14.0` || `>=18.0.0`
   - yarn >= 1.20
@@ -64,7 +59,7 @@ The file structure should be as follows:
 1. Open a command-line interface in the application's root directory and install the packages with the command:
 
     ```bash
-        yarn install
+    yarn install
     ```
 
 2. To start the app, use:
@@ -79,6 +74,10 @@ The file structure should be as follows:
 
 > ✋ Stop the Server  
 > To stop the development server, press `Ctrl + C` in the terminal.
+
+#### Backend
+
+- Follow the instructions in the README.md of the [backend](./ink-compiler-be/README.md) folder.
 
 ## License
 

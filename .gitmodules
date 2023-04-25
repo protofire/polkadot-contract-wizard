@@ -1,0 +1,3 @@
+[submodule "ink-compiler-be"]
+	path = ink-compiler-be
+	url = https://github.com/protofire/ink-compiler-be.git
