@@ -9,10 +9,9 @@ import {
   Stack
 } from '@mui/material'
 import NextLink from 'next/link'
+import dynamic from 'next/dynamic'
 
 import Step1Extensions from './Step1Extensions'
-import Step2Compile from './Step2Compile'
-import Step3Deploy from './Step3Deploy'
 import { StyledButton as Button, Stepper as StepperWrapper } from '@/components'
 import Image from 'next/image'
 import { StepsSCWizardContext } from '@/context'
@@ -24,6 +23,15 @@ import {
 } from 'src/domain/wizard/factoriesContract'
 
 const STEPS = ['Extensions', 'Compile', 'Deploy']
+
+const Step2Compile = dynamic(
+  () => import('@/view/wizardView/Step2Compile').then(res => res.default),
+  { ssr: false }
+)
+const Step3Deploy = dynamic(
+  () => import('@/view/wizardView/Step3Deploy').then(res => res.default),
+  { ssr: false }
+)
 
 export default function FormWizard({
   token
