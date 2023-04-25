@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React, { useMemo, useState } from 'react'
 import {
   Typography,
   StepLabel,
@@ -21,6 +21,7 @@ import {
   factoryControlsToken,
   factoryOptionTokenValues
 } from 'src/domain/wizard/factoriesContract'
+import { ContractDeployed } from '@/domain'
 
 const STEPS = ['Extensions', 'Compile', 'Deploy']
 
@@ -38,7 +39,8 @@ export default function FormWizard({
 }: {
   token: TokenType
 }): JSX.Element {
-  const [activeStep, setActiveStep] = React.useState(0)
+  const [activeStep, setActiveStep] = useState(0)
+  const [deployedContract, setDeployedContract] = useState<ContractDeployed>()
   const { extensionFields, constructorFields } = useMemo(() => {
     return factoryControlsToken(token)
   }, [token])
@@ -60,6 +62,7 @@ export default function FormWizard({
       extensions: factoryOptionTokenValues(extensionFields),
       constructor: factoryOptionTokenValues(constructorFields)
     })
+    setDeployedContract(undefined)
   }
 
   const getStepContent = () => {
@@ -81,6 +84,7 @@ export default function FormWizard({
             constructorFields={
               constructorFields as ControlsToken<'Constructor'>
             }
+            onDeployContract={setDeployedContract}
           />
         )
       default:
@@ -131,20 +135,15 @@ export default function FormWizard({
                       flexDirection: 'row'
                     }}
                   >
-                    <Image
-                      alt={'compiling'}
-                      src={GIF_COMPILING}
-                      width={150}
-                      height={150}
-                    />
                     <Typography
                       variant="h4"
                       align="center"
                       sx={{ margin: '0 1rem' }}
                     >
                       <p>
-                        We are working on this feature. We&apos;ll be delivering
-                        this in the next milestone. 📅
+                        Your smart contract is on the network `
+                        {deployedContract?.blockchain}` and its address is `
+                        {deployedContract?.address}`
                       </p>
                     </Typography>
                   </Stack>

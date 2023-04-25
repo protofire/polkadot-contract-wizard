@@ -9,7 +9,6 @@ import { DAPP_CONFIG } from '@/constants/index'
 import { WalletConnectionEvents } from 'src/domain/DomainEvents'
 import { ChainType } from '@polkadot/types/interfaces/system'
 import { accountsInPossession } from 'src/domain/KeyringAccouns'
-import { NULL_CHAIN_PROPERTIES } from '@/constants/chainProperties'
 
 type NetworkState = 'DISCONNECTED' | 'CONNECTING' | 'CONNECTED' | 'ERROR'
 
@@ -194,7 +193,6 @@ export function NetworkAccountsContextProvider({
     )
   }
 
-  console.log('__chainInfo', state.chainInfo)
   return (
     <NetworkAccountsContext.Provider value={{ state, setCurrentAccount }}>
       {children}

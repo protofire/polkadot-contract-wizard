@@ -22,6 +22,7 @@ import { generateCode } from '../Step2Compile/generator'
 import { useDeployContract } from 'src/hooks/useDeployContract'
 import { ContractConstructorDataForm } from '@/domain/wizard/step3DeployForm.types'
 import { useNetworkAccountsContext } from 'src/context/NetworkAccountsContext'
+import { ContractDeployed } from '@/domain'
 
 function textFieldFactory(field: ConstructorTokenField, required = true) {
   {
@@ -58,10 +59,12 @@ function useMemoizeFields(
 
 export default function Step3Deploy({
   constructorFields,
-  tokenType
+  tokenType,
+  onDeployContract
 }: {
   tokenType: TokenType
   constructorFields?: ControlsToken<'Constructor'>
+  onDeployContract: (deployedContract: ContractDeployed) => void
 }) {
   const {
     state: { chainInfo }
@@ -149,7 +152,10 @@ export default function Step3Deploy({
       blockchain: chainInfo.systemName || 'unknown'
     })
 
-    if (result) handleNext()
+    if (result) {
+      onDeployContract(result)
+      handleNext()
+    }
   }
 
   return (

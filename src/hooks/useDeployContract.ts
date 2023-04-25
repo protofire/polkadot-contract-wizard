@@ -29,6 +29,7 @@ import {
   useStorageContractsContext
 } from '@/context'
 import { ContractDeployed } from '@/domain'
+import { genRanHex } from '@/utils/blockchain'
 
 type ReturnValue = GetServiceData
 
@@ -161,9 +162,7 @@ function createInstatiateTx(
 }
 
 export const useDeployContract = (): ReturnValue & {
-  deployContract: (
-    props: UseDeployContract
-  ) => Promise<DeployContractService | void>
+  deployContract: (props: UseDeployContract) => Promise<ContractDeployed | void>
 } => {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | undefined>()
@@ -181,7 +180,7 @@ export const useDeployContract = (): ReturnValue & {
       code_id,
       tokenType,
       blockchain
-    }: UseDeployContract): Promise<DeployContractService | void> => {
+    }: UseDeployContract): Promise<ContractDeployed | void> => {
       if (!currentAccount || !api) return
       setIsLoading(true)
       setError(undefined)
@@ -203,7 +202,7 @@ export const useDeployContract = (): ReturnValue & {
           accountId: currentAccount,
           metadata: metadataAbi,
           constructorIndex: 0,
-          salt: null,
+          salt: genRanHex(64),
           argValues: {},
           storageDepositLimit: getPredictedCharge(predictedStorageDeposit),
           gasLimit: gasRequired
@@ -214,17 +213,18 @@ export const useDeployContract = (): ReturnValue & {
 
       try {
         const result = await deployContractService({ api, tx, currentAccount })
-
-        addContractToStorage(currentAccount, {
-          type: tokenType,
+        const contractDeployed = {
           code_id,
-          status: 'deployed',
+          type: tokenType,
+          status: 'deployed' as const,
           address: result.contractAddress,
           blockchain,
           name: ''
-        })
+        }
 
-        return result
+        addContractToStorage(currentAccount, contractDeployed)
+
+        return contractDeployed
       } catch (error) {
         console.error(error)
         addNotification({
