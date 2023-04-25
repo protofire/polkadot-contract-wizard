@@ -15,7 +15,7 @@ import { Registry } from '@polkadot/types-codec/types'
 import { WeightV2 } from '@polkadot/types/interfaces'
 import { Bytes } from '@polkadot/types'
 
-import { GetServiceData } from '@/types'
+import { GetServiceData, TokenType } from '@/types'
 import { ContractMetadata } from '@/infrastructure'
 import { useNetworkAccountsContext } from 'src/context/NetworkAccountsContext'
 import { BN_ZERO } from '@/constants/numbers'
@@ -24,12 +24,16 @@ import {
   DeployContractService,
   deployContractService
 } from '@/infrastructure/deployContract'
-import { useAppNotificationContext } from '@/context'
+import {
+  useAppNotificationContext,
+  useStorageContractsContext
+} from '@/context'
 
 type ReturnValue = GetServiceData
 
-export type UseDeployContract = Pick<ContractMetadata, 'metadata' | 'wasm'> & {
+export type UseDeployContract = ContractMetadata & {
   argsForm: ContractConstructorDataForm
+  tokenType: TokenType
 }
 
 type UIStorageDeposit = {
@@ -162,14 +166,18 @@ export const useDeployContract = (): ReturnValue & {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | undefined>()
   const { addNotification } = useAppNotificationContext()
+  const { addContractToStorage } = useStorageContractsContext()
   const {
     state: { api, currentAccount }
   } = useNetworkAccountsContext()
+
   const deployContract = useCallback(
     async ({
       wasm,
       metadata,
-      argsForm
+      argsForm,
+      code_id,
+      tokenType
     }: UseDeployContract): Promise<DeployContractService | void> => {
       if (!currentAccount || !api) return
       setIsLoading(true)
@@ -204,6 +212,15 @@ export const useDeployContract = (): ReturnValue & {
       try {
         const result = await deployContractService({ api, tx, currentAccount })
 
+        addContractToStorage(currentAccount, {
+          type: tokenType,
+          code_id,
+          status: 'deployed',
+          address: result.contractAddress,
+          blockainId: 'rococo',
+          name: ''
+        })
+
         return result
       } catch (error) {
         console.error(error)
@@ -218,7 +235,7 @@ export const useDeployContract = (): ReturnValue & {
         setIsLoading(false)
       }
     },
-    [addNotification, api, currentAccount]
+    [addContractToStorage, addNotification, api, currentAccount]
   )
 
   return { isLoading, error, deployContract }

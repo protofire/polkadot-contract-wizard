@@ -139,7 +139,9 @@ export default function Step3Deploy({
     const result = await deployContract({
       wasm: contractCompiled.wasm,
       metadata: contractCompiled.metadata,
-      argsForm: constructorParams
+      argsForm: constructorParams,
+      code_id: contractCompiled.code_id,
+      tokenType
     })
 
     console.info('__Deployed', result)

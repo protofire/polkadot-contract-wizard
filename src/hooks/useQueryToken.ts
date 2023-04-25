@@ -16,7 +16,7 @@ export function useQueryToken() {
   }
 
   function setTokenType(value: TokenType) {
-    const params = new URLSearchParams(searchParams)
+    const params = new URLSearchParams(value)
     params.set(KEY_NAME, value)
     router.replace(`${pathname}?${params}`)
   }
