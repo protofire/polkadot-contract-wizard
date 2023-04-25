@@ -12,6 +12,7 @@ import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet'
 
 import Transitions from 'src/view/components/Transitions'
 import LogoMobile from 'src/view/components/LogoMobile'
+import { WalletConnectButton } from '@/view/components/WalletConnectButton'
 
 // ==============================|| HEADER CONTENT - MOBILE ||============================== //
 const MobileSection = () => {
@@ -47,7 +48,9 @@ const MobileSection = () => {
           component="span"
           disableRipple
           sx={{
-            bgcolor: open ? 'grey.300' : 'grey.100'
+            bgcolor: open ? 'grey.300' : 'grey.100',
+            background: 'transparent',
+            color: 'white'
           }}
           ref={anchorRef}
           aria-controls={open ? 'menu-list-grow' : undefined}
@@ -81,10 +84,12 @@ const MobileSection = () => {
       >
         {({ TransitionProps }) => (
           <Transitions type="fade" in={open} {...TransitionProps}>
-            <Paper sx={{}}>
+            <Paper>
               <ClickAwayListener onClickAway={handleClose}>
-                <AppBar color="inherit">
-                  <Toolbar>{/* <Profile /> */}</Toolbar>
+                <AppBar>
+                  <Toolbar>
+                    <WalletConnectButton />
+                  </Toolbar>
                 </AppBar>
               </ClickAwayListener>
             </Paper>
