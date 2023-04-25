@@ -6,12 +6,12 @@ interface ContractDetails {
   status: 'compiled' | 'deployed'
   address?: string
   name?: string
-  blockainId?: string
+  blockchain?: string
 }
-type ContractCompiled = Omit<ContractDetails, 'address' | 'blockchainId'> & {
+type ContractCompiled = Omit<ContractDetails, 'address' | 'blockchain'> & {
   status: 'compiled'
 }
-type ContractDeployed = Required<ContractDetails> & {
+export type ContractDeployed = Required<ContractDetails> & {
   status: 'deployed'
 }
 export type Contract = ContractCompiled | ContractDeployed

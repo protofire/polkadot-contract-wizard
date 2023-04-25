@@ -21,6 +21,7 @@ import { ContractMetadata } from '@/infrastructure'
 import { generateCode } from '../Step2Compile/generator'
 import { useDeployContract } from 'src/hooks/useDeployContract'
 import { ContractConstructorDataForm } from '@/domain/wizard/step3DeployForm.types'
+import { useNetworkAccountsContext } from 'src/context/NetworkAccountsContext'
 
 function textFieldFactory(field: ConstructorTokenField, required = true) {
   {
@@ -62,6 +63,9 @@ export default function Step3Deploy({
   tokenType: TokenType
   constructorFields?: ControlsToken<'Constructor'>
 }) {
+  const {
+    state: { chainInfo }
+  } = useNetworkAccountsContext()
   const { handleBack, handleNext, dataForm } = useStepsSCWizard()
   const [contractCompiled, setContractCompiled] = useState<
     ContractMetadata | undefined
@@ -134,17 +138,17 @@ export default function Step3Deploy({
   const _handleDeploy = async (
     constructorParams: ContractConstructorDataForm
   ) => {
-    if (!contractCompiled) return
+    if (!contractCompiled || !chainInfo) return
 
     const result = await deployContract({
       wasm: contractCompiled.wasm,
       metadata: contractCompiled.metadata,
       argsForm: constructorParams,
       code_id: contractCompiled.code_id,
-      tokenType
+      tokenType,
+      blockchain: chainInfo.systemName || 'unknown'
     })
 
-    console.info('__Deployed', result)
     if (result) handleNext()
   }
 

@@ -9,8 +9,17 @@ import { DAPP_CONFIG } from '@/constants/index'
 import { WalletConnectionEvents } from 'src/domain/DomainEvents'
 import { ChainType } from '@polkadot/types/interfaces/system'
 import { accountsInPossession } from 'src/domain/KeyringAccouns'
+import { NULL_CHAIN_PROPERTIES } from '@/constants/chainProperties'
 
 type NetworkState = 'DISCONNECTED' | 'CONNECTING' | 'CONNECTED' | 'ERROR'
+
+interface ChainProperties {
+  systemName: string | null
+  systemChainType: ChainType
+  systemChain: string
+  tokenSymbol: string
+  isDevelopment: boolean
+}
 
 export interface NetworkAccountsContextState {
   currentAccount?: string
@@ -20,6 +29,7 @@ export interface NetworkAccountsContextState {
   apiError?: string
   accountStatus: NetworkState // keyring state
   keyring?: Keyring
+  chainInfo?: ChainProperties
 }
 
 export const initialState: NetworkAccountsContextState = {
@@ -34,6 +44,35 @@ export const NetworkAccountsContext = createContext(
     setCurrentAccount: (account: string) => void
   }
 )
+
+const registry = new TypeRegistry()
+async function getChainInfo(api: ApiPromise): Promise<ChainProperties> {
+  const [chainProperties, systemName, systemChain, systemChainType] =
+    await Promise.all([
+      api.rpc.system.properties(),
+      api.rpc.system.name(),
+      (await api.rpc.system.chain()).toString(),
+      api.rpc.system.chainType
+        ? api.rpc.system.chainType()
+        : Promise.resolve(registry.createType('ChainType', 'Live') as ChainType)
+    ])
+
+  return {
+    systemName: systemName.toString(),
+    systemChain,
+    systemChainType,
+    tokenSymbol: chainProperties.tokenSymbol.isSome
+      ? chainProperties.tokenSymbol
+          .unwrap()
+          .toArray()
+          .map(s => s.toString())[0]
+      : 'Unit',
+    isDevelopment:
+      systemChainType.isDevelopment ||
+      systemChainType.isLocal ||
+      isTestChain(systemChain)
+  }
+}
 
 // Connecting to the Substrate node
 const connect = (
@@ -52,9 +91,15 @@ const connect = (
   _api.on('connected', () => {
     updateState(prev => ({ ...prev, api: _api }))
     // `ready` event is not emitted upon reconnection and is checked explicitly here.
-    _api.isReady.then(_api =>
-      updateState(prev => ({ ...prev, apiStatus: 'CONNECTED', api: _api }))
-    )
+    _api.isReady.then(async _api => {
+      const chainInfo = await getChainInfo(_api)
+      updateState(prev => ({
+        ...prev,
+        apiStatus: 'CONNECTED',
+        api: _api,
+        chainInfo
+      }))
+    })
   })
   _api.on('ready', () =>
     updateState(prev => ({ ...prev, apiStatus: 'CONNECTED' }))
@@ -64,34 +109,18 @@ const connect = (
   )
 }
 
-const registry = new TypeRegistry()
-const retrieveChainInfo = async (
-  api: ApiPromise
-): Promise<{ systemChain: string; systemChainType: ChainType }> => {
-  const [systemChain, systemChainType] = await Promise.all([
-    api.rpc.system.chain(),
-    api.rpc.system.chainType
-      ? api.rpc.system.chainType()
-      : Promise.resolve(registry.createType('ChainType', 'Live') as ChainType)
-  ])
-
-  return {
-    systemChain: (systemChain || '<unknown>').toString(),
-    systemChainType
-  }
-}
-
 let keyringLoadAll = false
 
 const loadAccounts = (
   state: NetworkAccountsContextState,
   updateState: React.Dispatch<React.SetStateAction<NetworkAccountsContextState>>
 ) => {
-  const { api, apiStatus, accountStatus: keyringStatus } = state
+  const { api, apiStatus, accountStatus: keyringStatus, chainInfo } = state
   if (
     apiStatus !== 'CONNECTED' ||
     keyringLoadAll ||
-    keyringStatus !== 'DISCONNECTED'
+    keyringStatus !== 'DISCONNECTED' ||
+    !chainInfo
   )
     return
   if (!api) {
@@ -100,6 +129,7 @@ const loadAccounts = (
 
   keyringLoadAll = true
   updateState(prev => ({ ...prev, accountStatus: 'CONNECTING' }))
+  const { isDevelopment } = chainInfo
 
   const asyncLoadAccounts = async (_api: ApiPromise) => {
     try {
@@ -112,16 +142,6 @@ const loadAccounts = (
         address,
         meta: { ...meta, name: `${meta.name} (${meta.source})` }
       }))
-
-      // Logics to check if the connecting chain is a dev chain, coming from polkadot-js Apps
-      // ref: https://github.com/polkadot-js/apps/blob/15b8004b2791eced0dde425d5dc7231a5f86c682/packages/react-api/src/Api.tsx?_pjax=div%5Bitemtype%3D%22http%3A%2F%2Fschema.org%2FSoftwareSourceCode%22%5D%20%3E%20main#L101-L110
-      const { systemChain, systemChainType } = await retrieveChainInfo(
-        _api as ApiPromise
-      )
-      const isDevelopment =
-        systemChainType.isDevelopment ||
-        systemChainType.isLocal ||
-        isTestChain(systemChain)
 
       KeyringUI.loadAll({ isDevelopment }, allAccounts)
       updateState(prev => ({
@@ -137,6 +157,7 @@ const loadAccounts = (
 
   asyncLoadAccounts(api)
 }
+
 export function NetworkAccountsContextProvider({
   children
 }: {
@@ -173,6 +194,7 @@ export function NetworkAccountsContextProvider({
     )
   }
 
+  console.log('__chainInfo', state.chainInfo)
   return (
     <NetworkAccountsContext.Provider value={{ state, setCurrentAccount }}>
       {children}

@@ -28,12 +28,14 @@ import {
   useAppNotificationContext,
   useStorageContractsContext
 } from '@/context'
+import { ContractDeployed } from '@/domain'
 
 type ReturnValue = GetServiceData
 
 export type UseDeployContract = ContractMetadata & {
   argsForm: ContractConstructorDataForm
   tokenType: TokenType
+  blockchain: ContractDeployed['blockchain']
 }
 
 type UIStorageDeposit = {
@@ -177,7 +179,8 @@ export const useDeployContract = (): ReturnValue & {
       metadata,
       argsForm,
       code_id,
-      tokenType
+      tokenType,
+      blockchain
     }: UseDeployContract): Promise<DeployContractService | void> => {
       if (!currentAccount || !api) return
       setIsLoading(true)
@@ -217,7 +220,7 @@ export const useDeployContract = (): ReturnValue & {
           code_id,
           status: 'deployed',
           address: result.contractAddress,
-          blockainId: 'rococo',
+          blockchain,
           name: ''
         })
 
