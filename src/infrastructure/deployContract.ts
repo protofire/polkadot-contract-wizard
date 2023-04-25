@@ -1,33 +1,82 @@
-import { ApiPromise, Keyring, WsProvider } from '@polkadot/api'
-import { ContractPromise } from '@polkadot/api-contract'
+import { web3FromAddress, web3Enable } from '@polkadot/extension-dapp'
+import { SubmittableExtrinsic } from '@polkadot/api/types'
+import type { ISubmittableResult } from '@polkadot/types/types'
 
-async function deployContract(
-  wasmFile: string,
-  metadataFile: string,
-  endpoint: string,
-  senderSeed: string
-): Promise<string> {
-  const provider = new WsProvider(endpoint)
+import { ApiPromise } from '@polkadot/api'
 
-  // Initialize the Polkadot API
-  const api = await ApiPromise.create({ provider })
+export interface DeployContractService {
+  contractAddress: string
+  txHash: string
+}
 
-  // Get the sender account
-  const keyring = new Keyring({ type: 'sr25519' })
-  const sender = keyring.addFromSeed(Buffer.from(senderSeed, 'hex'))
+type DeployContractParams = {
+  tx: SubmittableExtrinsic<'promise', ISubmittableResult>
+  api: ApiPromise
+  currentAccount: string
+}
 
-  // Create the contract object
-  const contract = new ContractPromise(api, metadata)
+export async function deployContractService({
+  tx,
+  api,
+  currentAccount
+}: DeployContractParams): Promise<DeployContractService> {
+  return new Promise<DeployContractService>(async (resolve, reject) => {
+    await web3Enable(currentAccount)
+    const injector = await web3FromAddress(currentAccount)
+    const unsub = await tx.signAndSend(
+      currentAccount,
+      {
+        signer: injector.signer
+      },
+      ({ status, events, dispatchError }) => {
+        if (dispatchError) {
+          if (dispatchError.isModule) {
+            const decoded = api.registry.findMetaError(dispatchError.asModule)
+            const { docs, name, section } = decoded
 
-  // Define the deployment parameters
-  const gasLimit = 200000n * 1000000n
-  const endowment = 1000n * 1000000000000n
+            return reject(`${section}.${name}: ${docs.join(' ')}`)
+          } else {
+            // Other, CannotLookup, BadOrigin, no extra info
+            return reject(dispatchError.toString())
+          }
+        }
 
-  // Send the contract deployment transaction
-  const tx = contract.tx.new(endowment, gasLimit, wasm)
+        if (status.isInBlock || status.isFinalized) {
+          let txHash = ''
+          let contractAddress = ''
 
-  const result = await tx.signAndSend(sender)
+          events
+            .filter(({ event }) => api.events.contracts.CodeStored.is(event))
+            .forEach(
+              ({
+                event: {
+                  data: [code_hash]
+                }
+              }) => {
+                console.info(`code hash: ${code_hash}`)
+                txHash = code_hash.toString()
+              }
+            )
+          events
+            .filter(({ event }) => api.events.contracts.Instantiated.is(event))
+            .forEach(
+              ({
+                event: {
+                  data: [deployer, contract]
+                }
+              }) => {
+                console.info(`contract address: ${contract}`)
+                contractAddress = contract.toString()
+              }
+            )
 
-  // Return the contract's address
-  return result.contract
+          unsub()
+          return resolve({
+            txHash,
+            contractAddress
+          })
+        }
+      }
+    )
+  })
 }

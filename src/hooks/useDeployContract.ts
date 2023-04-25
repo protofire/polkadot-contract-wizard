@@ -12,7 +12,6 @@ import {
   Balance
 } from '@polkadot/types/interfaces'
 import { Registry } from '@polkadot/types-codec/types'
-import { web3FromAddress, web3Enable } from '@polkadot/extension-dapp'
 import { WeightV2 } from '@polkadot/types/interfaces'
 import { Bytes } from '@polkadot/types'
 
@@ -21,8 +20,11 @@ import { ContractMetadata } from '@/infrastructure'
 import { useNetworkAccountsContext } from 'src/context/NetworkAccountsContext'
 import { BN_ZERO } from '@/constants/numbers'
 import { ContractConstructorDataForm } from '@/domain/wizard/step3DeployForm.types'
-import { DAPP_CONFIG } from '../constants'
-import { CodeSubmittableResult } from '@polkadot/api-contract/base'
+import {
+  DeployContractService,
+  deployContractService
+} from '@/infrastructure/deployContract'
+import { useAppNotificationContext } from '@/context'
 
 type ReturnValue = GetServiceData
 
@@ -57,12 +59,11 @@ export function transformUserInput(
 
   return deployConstructor.map(param => {
     const value = values[param.name] ?? null
-
-    if (param.type.type === 'Balance') {
-      return registry.createType('Balance', value)
+    if (value && param.type) {
+      return registry.createType(param.type.type, value)
     }
 
-    return value || null
+    return value
   })
 }
 
@@ -123,10 +124,11 @@ function createInstatiateTx(
     data
   const isValid = codeHash || !!wasm
 
-  console.log('__metadata', wasm)
   if (metadata && isValid) {
     const constructor = metadata.findConstructor(0)
 
+    const gasLimit = 100000n * 1000000n
+    const storageDepositLimit = null
     const options: BlueprintOptions = {
       gasLimit,
       salt: salt || null,
@@ -143,6 +145,7 @@ function createInstatiateTx(
       constructor.args,
       argValues
     )
+
     return constructor.args.length > 0
       ? codeOrBlueprint.tx[constructor.method](options, ...transformed)
       : codeOrBlueprint.tx[constructor.method](options)
@@ -152,19 +155,27 @@ function createInstatiateTx(
 }
 
 export const useDeployContract = (): ReturnValue & {
-  deployContract: (props: UseDeployContract) => void
+  deployContract: (
+    props: UseDeployContract
+  ) => Promise<DeployContractService | void>
 } => {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | undefined>()
+  const { addNotification } = useAppNotificationContext()
   const {
     state: { api, currentAccount }
   } = useNetworkAccountsContext()
   const deployContract = useCallback(
-    async ({ wasm, metadata, argsForm }: UseDeployContract) => {
+    async ({
+      wasm,
+      metadata,
+      argsForm
+    }: UseDeployContract): Promise<DeployContractService | void> => {
       if (!currentAccount || !api) return
+      setIsLoading(true)
+      setError(undefined)
 
       const metadataAbi = new Abi(metadata, api.registry.getChainProperties())
-
       const params: Parameters<typeof api.call.contractsApi.instantiate> =
         getParamsContractInstatiate(currentAccount, api, metadataAbi, argsForm)
 
@@ -175,98 +186,39 @@ export const useDeployContract = (): ReturnValue & {
         result as ContractInstantiateResult
 
       const predictedStorageDeposit = decodeStorageDeposit(storageDeposit)
-      console.log('__deployParams', argsForm)
-      // const tx = createInstatiateTx(
-      //   api,
-      //   {
-      //     accountId: currentAccount,
-      //     metadata: metadataAbi,
-      //     constructorIndex: 0,
-      //     salt: null,
-      //     argValues: {},
-      //     storageDepositLimit: getPredictedCharge(predictedStorageDeposit),
-      //     gasLimit: gasRequired
-      //   },
-      //   argsForm,
-      //   wasm
-      // )
-      const injector = await web3FromAddress(currentAccount)
-
-      const gasLimit = 100000n * 1000000n
-      const storageDepositLimit = null
-      const code = new CodePromise(api, metadataAbi, wasm)
-      const initialSupply = api.registry.createType('Balance', 1000)
-      const tx = code.tx.new({ gasLimit, storageDepositLimit }, initialSupply)
-
-      const unsub = await tx.signAndSend(
-        currentAccount,
+      const tx = createInstatiateTx(
+        api,
         {
-          signer: injector.signer
+          accountId: currentAccount,
+          metadata: metadataAbi,
+          constructorIndex: 0,
+          salt: null,
+          argValues: {},
+          storageDepositLimit: getPredictedCharge(predictedStorageDeposit),
+          gasLimit: gasRequired
         },
-        ({ status, contract }) => {
-          if (status.isInBlock || status.isFinalized) {
-            const address = contract?.address.toString()
-            console.log('contract address', address)
-            unsub()
-          }
-        }
+        argsForm,
+        wasm
       )
 
-      // const unsub = await tx.signAndSend(
-      //   currentAccount,
-      //   {
-      //     signer: injector.signer
-      //   },
-      //   ({ status, events }) => {
-      //     if (status.isInBlock || status.isFinalized) {
-      //       events
-      //         // find/filter for failed events
-      //         .filter(({ event }) =>
-      //           api.events.system.ExtrinsicFailed.is(event)
-      //         )
-      //         // we know that data for system.ExtrinsicFailed is
-      //         // (DispatchError, DispatchInfo)
-      //         .forEach(
-      //           ({
-      //             event: {
-      //               data: [error, info]
-      //             }
-      //           }) => {
-      //             if (error.isModule) {
-      //               // for module errors, we have the section indexed, lookup
-      //               const decoded = api.registry.findMetaError(error.asModule)
-      //               const { docs, method, section } = decoded
+      try {
+        const result = await deployContractService({ api, tx, currentAccount })
 
-      //               console.log(`${section}.${method}: ${docs.join(' ')}`)
-      //             } else {
-      //               // Other, CannotLookup, BadOrigin, no extra info
-      //               console.log(error.toString())
-      //             }
-      //           }
-      //         )
-
-      //       console.log(
-      //         '__',
-      //         result.txHash.toString(),
-      //         result.contract?.address.toString()
-      //       )
-
-      //       let message = 'Transaction failed'
-      //       if (result.dispatchError?.isModule) {
-      //         const decoded = api?.registry.findMetaError(
-      //           result.dispatchError.asModule
-      //         )
-      //         message = `${decoded?.section.toUpperCase()}.${
-      //           decoded?.method
-      //         }: ${decoded?.docs}`
-      //         console.log('__ERRor', message)
-      //       }
-      //     }
-      //   }
-      // )
-      console.log('__txSigned', unsub)
+        return result
+      } catch (error) {
+        console.error(error)
+        addNotification({
+          message:
+            typeof error === 'string'
+              ? error
+              : 'An error ocurred while deploying',
+          type: 'error'
+        })
+      } finally {
+        setIsLoading(false)
+      }
     },
-    [api, currentAccount]
+    [addNotification, api, currentAccount]
   )
 
   return { isLoading, error, deployContract }

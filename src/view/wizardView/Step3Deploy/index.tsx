@@ -62,7 +62,6 @@ export default function Step3Deploy({
   tokenType: TokenType
   constructorFields?: ControlsToken<'Constructor'>
 }) {
-  const [argsForm, setArgsForm] = useState<ContractConstructorDataForm>([])
   const { handleBack, handleNext, dataForm } = useStepsSCWizard()
   const [contractCompiled, setContractCompiled] = useState<
     ContractMetadata | undefined
@@ -80,7 +79,11 @@ export default function Step3Deploy({
     [dataForm, tokenType]
   )
   const mustLoad = useRef<boolean>(true)
-  const { deployContract } = useDeployContract()
+  const {
+    deployContract,
+    isLoading: isDeploying,
+    error: errorDeploying
+  } = useDeployContract()
 
   useEffect(() => {
     if (!dataForm.currentAccount || !mustLoad.current) return
@@ -125,19 +128,22 @@ export default function Step3Deploy({
       }
     })
 
-    setArgsForm(_dataForm)
-    _handleDeploy()
+    _handleDeploy(_dataForm)
   }
 
-  const _handleDeploy = () => {
-    // TODO Replace real tx
-    contractCompiled &&
-      deployContract({
-        wasm: contractCompiled.wasm,
-        metadata: contractCompiled.metadata,
-        argsForm
-      })
-    // handleNext()
+  const _handleDeploy = async (
+    constructorParams: ContractConstructorDataForm
+  ) => {
+    if (!contractCompiled) return
+
+    const result = await deployContract({
+      wasm: contractCompiled.wasm,
+      metadata: contractCompiled.metadata,
+      argsForm: constructorParams
+    })
+
+    console.info('__Deployed', result)
+    if (result) handleNext()
   }
 
   return (
@@ -208,11 +214,12 @@ export default function Step3Deploy({
       <BackNextButton
         nextLabel="Deploy Contract"
         handleBack={handleBack}
-        handleNext={areThereParameters ? undefined : _handleDeploy}
+        handleNext={areThereParameters ? undefined : () => _handleDeploy([])}
         hiddenBack={true}
         nextButtonProps={{
           endIcon: isButtonNextDisabled ? '🚫' : '🚀',
           disabled: isButtonNextDisabled,
+          loading: isDeploying,
           ...(areThereParameters && { type: 'submit', form: 'deploy-form' })
         }}
       />
