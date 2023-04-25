@@ -130,7 +130,7 @@ const loadAccounts = (
   updateState(prev => ({ ...prev, accountStatus: 'CONNECTING' }))
   const { isDevelopment } = chainInfo
 
-  const asyncLoadAccounts = async (_api: ApiPromise) => {
+  const asyncLoadAccounts = async () => {
     try {
       const { web3Enable, web3Accounts } = await import(
         '@polkadot/extension-dapp'
@@ -154,7 +154,7 @@ const loadAccounts = (
     }
   }
 
-  asyncLoadAccounts(api)
+  asyncLoadAccounts()
 }
 
 export function NetworkAccountsContextProvider({

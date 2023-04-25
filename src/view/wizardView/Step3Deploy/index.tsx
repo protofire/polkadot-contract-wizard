@@ -149,7 +149,7 @@ export default function Step3Deploy({
       argsForm: constructorParams,
       code_id: contractCompiled.code_id,
       tokenType,
-      blockchain: chainInfo.systemName || 'unknown'
+      blockchain: chainInfo.systemChain || 'unknown'
     })
 
     if (result) {
