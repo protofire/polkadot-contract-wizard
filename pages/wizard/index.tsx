@@ -18,7 +18,12 @@ export default function WizardPage() {
   }
 
   return (
-    <Box>
+    <Box
+      sx={{
+        width: { lg: '100%', xl: '85%' },
+        margin: '0 auto 1rem auto'
+      }}
+    >
       <HeadLine tokenType={token} />
       <FormWizard token={token} />
     </Box>

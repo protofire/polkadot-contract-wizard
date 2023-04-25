@@ -49,8 +49,19 @@ export default function BackNextButton(props: Props) {
     <Grid
       item
       xs={12}
-      mt={9}
-      sx={{ display: 'flex', justifyContent: 'space-between' }}
+      mt={3}
+      sx={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        position: {
+          lg: 'fixed',
+          xl: 'relative'
+        },
+        bottom: {
+          lg: '1rem',
+          xl: '0'
+        }
+      }}
     >
       {hiddenBack ? (
         <Box sx={{ width: '30%' }} />
