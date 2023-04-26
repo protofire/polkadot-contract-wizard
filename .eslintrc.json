@@ -37,7 +37,8 @@
     ".next/*",
     "node_modules/*",
     ".docker/*",
-    "src/tests/data/*"
+    "src/tests/data/*",
+    "next.config.js"
   ],
   "overrides": [
     {
