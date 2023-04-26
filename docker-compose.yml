@@ -27,7 +27,7 @@ services:
     container_name: compiler-be
     build:
       context: ./ink-compiler-be
-      dockerfile: ./ink-compiler-be/Dockerfile
+      dockerfile: ./Dockerfile
     ports:
       - 8000:8000
     environment:
