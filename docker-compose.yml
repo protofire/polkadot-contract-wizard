@@ -20,4 +20,33 @@ services:
       - NODE_ENV=${WEB_ENVIRONMENT}
     networks:
       - polkadot-wizard
+    depends_on:
+      - compiler-be
     command: yarn dev
+  compiler-be:
+    container_name: compiler-be
+    build:
+      context: ./ink-compiler-be
+      dockerfile: ./ink-compiler-be/Dockerfile
+    ports:
+      - 8000:8000
+    environment:
+      - MONGO_URI=mongodb://mongodb:27017
+    networks:
+      - polkadot-wizard
+    depends_on:
+      - mongodb
+  mongodb:
+    ports:
+        - '27017:27017'
+    container_name: mongodb
+    restart: always
+    logging:
+        options:
+            max-size: 1g
+    image: mongo:5.0.16
+    networks:
+      - polkadot-wizard
+  
+
+  

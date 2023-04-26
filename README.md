@@ -31,18 +31,26 @@ To run the application it is necessary to copy the environment variables file `.
 
 2. (Optional) Set the environment variables for the container on [dev.docker.env](./.docker/dev.docker.env). These will be used to configure the application.
 
-3. Run the following command to start the container (Will do a build previously in the first run):
+3. Init the backend submodule with the following command:
+
+    ```bash
+    git submodule update --init
+    ```
+
+4. Run the following command to start the container (Will do a build previously in the first run):
 
     ```bash
     docker-compose --env-file .docker/dev.docker.env up
     ```
 
-4. Your application should now be running on the specified port. You can access it by visiting `localhost:<EXTERNAL_PORT>` (Port 3000 by default) in your browser.
+5. Your application should now be running on the specified port. You can access it by visiting `localhost:<EXTERNAL_PORT>` (Port 3000 by default) in your browser.
 
 > ✋ Stop the all the running containers with the following command:  
 > `docker-compose stop`
 
 #### B. Local Stack
+
+#### Frontend
 
 - ⚠️ Requirements:
   - node `^14.18.0` || `^16.14.0` || `>=18.0.0`
@@ -51,7 +59,7 @@ To run the application it is necessary to copy the environment variables file `.
 1. Open a command-line interface in the application's root directory and install the packages with the command:
 
     ```bash
-        yarn install
+    yarn install
     ```
 
 2. To start the app, use:
@@ -66,6 +74,10 @@ To run the application it is necessary to copy the environment variables file `.
 
 > ✋ Stop the Server  
 > To stop the development server, press `Ctrl + C` in the terminal.
+
+#### Backend
+
+- Follow the instructions in the README.md of the [backend](./ink-compiler-be/README.md) folder.
 
 ## License
 
