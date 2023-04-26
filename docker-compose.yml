@@ -18,28 +18,30 @@ services:
       - ${WEB_EXTERNAL_PORT}:3000
     environment:
       - NODE_ENV=${WEB_ENVIRONMENT}
+      - .env
+      - NEXT_PUBLIC_BACKEND_API=http://127.0.0.1:${BACKEND_EXTERNAL_PORT}/
     networks:
       - polkadot-wizard
     depends_on:
       - compiler-be
     command: yarn dev
   compiler-be:
-    container_name: compiler-be
+    container_name: ${CONTAINER_BASE}_backend
     build:
       context: ./ink-compiler-be
       dockerfile: ./Dockerfile
     ports:
-      - 8000:8000
+      - ${BACKEND_EXTERNAL_PORT}:8000
     environment:
-      - MONGO_URI=mongodb://mongodb:27017
+      - MONGOURI=mongodb://mongodb:${DB_EXTERNAL_PORT}
     networks:
       - polkadot-wizard
     depends_on:
       - mongodb
   mongodb:
     ports:
-        - '27017:27017'
-    container_name: mongodb
+        - ${DB_EXTERNAL_PORT}:27017
+    container_name: ${CONTAINER_BASE}_mongodb
     restart: always
     logging:
         options:
