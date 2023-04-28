@@ -1,4 +1,5 @@
 import { BackendApiConfig } from '@/constants/config'
+import { CompileContractRepository } from '@/domain/CompileContractRepository'
 import { AllowedFeatures, ContractCompiled, request } from '@/infrastructure'
 
 export interface CompileContractBody {
@@ -11,8 +12,10 @@ export interface CompileContractBody {
  * Class that implements the Repository pattern for
  * handling contracts compiled via the backend REST API.
  */
-export class CompileContractApiRepository {
-  constructor(private readonly backenApiConfig: BackendApiConfig) {}
+export class ApiCompileContractRepository implements CompileContractRepository {
+  constructor(private readonly backenApiConfig: BackendApiConfig) {
+    console.log(backenApiConfig.basePath)
+  }
 
   async create(
     compileContract: CompileContractBody
@@ -28,5 +31,13 @@ export class CompileContractApiRepository {
       ...compileContract,
       features: compileContract.features.filter(e => e)
     }
+  }
+
+  async search(codeId: string) {
+    const { url, method } = this.backenApiConfig.routes.searchCompileContract
+
+    return request<ContractCompiled>(`${url}${encodeURIComponent(codeId)}`, {
+      method: method
+    })
   }
 }

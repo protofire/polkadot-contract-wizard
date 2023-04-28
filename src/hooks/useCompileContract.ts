@@ -1,18 +1,18 @@
 import { useCallback, useState } from 'react'
 
 import {
-  CompileContractApiRepository,
+  ApiCompileContractRepository,
   CompileContractBody
-} from '@/infrastructure/CompileContractApiRepository'
+} from '@/infrastructure/ApiCompileContractRepository'
 import { GetServiceData, TokenType, SecurityOfToken } from '@/types'
 import { BACKEND_API } from '@/constants/index'
-import { AllowedFeatures, ContractMetadata } from '@/infrastructure'
+import { AllowedFeatures, ContractResponse } from '@/infrastructure'
 import { useAppNotificationContext } from 'src/context/AppNotificationContext'
 import { useStorageContractsContext } from '@/context'
 
 type ReturnValue = GetServiceData
 
-const compileContractApi = new CompileContractApiRepository(BACKEND_API)
+const compileContractApi = new ApiCompileContractRepository(BACKEND_API)
 type UseCreateCompilation = Omit<CompileContractBody, 'features'> & {
   tokenType: TokenType
   isPausable: boolean
@@ -38,7 +38,7 @@ function getAllowedFeaturesApi(
 export const useCompileContract = (): ReturnValue & {
   compileContract: (
     props: UseCreateCompilation
-  ) => Promise<ContractMetadata | void>
+  ) => Promise<ContractResponse | void>
 } => {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | undefined>()
@@ -52,7 +52,7 @@ export const useCompileContract = (): ReturnValue & {
       tokenType,
       security,
       isPausable
-    }: UseCreateCompilation): Promise<ContractMetadata | void> => {
+    }: UseCreateCompilation): Promise<ContractResponse | void> => {
       setError(undefined)
       setIsLoading(true)
 
@@ -88,4 +88,42 @@ export const useCompileContract = (): ReturnValue & {
   )
 
   return { compileContract, isLoading, error }
+}
+
+export const useSearchCompileContract = (): ReturnValue & {
+  searchCompileContract: (codeId: string) => Promise<ContractResponse | void>
+} => {
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState<string | undefined>()
+  const { addNotification } = useAppNotificationContext()
+
+  const searchCompileContract = useCallback(
+    async (codeId: string): Promise<ContractResponse | void> => {
+      setError(undefined)
+      setIsLoading(true)
+
+      try {
+        const response = await compileContractApi.search(codeId)
+
+        setIsLoading(false)
+        if (response.error) {
+          console.log(response.error.message)
+          throw Error(response.error.message)
+        }
+
+        return response['data']
+      } catch (error) {
+        const _errorMsg = `An error occurred when trying to search compiled contract`
+        setError(_errorMsg)
+        addNotification({
+          message: _errorMsg,
+          type: 'error'
+        })
+        console.error(error)
+      }
+    },
+    [addNotification]
+  )
+
+  return { searchCompileContract, isLoading, error }
 }

@@ -17,7 +17,7 @@ import {
 } from '@/constants/index'
 import { FormEvent } from '@/domain/common/FormEvent'
 import { useCompileContract } from 'src/hooks/useCompileContract'
-import { ContractMetadata } from '@/infrastructure'
+import { ContractResponse } from '@/infrastructure'
 import { generateCode } from '../Step2Compile/generator'
 import { useDeployContract } from 'src/hooks/useDeployContract'
 import { ContractConstructorDataForm } from '@/domain/wizard/step3DeployForm.types'
@@ -71,7 +71,7 @@ export default function Step3Deploy({
   } = useNetworkAccountsContext()
   const { handleBack, handleNext, dataForm } = useStepsSCWizard()
   const [contractCompiled, setContractCompiled] = useState<
-    ContractMetadata | undefined
+    ContractResponse | undefined
   >()
   const { mandatoryFields, metadataFields } = useMemoizeFields(
     constructorFields?.optionList,

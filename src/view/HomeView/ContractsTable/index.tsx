@@ -12,13 +12,15 @@ import {
   Typography
 } from '@mui/material'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
-import { downloadMetadata } from '@/utils/downloadMetadata'
 import { styled } from '@mui/material/styles'
-import CopyToClipboardButton from '../../components/CopyButton'
 import FileDownloadIcon from '@mui/icons-material/FileDownload'
+import HourglassBottomIcon from '@mui/icons-material/HourglassBottom'
+
+import { CopyToClipboardButton } from '@/components'
 import { TokenType } from '@/types'
 import { capitalizeFirstLetter, truncateAddress } from '@/utils/formatString'
-import { Contract, isContractDeployed } from '@/domain'
+import { isContractDeployed } from '@/domain'
+import { ContractTableItem } from '@/domain/wizard/ContractTableItem'
 
 const StyledTableContainer = styled(TableContainer)<TableContainerProps>(
   ({ theme }) => ({
@@ -43,7 +45,17 @@ const typeMap: Record<TokenType, string> = {
   psp37: 'MULTI TOKEN | PSP37'
 }
 
-function ContractTableRow({ contract }: { contract: Contract }) {
+export interface ContractsTableProps {
+  contracts: ContractTableItem[]
+  onDownloadMeta: (codeId: string) => void
+}
+
+function ContractTableRow({
+  contract,
+  onDownloadMeta
+}: {
+  contract: ContractTableItem
+} & Pick<ContractsTableProps, 'onDownloadMeta'>) {
   const _isContractDeployed = isContractDeployed(contract)
 
   return (
@@ -72,21 +84,25 @@ function ContractTableRow({ contract }: { contract: Contract }) {
       <TableCell>
         <IconButton
           onClick={() => {
-            downloadMetadata(contract.code_id)
+            onDownloadMeta(contract.code_id)
           }}
+          disabled={contract.isDownloading}
         >
-          <FileDownloadIcon />
+          {contract.isDownloading ? (
+            <HourglassBottomIcon />
+          ) : (
+            <FileDownloadIcon />
+          )}
         </IconButton>
       </TableCell>
     </TableRow>
   )
 }
 
-export default function BasicTable({
-  contracts
-}: {
-  contracts: Contract[]
-}): JSX.Element | null {
+export function ContractsTable({
+  contracts,
+  onDownloadMeta
+}: ContractsTableProps): JSX.Element {
   return (
     <>
       <Typography variant="h3" align="center" mt="2">
@@ -105,7 +121,11 @@ export default function BasicTable({
           </TableHead>
           <TableBody>
             {contracts.map(contract => (
-              <ContractTableRow key={contract.code_id} contract={contract} />
+              <ContractTableRow
+                key={contract.code_id}
+                contract={contract}
+                onDownloadMeta={onDownloadMeta}
+              />
             ))}
           </TableBody>
         </Table>

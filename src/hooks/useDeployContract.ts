@@ -16,7 +16,7 @@ import { WeightV2 } from '@polkadot/types/interfaces'
 import { Bytes } from '@polkadot/types'
 
 import { GetServiceData, TokenType } from '@/types'
-import { ContractMetadata } from '@/infrastructure'
+import { ContractResponse } from '@/infrastructure'
 import { useNetworkAccountsContext } from 'src/context/NetworkAccountsContext'
 import { BN_ZERO } from '@/constants/numbers'
 import { ContractConstructorDataForm } from '@/domain/wizard/step3DeployForm.types'
@@ -30,7 +30,7 @@ import { genRanHex } from '@/utils/blockchain'
 
 type ReturnValue = GetServiceData
 
-export type UseDeployContract = ContractMetadata & {
+export type UseDeployContract = ContractResponse & {
   argsForm: ContractConstructorDataForm
   tokenType: TokenType
   blockchain: ContractDeployed['blockchain']
@@ -122,7 +122,7 @@ function createInstatiateTx(
   api: ApiPromise,
   data: Omit<InstantiateData, 'name'>,
   argValues: ContractConstructorDataForm,
-  wasm: ContractMetadata['wasm']
+  wasm: ContractResponse['wasm']
 ) {
   const { metadata, codeHash, gasLimit, salt, storageDepositLimit, value } =
     data
