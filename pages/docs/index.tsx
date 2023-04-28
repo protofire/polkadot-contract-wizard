@@ -126,10 +126,17 @@ export default function Home() {
           width={870}
         />
         <Typography variant="h4">4. Interact with your contract 💻</Typography>
-        <Typography variant="h5">
-          {' '}
-          🛠️ We're working to offer you direct smart contract interaction from
-          our site. 🛠️
+        <Typography
+          variant="h5"
+          sx={{
+            background: '#20222d',
+            padding: '1.2rem',
+            borderRadius: '0.5rem'
+          }}
+          align="center"
+        >
+          🛠️ We&apos;re working to offer you direct smart contract interaction
+          from our site. 🛠️
         </Typography>
 
         <Typography variant="body1">
@@ -175,8 +182,8 @@ export default function Home() {
           width={870}
         />
         <Typography variant="body1">
-          Click 'Add new contract' from the top left corner and then 'Use
-          On-Chain Contract Address'
+          Click &apos;Add new contract&apos; from the top left corner and then
+          &apos;Use On-Chain Contract Address&apos;
         </Typography>
         <Image
           alt="add new contract"
@@ -187,7 +194,7 @@ export default function Home() {
         <Typography variant="body1">
           Fill in the address field with the address you copied from the
           Polkadot Contract Wizard and upload the Metadata file you downloaded.
-          Click 'Add Contract'.
+          Click &apos;Add Contract&apos;.
         </Typography>
         <Image
           alt="fill fields"
