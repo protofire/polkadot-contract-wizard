@@ -7,6 +7,7 @@ interface ContractDetails {
   address?: string
   name?: string
   blockchain?: string
+  txHash?: string
 }
 type ContractCompiled = Omit<ContractDetails, 'address' | 'blockchain'> & {
   status: 'compiled'

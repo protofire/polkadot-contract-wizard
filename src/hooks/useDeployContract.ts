@@ -20,10 +20,7 @@ import { ContractMetadata } from '@/infrastructure'
 import { useNetworkAccountsContext } from 'src/context/NetworkAccountsContext'
 import { BN_ZERO } from '@/constants/numbers'
 import { ContractConstructorDataForm } from '@/domain/wizard/step3DeployForm.types'
-import {
-  DeployContractService,
-  deployContractService
-} from '@/infrastructure/deployContract'
+import { deployContractService } from '@/infrastructure/deployContract'
 import {
   useAppNotificationContext,
   useStorageContractsContext
@@ -219,7 +216,8 @@ export const useDeployContract = (): ReturnValue & {
           status: 'deployed' as const,
           address: result.contractAddress,
           blockchain,
-          name: ''
+          name: '',
+          txHash: result.txHash.toString()
         }
 
         addContractToStorage(currentAccount, contractDeployed)

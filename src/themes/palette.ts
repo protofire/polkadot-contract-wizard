@@ -2,7 +2,7 @@
 import { createTheme, Theme } from '@mui/material/styles'
 
 // third-party
-import { presetPalettes } from '@ant-design/colors'
+import { presetPalettes, generate } from '@ant-design/colors'
 
 // project import
 import ThemeOption from './theme'
@@ -11,9 +11,11 @@ import { Settings } from './types'
 // ==============================|| DEFAULT THEME - PALETTE  ||============================== //
 
 type LookSettings = Pick<Settings, 'mode' | 'skin'>
+const MAIN_COLOR = '#E6007A' // Mexican pink
 
 const Palette = ({ mode }: LookSettings): Theme => {
   const colors = presetPalettes
+  colors.primary = generate(MAIN_COLOR)
 
   const greyPrimary = [
     '#ffffff',

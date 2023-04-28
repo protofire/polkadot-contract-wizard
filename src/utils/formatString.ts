@@ -85,3 +85,7 @@ export function shortNameLonger(name: string, maxCharacters = 11): string {
     return name
   }
 }
+
+export function showUndefinedAsDash(value: string | undefined): string {
+  return value ?? '-'
+}
