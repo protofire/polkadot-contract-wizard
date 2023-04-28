@@ -1,6 +1,6 @@
-import { Contract, isContractDeployed } from '@/domain'
+import { takeFirstChars } from './formatString'
 
-const downloadJson = (json: any, filename: string) => {
+export const downloadJson = (json: string, filename: string) => {
   const jsonString = JSON.stringify(json)
   const blob = new Blob([jsonString], { type: 'application/json' })
   const url = URL.createObjectURL(blob)
@@ -11,10 +11,8 @@ const downloadJson = (json: any, filename: string) => {
   URL.revokeObjectURL(url)
 }
 
-export const downloadMetadata = (codeId: string) => {
-  // TODO: Fetch the contract metadata from backend
-  // TODO: Remove the hardcoded metadata
-  const json = { code_id: codeId }
+export const downloadMetadata = (codeId: string, sourceMetadata: string) => {
+  const filename = `${takeFirstChars(codeId)}_metadata.json`
 
-  downloadJson(json, 'metadata.json')
+  downloadJson(sourceMetadata, filename)
 }

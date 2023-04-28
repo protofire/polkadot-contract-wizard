@@ -86,6 +86,10 @@ export function shortNameLonger(name: string, maxCharacters = 11): string {
   }
 }
 
-export function showUndefinedAsDash(value: string | undefined): string {
-  return value ?? '-'
+export function emptyAsDash(value: string | undefined): string {
+  return value ? value : '-'
+}
+
+export function takeFirstChars(str: string, nChars = 6): string {
+  return str.slice(0, nChars)
 }

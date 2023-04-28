@@ -1,12 +1,12 @@
 import Link from 'next/link'
 import { Stack, Typography } from '@mui/material'
 
-import BasicTable from '@/view/HomeView/Table'
 import { HomeButton } from '@/components'
 import { ROUTES, TOKEN_PATHS } from '@/constants/index'
 import { TokenType } from '@/types'
 import { useNetworkAccountsContext } from 'src/context/NetworkAccountsContext'
 import { useStorageContractsContext } from '@/context'
+import { ContractsTableWidget } from '@/view/HomeView/ContractsTableWidget'
 
 const Token: Record<TokenType, TokenType> = {
   psp22: 'psp22',
@@ -59,7 +59,7 @@ function Home() {
           imgProps={{ width: 75, height: 65 }}
         />
       </Stack>
-      {currentAccount && <BasicTable contracts={contracts} />}
+      {currentAccount && <ContractsTableWidget contracts={contracts} />}
     </>
   )
 }
