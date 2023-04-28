@@ -1,5 +1,6 @@
 import * as React from 'react'
 import {
+  IconButton,
   Chip,
   Table,
   TableBody,
@@ -11,9 +12,10 @@ import {
   Typography
 } from '@mui/material'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
-
+import { downloadMetadata } from '@/utils/downloadMetadata'
 import { styled } from '@mui/material/styles'
 import CopyToClipboardButton from '../../components/CopyButton'
+import FileDownloadIcon from '@mui/icons-material/FileDownload'
 import { TokenType } from '@/types'
 import { capitalizeFirstLetter, truncateAddress } from '@/utils/formatString'
 import { Contract, isContractDeployed } from '@/domain'
@@ -67,6 +69,15 @@ function ContractTableRow({ contract }: { contract: Contract }) {
           size="small"
         />
       </TableCell>
+      <TableCell>
+        <IconButton
+          onClick={() => {
+            downloadMetadata(contract.code_id)
+          }}
+        >
+          <FileDownloadIcon />
+        </IconButton>
+      </TableCell>
     </TableRow>
   )
 }
@@ -89,6 +100,7 @@ export default function BasicTable({
               <TableCell>NAME</TableCell>
               <TableCell>ADDRESS</TableCell>
               <TableCell>STATUS</TableCell>
+              <TableCell></TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
