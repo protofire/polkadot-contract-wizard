@@ -107,8 +107,103 @@ export default function Home() {
           height={496}
           width={870}
         />
+        <Typography variant="body1">
+          You will be prompted to sign the transaction with your wallet.
+        </Typography>
+        <Image
+          alt="sign transaction"
+          src="/assets/docs7.png"
+          height={496}
+          width={870}
+        />
+        <Typography variant="body1">
+          After a little while, your contract will be deployed.
+        </Typography>
+        <Image
+          alt="contract deployed"
+          src="/assets/docs9.png"
+          height={496}
+          width={870}
+        />
         <Typography variant="h4">4. Interact with your contract 💻</Typography>
-        <Typography variant="h5">Coming Soon 🛠️</Typography>
+        <Typography variant="h5">
+          {' '}
+          🛠️ We're working to offer you direct smart contract interaction from
+          our site. 🛠️
+        </Typography>
+
+        <Typography variant="body1">
+          In the meantime, we recommend using{' '}
+          <Link
+            href="https://contracts-ui.substrate.io/"
+            underline="hover"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            https://contracts-ui.substrate.io/
+          </Link>{' '}
+          as a temporary solution by following the next steps:
+        </Typography>
+        <Typography variant="body1">
+          First, go to the main dashboard and copy the address where your
+          contract was deployed.
+        </Typography>
+        <Image
+          alt="copy address"
+          src="/assets/docs10.png"
+          height={496}
+          width={870}
+        />
+        <Typography variant="body1">
+          Second, click the icon in the same row as your contract to download
+          the Metadata file.
+        </Typography>
+        <Image
+          alt="download metadata"
+          src="/assets/docs11.png"
+          height={496}
+          width={870}
+        />
+        <Typography variant="body1">
+          Then, go to contracts-ui site and select the network where you
+          deployed your contract.
+        </Typography>
+        <Image
+          alt="select network"
+          src="/assets/docs12.png"
+          height={496}
+          width={870}
+        />
+        <Typography variant="body1">
+          Click 'Add new contract' from the top left corner and then 'Use
+          On-Chain Contract Address'
+        </Typography>
+        <Image
+          alt="add new contract"
+          src="/assets/docs13.png"
+          height={496}
+          width={870}
+        />
+        <Typography variant="body1">
+          Fill in the address field with the address you copied from the
+          Polkadot Contract Wizard and upload the Metadata file you downloaded.
+          Click 'Add Contract'.
+        </Typography>
+        <Image
+          alt="fill fields"
+          src="/assets/docs14.png"
+          height={496}
+          width={870}
+        />
+        <Typography variant="body1">
+          Now you are ready to interact with your contract!!
+        </Typography>
+        <Image
+          alt="ready to interact"
+          src="/assets/docs15.png"
+          height={496}
+          width={870}
+        />
       </Stack>
       {/* <Accordion /> */}
     </Box>
