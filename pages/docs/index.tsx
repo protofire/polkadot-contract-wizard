@@ -41,42 +41,74 @@ export default function Home() {
             <li>MULTITOKEN | PSP37: standard contract for a multi token.</li>
           </ul>
         </Box>
-        <Image alt="description" src='/assets/docs1.png' height={340} width={600} />
+        <Image
+          alt="select a contract"
+          src="/assets/docs1.png"
+          height={496}
+          width={870}
+        />
         <Typography variant="h4">1. Extensions choices 🪄</Typography>
         <Typography variant="body1">
           Once you select one of the options (Token, NFT or Multi Token), you
           will be able to choose one or more Extensions: Functionalities and
           Security.
         </Typography>
-        <Image alt="description" src='/assets/docs2.png' height={340} width={600} />
+        <Image
+          alt="select a extension"
+          src="/assets/docs2.png"
+          height={496}
+          width={870}
+        />
         <Typography variant="h4">2. Compile your contract ⚙️</Typography>
         <Typography variant="body1">
           Now you have your contract ready to be compiled. If you prefer you can
-          copy/download the contract code and use it separately.
-          First, you need to connect your wallet.
+          copy/download the contract code and use it separately. First, you need
+          to connect your wallet.
         </Typography>
         <Typography variant="body1">
           First, you need to connect your wallet.
         </Typography>
-        <Image alt="description" src='/assets/docs3.png' height={340} width={600} />
+        <Image
+          alt="connect your wallet"
+          src="/assets/docs3.png"
+          height={496}
+          width={870}
+        />
         <Typography variant="body1">
           Then, you can compile your contract.
         </Typography>
-        <Image alt="description" src='/assets/docs4.png' height={340} width={600} />
+        <Image
+          alt="compile your contract"
+          src="/assets/docs4.png"
+          height={496}
+          width={870}
+        />
         <Typography variant="h4">3. Deploy your contract 🚀</Typography>
         <Typography variant="body1">
-          After the smart contract has been compiled, it is ready to be deployed to any parachain that supports the Contracts Pallet.
+          After the smart contract has been compiled, it is ready to be deployed
+          to any parachain that supports the Contracts Pallet.
         </Typography>
         <Typography variant="body1">
-          Now you need to fill in the required fields for the contract constructor.
+          Now you need to fill in the required fields for the contract
+          constructor.
         </Typography>
-        <Image alt="description" src='/assets/docs5.png' height={340} width={600} />
+        <Image
+          alt="fill the fields"
+          src="/assets/docs5.png"
+          height={496}
+          width={870}
+        />
         <Typography variant="body1">
           Once you have finished, you can deploy your contract.
         </Typography>
-        <Image alt="description" src='/assets/docs6.png' height={340} width={600} />
+        <Image
+          alt="deploy your contract"
+          src="/assets/docs6.png"
+          height={496}
+          width={870}
+        />
         <Typography variant="h4">4. Interact with your contract 💻</Typography>
-        <Typography variant="h4">Coming Soon 🛠️</Typography>
+        <Typography variant="h5">Coming Soon 🛠️</Typography>
       </Stack>
       {/* <Accordion /> */}
     </Box>
