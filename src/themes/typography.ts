@@ -1,4 +1,6 @@
-const Typography = (fontFamily: string) => ({
+import { TypographyOptions } from '@mui/material/styles/createTypography'
+
+const typographyOptions = (fontFamily: string): TypographyOptions => ({
   htmlFontSize: 16,
   fontFamily,
   fontWeightLight: 300,
@@ -58,12 +60,6 @@ const Typography = (fontFamily: string) => ({
     fontWeight: 500,
     lineHeight: 1.66
   }
-  // overline: {
-  //     lineHeight: 1.66
-  // },
-  // button: {
-  //     textTransform: 'capitalize'
-  // }
 })
 
-export default Typography
+export default typographyOptions

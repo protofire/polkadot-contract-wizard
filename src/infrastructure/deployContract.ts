@@ -1,12 +1,13 @@
 import { web3FromAddress, web3Enable } from '@polkadot/extension-dapp'
 import { SubmittableExtrinsic } from '@polkadot/api/types'
 import type { ISubmittableResult } from '@polkadot/types/types'
+// import type { SignedBlock } from '@polkadot/types/interfaces/runtime'
 
 import { ApiPromise } from '@polkadot/api'
 
 export interface DeployContractService {
   contractAddress: string
-  txHash: string
+  txHash: number
 }
 
 type DeployContractParams = {
@@ -28,7 +29,7 @@ export async function deployContractService({
       {
         signer: injector.signer
       },
-      ({ status, events, dispatchError }) => {
+      async ({ status, events, dispatchError }) => {
         if (dispatchError) {
           if (dispatchError.isModule) {
             const decoded = api.registry.findMetaError(dispatchError.asModule)
@@ -42,8 +43,12 @@ export async function deployContractService({
         }
 
         if (status.isInBlock || status.isFinalized) {
-          let txHash = ''
           let contractAddress = ''
+
+          // Determine block number
+          const blockHash = status.asInBlock.toHex()
+          const block = await api.rpc.chain.getBlock(blockHash)
+          const blockNumber = block.block.header.number.toNumber()
 
           events
             .filter(({ event }) => api.events.contracts.CodeStored.is(event))
@@ -54,7 +59,6 @@ export async function deployContractService({
                 }
               }) => {
                 console.info(`code hash: ${code_hash}`)
-                txHash = code_hash.toString()
               }
             )
           events
@@ -72,7 +76,7 @@ export async function deployContractService({
 
           unsub()
           return resolve({
-            txHash,
+            txHash: blockNumber,
             contractAddress
           })
         }
