@@ -1,4 +1,7 @@
 import { TokenType } from '@/types'
+import { ContractResponse } from '@/infrastructure'
+
+export type ContractMetadata = ContractResponse
 
 interface ContractDetails {
   code_id: string

@@ -1,17 +1,17 @@
 import { TokenType } from '@/types'
 
-export interface RootObject<T> {
+export interface RootApiResponse<T> {
   data: T
   error?: { message: string }
 }
 
-export interface ContractMetadata {
+export interface ContractResponse {
   code_id: string
   metadata: string
   wasm: Uint8Array
 }
 
-export type ContractCompiled = RootObject<ContractMetadata>
+export type ContractCompiled = RootApiResponse<ContractResponse>
 
 export type AllowedFeatures =
   | TokenType
