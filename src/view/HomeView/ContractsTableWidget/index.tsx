@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react'
-import { ContractsTable } from '@/view/HomeView/ContractsTable'
+import { useState } from 'react'
+import { ContractsTable } from '@/view/HomeView/ContractsTableWidget/ContractsTable'
 import { useSearchCompileContract } from '@/hooks'
-import { Contract, ContractMetadata } from '@/domain'
+import { Contract } from '@/domain'
 import { ContractTableItem } from '@/domain/wizard/ContractTableItem'
 import { downloadMetadata } from '@/utils/downloadMetadata'
 
@@ -26,8 +26,7 @@ function updateContractItem(
 }
 
 export function ContractsTableWidget({ contracts }: { contracts: Contract[] }) {
-  const { searchCompileContract, isLoading: isDownloading } =
-    useSearchCompileContract()
+  const { searchCompileContract } = useSearchCompileContract()
   const [contractsItem, setContractsItem] =
     useState<ContractTableItem[]>(contracts)
 

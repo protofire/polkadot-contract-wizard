@@ -14,13 +14,18 @@ import {
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 import { styled } from '@mui/material/styles'
 import FileDownloadIcon from '@mui/icons-material/FileDownload'
+import HourglassBottomIcon from '@mui/icons-material/HourglassBottom'
 
 import { CopyToClipboardButton } from '@/components'
-import { downloadMetadata } from '@/utils/downloadMetadata'
 import { TokenType } from '@/types'
-import { capitalizeFirstLetter, truncateAddress } from '@/utils/formatString'
+import {
+  capitalizeFirstLetter,
+  emptyAsDash,
+  truncateAddress
+} from '@/utils/formatString'
 import { isContractDeployed } from '@/domain'
 import { ContractTableItem } from '@/domain/wizard/ContractTableItem'
+import { useRecentlyClicked } from 'src/hooks/useRecentlyClicked'
 
 const StyledTableContainer = styled(TableContainer)<TableContainerProps>(
   ({ theme }) => ({
@@ -47,18 +52,27 @@ const typeMap: Record<TokenType, string> = {
 
 export interface ContractsTableProps {
   contracts: ContractTableItem[]
-  onSearchContract: (codeId: string) => void
+  onDownloadMeta: (codeId: string) => void
 }
 
-function ContractTableRow({ contract }: { contract: ContractTableItem }) {
+function ContractTableRow({
+  contract,
+  onDownloadMeta
+}: {
+  contract: ContractTableItem
+} & Pick<ContractsTableProps, 'onDownloadMeta'>) {
   const _isContractDeployed = isContractDeployed(contract)
+  const { ref: refButton, recentlyClicked } = useRecentlyClicked({
+    onClick: () => onDownloadMeta(contract.code_id)
+  })
+  const isDownloading = recentlyClicked || contract.isDownloading
 
   return (
     <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
       <TableCell component="th" scope="row">
         {typeMap[contract.type]}
       </TableCell>
-      <TableCell>{contract.name || `-`}</TableCell>
+      <TableCell>{emptyAsDash(contract.name)}</TableCell>
       <TableCell>
         {_isContractDeployed && contract.address && (
           <CopyToClipboard text={contract.address}>
@@ -77,12 +91,8 @@ function ContractTableRow({ contract }: { contract: ContractTableItem }) {
         />
       </TableCell>
       <TableCell>
-        <IconButton
-          onClick={() => {
-            downloadMetadata(contract.code_id)
-          }}
-        >
-          <FileDownloadIcon />
+        <IconButton ref={refButton} disabled={isDownloading}>
+          {isDownloading ? <HourglassBottomIcon /> : <FileDownloadIcon />}
         </IconButton>
       </TableCell>
     </TableRow>
@@ -90,7 +100,8 @@ function ContractTableRow({ contract }: { contract: ContractTableItem }) {
 }
 
 export function ContractsTable({
-  contracts
+  contracts,
+  onDownloadMeta
 }: ContractsTableProps): JSX.Element {
   return (
     <>
@@ -110,7 +121,11 @@ export function ContractsTable({
           </TableHead>
           <TableBody>
             {contracts.map(contract => (
-              <ContractTableRow key={contract.code_id} contract={contract} />
+              <ContractTableRow
+                key={contract.code_id}
+                contract={contract}
+                onDownloadMeta={onDownloadMeta}
+              />
             ))}
           </TableBody>
         </Table>

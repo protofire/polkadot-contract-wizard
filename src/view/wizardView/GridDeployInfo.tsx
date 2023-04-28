@@ -3,7 +3,7 @@ import { Box, BoxProps, Typography } from '@mui/material'
 import { styled } from '@mui/material/styles'
 
 import { ContractDeployed } from '@/domain'
-import { showUndefinedAsDash, truncateAddress } from '@/utils/formatString'
+import { emptyAsDash, truncateAddress } from '@/utils/formatString'
 import { MonoTypography } from '@/components'
 
 const BoxGridStyled = styled(Box)<BoxProps>(() => ({
@@ -30,7 +30,7 @@ export function GridDeployInfo({
           Chain Name
         </Typography>
         <Typography variant="body1">
-          {showUndefinedAsDash(deployedContract?.blockchain)}
+          {emptyAsDash(deployedContract?.blockchain)}
         </Typography>
       </BoxRow>
       <BoxRow>
