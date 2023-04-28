@@ -3,7 +3,7 @@ import { CssBaseline, StyledEngineProvider } from '@mui/material'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 
 import Palette from './palette'
-import Typography from './typography'
+import typographyOptions from './typography'
 import CustomShadows from './shadows'
 import { Settings } from 'src/themes/types'
 import componentsOverride from './overrides'
@@ -19,7 +19,7 @@ export default function ThemeCustomization({
   const { mode, skin } = settings
   const theme = Palette({ mode, skin })
 
-  const themeTypography = Typography(['Inter', 'sans-serif'].join(','))
+  const themeTypography = typographyOptions(['Inter', 'sans-serif'].join(','))
   const themeCustomShadows = useMemo(() => CustomShadows(theme), [theme])
 
   const themeOptions = useMemo(

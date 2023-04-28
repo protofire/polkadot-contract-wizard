@@ -6,7 +6,7 @@ import {
   useState
 } from 'react'
 
-import { Contract, SmartContractEvents } from '@/domain'
+import { Contract, SmartContractEvents, isContractDeployed } from '@/domain'
 import { StorageContractRepository } from '@/infrastructure/LocalStorageContractRepository'
 import { useNetworkAccountsContext } from './NetworkAccountsContext'
 import { useMultiEventListener } from 'src/hooks/useMultipleEventListener'
@@ -56,7 +56,11 @@ export function StorageContractsProvider({
       repository.save(accountAddress, smartContract)
 
       document.dispatchEvent(
-        new CustomEvent(SmartContractEvents.contractCompiled)
+        new CustomEvent(
+          isContractDeployed(smartContract)
+            ? SmartContractEvents.contractInstatiate
+            : SmartContractEvents.contractCompiled
+        )
       )
     },
     [repository]

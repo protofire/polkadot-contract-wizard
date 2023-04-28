@@ -86,11 +86,7 @@ export default function Step3Deploy({
     [dataForm, tokenType]
   )
   const mustLoad = useRef<boolean>(true)
-  const {
-    deployContract,
-    isLoading: isDeploying,
-    error: errorDeploying
-  } = useDeployContract()
+  const { deployContract, isLoading: isDeploying } = useDeployContract()
 
   useEffect(() => {
     if (!dataForm.currentAccount || !mustLoad.current) return

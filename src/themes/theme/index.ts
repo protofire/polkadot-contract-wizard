@@ -3,7 +3,7 @@ import { PalettesProps } from '@ant-design/colors'
 // ==============================|| Contract Wizard Theme ||============================== //
 
 const Theme = (colors: PalettesProps) => {
-  const { blue, red, gold, cyan, green, grey } = colors
+  const { blue, red, gold, cyan, green, grey, primary } = colors
   const greyColors = {
     0: grey[0],
     50: grey[1],
@@ -27,16 +27,16 @@ const Theme = (colors: PalettesProps) => {
 
   return {
     primary: {
-      lighter: blue[0],
-      100: blue[1],
-      200: blue[2],
-      light: blue[3],
-      400: blue[4],
-      main: '#E6007A',
-      dark: blue[6],
-      700: blue[7],
-      darker: blue[8],
-      900: blue[9],
+      lighter: primary[0],
+      100: primary[1],
+      200: primary[2],
+      light: primary[3],
+      400: primary[4],
+      main: primary[5],
+      dark: primary[6],
+      700: primary[7],
+      darker: primary[8],
+      900: primary[9],
       contrastText
     },
     secondary: {
