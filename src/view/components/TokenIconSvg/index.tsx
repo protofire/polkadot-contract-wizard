@@ -3,6 +3,7 @@ import Image from 'next/image'
 
 import { TITLE_MAP_TOKEN, TitleMapProps } from '@/constants/titleTokenType'
 import { calculateNewDimensions } from '@/utils/images'
+import { Box } from '@mui/material'
 
 interface Props {
   label: TokenType
