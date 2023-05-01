@@ -1,6 +1,7 @@
 import { IconButton, SxProps } from '@mui/material'
 import ContentCopyRoundedIcon from '@mui/icons-material/ContentCopyRounded'
-import { Tooltip } from 'react-tooltip'
+// import { Tooltip } from 'react-tooltip'
+import Tooltip from '@mui/material/Tooltip'
 
 import { useCopyToClipboard } from '@/hooks'
 
@@ -10,14 +11,12 @@ interface Props {
   id: string
 }
 
-export const CopyToClipboardButton = ({ data, sx, id }: Props) => {
+export const CopyToClipboardButton = ({ data, sx }: Props) => {
   const [recentlyCopied, copyToClipboard] = useCopyToClipboard()
 
   return (
-    <>
+    <Tooltip placement="top" title="Copied to clipboard" open={recentlyCopied}>
       <IconButton
-        data-tooltip-id={id}
-        data-tooltip-content="Copied to clipboard"
         size="small"
         color="primary"
         onClick={() => copyToClipboard(data)}
@@ -25,7 +24,6 @@ export const CopyToClipboardButton = ({ data, sx, id }: Props) => {
       >
         <ContentCopyRoundedIcon fontSize="inherit" />
       </IconButton>
-      <Tooltip id={id} place="top" isOpen={recentlyCopied} />
-    </>
+    </Tooltip>
   )
 }
