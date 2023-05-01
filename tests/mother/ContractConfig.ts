@@ -1,8 +1,8 @@
-import { ContractConfig } from '@/types'
+import { WizardContractConfig } from '@/domain'
 
 export class ContractConfigMother {
-  static create(params?: Partial<ContractConfig>): ContractConfig {
-    const defaultParams: ContractConfig = {
+  static create(params?: Partial<WizardContractConfig>): WizardContractConfig {
+    const defaultParams: WizardContractConfig = {
       extensions: {},
       constructor: {},
       ...params

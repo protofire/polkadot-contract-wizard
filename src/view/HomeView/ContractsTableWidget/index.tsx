@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { ContractsTable } from '@/view/HomeView/ContractsTableWidget/ContractsTable'
 import { useSearchCompileContract } from '@/hooks'
 import { Contract } from '@/domain'
@@ -29,6 +29,8 @@ export function ContractsTableWidget({ contracts }: { contracts: Contract[] }) {
   const { searchCompileContract } = useSearchCompileContract()
   const [contractsItem, setContractsItem] =
     useState<ContractTableItem[]>(contracts)
+
+  useEffect(() => setContractsItem(contracts), [contracts])
 
   const onDownloadSource = async (codeId: string) => {
     setContractsItem(prev =>

@@ -15,7 +15,7 @@ import { Registry } from '@polkadot/types-codec/types'
 import { WeightV2 } from '@polkadot/types/interfaces'
 import { Bytes } from '@polkadot/types'
 
-import { GetServiceData, TokenType } from '@/types'
+import { GetServiceData } from '@/types'
 import { ContractResponse } from '@/infrastructure'
 import { useNetworkAccountsContext } from 'src/context/NetworkAccountsContext'
 import { BN_ZERO } from '@/constants/numbers'
@@ -25,7 +25,7 @@ import {
   useAppNotificationContext,
   useStorageContractsContext
 } from '@/context'
-import { ContractDeployed } from '@/domain'
+import { ContractDeployed, TokenType } from '@/domain'
 import { genRanHex } from '@/utils/blockchain'
 
 type ReturnValue = GetServiceData

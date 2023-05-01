@@ -3,7 +3,7 @@ import { Stack, Typography } from '@mui/material'
 
 import { HomeButton } from '@/components'
 import { ROUTES, TOKEN_PATHS } from '@/constants/index'
-import { TokenType } from '@/types'
+import { TokenType } from '@/domain'
 import { useNetworkAccountsContext } from 'src/context/NetworkAccountsContext'
 import { useStorageContractsContext } from '@/context'
 import { ContractsTableWidget } from '@/view/HomeView/ContractsTableWidget'
@@ -39,7 +39,7 @@ function Home() {
           href={`${ROUTES.WIZARD}/?token=${Token.psp22}`}
           title="TOKEN | PSP22"
           subtitle="Standard smart contract for a fungible token"
-          imgPath={TOKEN_PATHS.TokenIcon}
+          imgPath={TOKEN_PATHS[Token.psp22]}
           imgProps={{ width: 75, height: 65 }}
         />
         <HomeButton
@@ -47,7 +47,7 @@ function Home() {
           href={`${ROUTES.WIZARD}/?token=${Token.psp34}`}
           title="NFT | PSP34"
           subtitle="Standard smart contract for a non-fungible token"
-          imgPath={TOKEN_PATHS.NFTIcon}
+          imgPath={TOKEN_PATHS[Token.psp34]}
           imgProps={{ width: 55, height: 67 }}
         />
         <HomeButton
@@ -55,7 +55,7 @@ function Home() {
           href={`${ROUTES.WIZARD}/?token=${Token.psp37}`}
           title="MULTITOKEN | PSP37"
           subtitle="Standard smart contract for a Multi Token"
-          imgPath={TOKEN_PATHS.MultiTokenIcon}
+          imgPath={TOKEN_PATHS[Token.psp37]}
           imgProps={{ width: 75, height: 65 }}
         />
       </Stack>

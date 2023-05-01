@@ -1,5 +1,5 @@
 import { AnyControlsToken, WIZARD_CONFIG } from '@/constants/index'
-import { TokenType } from '@/types'
+import { TokenType } from '@/domain'
 
 export function factoryControlsToken(token: TokenType) {
   const currentToken = WIZARD_CONFIG.find(_token => _token.name === token)

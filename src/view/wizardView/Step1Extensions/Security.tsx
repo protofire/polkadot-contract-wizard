@@ -9,7 +9,7 @@ import {
 } from '@mui/material'
 
 import { useStepsSCWizard } from '@/context'
-import { SecurityOfToken } from 'src/types/smartContract/tokens'
+import { SecurityOfToken } from '@/domain'
 
 export default function Security() {
   const { dataForm, setDataForm } = useStepsSCWizard()

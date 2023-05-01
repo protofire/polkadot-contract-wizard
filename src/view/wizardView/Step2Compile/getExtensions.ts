@@ -1,4 +1,4 @@
-import { ContractConfig, TokenType } from '@/types'
+import { WizardContractConfig, TokenType } from '@/domain'
 import {
   ExtensionBuilder,
   Import,
@@ -13,7 +13,10 @@ import {
   isSmallerVer
 } from '@/utils/comparisonString'
 
-export function getExtensions(data: ContractConfig, standardName: TokenType) {
+export function getExtensions(
+  data: WizardContractConfig,
+  standardName: TokenType
+) {
   const extensions = []
   let usesStandardExtensions = false
 
