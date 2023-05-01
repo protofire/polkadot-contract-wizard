@@ -7,7 +7,6 @@ import { CacheProvider } from '@emotion/react'
 import '../styles/globals.css'
 import '../public/fonts/inter.css'
 import 'react-toastify/dist/ReactToastify.css'
-import 'react-tooltip/dist/react-tooltip.css'
 
 import ThemeCustomization from '@/themes'
 import { MainLayout } from 'src/view/layout'
