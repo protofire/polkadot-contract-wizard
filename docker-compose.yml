@@ -40,7 +40,7 @@ services:
       - mongodb
   mongodb:
     ports:
-        - ${DB_EXTERNAL_PORT}:27017
+      - ${DB_EXTERNAL_PORT}:27017
     container_name: ${CONTAINER_BASE}_mongodb
     restart: always
     logging:
