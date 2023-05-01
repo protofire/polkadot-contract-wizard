@@ -1,4 +1,4 @@
-import { TokenType } from '@/types'
+import { TokenType } from '@/domain'
 
 export interface RootApiResponse<T> {
   data: T

@@ -3,7 +3,7 @@ import crypto from 'crypto'
 
 import { generateCode } from '@/view/wizardView/Step2Compile/generator'
 import { ContractConfigMother } from '../../mother/ContractConfig'
-import { TokenType } from '@/types'
+import { TokenType } from '@/domain'
 
 function removeSpacesAndBreak(text: string) {
   return text.replace(/^(?=\n)$|^\s*|\s*$|\n\n+/gm, '')

@@ -5,7 +5,7 @@ import Image from 'next/image'
 
 import { useStepsSCWizard } from '@/context'
 import BackNextButton from '../BackNextButtons'
-import { TokenType } from '@/types'
+import { TokenType } from '@/domain'
 import StyledTextField from '../../components/Input'
 import {
   ConstructorFieldName,

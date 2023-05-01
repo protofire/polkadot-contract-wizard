@@ -9,23 +9,24 @@ import {
   TableContainerProps,
   TableHead,
   TableRow,
-  Typography
+  Typography,
+  Stack
 } from '@mui/material'
-import { CopyToClipboard } from 'react-copy-to-clipboard'
 import { styled } from '@mui/material/styles'
 import FileDownloadIcon from '@mui/icons-material/FileDownload'
 import HourglassBottomIcon from '@mui/icons-material/HourglassBottom'
 
-import { CopyToClipboardButton } from '@/components'
-import { TokenType } from '@/types'
+import { CopyToClipboardButton, TokenIconSvg } from '@/components'
 import {
   capitalizeFirstLetter,
   emptyAsDash,
   truncateAddress
 } from '@/utils/formatString'
-import { isContractDeployed } from '@/domain'
+import { TokenType, isContractDeployed } from '@/domain'
 import { ContractTableItem } from '@/domain/wizard/ContractTableItem'
 import { useRecentlyClicked } from 'src/hooks/useRecentlyClicked'
+import { MonoTypography } from '@/components'
+import { PspChipLabel } from '@/view/components/PspChipLabel'
 
 const StyledTableContainer = styled(TableContainer)<TableContainerProps>(
   ({ theme }) => ({
@@ -45,9 +46,9 @@ const StyledTableContainer = styled(TableContainer)<TableContainerProps>(
 )
 
 const typeMap: Record<TokenType, string> = {
-  psp34: 'NFT | PSP34',
-  psp22: 'TOKEN | PSP22',
-  psp37: 'MULTI TOKEN | PSP37'
+  psp34: 'NFT',
+  psp22: 'TOKEN',
+  psp37: 'MULTI TOKEN'
 }
 
 export interface ContractsTableProps {
@@ -70,22 +71,28 @@ function ContractTableRow({
   return (
     <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
       <TableCell component="th" scope="row">
+        <TokenIconSvg label={contract.type} />
         {typeMap[contract.type]}
       </TableCell>
       <TableCell>{emptyAsDash(contract.name)}</TableCell>
       <TableCell>
         {_isContractDeployed && contract.address && (
-          <CopyToClipboard text={contract.address}>
-            <>
-              {truncateAddress(contract.address)}
-              <CopyToClipboardButton />
-            </>
-          </CopyToClipboard>
+          <Stack direction="row">
+            <MonoTypography>
+              {truncateAddress(contract.address, 4)}
+            </MonoTypography>
+            <CopyToClipboardButton
+              id="copy-contract-address"
+              sx={{ marginLeft: '0.5rem' }}
+              data={contract.address}
+            />
+          </Stack>
         )}
       </TableCell>
       <TableCell>
         <Chip
           label={capitalizeFirstLetter(contract.status)}
+          variant="outlined"
           color={_isContractDeployed ? 'primary' : 'secondary'}
           size="small"
         />

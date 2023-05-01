@@ -1,4 +1,4 @@
-import { ContractConfig, TokenType } from '@/types'
+import { WizardContractConfig, TokenType } from '@/domain'
 import { getExtensions } from '@/view/wizardView/Step2Compile/getExtensions'
 import { BRUSH_NAME, CONTRACT_NAME, VERSION } from '@/constants/index'
 import {
@@ -10,7 +10,10 @@ import {
 } from '@/view/wizardView/Step2Compile/builders'
 import { isGreaterVer, isSmallerVer } from '@/utils/comparisonString'
 
-export function generateCode(standardName: TokenType, data: ContractConfig) {
+export function generateCode(
+  standardName: TokenType,
+  data: WizardContractConfig
+) {
   const { extensions, usesStandardExtensions } = getExtensions(
     data,
     standardName

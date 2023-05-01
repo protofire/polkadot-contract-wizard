@@ -1,6 +1,6 @@
-import { TokenType } from '.'
+import { TokenType } from '@/domain/TokenType'
 
-export interface ContractConfig extends Security {
+export interface WizardContractConfig extends Security {
   extensions: OptionInitState
   constructor: OptionInitState
   currentAccount?: string

@@ -6,14 +6,13 @@ import dynamic from 'next/dynamic'
 import Step1Extensions from './Step1Extensions'
 import { StyledButton as Button, Stepper as StepperWrapper } from '@/components'
 import { StepsSCWizardContext } from '@/context'
-import { TokenType } from '@/types'
 import { ControlsToken, ROUTES } from '@/constants/index'
 import {
   factoryControlsToken,
   factoryOptionTokenValues
 } from 'src/domain/wizard/factoriesContract'
-import { ContractDeployed } from '@/domain'
-import { StackCard } from '../components/StackCard/StackCard'
+import { ContractDeployed, TokenType } from '@/domain'
+import { StackCard } from '@/components'
 import { GridDeployInfo } from './GridDeployInfo'
 
 const STEPS = ['Extensions', 'Compile', 'Deploy']

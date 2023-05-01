@@ -4,35 +4,8 @@ import Stack, { StackProps } from '@mui/material/Stack'
 
 import Image from 'next/image'
 import { Typography } from '@mui/material'
-import { TOKEN_PATHS } from '@/constants/index'
-import { TokenType } from '@/types'
-interface Props extends StackProps {
-  title: string
-  subtitle: string
-  imgPath: string
-  imgProps?: { width?: number; height?: number }
-}
-
-const TitleMap: Record<TokenType, Props> = {
-  psp22: {
-    title: 'TOKEN | PSP22',
-    subtitle: 'Standard smart contract for a fungible token',
-    imgPath: TOKEN_PATHS.TokenIcon,
-    imgProps: { width: 45, height: 39 }
-  },
-  psp34: {
-    title: 'NFT | PSP34',
-    subtitle: 'Standard smart contract for a non-fungible token',
-    imgPath: TOKEN_PATHS.NFTIcon,
-    imgProps: { width: 33, height: 40 }
-  },
-  psp37: {
-    title: 'MULTITOKEN | PSP37',
-    subtitle: 'Standard smart contract for a Multi Token',
-    imgPath: TOKEN_PATHS.MultiTokenIcon,
-    imgProps: { width: 45, height: 39 }
-  }
-}
+import { TITLE_MAP_TOKEN } from '@/constants/titleTokenType'
+import { TokenType } from '@/domain'
 
 const WrapperHead = styled(Stack)<StackProps>(({ theme }) => ({
   color: 'white',
@@ -61,7 +34,8 @@ const WrapperHead = styled(Stack)<StackProps>(({ theme }) => ({
 }))
 
 export const HeadLine = ({ tokenType }: { tokenType: TokenType }) => {
-  const { title, subtitle, imgProps, imgPath } = TitleMap[tokenType]
+  const { title, subtitle, imgProps, imgPath } = TITLE_MAP_TOKEN[tokenType]
+
   return (
     <WrapperHead>
       <Stack

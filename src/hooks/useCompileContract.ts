@@ -4,7 +4,8 @@ import {
   ApiCompileContractRepository,
   CompileContractBody
 } from '@/infrastructure/ApiCompileContractRepository'
-import { GetServiceData, TokenType, SecurityOfToken } from '@/types'
+import { GetServiceData } from '@/types'
+import { TokenType, SecurityOfToken } from '@/domain'
 import { BACKEND_API } from '@/constants/index'
 import { AllowedFeatures, ContractResponse } from '@/infrastructure'
 import { useAppNotificationContext } from 'src/context/AppNotificationContext'

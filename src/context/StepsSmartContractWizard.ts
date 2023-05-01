@@ -1,14 +1,13 @@
 import { Dispatch, createContext, SetStateAction, useContext } from 'react'
 
-import { ContractConfig } from '@/types'
-import { ContractDeployed } from '@/domain'
+import { WizardContractConfig } from '@/domain'
 
 export interface StepsSmartContractWizard {
   activeStep: number
   handleBack: () => void
   handleNext: () => void
-  dataForm: ContractConfig
-  setDataForm: Dispatch<SetStateAction<ContractConfig>>
+  dataForm: WizardContractConfig
+  setDataForm: Dispatch<SetStateAction<WizardContractConfig>>
   resetDataForm: () => void
 }
 

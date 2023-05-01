@@ -1,5 +1,6 @@
 import { HTMLInputTypeAttribute } from 'react'
-import { TokenType } from '@/types'
+
+import { TokenType } from '@/domain'
 
 type Sections = 'Constructor' | 'Extensions'
 export type OptionTokenField = {

@@ -2,7 +2,7 @@ import { Box } from '@mui/material'
 import { useRouter } from 'next/router'
 
 import FormWizard from 'src/view/wizardView'
-import { isOfTypeTokens } from '@/types'
+import { isOfTypeTokens } from '@/domain'
 import LoadingSpinner from 'src/view/components/LoadingSpinner'
 import { HeadLine } from 'src/view/components/HeadLine'
 

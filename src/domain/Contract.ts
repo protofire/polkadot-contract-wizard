@@ -1,4 +1,4 @@
-import { TokenType } from '@/types'
+import { TokenType } from '@/domain/TokenType'
 import { ContractResponse } from '@/infrastructure'
 
 export type ContractMetadata = ContractResponse
