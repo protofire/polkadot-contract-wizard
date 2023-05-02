@@ -15,6 +15,7 @@ export default function Security() {
   const { dataForm, setDataForm } = useStepsSCWizard()
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    console.log('__event', event)
     if (event.target.value === 'none') {
       const newDataForm = { ...dataForm }
       delete newDataForm.security
