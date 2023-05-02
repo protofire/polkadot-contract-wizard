@@ -19,7 +19,7 @@ services:
     environment:
       - NODE_ENV=${WEB_ENVIRONMENT}
       - .env
-      - NEXT_PUBLIC_BACKEND_API=http://127.0.0.1:${BACKEND_EXTERNAL_PORT}/
+      - NEXT_PUBLIC_BACKEND_API=http://127.0.0.1:8000/
     networks:
       - polkadot-wizard
     depends_on:
@@ -33,7 +33,7 @@ services:
     ports:
       - ${BACKEND_EXTERNAL_PORT}:8000
     environment:
-      - MONGOURI=mongodb://mongodb:${DB_EXTERNAL_PORT}
+      - MONGOURI=mongodb://mongodb:27017
     networks:
       - polkadot-wizard
     depends_on:
