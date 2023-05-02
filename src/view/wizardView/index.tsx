@@ -133,7 +133,7 @@ export default function FormWizard({
               <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
                 <Box sx={{ flex: '1 1 auto' }} />
                 <Button LinkComponent={NextLink} href={ROUTES.HOME}>
-                  Back to wizard
+                  Back to Home
                 </Button>
               </Box>
             </>
