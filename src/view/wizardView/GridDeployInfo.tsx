@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box, BoxProps, Typography } from '@mui/material'
+import { Box, BoxProps, Stack, Typography } from '@mui/material'
 import { styled } from '@mui/material/styles'
 
 import { ContractDeployed } from '@/domain'
@@ -37,23 +37,27 @@ export function GridDeployInfo({
         <Typography variant="caption" fontWeight="500">
           Address
         </Typography>
-        <MonoTypography variant="body1">
-          {truncateAddress(deployedContract?.address)}
-        </MonoTypography>
-        {deployedContract?.address && (
-          <CopyToClipboardButton
-            id="copy-contract-address"
-            sx={{ marginLeft: '0.5rem' }}
-            data={deployedContract.address}
-          />
-        )}
+        <Stack direction="row" alignSelf="center">
+          <MonoTypography variant="body1">
+            {truncateAddress(deployedContract?.address)}
+          </MonoTypography>
+          {deployedContract?.address && (
+            <CopyToClipboardButton
+              id="copy-contract-address"
+              sx={{ marginLeft: '0.5rem' }}
+              data={deployedContract.address}
+            />
+          )}
+        </Stack>
       </BoxRow>
       <BoxRow>
         <Typography variant="caption" fontWeight="500">
           Block Number
         </Typography>
-        <MonoTypography variant="body1">
-          {truncateAddress(deployedContract?.txHash, 8)}
+        <Stack direction="row" alignSelf="center">
+          <MonoTypography variant="body1">
+            {truncateAddress(deployedContract?.txHash, 8)}
+          </MonoTypography>
           {deployedContract?.txHash && (
             <CopyToClipboardButton
               id="copy-block-number"
@@ -61,7 +65,7 @@ export function GridDeployInfo({
               data={deployedContract.txHash}
             />
           )}
-        </MonoTypography>
+        </Stack>
       </BoxRow>
     </BoxGridStyled>
   )
