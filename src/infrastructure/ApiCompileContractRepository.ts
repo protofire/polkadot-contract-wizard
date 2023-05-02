@@ -13,9 +13,7 @@ export interface CompileContractBody {
  * handling contracts compiled via the backend REST API.
  */
 export class ApiCompileContractRepository implements CompileContractRepository {
-  constructor(private readonly backenApiConfig: BackendApiConfig) {
-    console.log(backenApiConfig.basePath)
-  }
+  constructor(private readonly backenApiConfig: BackendApiConfig) {}
 
   async create(
     compileContract: CompileContractBody
