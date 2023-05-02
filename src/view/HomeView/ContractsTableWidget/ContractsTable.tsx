@@ -129,9 +129,7 @@ export function ContractsTable({
               <TableCell>NAME</TableCell>
               <TableCell>ADDRESS</TableCell>
               <TableCell>STATUS</TableCell>
-              <TableCell align="right">
-                METADATA <small>(.json)</small>
-              </TableCell>
+              <TableCell align="right">METADATA</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
