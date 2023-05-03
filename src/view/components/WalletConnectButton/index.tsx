@@ -50,14 +50,7 @@ export const WalletConnectButton = () => {
         )
       )}
 
-      <ModalMessage
-        open={openModal}
-        handleClose={() => setOpenModal(false)}
-        title="There is not Extensions available to connect to Polkadot network"
-        body="There is not polkadot wallet installed or it is possible that you
-      rejected the wallet connection (Please open the wallet and delete the
-      rejected action)."
-      />
+      <ModalMessage open={true} handleClose={() => setOpenModal(!openModal)} />
     </>
   )
 }
