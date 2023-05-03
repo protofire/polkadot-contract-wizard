@@ -1,24 +1,17 @@
 import React, { createContext, useEffect, useState, useContext } from 'react'
 import { ApiPromise, WsProvider } from '@polkadot/api'
 import jsonrpc from '@polkadot/types/interfaces/jsonrpc'
-import { isTestChain } from '@polkadot/util'
 import { keyring as KeyringUI, Keyring } from '@polkadot/ui-keyring'
-import { TypeRegistry } from '@polkadot/types/create'
 
 import { DAPP_CONFIG } from '@/constants/index'
 import { WalletConnectionEvents } from 'src/domain/DomainEvents'
-import { ChainType } from '@polkadot/types/interfaces/system'
 import { accountsInPossession } from 'src/domain/KeyringAccouns'
+import {
+  getChainInfo,
+  ChainProperties
+} from '@/infrastructure/NetworkAccountRepository'
 
 type NetworkState = 'DISCONNECTED' | 'CONNECTING' | 'CONNECTED' | 'ERROR'
-
-interface ChainProperties {
-  systemName: string | null
-  systemChainType: ChainType
-  systemChain: string
-  tokenSymbol: string
-  isDevelopment: boolean
-}
 
 export interface NetworkAccountsContextState {
   currentAccount?: string
@@ -43,35 +36,6 @@ export const NetworkAccountsContext = createContext(
     setCurrentAccount: (account: string) => void
   }
 )
-
-const registry = new TypeRegistry()
-async function getChainInfo(api: ApiPromise): Promise<ChainProperties> {
-  const [chainProperties, systemName, systemChain, systemChainType] =
-    await Promise.all([
-      api.rpc.system.properties(),
-      api.rpc.system.name(),
-      (await api.rpc.system.chain()).toString(),
-      api.rpc.system.chainType
-        ? api.rpc.system.chainType()
-        : Promise.resolve(registry.createType('ChainType', 'Live') as ChainType)
-    ])
-
-  return {
-    systemName: systemName.toString(),
-    systemChain,
-    systemChainType,
-    tokenSymbol: chainProperties.tokenSymbol.isSome
-      ? chainProperties.tokenSymbol
-          .unwrap()
-          .toArray()
-          .map(s => s.toString())[0]
-      : 'Unit',
-    isDevelopment:
-      systemChainType.isDevelopment ||
-      systemChainType.isLocal ||
-      isTestChain(systemChain)
-  }
-}
 
 // Connecting to the Substrate node
 const connect = (
@@ -143,8 +107,12 @@ const loadAccounts = (
       }))
 
       KeyringUI.loadAll({ isDevelopment }, allAccounts)
+      const accounts = accountsInPossession(KeyringUI)
+      const initialAddress = accounts.length > 0 ? accounts[0].address : ''
+
       updateState(prev => ({
         ...prev,
+        currentAccount: initialAddress,
         accountStatus: 'CONNECTED',
         keyring: KeyringUI
       }))
@@ -177,14 +145,6 @@ export function NetworkAccountsContextProvider({
       )
     }
   }, [state])
-
-  useEffect(() => {
-    if (!state.keyring || state.currentAccount !== undefined) return
-
-    const accounts = accountsInPossession(state.keyring)
-    const initialAddress = accounts.length > 0 ? accounts[0].address : ''
-    setCurrentAccount(initialAddress)
-  }, [state.currentAccount, state.keyring])
 
   function setCurrentAccount(account: string) {
     setState(prev => ({ ...prev, currentAccount: account }))

@@ -10,7 +10,8 @@ import {
   TableHead,
   TableRow,
   Typography,
-  Stack
+  Stack,
+  Tooltip
 } from '@mui/material'
 import { styled } from '@mui/material/styles'
 import FileDownloadIcon from '@mui/icons-material/FileDownload'
@@ -105,7 +106,13 @@ function ContractTableRow({
       </TableCell>
       <TableCell align="right">
         <IconButton ref={refButton} disabled={isDownloading}>
-          {isDownloading ? <HourglassBottomIcon /> : <FileDownloadIcon />}
+          {isDownloading ? (
+            <HourglassBottomIcon />
+          ) : (
+            <Tooltip title="download .json" placement="top">
+              <FileDownloadIcon />
+            </Tooltip>
+          )}
         </IconButton>
       </TableCell>
     </TableRow>
