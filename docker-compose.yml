@@ -19,7 +19,7 @@ services:
     environment:
       - NODE_ENV=${WEB_ENVIRONMENT}
       - .env
-      - NEXT_PUBLIC_BACKEND_API=http://127.0.0.1:8000/
+      - NEXT_PUBLIC_BACKEND_API=http://compiler-be:8000
     networks:
       - polkadot-wizard
     depends_on:
