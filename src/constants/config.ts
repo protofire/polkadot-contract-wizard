@@ -43,7 +43,7 @@ export interface BackendApiConfig {
   routes: RouteApi
 }
 
-/** URL of the API will be rewriten in next.config */
+/** URL of the API will be rewritten in next.config */
 const apiBaseUrlPath = '/api'
 
 export const BACKEND_API: BackendApiConfig = {
