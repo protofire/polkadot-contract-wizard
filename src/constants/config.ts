@@ -42,7 +42,10 @@ export interface BackendApiConfig {
   basePath: string
   routes: RouteApi
 }
-const apiBaseUrlPath = process.env.NEXT_PUBLIC_BACKEND_API as string
+
+/** URL of the API will be rewritten in next.config */
+const apiBaseUrlPath = '/api'
+
 export const BACKEND_API: BackendApiConfig = {
   basePath: apiBaseUrlPath,
   routes: Object.keys(backendRouterApi).reduce((acc, key) => {
@@ -51,7 +54,7 @@ export const BACKEND_API: BackendApiConfig = {
       ...acc,
       [key]: {
         method: currentRoute.method,
-        url: createUrl(apiBaseUrlPath, currentRoute.pathName)
+        url: `${apiBaseUrlPath}/${currentRoute.pathName}`
       }
     }
   }, {} as RouteApi)
