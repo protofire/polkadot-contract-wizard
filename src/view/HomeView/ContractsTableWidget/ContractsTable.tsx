@@ -26,7 +26,6 @@ import { TokenType, isContractDeployed } from '@/domain'
 import { ContractTableItem } from '@/domain/wizard/ContractTableItem'
 import { useRecentlyClicked } from 'src/hooks/useRecentlyClicked'
 import { MonoTypography } from '@/components'
-import { PspChipLabel } from '@/view/components/PspChipLabel'
 
 const StyledTableContainer = styled(TableContainer)<TableContainerProps>(
   ({ theme }) => ({
@@ -44,6 +43,11 @@ const StyledTableContainer = styled(TableContainer)<TableContainerProps>(
     }
   })
 )
+
+const TokenWrapper = styled(Stack)(() => ({
+  flexDirection: 'row',
+  gap: '0.5rem'
+}))
 
 const typeMap: Record<TokenType, string> = {
   psp34: 'NFT',
@@ -71,8 +75,10 @@ function ContractTableRow({
   return (
     <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
       <TableCell component="th" scope="row">
-        <TokenIconSvg label={contract.type} />
-        {typeMap[contract.type]}
+        <TokenWrapper>
+          <TokenIconSvg label={contract.type} />
+          {typeMap[contract.type]}
+        </TokenWrapper>
       </TableCell>
       <TableCell>{emptyAsDash(contract.name)}</TableCell>
       <TableCell>
@@ -97,7 +103,7 @@ function ContractTableRow({
           size="small"
         />
       </TableCell>
-      <TableCell>
+      <TableCell align="right">
         <IconButton ref={refButton} disabled={isDownloading}>
           {isDownloading ? <HourglassBottomIcon /> : <FileDownloadIcon />}
         </IconButton>
@@ -123,7 +129,7 @@ export function ContractsTable({
               <TableCell>NAME</TableCell>
               <TableCell>ADDRESS</TableCell>
               <TableCell>STATUS</TableCell>
-              <TableCell></TableCell>
+              <TableCell align="right">METADATA</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
