@@ -11,20 +11,14 @@ services:
       context: .
       dockerfile: .docker/web/dev.Dockerfile
       target: runner
-    volumes:
-      - .:/home/app
-      - /home/app/node_modules
     ports:
       - ${WEB_EXTERNAL_PORT}:3000
     environment:
       - NODE_ENV=${WEB_ENVIRONMENT}
-      - .env
-      - NEXT_PUBLIC_BACKEND_API=http://compiler-be:8000
     networks:
       - polkadot-wizard
     depends_on:
       - compiler-be
-    command: yarn dev
   compiler-be:
     container_name: ${CONTAINER_BASE}_backend
     build:
