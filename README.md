@@ -18,8 +18,7 @@ The Polkadot Contract Wizard is a smart contract creation tool that allows users
 
 To run the application it is necessary to copy the environment variables file `.env.example` and paste it as `.env`, in this file you will find environment variables like as the default RPC.
 
-> 🚨🚨🚨 It is necessary to specify the variables int the `.env` to run the application.
->
+> 🚨🚨🚨 It is mandatory to create the `.env` to run the application.
 
 - Clone the repository with the following command and enter the project folder:
 
@@ -57,6 +56,8 @@ To run the application it is necessary to copy the environment variables file `.
 #### B. Local Stack
 
 > ⚠️ For the application to function properly on a local machine, it's essential to have the backend up and running in order for the frontend to operate.
+
+> You must rename the env variable NEXT_PUBLIC_BACKEND_API in the .env file as follows: `NEXT_PUBLIC_BACKEND_API=http://127.0.0.1:8000`
 
 #### Backend
 
