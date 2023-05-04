@@ -19,6 +19,12 @@ services:
       - polkadot-wizard
     depends_on:
       - compiler-be
+    command:
+      sh -c 'if [ "$WEB_ENVIRONMENT" = "development" ]; then
+                yarn dev;
+              else
+                yarn start;
+            fi'
   compiler-be:
     container_name: ${CONTAINER_BASE}_backend
     build:
