@@ -1,12 +1,5 @@
 import React from 'react'
-import {
-  Box,
-  Button,
-  Modal,
-  Stack,
-  Typography,
-  Link as MuiLink
-} from '@mui/material'
+import { Box, Modal, Stack, Typography, Link as MuiLink } from '@mui/material'
 import WarningIcon from '@mui/icons-material/Warning'
 import NextLink from 'next/link'
 

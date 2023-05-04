@@ -1,4 +1,4 @@
-import { ApiPromise, WsProvider } from '@polkadot/api'
+import { ApiPromise } from '@polkadot/api'
 import { ChainType } from '@polkadot/types/interfaces/system'
 import { TypeRegistry } from '@polkadot/types/create'
 import { isTestChain } from '@polkadot/util'
