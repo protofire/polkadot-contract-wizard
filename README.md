@@ -57,7 +57,7 @@ To run the application it is necessary to copy the environment variables file `.
 
 > ⚠️ For the application to function properly on a local machine, it's essential to have the backend up and running in order for the frontend to operate.
 
-> You must rename the env variable NEXT_PUBLIC_BACKEND_API in the .env file as follows: `NEXT_PUBLIC_BACKEND_API=http://localhost:8000`
+> You must rename the env variable NEXT_PUBLIC_BACKEND_API in the .env file as follows: `NEXT_PUBLIC_BACKEND_API=http://127.0.0.1:8000`
 
 #### Backend
 
