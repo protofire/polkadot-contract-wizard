@@ -8,7 +8,9 @@ export interface DappConfig {
 
 export const DAPP_CONFIG: DappConfig = {
   name: 'Polkadot contract wizard',
-  providerSocket: 'wss://rococo-contracts-rpc.polkadot.io'
+  providerSocket:
+    process.env.NEXT_PUBLIC_PROVIDER_DEFAUL_SOCKET ||
+    'wss://rococo-contracts-rpc.polkadot.io'
 }
 
 const backendRouterApi = {
