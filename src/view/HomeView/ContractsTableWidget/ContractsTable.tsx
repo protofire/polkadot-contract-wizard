@@ -68,9 +68,7 @@ function ContractTableRow({
   contract: ContractTableItem
 } & Pick<ContractsTableProps, 'onDownloadMeta'>) {
   const _isContractDeployed = isContractDeployed(contract)
-  const { ref: refButton, recentlyClicked } = useRecentlyClicked({
-    onClick: () => onDownloadMeta(contract.code_id)
-  })
+  const { ref: refButton, recentlyClicked } = useRecentlyClicked()
   const isDownloading = recentlyClicked || contract.isDownloading
 
   return (
@@ -105,7 +103,11 @@ function ContractTableRow({
         />
       </TableCell>
       <TableCell align="right">
-        <IconButton ref={refButton} disabled={isDownloading}>
+        <IconButton
+          ref={refButton}
+          disabled={isDownloading}
+          onClick={() => onDownloadMeta(contract.code_id)}
+        >
           {isDownloading ? (
             <HourglassBottomIcon />
           ) : (

@@ -1,36 +1,28 @@
 import { useCallback, useState } from 'react'
 import { Abi, BlueprintPromise, CodePromise } from '@polkadot/api-contract'
-import {
-  AbiMessage,
-  AbiParam,
-  BlueprintOptions
-} from '@polkadot/api-contract/types'
+import { BlueprintOptions } from '@polkadot/api-contract/types'
 import { ApiPromise } from '@polkadot/api'
-import {
-  ContractInstantiateResult,
-  StorageDeposit,
-  Balance
-} from '@polkadot/types/interfaces'
-import { Registry } from '@polkadot/types-codec/types'
+import { StorageDeposit, Balance } from '@polkadot/types/interfaces'
 import { WeightV2 } from '@polkadot/types/interfaces'
 import { Bytes } from '@polkadot/types'
 
 import { GetServiceData } from '@/types'
-import { ContractResponse } from '@/infrastructure'
 import { useNetworkAccountsContext } from 'src/context/NetworkAccountsContext'
 import { BN_ZERO } from '@/constants/numbers'
 import { ContractConstructorDataForm } from '@/domain/wizard/step3DeployForm.types'
 import { deployContractService } from '@/infrastructure/deployContract'
-import {
-  useAppNotificationContext,
-  useStorageContractsContext
-} from '@/context'
-import { ContractDeployed, TokenType } from '@/domain'
+import { useStorageContractsContext } from '@/context'
+import { ContractDeployed, ContractMetadata, TokenType } from '@/domain'
 import { genRanHex } from '@/utils/blockchain'
+import {
+  contractDryRun,
+  transformUserInput
+} from '@/infrastructure/contractDryRun'
+import { useReportError } from './useReportError'
 
 type ReturnValue = GetServiceData
 
-export type UseDeployContract = ContractResponse & {
+export type UseDeployContract = ContractMetadata & {
   argsForm: ContractConstructorDataForm
   tokenType: TokenType
   blockchain: ContractDeployed['blockchain']
@@ -54,23 +46,6 @@ export interface InstantiateData {
   codeHash?: string
 }
 
-export function transformUserInput(
-  registry: Registry,
-  deployConstructor: AbiParam[],
-  argsFormValues: ContractConstructorDataForm
-) {
-  const values = Object.fromEntries(argsFormValues)
-
-  return deployConstructor.map(param => {
-    const value = values[param.name] ?? null
-    if (value && param.type) {
-      return registry.createType(param.type.type, value)
-    }
-
-    return value
-  })
-}
-
 export function decodeStorageDeposit(
   storageDeposit: StorageDeposit
 ): UIStorageDeposit {
@@ -92,37 +67,11 @@ export function getPredictedCharge(dryRun: UIStorageDeposit) {
     : null
 }
 
-function getParamsContractInstatiate(
-  accountId: string,
-  api: ApiPromise,
-  metadataAbi: Abi,
-  argsFormValues: ContractConstructorDataForm
-) {
-  const deployConstructor: AbiMessage = metadataAbi.constructors[0]
-  const inputData = deployConstructor.toU8a(
-    transformUserInput(
-      metadataAbi.registry,
-      deployConstructor.args,
-      argsFormValues
-    )
-  )
-
-  return [
-    accountId,
-    api.registry.createType('Balance', BN_ZERO),
-    null,
-    null,
-    { Upload: metadataAbi.info.source.wasm },
-    inputData,
-    ''
-  ]
-}
-
 function createInstatiateTx(
   api: ApiPromise,
   data: Omit<InstantiateData, 'name'>,
   argValues: ContractConstructorDataForm,
-  wasm: ContractResponse['wasm']
+  wasm: ContractMetadata['wasm']
 ) {
   const { metadata, codeHash, gasLimit, salt, storageDepositLimit, value } =
     data
@@ -131,8 +80,8 @@ function createInstatiateTx(
   if (metadata && isValid) {
     const constructor = metadata.findConstructor(0)
 
-    const gasLimit = 100000n * 1000000n
-    const storageDepositLimit = null
+    // const gasLimit = 100000n * 1000000n
+    // const storageDepositLimit = null
     const options: BlueprintOptions = {
       gasLimit,
       salt: salt || null,
@@ -163,7 +112,7 @@ export const useDeployContract = (): ReturnValue & {
 } => {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | undefined>()
-  const { addNotification } = useAppNotificationContext()
+  const reportError = useReportError()
   const { addContractToStorage } = useStorageContractsContext()
   const {
     state: { api, currentAccount }
@@ -183,32 +132,31 @@ export const useDeployContract = (): ReturnValue & {
       setError(undefined)
 
       const metadataAbi = new Abi(metadata, api.registry.getChainProperties())
-      const params: Parameters<typeof api.call.contractsApi.instantiate> =
-        getParamsContractInstatiate(currentAccount, api, metadataAbi, argsForm)
-
-      const result = await api.call.contractsApi.instantiate(
-        ...Object.values(params)
-      )
-      const { storageDeposit, gasRequired } =
-        result as ContractInstantiateResult
-
-      const predictedStorageDeposit = decodeStorageDeposit(storageDeposit)
-      const tx = createInstatiateTx(
-        api,
-        {
-          accountId: currentAccount,
-          metadata: metadataAbi,
-          constructorIndex: 0,
-          salt: genRanHex(64),
-          argValues: {},
-          storageDepositLimit: getPredictedCharge(predictedStorageDeposit),
-          gasLimit: gasRequired
-        },
-        argsForm,
-        wasm
-      )
-
       try {
+        const { storageDeposit, gasRequired } = await contractDryRun({
+          currentAccount,
+          api,
+          metadataAbi,
+          argsForm,
+          wasm
+        })
+
+        const predictedStorageDeposit = decodeStorageDeposit(storageDeposit)
+        const tx = createInstatiateTx(
+          api,
+          {
+            accountId: currentAccount,
+            metadata: metadataAbi,
+            constructorIndex: 0,
+            salt: genRanHex(64),
+            argValues: {},
+            storageDepositLimit: getPredictedCharge(predictedStorageDeposit),
+            gasLimit: gasRequired
+          },
+          argsForm,
+          wasm
+        )
+
         const result = await deployContractService({ api, tx, currentAccount })
         const contractDeployed = {
           code_id,
@@ -224,19 +172,12 @@ export const useDeployContract = (): ReturnValue & {
 
         return contractDeployed
       } catch (error) {
-        console.error(error)
-        addNotification({
-          message:
-            typeof error === 'string'
-              ? error
-              : 'An error ocurred while deploying',
-          type: 'error'
-        })
+        reportError(error)
       } finally {
         setIsLoading(false)
       }
     },
-    [addContractToStorage, addNotification, api, currentAccount]
+    [addContractToStorage, api, currentAccount, reportError]
   )
 
   return { isLoading, error, deployContract }
