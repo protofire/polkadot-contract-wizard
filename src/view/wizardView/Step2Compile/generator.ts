@@ -78,6 +78,9 @@ export function generateCode(
     contract.addBrushImport(
       new Import(`${BRUSH_NAME}::contracts::${standardName}::*`)
     )
+    contract.addBrushImport(
+      new Import(`${BRUSH_NAME}::contracts::${standardName}`)
+    )
     contract.addAdditionalImpl(
       new TraitImpl(
         `${isSmallerVer(VERSION, 'v2.2.0') ? standardName.toUpperCase() : ''}${
