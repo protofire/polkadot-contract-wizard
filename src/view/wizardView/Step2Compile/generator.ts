@@ -114,6 +114,11 @@ export function generateCode(
 
   if (standardName === 'psp22') {
     contract.addConstructorArg('initial_supply: Balance')
+    if (isCapped) {
+      contract.addConstructorAction(
+        `_instance._init_cap(initial_supply).expect("Should init cap");`
+      )
+    }
     contract.addConstructorAction(
       `_instance._mint${
         isSmallerVer(VERSION, 'v2.3.0') ? '' : '_to'
