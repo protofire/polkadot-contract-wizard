@@ -28,8 +28,8 @@ It is expected that the contract will include the modifications selected in the 
 ### ⚙️ Compile your smart contract
 ![image (21)](https://user-images.githubusercontent.com/4270166/230094117-098d8ca9-b64b-4631-ae0b-98bf14218059.png)
 
-### 🏗️ Your SC has been compiled and is ready to be deployed (Comming soong)
+### 🏗️ Your SC has been compiled and is ready to be deployed
 ![image (22)](https://user-images.githubusercontent.com/4270166/230094180-c4d7b110-d576-4c95-8f09-16ebd4098d12.png)
 
-### 🚀 Deploy your smart contract (Comming soong)
-![image (23)](https://user-images.githubusercontent.com/4270166/230094328-c2e110f7-d731-4b5e-b96c-58d5bbffc03b.png)
+### 🚀 Deploy your smart contract
+![image (23)](https://raw.githubusercontent.com/protofire/polkadot-contract-wizard/develop/public/assets/docs9.png)
