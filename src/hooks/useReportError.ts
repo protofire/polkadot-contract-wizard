@@ -4,14 +4,20 @@ import { useAppNotificationContext } from '@/context'
 import { IS_DEVELOPMENT } from '@/constants/config'
 import { getErrorMessage } from '@/utils/error'
 
+export function reportError(error: unknown): string {
+  const errorMessage = getErrorMessage(error)
+
+  if (IS_DEVELOPMENT) console.error(error)
+
+  return errorMessage
+}
+
 export function useReportError(toastError = true) {
   const { addNotification } = useAppNotificationContext()
 
-  const reportError = useCallback(
+  const reportErrorWithToast = useCallback(
     (error: unknown) => {
-      const errorMessage = getErrorMessage(error)
-
-      if (IS_DEVELOPMENT) console.error(error)
+      const errorMessage = reportError(error)
 
       if (toastError) {
         addNotification({
@@ -23,5 +29,5 @@ export function useReportError(toastError = true) {
     [addNotification, toastError]
   )
 
-  return reportError
+  return { reportErrorWithToast }
 }

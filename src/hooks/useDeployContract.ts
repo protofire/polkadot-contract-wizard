@@ -112,7 +112,7 @@ export const useDeployContract = (): ReturnValue & {
 } => {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | undefined>()
-  const reportError = useReportError()
+  const { reportErrorWithToast } = useReportError()
   const { addContractToStorage } = useStorageContractsContext()
   const {
     state: { api, currentAccount }
@@ -172,12 +172,12 @@ export const useDeployContract = (): ReturnValue & {
 
         return contractDeployed
       } catch (error) {
-        reportError(error)
+        reportErrorWithToast(error)
       } finally {
         setIsLoading(false)
       }
     },
-    [addContractToStorage, api, currentAccount, reportError]
+    [addContractToStorage, api, currentAccount, reportErrorWithToast]
   )
 
   return { isLoading, error, deployContract }
