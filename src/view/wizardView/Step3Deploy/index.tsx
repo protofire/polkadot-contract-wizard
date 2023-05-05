@@ -24,6 +24,8 @@ import { ContractConstructorDataForm } from '@/domain/wizard/step3DeployForm.typ
 import { useNetworkAccountsContext } from 'src/context/NetworkAccountsContext'
 import { ContractDeployed } from '@/domain'
 
+type ConstructorTokenFieldProps = { [key in ConstructorFieldName]: string }
+
 function textFieldFactory(field: ConstructorTokenField, required = true) {
   {
     return (
@@ -112,13 +114,17 @@ export default function Step3Deploy({
     dataForm.extensions.Pausable
   ])
 
-  const handleSubmit = async (
-    event: FormEvent<{ [key in ConstructorFieldName]: string }>
-  ) => {
+  const handleSubmit = async (event: FormEvent<ConstructorTokenFieldProps>) => {
     event.preventDefault()
     const { elements } = event.target
-
     const _dataForm: ContractConstructorDataForm = []
+
+    if (metadataFields.length > 0 && elements['decimal'].value != '0') {
+      elements['initialSupply'].value = (
+        Number(elements['initialSupply'].value) *
+        Math.pow(10, Number(elements['decimal'].value))
+      ).toString()
+    }
 
     mandatoryFields.concat(metadataFields).forEach(field => {
       if (elements[field.fieldName]) {
