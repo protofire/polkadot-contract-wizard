@@ -79,7 +79,6 @@ function ContractTableRow({
           {typeMap[contract.type]}
         </TokenWrapper>
       </TableCell>
-      <TableCell>{emptyAsDash(contract.name)}</TableCell>
       <TableCell>
         {_isContractDeployed && contract.address && (
           <Stack direction="row">
@@ -105,14 +104,16 @@ function ContractTableRow({
       <TableCell align="right">
         <IconButton
           ref={refButton}
-          disabled={isDownloading}
+          disabled={isDownloading || contract.status === 'compiled'}
           onClick={() => onDownloadMeta(contract.code_id)}
         >
           {isDownloading ? (
             <HourglassBottomIcon />
           ) : (
             <Tooltip title="download .json" placement="top">
-              <FileDownloadIcon />
+              <FileDownloadIcon
+                color={contract.status === 'compiled' ? 'secondary' : 'inherit'}
+              />
             </Tooltip>
           )}
         </IconButton>
@@ -135,7 +136,6 @@ export function ContractsTable({
           <TableHead>
             <TableRow>
               <TableCell>TYPE</TableCell>
-              <TableCell>NAME</TableCell>
               <TableCell>ADDRESS</TableCell>
               <TableCell>STATUS</TableCell>
               <TableCell align="right">METADATA</TableCell>
