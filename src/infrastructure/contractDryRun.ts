@@ -62,7 +62,7 @@ interface ContractDryRun {
 }
 
 const DRY_RUN_ERRORS_MSG: Record<string, string> = {
-  StorageDepositLimitExhausted: 'Insufficient funds to cover the tx'
+  StorageDepositLimitExhausted: 'Insufficient funds to cover the transaction'
 }
 
 export async function contractDryRun({
@@ -91,7 +91,7 @@ export async function contractDryRun({
       ? api.registry.findMetaError(dryRunResult?.result.asErr.asModule)
       : null
 
-  let errMesssage = 'Transaction dry run verification failed'
+  let errMesssage = 'Dry-run transaction verification failure'
 
   if (dryRunError && dryRunError.method in DRY_RUN_ERRORS_MSG) {
     errMesssage = DRY_RUN_ERRORS_MSG[dryRunError.name]
