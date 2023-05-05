@@ -1,12 +1,9 @@
 import { useState, useRef, useEffect } from 'react'
 
 type RefType = HTMLButtonElement | null
+const ONE_SECOND = 1000 // ms
 
-interface UseRecentlyClickedProps {
-  onClick: () => void
-}
-
-export function useRecentlyClicked({ onClick }: UseRecentlyClickedProps) {
+export function useRecentlyClicked(waitTime = ONE_SECOND) {
   const [clicked, setClicked] = useState(false)
   const ref = useRef<RefType>(null)
 
@@ -15,10 +12,11 @@ export function useRecentlyClicked({ onClick }: UseRecentlyClickedProps) {
 
     function handleClick() {
       setClicked(true)
-      onClick && onClick()
       setTimeout(() => {
         setClicked(false)
-      }, 1000)
+      }, waitTime)
+
+      ref.current?.click()
     }
 
     ref.current.addEventListener('click', handleClick)
@@ -28,7 +26,7 @@ export function useRecentlyClicked({ onClick }: UseRecentlyClickedProps) {
     return () => {
       copyCurrentButton.removeEventListener('click', handleClick)
     }
-  }, [onClick, ref])
+  }, [ref])
 
   return { ref, recentlyClicked: clicked }
 }

@@ -23,6 +23,7 @@ import { useDeployContract } from 'src/hooks/useDeployContract'
 import { ContractConstructorDataForm } from '@/domain/wizard/step3DeployForm.types'
 import { useNetworkAccountsContext } from 'src/context/NetworkAccountsContext'
 import { ContractDeployed } from '@/domain'
+import { useRecentlyClicked } from 'src/hooks/useRecentlyClicked'
 
 function textFieldFactory(field: ConstructorTokenField, required = true) {
   {
@@ -87,6 +88,8 @@ export default function Step3Deploy({
   )
   const mustLoad = useRef<boolean>(true)
   const { deployContract, isLoading: isDeploying } = useDeployContract()
+  const { ref: refButton, recentlyClicked } = useRecentlyClicked(500)
+  const _isDeploying = recentlyClicked || isDeploying
 
   useEffect(() => {
     if (!dataForm.currentAccount || !mustLoad.current) return
@@ -225,9 +228,10 @@ export default function Step3Deploy({
         handleNext={areThereParameters ? undefined : () => _handleDeploy([])}
         hiddenBack={true}
         nextButtonProps={{
+          ref: refButton,
           endIcon: isButtonNextDisabled ? '🚫' : '🚀',
           disabled: isButtonNextDisabled,
-          loading: isDeploying,
+          loading: _isDeploying,
           ...(areThereParameters && { type: 'submit', form: 'deploy-form' })
         }}
       />
