@@ -9,7 +9,7 @@ export interface DappConfig {
 export const DAPP_CONFIG: DappConfig = {
   name: 'Polkadot contract wizard',
   providerSocket:
-    process.env.NEXT_PUBLIC_PROVIDER_DEFAUL_SOCKET ||
+    process.env.NEXT_PUBLIC_PROVIDER_DEFAULT_SOCKET ||
     'wss://rococo-contracts-rpc.polkadot.io'
 }
 
