@@ -1,3 +1,4 @@
+const ASTAR_RPC = 'wss://rpc.astar.network'
 describe('Environments variables', () => {
   const ALL_ENV = process.env
 
@@ -5,7 +6,8 @@ describe('Environments variables', () => {
     jest.resetModules()
     process.env = {
       ...ALL_ENV, // Make a copy
-      NODE_ENV: 'development'
+      NODE_ENV: 'development',
+      NEXT_PUBLIC_PROVIDER_DEFAULT_SOCKET: ASTAR_RPC
     }
   })
 
@@ -15,11 +17,9 @@ describe('Environments variables', () => {
 
   test('That environment variables exist', () => {
     expect(process.env.NODE_ENV).toBe('development')
-    expect(process.env.NEXT_PUBLIC_PROVIDER_SOCKET_PROD).toBe(
-      'wss://rococo-contracts-rpc.polkadot.io'
-    )
-    expect(process.env.NEXT_PUBLIC_PROVIDER_SOCKET_DEV).toBe(
-      'wss://rococo-contracts-rpc.polkadot.io'
-    )
+  })
+
+  test('That rpc variables is setted', () => {
+    expect(process.env.NEXT_PUBLIC_PROVIDER_DEFAULT_SOCKET).toBe(ASTAR_RPC)
   })
 })
