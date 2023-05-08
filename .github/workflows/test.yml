@@ -55,7 +55,7 @@ jobs:
 
       - name: Run Unit Tests
         run: |
-          yarn test
+          yarn jest --config=jest.config.js
         env:
           CI: true
 
