@@ -6,6 +6,7 @@ pub mod my_psp22 {
     // imports from openbrush
     use openbrush::contracts::psp22::Transfer;
     use openbrush::contracts::psp22::*;
+    use openbrush::contracts::psp22;
     use openbrush::traits::String;
     use openbrush::traits::Storage;
     use openbrush::contracts::access_control::only_role;
@@ -72,6 +73,7 @@ pub mod my_psp22 {
         #[ink(constructor)]
         pub fn new(initial_supply: Balance, name: Option<String>, symbol: Option<String>, decimal: u8) -> Self {
             let mut _instance = Self::default();
+            _instance._init_cap(initial_supply).expect("Should init cap");
             _instance._mint_to(_instance.env().caller(), initial_supply).expect("Should mint"); 
             _instance._init_with_admin(_instance.env().caller());
             _instance.grant_role(MANAGER, _instance.env().caller()).expect("Should grant MANAGER role");

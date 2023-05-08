@@ -1,0 +1,61 @@
+name: Test
+on:
+  pull_request:
+    types: [opened, reopened, synchronize]
+
+jobs:
+  unit-tests:
+    env:
+      POLKADOT_CONNECTION_TESTS: false
+    name: Run tests
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [18.x]
+
+    steps:
+      - name: Cancel previous runs
+        uses: styfle/cancel-workflow-action@0.5.0
+        with:
+          access_token: ${{ github.token }}
+
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          registry-url: https://registry.npmjs.org
+
+      - name: Restore yarn cache if available
+        uses: actions/cache@v3
+        id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
+        with:
+          path: |
+            node_modules
+            */*/node_modules
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+
+      - name: Install dependencies
+        if: steps.yarn-cache.outputs.cache-hit != 'true'
+        run: |
+          yarn install --frozen-lockfile
+
+      - name: Run linting check
+        run: |
+          yarn lint
+        env:
+          CI: true
+
+      - name: Run type check
+        run: |
+          yarn ts:check
+        env:
+          CI: true
+
+      - name: Run Unit Tests
+        run: |
+          yarn jest --config=jest.config.js
+        env:
+          CI: true
+
