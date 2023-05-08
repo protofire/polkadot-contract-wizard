@@ -5,6 +5,8 @@ on:
 
 jobs:
   unit-tests:
+    env:
+      POLKADOT_CONNECTION_TESTS: false
     name: Run tests
     runs-on: ubuntu-latest
     strategy:
