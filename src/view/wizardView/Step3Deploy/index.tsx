@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { Grid, Stack, Typography } from '@mui/material'
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward'
 import Image from 'next/image'
@@ -6,7 +6,7 @@ import Image from 'next/image'
 import { useStepsSCWizard } from '@/context'
 import BackNextButton from '../BackNextButtons'
 import { TokenType } from '@/domain'
-import StyledTextField from '../../components/Input'
+import { StyledTextField } from '@/components/Input'
 import {
   ConstructorFieldName,
   ConstructorTokenField,
@@ -24,6 +24,7 @@ import { ContractConstructorDataForm } from '@/domain/wizard/step3DeployForm.typ
 import { useNetworkAccountsContext } from 'src/context/NetworkAccountsContext'
 import { ContractDeployed } from '@/domain'
 import { useRecentlyClicked } from 'src/hooks/useRecentlyClicked'
+import { FormConstructorContract } from './FormConstructorContract'
 
 type ConstructorTokenFieldProps = { [key in ConstructorFieldName]: string }
 
@@ -42,24 +43,6 @@ function textFieldFactory(field: ConstructorTokenField, required = true) {
   }
 }
 
-function useMemoizeFields(
-  optionList: ConstructorTokenField[] | undefined,
-  hasMetadata: boolean
-) {
-  return useMemo(
-    () => ({
-      mandatoryFields:
-        (optionList && optionList.filter(field => field.mandatory)) || [],
-      metadataFields:
-        (hasMetadata &&
-          optionList &&
-          optionList.filter(field => !field.mandatory)) ||
-        []
-    }),
-    [optionList, hasMetadata]
-  )
-}
-
 export default function Step3Deploy({
   constructorFields,
   tokenType,
@@ -76,13 +59,9 @@ export default function Step3Deploy({
   const [contractCompiled, setContractCompiled] = useState<
     ContractResponse | undefined
   >()
-  const { mandatoryFields, metadataFields } = useMemoizeFields(
-    constructorFields?.optionList,
-    dataForm.extensions.Metadata as boolean
-  )
+  const hasMetadata = Boolean(dataForm.extensions.Metadata)
   const { compileContract } = useCompileContract()
-  const areThereParameters =
-    mandatoryFields.length > 0 || metadataFields.length > 0
+  const contractConstructorFields = constructorFields?.optionList || []
   const isButtonNextDisabled = contractCompiled === undefined
   const codeGenerated = useMemo(
     () => generateCode(tokenType, dataForm),
@@ -122,25 +101,26 @@ export default function Step3Deploy({
     const { elements } = event.target
     const _dataForm: ContractConstructorDataForm = []
 
-    if (metadataFields.length > 0 && elements['decimal'].value != '0') {
-      elements['initialSupply'].value = (
-        Number(elements['initialSupply'].value) *
-        Math.pow(10, Number(elements['decimal'].value))
-      ).toString()
-    }
+    console.log('__Elements', elements)
+    // if (metadataFields.length > 0 && elements['decimal'].value != '0') {
+    //   elements['initialSupply'].value = (
+    //     Number(elements['initialSupply'].value) *
+    //     Math.pow(10, Number(elements['decimal'].value))
+    //   ).toString()
+    // }
 
-    mandatoryFields.concat(metadataFields).forEach(field => {
-      if (elements[field.fieldName]) {
-        _dataForm.push([
-          field.fieldName,
-          field.type === 'number'
-            ? Number(elements[field.fieldName].value)
-            : elements[field.fieldName].value
-        ])
-      }
-    })
+    // mandatoryFields.concat(metadataFields).forEach(field => {
+    //   if (elements[field.fieldName]) {
+    //     _dataForm.push([
+    //       field.fieldName,
+    //       field.type === 'number'
+    //         ? Number(elements[field.fieldName].value)
+    //         : elements[field.fieldName].value
+    //     ])
+    //   }
+    // })
 
-    _handleDeploy(_dataForm)
+    // _handleDeploy(_dataForm)
   }
 
   const _handleDeploy = async (
@@ -200,7 +180,7 @@ export default function Step3Deploy({
               )}
             </Typography>
           </Stack>
-          {areThereParameters && (
+          {contractConstructorFields.length > 0 && (
             <form id="deploy-form" onSubmit={handleSubmit}>
               <Stack
                 sx={{
@@ -218,12 +198,10 @@ export default function Step3Deploy({
                 />
               </Stack>
 
-              <Stack
-                sx={{ display: 'flex', flexDirection: 'column', gap: '1.2rem' }}
-              >
-                {mandatoryFields.map(field => textFieldFactory(field))}
-                {metadataFields.map(field => textFieldFactory(field))}
-              </Stack>
+              <FormConstructorContract
+                fields={contractConstructorFields}
+                hasMetadata={hasMetadata}
+              />
             </form>
           )}
         </Grid>
@@ -231,14 +209,19 @@ export default function Step3Deploy({
       <BackNextButton
         nextLabel="Deploy Contract"
         handleBack={handleBack}
-        handleNext={areThereParameters ? undefined : () => _handleDeploy([])}
+        handleNext={
+          contractConstructorFields.length ? undefined : () => _handleDeploy([])
+        }
         hiddenBack={true}
         nextButtonProps={{
           ref: refButton,
           endIcon: isButtonNextDisabled ? '🚫' : '🚀',
           disabled: isButtonNextDisabled,
           loading: _isDeploying,
-          ...(areThereParameters && { type: 'submit', form: 'deploy-form' })
+          ...(contractConstructorFields.length && {
+            type: 'submit',
+            form: 'deploy-form'
+          })
         }}
       />
     </>
