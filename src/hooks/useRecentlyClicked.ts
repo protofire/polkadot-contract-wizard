@@ -26,7 +26,7 @@ export function useRecentlyClicked(waitTime = ONE_SECOND) {
     return () => {
       copyCurrentButton.removeEventListener('click', handleClick)
     }
-  }, [ref])
+  }, [ref, waitTime])
 
   return { ref, recentlyClicked: clicked }
 }

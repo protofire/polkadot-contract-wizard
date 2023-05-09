@@ -14,7 +14,8 @@ const customJestConfig = {
     '^@/utils/(.*)$': '<rootDir>/src/utils/$1',
     '^@/constants/(.*)$': '<rootDir>/src/constants/$1',
     '^@/domain/(.*)$': '<rootDir>/src/domain/$1',
-    '^@/infrastructure/(.*)$': '<rootDir>/src/infrastructure/$1'
+    '^@/infrastructure/(.*)$': '<rootDir>/src/infrastructure/$1',
+    '^@/hooks/(.*)$': '<rootDir>/src/hooks/$1'
   }
 }
 module.exports = createJestConfig(customJestConfig)
