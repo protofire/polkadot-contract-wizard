@@ -24,9 +24,10 @@ import { ContractConstructorDataForm } from '@/domain/wizard/step3DeployForm.typ
 import { useNetworkAccountsContext } from 'src/context/NetworkAccountsContext'
 import { ContractDeployed } from '@/domain'
 import { useRecentlyClicked } from 'src/hooks/useRecentlyClicked'
-import { FormConstructorContract } from './FormConstructorContract'
-
-type ConstructorTokenFieldProps = { [key in ConstructorFieldName]: string }
+import {
+  FormConstructorContract,
+  ConstructorTokenFieldProps
+} from './FormConstructorContract'
 
 function textFieldFactory(field: ConstructorTokenField, required = true) {
   {
@@ -101,26 +102,26 @@ export default function Step3Deploy({
     const { elements } = event.target
     const _dataForm: ContractConstructorDataForm = []
 
-    console.log('__Elements', elements)
-    // if (metadataFields.length > 0 && elements['decimal'].value != '0') {
-    //   elements['initialSupply'].value = (
-    //     Number(elements['initialSupply'].value) *
-    //     Math.pow(10, Number(elements['decimal'].value))
-    //   ).toString()
-    // }
+    contractConstructorFields.forEach(field => {
+      if (hasMetadata && field.fieldName === 'initialSupply') {
+        _dataForm.push([
+          field.fieldName,
+          elements.initialSupplyPowDecimal.value
+        ])
 
-    // mandatoryFields.concat(metadataFields).forEach(field => {
-    //   if (elements[field.fieldName]) {
-    //     _dataForm.push([
-    //       field.fieldName,
-    //       field.type === 'number'
-    //         ? Number(elements[field.fieldName].value)
-    //         : elements[field.fieldName].value
-    //     ])
-    //   }
-    // })
+        return
+      }
+      if (elements[field.fieldName]) {
+        _dataForm.push([
+          field.fieldName,
+          field.type === 'number'
+            ? Number(elements[field.fieldName].value)
+            : elements[field.fieldName].value
+        ])
+      }
+    })
 
-    // _handleDeploy(_dataForm)
+    _handleDeploy(_dataForm)
   }
 
   const _handleDeploy = async (

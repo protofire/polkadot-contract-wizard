@@ -11,10 +11,20 @@ import { StyledTextField } from '@/components'
 import { useMemoizeFields } from './useMemorizeFields'
 import { ConstructorFieldName } from '@/constants/wizardData'
 
-type FormStateContract<T> = {
+export const INITIAL_SUPPLY_DECIMAL_FIELD = 'initialSupplyPowDecimal'
+
+type FormStateContract = {
   [K in ConstructorFieldName]: ControlledFormInput<
     K extends 'initialSupply' | 'decimal' ? number : string
   >
+}
+
+type ConstructorFieldNameExtended =
+  | ConstructorFieldName
+  | typeof INITIAL_SUPPLY_DECIMAL_FIELD
+
+export type ConstructorTokenFieldProps = {
+  [key in ConstructorFieldNameExtended]: string
 }
 
 const initialValues = {
@@ -36,7 +46,7 @@ export function FormConstructorContract({
   fields: ConstructorTokenField[]
   hasMetadata: boolean
 }): JSX.Element {
-  const mapStates: FormStateContract<number | string> = {
+  const mapStates: FormStateContract = {
     initialSupply: useFormInput(initialValues.initialSupply),
     name: useFormInput(initialValues.name),
     symbol: useFormInput(initialValues.symbol),
@@ -47,9 +57,9 @@ export function FormConstructorContract({
     hasMetadata
   )
   const [initialSupplyField] = mandatoryFields
-  const convertedInitialSupply = useFormDependentInput<number, string>({
+  const convertedInitialSupply = useFormDependentInput<number, number>({
     dependencies: [mapStates.initialSupply.value, mapStates.decimal.value],
-    onCallback: inputs => initialSupplyPowDecimal(inputs).toExponential()
+    onCallback: inputs => initialSupplyPowDecimal(inputs)
   })
 
   return (
@@ -74,27 +84,33 @@ export function FormConstructorContract({
           {hasMetadata &&
             mapStates.initialSupply.value &&
             mapStates.decimal.value && (
-              <StyledTextField
-                disabled
-                variant="standard"
-                InputProps={{
-                  startAdornment: (
-                    <Tooltip
-                      title={`This field represents the calculation of 'Initial Supply' multiplied by 10
+              <>
+                <StyledTextField
+                  disabled
+                  variant="standard"
+                  InputProps={{
+                    startAdornment: (
+                      <Tooltip
+                        title={`This field represents the calculation of 'Initial Supply' multiplied by 10
                     to the power of 'decimals' (1e${mapStates.decimal.value}).`}
-                      placement="top"
-                    >
-                      <InputAdornment position="start">
-                        <InfoOutlinedIcon color="primary" fontSize="small" />
-                      </InputAdornment>
-                    </Tooltip>
-                  )
-                }}
-                label="Initial supply will be send"
-                type={initialSupplyField.type}
-                name={initialSupplyField.fieldName}
-                {...convertedInitialSupply}
-              />
+                        placement="top"
+                      >
+                        <InputAdornment position="start">
+                          <InfoOutlinedIcon color="primary" fontSize="small" />
+                        </InputAdornment>
+                      </Tooltip>
+                    )
+                  }}
+                  label="Initial supply will be send"
+                  name="formatedInitialSupplyPowDecimal"
+                  value={convertedInitialSupply.value.toExponential()}
+                />
+                <input
+                  hidden={true}
+                  name={INITIAL_SUPPLY_DECIMAL_FIELD}
+                  {...convertedInitialSupply}
+                />
+              </>
             )}
         </Stack>
       )}
