@@ -1,7 +1,11 @@
 import { InputAdornment, Stack, Tooltip } from '@mui/material'
-import InfoIcon from '@mui/icons-material/Info'
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
 
-import { useFormInput, ControlledFormInput } from '@/hooks'
+import {
+  useFormInput,
+  ControlledFormInput,
+  useFormDependentInput
+} from '@/hooks'
 import { ConstructorTokenField } from '@/constants/index'
 import { StyledTextField } from '@/components'
 import { useMemoizeFields } from './useMemorizeFields'
@@ -20,7 +24,8 @@ const initialValues = {
   decimal: 18
 }
 
-function initialSupplyPowDecimal(supply: number, decimals: number) {
+function initialSupplyPowDecimal(inputs: number[]): number {
+  const [supply, decimals] = inputs
   return Number(supply) * Math.pow(10, Number(decimals))
 }
 
@@ -42,14 +47,21 @@ export function FormConstructorContract({
     hasMetadata
   )
   const [initialSupplyField] = mandatoryFields
-  const convertedInitialSupply = useFormInput<number>(
-    initialSupplyPowDecimal(initialValues.initialSupply, initialValues.decimal)
-  )
+  const convertedInitialSupply = useFormDependentInput<number, string>({
+    dependencies: [mapStates.initialSupply.value, mapStates.decimal.value],
+    onCallback: inputs => initialSupplyPowDecimal(inputs).toExponential()
+  })
 
   return (
     <Stack sx={{ display: 'flex', flexDirection: 'column', gap: '1.2rem' }}>
       {initialSupplyField && (
-        <Stack direction={hasMetadata ? 'row' : 'column'}>
+        <Stack
+          sx={{
+            display: 'grid',
+            gap: '1rem',
+            gridTemplateColumns: '0.7fr 0.3fr'
+          }}
+        >
           <StyledTextField
             required
             label={initialSupplyField.fieldName}
@@ -63,7 +75,6 @@ export function FormConstructorContract({
             mapStates.initialSupply.value &&
             mapStates.decimal.value && (
               <StyledTextField
-                required
                 disabled
                 variant="standard"
                 InputProps={{
@@ -74,7 +85,7 @@ export function FormConstructorContract({
                       placement="top"
                     >
                       <InputAdornment position="start">
-                        <InfoIcon />
+                        <InfoOutlinedIcon color="primary" fontSize="small" />
                       </InputAdornment>
                     </Tooltip>
                   )
