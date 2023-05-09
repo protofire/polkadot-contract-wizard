@@ -1,5 +1,6 @@
 import { InputAdornment, Stack, Tooltip } from '@mui/material'
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
+import BN from 'bn.js'
 
 import {
   useFormInput,
@@ -15,6 +16,7 @@ import {
   positiveNumber,
   positiveNumberOrZero
 } from '@/utils/inputValidation'
+import { sanitizeNumber } from '@/utils/sanitize'
 
 export const INITIAL_SUPPLY_DECIMAL_FIELD = 'initialSupplyPowDecimal'
 
@@ -39,9 +41,12 @@ const initialValues = {
   decimal: 18
 }
 
-function initialSupplyPowDecimal(inputs: number[]): number {
+function initialSupplyPowDecimal(inputs: number[]): BN {
   const [supply, decimals] = inputs
-  return Number(supply) * Math.pow(10, Number(decimals))
+  const supplyBN = new BN(sanitizeNumber(supply))
+  const decimalsBN = new BN(sanitizeNumber(decimals))
+  const multiplier = new BN(10).pow(decimalsBN)
+  return supplyBN.mul(multiplier)
 }
 
 export function FormConstructorContract({
@@ -68,7 +73,7 @@ export function FormConstructorContract({
     hasMetadata
   )
   const [initialSupplyField] = mandatoryFields
-  const convertedInitialSupply = useFormDependentInput<number, number>({
+  const convertedInitialSupply = useFormDependentInput<number, BN>({
     dependencies: [mapStates.initialSupply.value, mapStates.decimal.value],
     onCallback: inputs => initialSupplyPowDecimal(inputs)
   })
@@ -118,12 +123,17 @@ export function FormConstructorContract({
                   }}
                   label="Initial supply will be send"
                   name="formatedInitialSupplyPowDecimal"
-                  value={convertedInitialSupply.value.toExponential()}
+                  value={Number(
+                    convertedInitialSupply.value.toString()
+                  ).toExponential()}
                 />
                 <input
                   hidden={true}
                   name={INITIAL_SUPPLY_DECIMAL_FIELD}
-                  {...convertedInitialSupply}
+                  {...{
+                    ...convertedInitialSupply,
+                    value: convertedInitialSupply.value.toString()
+                  }}
                 />
               </>
             )}

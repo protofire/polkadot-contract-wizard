@@ -6,10 +6,7 @@ import Image from 'next/image'
 import { useStepsSCWizard } from '@/context'
 import BackNextButton from '../BackNextButtons'
 import { TokenType } from '@/domain'
-import { StyledTextField } from '@/components/Input'
 import {
-  ConstructorFieldName,
-  ConstructorTokenField,
   ControlsToken,
   GIF_COMPILING,
   SVG_AWESOME,
@@ -92,7 +89,7 @@ export default function Step3Deploy({
       if (hasMetadata && field.fieldName === 'initialSupply') {
         _dataForm.push([
           field.fieldName,
-          sanitizeNumber(elements.initialSupplyPowDecimal.value)
+          elements.initialSupplyPowDecimal.value
         ])
 
         return
