@@ -107,7 +107,6 @@ export default function Step3Deploy({
       }
     })
 
-    debugger
     _handleDeploy(_dataForm)
   }
 
