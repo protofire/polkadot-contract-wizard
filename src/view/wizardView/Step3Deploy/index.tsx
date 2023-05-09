@@ -28,21 +28,7 @@ import {
   FormConstructorContract,
   ConstructorTokenFieldProps
 } from './FormConstructorContract'
-
-function textFieldFactory(field: ConstructorTokenField, required = true) {
-  {
-    return (
-      <StyledTextField
-        key={field.name}
-        label={field.name}
-        type={field.type}
-        required={required}
-        name={field.fieldName}
-        placeholder={field.placeholder}
-      />
-    )
-  }
-}
+import { sanitizeNumber } from '@/utils/sanitize'
 
 export default function Step3Deploy({
   constructorFields,
@@ -106,7 +92,7 @@ export default function Step3Deploy({
       if (hasMetadata && field.fieldName === 'initialSupply') {
         _dataForm.push([
           field.fieldName,
-          elements.initialSupplyPowDecimal.value
+          sanitizeNumber(elements.initialSupplyPowDecimal.value)
         ])
 
         return
@@ -115,12 +101,13 @@ export default function Step3Deploy({
         _dataForm.push([
           field.fieldName,
           field.type === 'number'
-            ? Number(elements[field.fieldName].value)
+            ? sanitizeNumber(elements[field.fieldName].value)
             : elements[field.fieldName].value
         ])
       }
     })
 
+    debugger
     _handleDeploy(_dataForm)
   }
 
