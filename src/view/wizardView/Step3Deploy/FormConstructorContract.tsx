@@ -10,6 +10,11 @@ import { ConstructorTokenField } from '@/constants/index'
 import { StyledTextField } from '@/components'
 import { useMemoizeFields } from './useMemorizeFields'
 import { ConstructorFieldName } from '@/constants/wizardData'
+import {
+  notEmpty,
+  positiveNumber,
+  positiveNumberOrZero
+} from '@/utils/inputValidation'
 
 export const INITIAL_SUPPLY_DECIMAL_FIELD = 'initialSupplyPowDecimal'
 
@@ -47,10 +52,16 @@ export function FormConstructorContract({
   hasMetadata: boolean
 }): JSX.Element {
   const mapStates: FormStateContract = {
-    initialSupply: useFormInput(initialValues.initialSupply),
-    name: useFormInput(initialValues.name),
-    symbol: useFormInput(initialValues.symbol),
-    decimal: useFormInput(initialValues.decimal)
+    initialSupply: useFormInput(initialValues.initialSupply, [
+      notEmpty,
+      positiveNumber
+    ]),
+    name: useFormInput(initialValues.name, [notEmpty]),
+    symbol: useFormInput(initialValues.symbol, [notEmpty]),
+    decimal: useFormInput(initialValues.decimal, [
+      notEmpty,
+      positiveNumberOrZero
+    ])
   }
   const { mandatoryFields, metadataFields } = useMemoizeFields(
     fields,
@@ -80,6 +91,10 @@ export function FormConstructorContract({
             placeholder={initialSupplyField.placeholder}
             value={mapStates.initialSupply.value}
             onChange={mapStates.initialSupply.onChange}
+            error={Boolean(mapStates.initialSupply.error)}
+            helperText={
+              mapStates.initialSupply.error ? mapStates.initialSupply.error : ''
+            }
           />
           {hasMetadata &&
             mapStates.initialSupply.value &&
@@ -117,15 +132,24 @@ export function FormConstructorContract({
       {metadataFields &&
         metadataFields.map(field => {
           const fieldState = mapStates[field.fieldName]
+          const props = {
+            ...fieldState,
+            error: Boolean(fieldState.error),
+            helperText: fieldState.error ? fieldState.error : ''
+          }
           return (
             <StyledTextField
               required
               key={field.name}
               label={field.name}
               type={field.type}
+              {...(field.type === 'number' ? { min: 0 } : null)}
               name={field.fieldName}
               placeholder={field.placeholder}
-              {...fieldState}
+              InputLabelProps={{
+                shrink: true
+              }}
+              {...props}
             />
           )
         })}

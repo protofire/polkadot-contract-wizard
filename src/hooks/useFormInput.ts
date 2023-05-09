@@ -1,21 +1,40 @@
+import { getErrorMessage } from '@/utils/error'
 import { useEffect, useState } from 'react'
 
 export interface ControlledFormInput<T> {
   value: T
   onChange: (e: React.BaseSyntheticEvent) => void
+  error: string | null
 }
 
-export function useFormInput<T>(initialValue: T): ControlledFormInput<T> {
+export type ValidationFn<T> = (value: T) => string | void
+
+export function useFormInput<T>(
+  initialValue: T,
+  validations: Array<ValidationFn<T>> = []
+): ControlledFormInput<T> {
   const [value, setValue] = useState(initialValue)
+  const [error, setError] = useState<string | null>(null)
 
   function handleChange(e: React.BaseSyntheticEvent) {
+    setError(null)
     const newValue = e.target.value
-    setValue(newValue)
+    try {
+      validations.forEach(validate => {
+        const errorMessage = validate(newValue)
+        if (errorMessage) throw new Error(errorMessage)
+      })
+    } catch (e) {
+      setError(getErrorMessage(e))
+    } finally {
+      setValue(newValue)
+    }
   }
 
   return {
     value,
-    onChange: handleChange
+    onChange: handleChange,
+    error
   }
 }
 
