@@ -46,7 +46,7 @@ interface UseFormDependentOptions<T, R> {
 export function useFormDependentInput<T, R>({
   dependencies,
   onCallback
-}: UseFormDependentOptions<T, R>): ControlledFormInput<R> {
+}: UseFormDependentOptions<T, R>): Omit<ControlledFormInput<R>, 'error'> {
   const [value, setValue] = useState<R>(onCallback(dependencies))
 
   function handleChange(e: React.BaseSyntheticEvent) {
