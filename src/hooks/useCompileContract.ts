@@ -76,7 +76,7 @@ export const useCompileContract = (): ReturnValue & {
         })
         return response['data']
       } catch (error) {
-        const _errorMsg = `An error occurred when trying to compile the server contract on the server`
+        const _errorMsg = `An error occurred when trying to compile the smart contract on the server`
         setError(_errorMsg)
         addNotification({
           message: _errorMsg,

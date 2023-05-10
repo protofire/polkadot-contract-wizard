@@ -8,6 +8,9 @@
       "@/components": [
         "src/view/components"
       ],
+      "@/components/*": [
+        "src/view/components/*"
+      ],
       "@/view/*": [
         "src/view/*"
       ],
