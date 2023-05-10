@@ -1,6 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { Grid, Stack, Typography } from '@mui/material'
-import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward'
 import Image from 'next/image'
 
 import { useStepsSCWizard } from '@/context'
@@ -165,28 +164,11 @@ export default function Step3Deploy({
             </Typography>
           </Stack>
           {contractConstructorFields.length > 0 && (
-            <form id="deploy-form" onSubmit={handleSubmit}>
-              <Stack
-                sx={{
-                  padding: '1rem',
-                  alignItems: 'center'
-                }}
-              >
-                <Typography variant="h3" align="center">
-                  You need to fill the constructor parameters for the
-                  deployment.
-                </Typography>
-                <ArrowDownwardIcon
-                  fontSize="large"
-                  sx={{ margin: '1rem 0 0 0' }}
-                />
-              </Stack>
-
-              <FormConstructorContract
-                fields={contractConstructorFields}
-                hasMetadata={hasMetadata}
-              />
-            </form>
+            <FormConstructorContract
+              fields={contractConstructorFields}
+              hasMetadata={hasMetadata}
+              handleSubmit={handleSubmit}
+            />
           )}
         </Grid>
       </Grid>

@@ -5,7 +5,7 @@ import { ContractInstantiateResult } from '@polkadot/types/interfaces'
 import { Registry } from '@polkadot/types-codec/types'
 
 import { ContractConstructorDataForm } from '@/domain/wizard/step3DeployForm.types'
-import { BN_ZERO } from '@/constants/numbers'
+import { BIG_ZERO } from '@/constants/numbers'
 import { ContractMetadata } from '@/domain'
 import { method } from 'lodash'
 
@@ -44,7 +44,7 @@ function getParamsContractInstatiate(
 
   return {
     origin: accountId,
-    value: api.registry.createType('Balance', BN_ZERO),
+    value: api.registry.createType('Balance', BIG_ZERO),
     gasLimit: null,
     storageDepositLimit: null,
     code: { Upload: wasm },

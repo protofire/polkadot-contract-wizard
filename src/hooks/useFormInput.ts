@@ -1,5 +1,5 @@
 import { getErrorMessage } from '@/utils/error'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
 export interface ControlledFormInput<T> {
   value: T
@@ -40,26 +40,42 @@ export function useFormInput<T>(
 
 interface UseFormDependentOptions<T, R> {
   dependencies: Array<ControlledFormInput<T>['value']>
+  validations?: Array<ValidationFn<R>>
   onCallback: (inputs: Array<ControlledFormInput<T>['value']>) => R
 }
 
 export function useFormDependentInput<T, R>({
   dependencies,
+  validations = [],
   onCallback
-}: UseFormDependentOptions<T, R>): Omit<ControlledFormInput<R>, 'error'> {
+}: UseFormDependentOptions<T, R>): ControlledFormInput<R> {
   const [value, setValue] = useState<R>(onCallback(dependencies))
+  const [error, setError] = useState<string | null>(null)
+  const dependenciesMemoized = useMemo(() => dependencies, [dependencies])
 
   function handleChange(e: React.BaseSyntheticEvent) {
+    setError(null)
     const newValue = e.target.value
-    setValue(newValue)
+    try {
+      validations.forEach(validate => {
+        const errorMessage = validate(newValue)
+        if (errorMessage) throw new Error(errorMessage)
+      })
+    } catch (e) {
+      setError(getErrorMessage(e))
+    } finally {
+      setValue(newValue)
+    }
   }
 
   useEffect(() => {
+    console.log('__changeDependencies')
     setValue(onCallback(dependencies))
   }, [dependencies, onCallback])
 
   return {
     value,
-    onChange: handleChange
+    onChange: handleChange,
+    error
   }
 }

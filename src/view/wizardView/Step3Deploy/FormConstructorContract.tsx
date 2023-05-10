@@ -1,6 +1,7 @@
-import { InputAdornment, Stack, Tooltip } from '@mui/material'
+import { InputAdornment, Stack, Tooltip, Typography } from '@mui/material'
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
-import BN from 'bn.js'
+import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward'
+import Big from 'big.js'
 
 import {
   useFormInput,
@@ -14,9 +15,11 @@ import { ConstructorFieldName } from '@/constants/wizardData'
 import {
   notEmpty,
   positiveNumber,
-  positiveNumberOrZero
+  positiveNumberOrZero,
+  maxAllowed
 } from '@/utils/inputValidation'
-import { sanitizeNumber } from '@/utils/sanitize'
+import { BIG_ZERO } from '@/constants/numbers'
+import { FormEvent } from '@/domain/common/FormEvent'
 
 export const INITIAL_SUPPLY_DECIMAL_FIELD = 'initialSupplyPowDecimal'
 
@@ -41,20 +44,29 @@ const initialValues = {
   decimal: 18
 }
 
-function initialSupplyPowDecimal(inputs: number[]): BN {
+function initialSupplyPowDecimal(inputs: number[]): Big {
   const [supply, decimals] = inputs
-  const supplyBN = new BN(sanitizeNumber(supply))
-  const decimalsBN = new BN(sanitizeNumber(decimals))
-  const multiplier = new BN(10).pow(decimalsBN)
-  return supplyBN.mul(multiplier)
+  const supplyBN = new Big(supply || 0)
+  const decimalsBig = new Big(decimals)
+
+  if (decimalsBig.gt(new Big(64))) return new Big(-1)
+
+  const multiplier = new Big(10).pow(decimalsBig.toNumber())
+  const result = supplyBN.mul(multiplier)
+
+  console.log('__Entre')
+  if (result.lt(new Big('2e64'))) return new Big(-1)
+  return result
 }
 
 export function FormConstructorContract({
   fields,
-  hasMetadata
+  hasMetadata,
+  handleSubmit
 }: {
   fields: ConstructorTokenField[]
   hasMetadata: boolean
+  handleSubmit: (event: FormEvent<ConstructorTokenFieldProps>) => void
 }): JSX.Element {
   const mapStates: FormStateContract = {
     initialSupply: useFormInput(initialValues.initialSupply, [
@@ -65,7 +77,8 @@ export function FormConstructorContract({
     symbol: useFormInput(initialValues.symbol, [notEmpty]),
     decimal: useFormInput(initialValues.decimal, [
       notEmpty,
-      positiveNumberOrZero
+      positiveNumberOrZero,
+      (value: number) => maxAllowed(value, 64)
     ])
   }
   const { mandatoryFields, metadataFields } = useMemoizeFields(
@@ -73,96 +86,129 @@ export function FormConstructorContract({
     hasMetadata
   )
   const [initialSupplyField] = mandatoryFields
-  const convertedInitialSupply = useFormDependentInput<number, BN>({
+  const convertedInitialSupply = useFormDependentInput<number, Big>({
     dependencies: [mapStates.initialSupply.value, mapStates.decimal.value],
     onCallback: inputs => initialSupplyPowDecimal(inputs)
   })
 
+  const _handleSubmit = (event: FormEvent<ConstructorTokenFieldProps>) => {
+    const errors =
+      Object.keys(mapStates).some(
+        key => mapStates[key as keyof FormStateContract].error
+      ) || convertedInitialSupply.error
+
+    if (errors) {
+      event.preventDefault()
+      return
+    }
+
+    handleSubmit(event)
+  }
+
   return (
-    <Stack sx={{ display: 'flex', flexDirection: 'column', gap: '1.2rem' }}>
-      {initialSupplyField && (
-        <Stack
-          sx={{
-            display: 'grid',
-            gap: '1rem',
-            gridTemplateColumns: '0.7fr 0.3fr'
-          }}
-        >
-          <StyledTextField
-            required
-            label={initialSupplyField.fieldName}
-            type={initialSupplyField.type}
-            name={initialSupplyField.fieldName}
-            placeholder={initialSupplyField.placeholder}
-            value={mapStates.initialSupply.value}
-            onChange={mapStates.initialSupply.onChange}
-            error={Boolean(mapStates.initialSupply.error)}
-            helperText={
-              mapStates.initialSupply.error ? mapStates.initialSupply.error : ''
-            }
-          />
-          {hasMetadata &&
-            mapStates.initialSupply.value &&
-            mapStates.decimal.value && (
-              <>
-                <StyledTextField
-                  disabled
-                  variant="standard"
-                  InputProps={{
-                    startAdornment: (
-                      <Tooltip
-                        title={`This field represents the calculation of 'Initial Supply' multiplied by 10
-                    to the power of 'decimals' (1e${mapStates.decimal.value}).`}
-                        placement="top"
-                      >
-                        <InputAdornment position="start">
-                          <InfoOutlinedIcon color="primary" fontSize="small" />
-                        </InputAdornment>
-                      </Tooltip>
-                    )
-                  }}
-                  label="Initial supply will be send"
-                  name="formatedInitialSupplyPowDecimal"
-                  value={Number(
-                    convertedInitialSupply.value.toString()
-                  ).toExponential()}
-                />
-                <input
-                  hidden={true}
-                  name={INITIAL_SUPPLY_DECIMAL_FIELD}
-                  {...{
-                    ...convertedInitialSupply,
-                    value: convertedInitialSupply.value.toString()
-                  }}
-                />
-              </>
-            )}
-        </Stack>
-      )}
-      {metadataFields &&
-        metadataFields.map(field => {
-          const fieldState = mapStates[field.fieldName]
-          const props = {
-            ...fieldState,
-            error: Boolean(fieldState.error),
-            helperText: fieldState.error ? fieldState.error : ''
-          }
-          return (
+    <form id="deploy-form" onSubmit={_handleSubmit}>
+      <Stack
+        sx={{
+          padding: '1rem',
+          alignItems: 'center'
+        }}
+      >
+        <Typography variant="h3" align="center">
+          You need to fill the constructor parameters for the deployment.
+        </Typography>
+        <ArrowDownwardIcon fontSize="large" sx={{ margin: '1rem 0 0 0' }} />
+      </Stack>
+
+      <Stack sx={{ display: 'flex', flexDirection: 'column', gap: '1.2rem' }}>
+        {initialSupplyField && (
+          <Stack
+            sx={{
+              display: 'grid',
+              gap: '1rem',
+              gridTemplateColumns: '0.7fr 0.3fr'
+            }}
+          >
             <StyledTextField
               required
-              key={field.name}
-              label={field.name}
-              type={field.type}
-              {...(field.type === 'number' ? { min: 0 } : null)}
-              name={field.fieldName}
-              placeholder={field.placeholder}
-              InputLabelProps={{
-                shrink: true
-              }}
-              {...props}
+              label={initialSupplyField.fieldName}
+              type={initialSupplyField.type}
+              name={initialSupplyField.fieldName}
+              placeholder={initialSupplyField.placeholder}
+              value={mapStates.initialSupply.value}
+              onChange={mapStates.initialSupply.onChange}
+              error={Boolean(mapStates.initialSupply.error)}
+              helperText={
+                mapStates.initialSupply.error
+                  ? mapStates.initialSupply.error
+                  : ''
+              }
             />
-          )
-        })}
-    </Stack>
+            {hasMetadata &&
+              mapStates.initialSupply.value &&
+              mapStates.decimal.value && (
+                <>
+                  <StyledTextField
+                    disabled
+                    variant="standard"
+                    InputProps={{
+                      startAdornment: (
+                        <Tooltip
+                          title={`This field represents the calculation of 'Initial Supply' multiplied by 10
+                    to the power of 'decimals' (1e${mapStates.decimal.value}).`}
+                          placement="top"
+                        >
+                          <InputAdornment position="start">
+                            <InfoOutlinedIcon
+                              color="primary"
+                              fontSize="small"
+                            />
+                          </InputAdornment>
+                        </Tooltip>
+                      )
+                    }}
+                    label="Initial supply will be send"
+                    name="formatedInitialSupplyPowDecimal"
+                    value={Number(
+                      convertedInitialSupply.value.toString()
+                    ).toExponential()}
+                  />
+                  <input
+                    hidden={true}
+                    name={INITIAL_SUPPLY_DECIMAL_FIELD}
+                    {...{
+                      ...convertedInitialSupply,
+                      value: convertedInitialSupply.value.toString()
+                    }}
+                  />
+                </>
+              )}
+          </Stack>
+        )}
+        {metadataFields &&
+          metadataFields.map(field => {
+            const fieldState = mapStates[field.fieldName]
+            const props = {
+              ...fieldState,
+              error: Boolean(fieldState.error),
+              helperText: fieldState.error ? fieldState.error : ''
+            }
+            return (
+              <StyledTextField
+                required
+                key={field.name}
+                label={field.name}
+                type={field.type}
+                {...(field.type === 'number' ? { min: 0 } : null)}
+                name={field.fieldName}
+                placeholder={field.placeholder}
+                InputLabelProps={{
+                  shrink: true
+                }}
+                {...props}
+              />
+            )
+          })}
+      </Stack>
+    </form>
   )
 }
