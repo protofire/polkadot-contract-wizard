@@ -24,7 +24,6 @@ import {
   FormConstructorContract,
   ConstructorTokenFieldProps
 } from './FormConstructorContract'
-import { sanitizeNumber } from '@/utils/sanitize'
 
 export default function Step3Deploy({
   constructorFields,
