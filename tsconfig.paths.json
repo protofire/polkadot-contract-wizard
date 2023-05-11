@@ -38,8 +38,14 @@
       "@/context": [
         "src/context"
       ],
+      "@/context/*": [
+        "src/context/*"
+      ],
       "@/hooks": [
         "src/hooks"
+      ],
+      "@/hooks/*": [
+        "src/hooks/*"
       ],
       "@/data": [
         "src/data"

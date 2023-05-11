@@ -5,7 +5,7 @@ import React, {
   useContext,
   useCallback
 } from 'react'
-import { AppNotificationEvents } from 'src/domain/DomainEvents'
+import { AppNotificationEvents } from '@/domain/DomainEvents'
 
 export interface AppNotification {
   id: number

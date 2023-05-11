@@ -1,24 +1,33 @@
 import { getErrorMessage } from '@/utils/error'
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 
-export interface ControlledFormInput<T> {
-  value: T
+export interface ControlledFormInput<I> {
+  value: I
   onChange: (e: React.BaseSyntheticEvent) => void
   error: string | null
 }
 
-export type ValidationFn<T> = (value: T) => string | void
+export type ValidationFn<I> = (value: I) => string | void
 
-export function useFormInput<T>(
-  initialValue: T,
-  validations: Array<ValidationFn<T>> = []
-): ControlledFormInput<T> {
+interface UseFormInput<I> {
+  initialValue: I
+  validations?: Array<ValidationFn<I>>
+}
+
+export function useFormInput<I>(
+  initialValue: UseFormInput<I>['initialValue'],
+  validations: UseFormInput<I>['validations'] = []
+): ControlledFormInput<I> {
   const [value, setValue] = useState(initialValue)
   const [error, setError] = useState<string | null>(null)
 
   function handleChange(e: React.BaseSyntheticEvent) {
-    setError(null)
     const newValue = e.target.value
+    _setvalue(newValue)
+  }
+
+  const _setvalue = (newValue: I) => {
+    setError(null)
     try {
       validations.forEach(validate => {
         const errorMessage = validate(newValue)
@@ -38,44 +47,25 @@ export function useFormInput<T>(
   }
 }
 
-interface UseFormDependentOptions<T, R> {
-  dependencies: Array<ControlledFormInput<T>['value']>
-  validations?: Array<ValidationFn<R>>
-  onCallback: (inputs: Array<ControlledFormInput<T>['value']>) => R
+interface UseFormDependentInput<I, D>
+  extends Omit<UseFormInput<I>, 'initialSupply'> {
+  dependencies: Array<D>
+  onCallback: (inputs: Array<D>) => I
 }
 
-export function useFormDependentInput<T, R>({
+export function useFormDependentInput<I, D>({
+  validations,
   dependencies,
-  validations = [],
   onCallback
-}: UseFormDependentOptions<T, R>): ControlledFormInput<R> {
-  const [value, setValue] = useState<R>(onCallback(dependencies))
-  const [error, setError] = useState<string | null>(null)
-  const dependenciesMemoized = useMemo(() => dependencies, [dependencies])
-
-  function handleChange(e: React.BaseSyntheticEvent) {
-    setError(null)
-    const newValue = e.target.value
-    try {
-      validations.forEach(validate => {
-        const errorMessage = validate(newValue)
-        if (errorMessage) throw new Error(errorMessage)
-      })
-    } catch (e) {
-      setError(getErrorMessage(e))
-    } finally {
-      setValue(newValue)
-    }
-  }
+}: UseFormDependentInput<I, D>): ControlledFormInput<I> {
+  const input = useFormInput<I>(onCallback(dependencies), validations)
 
   useEffect(() => {
-    console.log('__changeDependencies')
-    setValue(onCallback(dependencies))
-  }, [dependencies, onCallback])
+    const event = {
+      target: { value: onCallback(dependencies) }
+    } as unknown as React.ChangeEvent<HTMLInputElement>
+    input.onChange(event)
+  }, [input, dependencies, onCallback])
 
-  return {
-    value,
-    onChange: handleChange,
-    error
-  }
+  return input
 }

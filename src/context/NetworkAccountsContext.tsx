@@ -4,8 +4,8 @@ import jsonrpc from '@polkadot/types/interfaces/jsonrpc'
 import { keyring as KeyringUI, Keyring } from '@polkadot/ui-keyring'
 
 import { DAPP_CONFIG } from '@/constants/index'
-import { WalletConnectionEvents } from 'src/domain/DomainEvents'
-import { accountsInPossession } from 'src/domain/KeyringAccouns'
+import { WalletConnectionEvents } from '@/domain/DomainEvents'
+import { accountsInPossession } from '@/domain/KeyringAccouns'
 import {
   getChainInfo,
   ChainProperties

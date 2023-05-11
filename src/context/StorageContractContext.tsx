@@ -9,7 +9,7 @@ import {
 import { Contract, SmartContractEvents, isContractDeployed } from '@/domain'
 import { StorageContractRepository } from '@/infrastructure/LocalStorageContractRepository'
 import { useNetworkAccountsContext } from './NetworkAccountsContext'
-import { useMultiEventListener } from 'src/hooks/useMultipleEventListener'
+import { useMultiEventListener } from '@/hooks/useMultipleEventListener'
 
 interface StorageContractContextValues {
   contracts: Contract[]

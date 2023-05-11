@@ -20,6 +20,7 @@ import {
 } from '@/utils/inputValidation'
 import { BIG_ZERO } from '@/constants/numbers'
 import { FormEvent } from '@/domain/common/FormEvent'
+import { initialSupplyPowDecimal } from './initialSupplyPowDecimal'
 
 export const INITIAL_SUPPLY_DECIMAL_FIELD = 'initialSupplyPowDecimal'
 
@@ -42,21 +43,6 @@ const initialValues = {
   name: 'My Token',
   symbol: 'MTK',
   decimal: 18
-}
-
-function initialSupplyPowDecimal(inputs: number[]): Big {
-  const [supply, decimals] = inputs
-  const supplyBN = new Big(supply || 0)
-  const decimalsBig = new Big(decimals)
-
-  if (decimalsBig.gt(new Big(64))) return new Big(-1)
-
-  const multiplier = new Big(10).pow(decimalsBig.toNumber())
-  const result = supplyBN.mul(multiplier)
-
-  console.log('__Entre')
-  if (result.lt(new Big('2e64'))) return new Big(-1)
-  return result
 }
 
 export function FormConstructorContract({
@@ -86,9 +72,16 @@ export function FormConstructorContract({
     hasMetadata
   )
   const [initialSupplyField] = mandatoryFields
-  const convertedInitialSupply = useFormDependentInput<number, Big>({
+  const convertedInitialSupply = useFormDependentInput<Big, string | number>({
+    initialValue: initialSupplyPowDecimal([
+      mapStates.initialSupply.value,
+      mapStates.decimal.value
+    ]),
+    validations: [
+      (value: Big) => (value.lt(BIG_ZERO) ? 'Values not allowed' : undefined)
+    ],
     dependencies: [mapStates.initialSupply.value, mapStates.decimal.value],
-    onCallback: inputs => initialSupplyPowDecimal(inputs)
+    onCallback: initialSupplyPowDecimal
   })
 
   const _handleSubmit = (event: FormEvent<ConstructorTokenFieldProps>) => {
@@ -168,9 +161,13 @@ export function FormConstructorContract({
                     }}
                     label="Initial supply will be send"
                     name="formatedInitialSupplyPowDecimal"
-                    value={Number(
-                      convertedInitialSupply.value.toString()
-                    ).toExponential()}
+                    value={convertedInitialSupply.value.toExponential()}
+                    error={Boolean(convertedInitialSupply.error)}
+                    helperText={
+                      convertedInitialSupply.error
+                        ? convertedInitialSupply.error
+                        : ''
+                    }
                   />
                   <input
                     hidden={true}
