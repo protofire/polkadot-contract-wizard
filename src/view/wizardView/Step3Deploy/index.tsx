@@ -88,7 +88,7 @@ export default function Step3Deploy({
       if (hasMetadata && field.fieldName === 'initialSupply') {
         _dataForm.push([
           field.fieldName,
-          elements.initialSupplyPowDecimal.value
+          sanitizeNumber(elements.initialSupplyPowDecimal.value)
         ])
 
         return

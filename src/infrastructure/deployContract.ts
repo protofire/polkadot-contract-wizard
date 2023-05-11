@@ -1,10 +1,8 @@
 import { web3FromAddress, web3Enable } from '@polkadot/extension-dapp'
 import { SubmittableExtrinsic } from '@polkadot/api/types'
 import type { ISubmittableResult } from '@polkadot/types/types'
-// import type { SignedBlock } from '@polkadot/types/interfaces/runtime'
 
 import { ApiPromise } from '@polkadot/api'
-import { reportError } from 'src/hooks/useReportError'
 import { getErrorMessage } from '@/utils/error'
 
 export interface DeployContractService {

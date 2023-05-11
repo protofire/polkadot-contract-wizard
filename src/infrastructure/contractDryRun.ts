@@ -7,7 +7,6 @@ import { Registry } from '@polkadot/types-codec/types'
 import { ContractConstructorDataForm } from '@/domain/wizard/step3DeployForm.types'
 import { BIG_ZERO } from '@/constants/numbers'
 import { ContractMetadata } from '@/domain'
-import { method } from 'lodash'
 
 export function transformUserInput(
   registry: Registry,
@@ -44,7 +43,7 @@ function getParamsContractInstatiate(
 
   return {
     origin: accountId,
-    value: api.registry.createType('Balance', BIG_ZERO),
+    value: api.registry.createType('Balance', BIG_ZERO.toNumber()),
     gasLimit: null,
     storageDepositLimit: null,
     code: { Upload: wasm },

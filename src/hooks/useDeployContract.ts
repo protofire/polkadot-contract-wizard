@@ -61,7 +61,7 @@ export function decodeStorageDeposit(
 
 export function getPredictedCharge(dryRun: UIStorageDeposit) {
   return dryRun.type === 'charge'
-    ? !dryRun.value?.eq(BIG_ZERO)
+    ? !dryRun.value?.eq(BIG_ZERO.toNumber())
       ? dryRun.value ?? null
       : null
     : null
