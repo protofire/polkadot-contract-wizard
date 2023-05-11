@@ -8,7 +8,7 @@ import { Bytes } from '@polkadot/types'
 
 import { GetServiceData } from '@/types'
 import { useNetworkAccountsContext } from 'src/context/NetworkAccountsContext'
-import { BIG_ZERO } from '@/constants/numbers'
+import { BIG_ZERO_BN } from '@/constants/numbers'
 import { ContractConstructorDataForm } from '@/domain/wizard/step3DeployForm.types'
 import { deployContractService } from '@/infrastructure/deployContract'
 import { useStorageContractsContext } from '@/context'
@@ -61,7 +61,7 @@ export function decodeStorageDeposit(
 
 export function getPredictedCharge(dryRun: UIStorageDeposit) {
   return dryRun.type === 'charge'
-    ? !dryRun.value?.eq(BIG_ZERO.toNumber())
+    ? !dryRun.value?.eq(BIG_ZERO_BN)
       ? dryRun.value ?? null
       : null
     : null
