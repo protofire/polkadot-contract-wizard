@@ -174,7 +174,7 @@ export function FormConstructorContract({
                     name={INITIAL_SUPPLY_DECIMAL_FIELD}
                     {...{
                       ...convertedInitialSupply,
-                      value: convertedInitialSupply.value.toString()
+                      value: convertedInitialSupply.value.toFixed()
                     }}
                   />
                 </>
