@@ -61,7 +61,7 @@ To run the application it is necessary to copy the environment variables file `.
 
 #### Backend
 
-- Follow the instructions in the README.md of the [backend](./ink-compiler-be/README.md) folder.
+- Follow the instructions in the README.md of the [backend](https://github.com/protofire/ink-compiler-be/blob/main/README.md) repository.
 
 #### Frontend
 
