@@ -14,3 +14,13 @@ export function notEmpty(value: unknown): string | void {
 
   if (value === '') return 'This field cannot be empty'
 }
+
+export function maxAllowed(value: unknown, max = 64): string | void {
+  let _value = value
+  if (typeof value === 'string') {
+    _value = parseInt(value, 10)
+  }
+
+  if (typeof _value !== 'number' || isNaN(_value) || _value > max)
+    return `The number can not be greater than ${max}`
+}
