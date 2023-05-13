@@ -5,8 +5,9 @@ import SimpleBar from 'src/view/components/third-party/SimpleBar'
 import { LOGO_PROTOFIRE } from 'src/constants/images'
 import { Typography, Stack, Link, Box } from '@mui/material'
 import TelegramIcon from '@mui/icons-material/Telegram'
+import NextLink from 'next/link'
 
-const DrawerContent = () => {
+const DrawerContent = ({ version }: { version: string }) => {
   const { pathname } = useRouter()
 
   return (
@@ -57,7 +58,11 @@ const DrawerContent = () => {
         >
           <Typography
             variant="body1"
-            sx={{ color: '#ffffff7d', fontSize: '0.8rem', marginTop: '0.1rem' }}
+            sx={{
+              color: '#ffffff7d',
+              fontSize: '0.8rem',
+              marginTop: '0.1rem'
+            }}
           >
             Developed by
           </Typography>
@@ -75,6 +80,19 @@ const DrawerContent = () => {
             />
           </Link>
         </Box>
+        {version && (
+          <Box display="flex" justifyContent={'right'} pr={'1rem'}>
+            <Typography
+              sx={{
+                color: '#ffffff7d',
+                fontSize: '0.6rem',
+                marginTop: '0.1rem'
+              }}
+            >
+              V{version}
+            </Typography>
+          </Box>
+        )}
       </Stack>
     </>
   )
