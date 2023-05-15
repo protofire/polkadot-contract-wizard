@@ -6,6 +6,10 @@ import { useUserThemeSettings } from 'src/hooks/userThemeSettings'
 import { useMatchDownSM } from '@/hooks'
 import { BoxProps } from '@mui/system'
 import Header from './Header'
+import getConfig from 'next/config'
+
+const { publicRuntimeConfig } = getConfig()
+const version = publicRuntimeConfig?.version
 
 type Props = {
   children: ReactNode
