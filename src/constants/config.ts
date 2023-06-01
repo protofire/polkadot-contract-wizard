@@ -1,6 +1,8 @@
 export const IS_PRODUCTION = process.env.NODE_ENV === ('production' as string)
 export const IS_DEVELOPMENT = process.env.NODE_ENV === ('development' as string)
 
+export const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN as string
+
 export interface DappConfig {
   name: string
   providerSocket: string
