@@ -18,11 +18,7 @@ import FileDownloadIcon from '@mui/icons-material/FileDownload'
 import HourglassBottomIcon from '@mui/icons-material/HourglassBottom'
 
 import { CopyToClipboardButton, TokenIconSvg } from '@/components'
-import {
-  capitalizeFirstLetter,
-  emptyAsDash,
-  truncateAddress
-} from '@/utils/formatString'
+import { capitalizeFirstLetter, truncateAddress } from '@/utils/formatString'
 import { TokenType, isContractDeployed } from '@/domain'
 import { ContractTableItem } from '@/domain/wizard/ContractTableItem'
 import { useRecentlyClicked } from 'src/hooks/useRecentlyClicked'
