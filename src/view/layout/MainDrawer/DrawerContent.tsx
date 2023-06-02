@@ -5,7 +5,6 @@ import SimpleBar from 'src/view/components/third-party/SimpleBar'
 import { LOGO_PROTOFIRE } from 'src/constants/images'
 import { Typography, Stack, Link, Box } from '@mui/material'
 import TelegramIcon from '@mui/icons-material/Telegram'
-import NextLink from 'next/link'
 
 const DrawerContent = ({ version }: { version: string }) => {
   const { pathname } = useRouter()
