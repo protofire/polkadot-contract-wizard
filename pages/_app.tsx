@@ -4,6 +4,7 @@ import type { AppProps } from 'next/app'
 import Head from 'next/head'
 import { EmotionCache } from '@emotion/cache'
 import { CacheProvider } from '@emotion/react'
+import PlausibleProvider from 'next-plausible'
 import '../styles/globals.css'
 import '../public/fonts/inter.css'
 import 'react-toastify/dist/ReactToastify.css'
@@ -20,6 +21,7 @@ import {
 import { CustomSnackBar as AppNotification } from 'src/view/components/Snackbar'
 import { StorageContractsProvider } from '@/context'
 import { LocalStorageContractRepository } from '@/infrastructure/LocalStorageContractRepository'
+import { DOMAIN } from '@/constants/config'
 
 type CustomAppProps = AppProps & {
   emotionCache: EmotionCache
@@ -44,23 +46,26 @@ export default function App(props: CustomAppProps) {
         <title>{`Polkadot Contract Wizard`}</title>
         <meta name="viewport" content="initial-scale=1, width=device-width" />
       </Head>
-
-      <NetworkAccountsContextProvider>
-        <AppNotificationContextProvider repository={repositoryAppNotification}>
-          <StorageContractsProvider repository={repositoryDeploys}>
-            <SettingsConsumer>
-              {({ settings }) => {
-                return (
-                  <ThemeCustomization settings={settings}>
-                    {getLayout(<Component {...pageProps} />)}
-                  </ThemeCustomization>
-                )
-              }}
-            </SettingsConsumer>
-          </StorageContractsProvider>
-          <AppNotification />
-        </AppNotificationContextProvider>
-      </NetworkAccountsContextProvider>
+      <PlausibleProvider domain={DOMAIN}>
+        <NetworkAccountsContextProvider>
+          <AppNotificationContextProvider
+            repository={repositoryAppNotification}
+          >
+            <StorageContractsProvider repository={repositoryDeploys}>
+              <SettingsConsumer>
+                {({ settings }) => {
+                  return (
+                    <ThemeCustomization settings={settings}>
+                      {getLayout(<Component {...pageProps} />)}
+                    </ThemeCustomization>
+                  )
+                }}
+              </SettingsConsumer>
+            </StorageContractsProvider>
+            <AppNotification />
+          </AppNotificationContextProvider>
+        </NetworkAccountsContextProvider>
+      </PlausibleProvider>{' '}
     </CacheProvider>
   )
 }
