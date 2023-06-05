@@ -1351,28 +1351,17 @@
     rxjs "^7.8.1"
     tslib "^2.5.2"
 
-"@polkadot/ui-keyring@^3.2.1":
-  version "3.2.2"
-  resolved "https://registry.yarnpkg.com/@polkadot/ui-keyring/-/ui-keyring-3.2.2.tgz#69a1d04e6195e04cc7ca205e5d098bfbb992b508"
-  integrity sha512-E/4IzYziuU0f3xlw3F3zySch27PUmQ+UNnMp8Hy55Dc95QgQrACVAGFX1e+UaC4415DSRaklEnTzAySwFII1Qg==
+"@polkadot/ui-keyring@^3.4.1":
+  version "3.4.1"
+  resolved "https://registry.yarnpkg.com/@polkadot/ui-keyring/-/ui-keyring-3.4.1.tgz#4272cfd1575e402def0811e58a217cfce11cbda8"
+  integrity sha512-b5xkL2j6d2VcaVIg4p0HsUZmbSO0Ebb6XtM8g3hPJc9XEJ2FCKq0pvaErOs8hAJFM71j62KBv/QasmH3/7lUyQ==
   dependencies:
-    "@polkadot/keyring" "^12.1.1"
-    "@polkadot/ui-settings" "3.2.2"
-    "@polkadot/util" "^12.1.1"
-    "@polkadot/util-crypto" "^12.1.1"
-    mkdirp "^2.1.6"
+    "@polkadot/keyring" "^12.2.1"
+    "@polkadot/ui-settings" "3.4.1"
+    "@polkadot/util" "^12.2.1"
+    "@polkadot/util-crypto" "^12.2.1"
+    mkdirp "^3.0.1"
     rxjs "^7.8.1"
-    store "^2.0.12"
-    tslib "^2.5.0"
-
-"@polkadot/ui-settings@3.2.2":
-  version "3.2.2"
-  resolved "https://registry.yarnpkg.com/@polkadot/ui-settings/-/ui-settings-3.2.2.tgz#043bc2c86dc1ef5e3f71dd9e3c37e3b92c1752bc"
-  integrity sha512-JQGwcvEEYBoZ4MW1sE57alb3uv3Qjgq4NUNMJqVk3ImXyNwcRHDOdD39mJaGcnPHcQkQlI+4uugFTiIf+cwQfw==
-  dependencies:
-    "@polkadot/networks" "^12.1.1"
-    "@polkadot/util" "^12.1.1"
-    eventemitter3 "^5.0.0"
     store "^2.0.12"
     tslib "^2.5.0"
 
@@ -5540,10 +5529,10 @@ mkdirp-classic@^0.5.2, mkdirp-classic@^0.5.3:
   resolved "https://registry.yarnpkg.com/mkdirp-classic/-/mkdirp-classic-0.5.3.tgz#fa10c9115cc6d8865be221ba47ee9bed78601113"
   integrity sha512-gKLcREMhtuZRwRAfqP3RFW+TK4JqApVBtOIftVgjuABpAtpxhPGaDcfvbhNvD0B8iD1oUr/txX35NjcaY6Ns/A==
 
-mkdirp@^2.1.6:
-  version "2.1.6"
-  resolved "https://registry.yarnpkg.com/mkdirp/-/mkdirp-2.1.6.tgz#964fbcb12b2d8c5d6fbc62a963ac95a273e2cc19"
-  integrity sha512-+hEnITedc8LAtIP9u3HJDFIdcLV2vXP33sqLLIzkv1Db1zO/1OxbvYf0Y1OC/S/Qo5dxHXepofhmxL02PsKe+A==
+mkdirp@^3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/mkdirp/-/mkdirp-3.0.1.tgz#e44e4c5607fb279c168241713cc6e0fea9adcb50"
+  integrity sha512-+NsyUUAZDmo6YVHzL/stxSu3t9YS1iljliy3BSDrXJ/dkn1KYdmtZODGGjLcc9XLgVVpH4KshHB8XmZgMhaBXg==
 
 mock-socket@^9.2.1:
   version "9.2.1"

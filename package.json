@@ -26,7 +26,7 @@
     "@polkadot/extension-dapp": "^0.46.3",
     "@polkadot/extension-inject": "^0.46.1",
     "@polkadot/react-identicon": "^3.4.1",
-    "@polkadot/ui-keyring": "^3.2.1",
+    "@polkadot/ui-keyring": "^3.4.1",
     "@polkadot/ui-settings": "^3.2.1",
     "@testing-library/user-event": "^14.4.3",
     "@types/react-syntax-highlighter": "^15.5.6",
