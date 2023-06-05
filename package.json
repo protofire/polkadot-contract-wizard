@@ -62,7 +62,7 @@
     "@types/whatwg-url": "^11.0.0",
     "@typescript-eslint/eslint-plugin": "^5.59.8",
     "@typescript-eslint/parser": "^5.59.1",
-    "cypress": "^12.9.0",
+    "cypress": "^12.13.0",
     "eslint": "^8.41.0",
     "eslint-config-next": "13.1.1",
     "eslint-config-prettier": "^8.6.0",
