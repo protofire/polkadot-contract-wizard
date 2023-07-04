@@ -1,7 +1,29 @@
+import { useViewportWidth } from '@/hooks/useViewportWidth'
 import { Box, Link, Stack, Typography } from '@mui/material'
 import Image from 'next/image'
 
+const ImageResponsive = ({
+  alt,
+  src,
+  viewportWidth
+}: {
+  alt: string
+  src: string
+  viewportWidth: number
+}) => {
+  return (
+    <Image
+      alt={alt}
+      src={src}
+      height={viewportWidth > 600 ? 496 : 200}
+      width={viewportWidth > 600 ? 870 : 350}
+    />
+  )
+}
+
 export default function Home() {
+  const { viewportWidth } = useViewportWidth()
+
   return (
     <Box
       sx={{
@@ -41,11 +63,10 @@ export default function Home() {
             <li>MULTITOKEN | PSP37: standard contract for a multi token.</li>
           </ul>
         </Box>
-        <Image
+        <ImageResponsive
           alt="select a contract"
           src="/assets/docs1.png"
-          height={496}
-          width={870}
+          viewportWidth={viewportWidth}
         />
         <Typography variant="h4">1. Extensions choices 🪄</Typography>
         <Typography variant="body1">
@@ -53,11 +74,10 @@ export default function Home() {
           will be able to choose one or more Extensions: Functionalities and
           Security.
         </Typography>
-        <Image
+        <ImageResponsive
           alt="select a extension"
           src="/assets/docs2.png"
-          height={496}
-          width={870}
+          viewportWidth={viewportWidth}
         />
         <Typography variant="h4">2. Compile your contract ⚙️</Typography>
         <Typography variant="body1">
@@ -68,20 +88,18 @@ export default function Home() {
         <Typography variant="body1">
           First, you need to connect your wallet.
         </Typography>
-        <Image
+        <ImageResponsive
           alt="connect your wallet"
           src="/assets/docs3.png"
-          height={496}
-          width={870}
+          viewportWidth={viewportWidth}
         />
         <Typography variant="body1">
           Then, you can compile your contract.
         </Typography>
-        <Image
+        <ImageResponsive
           alt="compile your contract"
           src="/assets/docs4.png"
-          height={496}
-          width={870}
+          viewportWidth={viewportWidth}
         />
         <Typography variant="h4">3. Deploy your contract 🚀</Typography>
         <Typography variant="body1">
@@ -92,38 +110,34 @@ export default function Home() {
           Now you need to fill in the required fields for the contract
           constructor.
         </Typography>
-        <Image
+        <ImageResponsive
           alt="fill the fields"
           src="/assets/docs5.png"
-          height={496}
-          width={870}
+          viewportWidth={viewportWidth}
         />
         <Typography variant="body1">
           Once you have finished, you can deploy your contract.
         </Typography>
-        <Image
+        <ImageResponsive
           alt="deploy your contract"
           src="/assets/docs6.png"
-          height={496}
-          width={870}
+          viewportWidth={viewportWidth}
         />
         <Typography variant="body1">
           You will be prompted to sign the transaction with your wallet.
         </Typography>
-        <Image
+        <ImageResponsive
           alt="sign transaction"
           src="/assets/docs7.png"
-          height={496}
-          width={870}
+          viewportWidth={viewportWidth}
         />
         <Typography variant="body1">
           After a little while, your contract will be deployed.
         </Typography>
-        <Image
+        <ImageResponsive
           alt="contract deployed"
           src="/assets/docs9.png"
-          height={496}
-          width={870}
+          viewportWidth={viewportWidth}
         />
         <Typography variant="h4">4. Interact with your contract 💻</Typography>
         <Typography
@@ -155,64 +169,57 @@ export default function Home() {
           First, go to the main dashboard and copy the address where your
           contract was deployed.
         </Typography>
-        <Image
+        <ImageResponsive
           alt="copy address"
           src="/assets/docs10.png"
-          height={496}
-          width={870}
+          viewportWidth={viewportWidth}
         />
         <Typography variant="body1">
           Second, click the icon in the same row as your contract to download
           the Metadata file.
         </Typography>
-        <Image
+        <ImageResponsive
           alt="download metadata"
           src="/assets/docs11.png"
-          height={496}
-          width={870}
+          viewportWidth={viewportWidth}
         />
         <Typography variant="body1">
           Then, go to contracts-ui site and select the network where you
           deployed your contract.
         </Typography>
-        <Image
+        <ImageResponsive
           alt="select network"
           src="/assets/docs12.png"
-          height={496}
-          width={870}
+          viewportWidth={viewportWidth}
         />
         <Typography variant="body1">
           Click &apos;Add new contract&apos; from the top left corner and then
           &apos;Use On-Chain Contract Address&apos;
         </Typography>
-        <Image
+        <ImageResponsive
           alt="add new contract"
           src="/assets/docs13.png"
-          height={496}
-          width={870}
+          viewportWidth={viewportWidth}
         />
         <Typography variant="body1">
           Fill in the address field with the address you copied from the
           Polkadot Contract Wizard and upload the Metadata file you downloaded.
           Click &apos;Add Contract&apos;.
         </Typography>
-        <Image
+        <ImageResponsive
           alt="fill fields"
           src="/assets/docs14.png"
-          height={496}
-          width={870}
+          viewportWidth={viewportWidth}
         />
         <Typography variant="body1">
           Now you are ready to interact with your contract!!
         </Typography>
-        <Image
+        <ImageResponsive
           alt="ready to interact"
           src="/assets/docs15.png"
-          height={496}
-          width={870}
+          viewportWidth={viewportWidth}
         />
       </Stack>
-      {/* <Accordion /> */}
     </Box>
   )
 }
