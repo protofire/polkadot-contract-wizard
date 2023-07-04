@@ -1,9 +1,5 @@
 import { useMemo } from 'react'
 import { Drawer } from '@mui/material'
-import getConfig from 'next/config'
-
-const { publicRuntimeConfig } = getConfig()
-const version = publicRuntimeConfig?.version
 
 import DrawerContent from './DrawerContent'
 import DrawerHeader from './DrawerHeader'
@@ -13,15 +9,20 @@ interface Props {
   handleDrawerToggle: () => void
   drawerwidth?: number
   isMobile?: boolean
+  version: string
 }
 
 const MainDrawer = ({
   open,
   isMobile,
   handleDrawerToggle,
-  drawerwidth = 260
+  drawerwidth = 260,
+  version
 }: Props) => {
-  const drawerContent = useMemo(() => <DrawerContent version={version} />, [])
+  const drawerContent = useMemo(
+    () => <DrawerContent version={version} />,
+    [version]
+  )
   const drawerHeader = useMemo(() => <DrawerHeader open={open} />, [open])
 
   const mobileProps = {

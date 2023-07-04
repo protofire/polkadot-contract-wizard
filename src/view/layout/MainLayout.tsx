@@ -68,6 +68,7 @@ export const MainLayout = ({ children }: Props): JSX.Element => {
         open={isOpen}
         handleDrawerToggle={handleDrawerToggle}
         drawerwidth={settings.drawerWidth}
+        version={version}
       />
       <MainWrapper
         component="main"
