@@ -42,7 +42,7 @@ export default function Step2Compile({ tokenType }: { tokenType: TokenType }) {
   return (
     <>
       <Typography variant="h4" mb={2}>
-        Excelent! Now you need to compile contract {tokenType}!
+        Excellent! Now you need to compile contract!
       </Typography>
       <StyledCopyBlock
         sx={{ overflowY: 'scroll', height: '60vh', resize: 'both' }}
