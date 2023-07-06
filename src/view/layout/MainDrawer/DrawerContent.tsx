@@ -5,6 +5,7 @@ import SimpleBar from 'src/view/components/third-party/SimpleBar'
 import { LOGO_PROTOFIRE } from 'src/constants/images'
 import { Typography, Stack, Link, Box } from '@mui/material'
 import TelegramIcon from '@mui/icons-material/Telegram'
+import GithubIcon from '@mui/icons-material/GitHub'
 
 const DrawerContent = ({ version }: { version: string }) => {
   const { pathname } = useRouter()
@@ -45,6 +46,23 @@ const DrawerContent = ({ version }: { version: string }) => {
           >
             <TelegramIcon fontSize="small" sx={{ color: '#ffffff' }} />
             Need Help?
+          </Link>
+        </Typography>
+        <Typography variant="h5" mb={4}>
+          <Link
+            href="https://github.com/protofire/polkadot-contract-wizard"
+            underline="hover"
+            target="_blank"
+            rel="noopener noreferrer"
+            sx={{
+              color: '#ffffff',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '1rem'
+            }}
+          >
+            <GithubIcon fontSize="small" sx={{ color: '#ffffff' }} />
+            Github
           </Link>
         </Typography>
         <Box
