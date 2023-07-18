@@ -4,16 +4,15 @@ import dynamic from 'next/dynamic'
 
 const WalletConnectButton = dynamic(
   () =>
-    import('@/view/components/WalletConnectButton').then(
-      res => res.WalletConnectButton
-    ),
+    import('@/view/components/ConnectWallet').then(res => res.ConnectWallet),
   { ssr: false }
 )
 
 const HeaderContent = ({ isMobile }: { isMobile: boolean }) => {
   return (
     <>
-      {!isMobile && <WalletConnectButton />}
+      {/* {!isMobile && <WalletConnectButton />} */}
+      {<WalletConnectButton />}
       {isMobile && <Box sx={{ width: '100%', ml: 1 }} />}
       {isMobile && <MobileSection />}
     </>
