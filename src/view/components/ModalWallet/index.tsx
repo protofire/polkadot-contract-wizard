@@ -9,7 +9,7 @@ import {
   ListItemText,
   Modal
 } from '@mui/material'
-import { Wallet } from 'src/types/wallet'
+import { Wallet } from '@/types'
 
 const style = {
   position: 'absolute' as const,

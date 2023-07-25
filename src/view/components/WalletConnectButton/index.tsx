@@ -81,12 +81,14 @@ export const WalletConnectButton = () => {
         </ButtonConnection>
       )}
 
-      <ModalWallet
-        open={openModal}
-        handleClose={() => setOpenModal(!openModal)}
-        wallets={allWallets}
-        setCurrentWallet={setCurrentWallet}
-      />
+      {allWallets && (
+        <ModalWallet
+          open={openModal}
+          handleClose={() => setOpenModal(!openModal)}
+          wallets={allWallets}
+          setCurrentWallet={setCurrentWallet}
+        />
+      )}
     </>
   )
 }

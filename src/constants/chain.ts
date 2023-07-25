@@ -1,10 +1,10 @@
-import { ArrayOneOrMore } from 'src/types/utilyTypes'
+import { ArrayOneOrMore } from '@/types'
 import {
+  Astar,
   Chain,
   RococoContractsTestnet,
   ShibuyaTestnet,
-  ShidenKusama,
-  Astar
+  ShidenKusama
 } from 'useink/chains'
 
 export const CHAINS_ALLOWED: ArrayOneOrMore<Chain> = [

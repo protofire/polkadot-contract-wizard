@@ -1,10 +1,11 @@
 import React, { createContext, useEffect, useState, useContext } from 'react'
-import { ApiPromise, WsProvider } from '@polkadot/api'
+import { ApiPromise } from '@polkadot/api'
 import jsonrpc from '@polkadot/types/interfaces/jsonrpc'
 import { WalletConnectionEvents } from '@/domain/DomainEvents'
 import { WalletState, useAllWallets, useWallet } from 'useink'
-import { ChainId } from 'useink/dist/chains'
 import { CHAINS_ALLOWED } from '@/constants/chain'
+import { Wallet } from '@/types'
+import { ChainProperties } from '@/infrastructure/NetworkAccountRepository'
 
 type NetworkState = 'DISCONNECTED' | 'CONNECTING' | 'CONNECTED' | 'ERROR'
 
@@ -13,10 +14,10 @@ export interface NetworkAccountsContextState {
   jsonRpc: typeof jsonrpc
   api?: ApiPromise
   apiError?: string
-  accountStatus: NetworkState // keyring state
-  // chainInfo?: ChainProperties
+  accountStatus: NetworkState
+  chainInfo?: ChainProperties
   currentWallet?: WalletState
-  allWallets?: WalletState[]
+  allWallets?: Wallet[]
 }
 
 export const initialState: NetworkAccountsContextState = {
@@ -57,7 +58,7 @@ const listWallets = (
   updateState: React.Dispatch<
     React.SetStateAction<NetworkAccountsContextState>
   >,
-  allWallets: WalletState[]
+  allWallets: Wallet[]
 ) => {
   updateState(prev => ({
     ...prev,
@@ -71,7 +72,7 @@ export function NetworkAccountsContextProvider({
   children: React.ReactNode
 }) {
   const [state, setState] = useState<NetworkAccountsContextState>(initialState)
-  const [networkId, setNetworkId] = useState<ChainId | undefined>()
+  const [networkId, setNetworkId] = useState<number | undefined>()
 
   const allWallets = useAllWallets()
   const wallet = useWallet()
@@ -82,7 +83,10 @@ export function NetworkAccountsContextProvider({
 
   useEffect(() => {
     if (networkId) return
-    setNetworkId(CHAINS_ALLOWED[0].paraId)
+    // TODO: Replace with the chain selector
+    // first network Element
+    const paraId = CHAINS_ALLOWED[0]?.paraId
+    setNetworkId(paraId)
   }, [networkId])
 
   useEffect(() => {
