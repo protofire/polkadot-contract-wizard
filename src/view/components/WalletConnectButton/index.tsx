@@ -5,10 +5,10 @@ import WarningIcon from '@mui/icons-material/Warning'
 import { useNetworkAccountsContext } from 'src/context/NetworkAccountsContext'
 import { StyledButton, MyButtonProps } from '../Button'
 import { WalletConnectionEvents } from 'src/domain/DomainEvents'
-import { ModalMessage } from '@/components'
 import { AccountSelect } from './AccountsSelect'
-import { accountsInPossession } from 'src/domain/KeyringAccouns'
 import { useOnceWhen } from 'src/hooks/useOnceWhen'
+import { ModalWallet } from '../ModalWallet'
+import { Box } from '@mui/material'
 
 export const ButtonConnection = styled(StyledButton)<MyButtonProps>(() => ({
   fontSize: '1rem',
@@ -19,15 +19,16 @@ export const ButtonConnection = styled(StyledButton)<MyButtonProps>(() => ({
 
 export const WalletConnectButton = () => {
   const {
-    state: { apiStatus, accountStatus, currentAccount, keyring },
-    setCurrentAccount
+    state: { accountStatus, currentAccount, allWallets, currentWallet },
+    setCurrentAccount,
+    setCurrentWallet
   } = useNetworkAccountsContext()
-  const isLoading = apiStatus === 'CONNECTING' || accountStatus === 'CONNECTING'
+
+  const isLoading =
+    accountStatus === 'CONNECTING' || (currentWallet as unknown as boolean)
   const [openModal, setOpenModal] = useState(false)
-  const noAccounts =
-    apiStatus === 'CONNECTED' &&
-    accountStatus === 'CONNECTED' &&
-    !currentAccount
+  const noAccounts = accountStatus === 'CONNECTED' && !currentAccount
+
   useOnceWhen({
     condition: noAccounts,
     callback: () => setOpenModal(true)
@@ -35,7 +36,8 @@ export const WalletConnectButton = () => {
 
   const dispatchConnect = () => {
     document.dispatchEvent(
-      new CustomEvent(WalletConnectionEvents.walletConnectInit)
+      // new CustomEvent(WalletConnectionEvents.walletConnectInit)
+      new CustomEvent(WalletConnectionEvents.listAllWallets)
     )
   }
 
@@ -45,18 +47,27 @@ export const WalletConnectButton = () => {
         <ButtonConnection
           loading={isLoading}
           size="small"
-          onClick={dispatchConnect}
+          onClick={() => {
+            dispatchConnect()
+            setOpenModal(true)
+          }}
         >
           Connect
         </ButtonConnection>
       ) : (
-        keyring &&
         currentAccount && (
-          <AccountSelect
-            currentAccount={currentAccount}
-            accounts={accountsInPossession(keyring)}
-            onChange={setCurrentAccount}
-          />
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'right'
+            }}
+          >
+            <AccountSelect
+              currentAccount={currentAccount}
+              accounts={currentWallet?.accounts}
+              onChange={setCurrentAccount}
+            />
+          </Box>
         )
       )}
 
@@ -69,9 +80,12 @@ export const WalletConnectButton = () => {
           No accounts
         </ButtonConnection>
       )}
-      <ModalMessage
+
+      <ModalWallet
         open={openModal}
         handleClose={() => setOpenModal(!openModal)}
+        wallets={allWallets}
+        setCurrentWallet={setCurrentWallet}
       />
     </>
   )

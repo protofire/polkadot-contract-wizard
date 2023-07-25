@@ -8,8 +8,8 @@ import {
   styled
 } from '@mui/material'
 import { shortNameLonger, truncateAddress } from '@/utils/formatString'
-import { KeyringAccount } from 'src/domain/KeyringAccouns'
 import { AvatarAccount } from './AvatarAccount'
+import { WalletAccount } from 'src/types/wallet'
 
 const StyledSelect = styled(Select)<SelectProps>(() => ({
   color: 'white',
@@ -61,7 +61,7 @@ export function AccountSelect({
   currentAccount,
   onChange
 }: {
-  accounts: KeyringAccount[]
+  accounts: WalletAccount[] | undefined
   currentAccount: string
   onChange: (account: string) => void
 }) {
@@ -75,7 +75,7 @@ export function AccountSelect({
       placeholder="Select Account..."
       onChange={_handleChange}
     >
-      {accounts.map(a => (
+      {accounts?.map(a => (
         <StyledMenuItem
           sx={{ color: 'white' }}
           selected={currentAccount === a.address}
@@ -85,7 +85,7 @@ export function AccountSelect({
           <Stack sx={{ display: 'flex', flexDirection: 'row' }}>
             <AvatarAccount address={a.address} />
             <Stack>
-              <span>{shortNameLonger(a.label)}</span>
+              <span>{shortNameLonger(a.name as string)}</span>
               <p>{truncateAddress(a.address)}</p>
             </Stack>
           </Stack>
