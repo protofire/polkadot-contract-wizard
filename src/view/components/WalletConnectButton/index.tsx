@@ -9,6 +9,7 @@ import { AccountSelect } from './AccountsSelect'
 import { useOnceWhen } from 'src/hooks/useOnceWhen'
 import { ModalWallet } from '../ModalWallet'
 import { Box } from '@mui/material'
+import { NetworkSelect } from './NetworkSelect'
 
 export const ButtonConnection = styled(StyledButton)<MyButtonProps>(() => ({
   fontSize: '1rem',
@@ -19,9 +20,16 @@ export const ButtonConnection = styled(StyledButton)<MyButtonProps>(() => ({
 
 export const WalletConnectButton = () => {
   const {
-    state: { accountStatus, currentAccount, allWallets, currentWallet },
+    state: {
+      accountStatus,
+      currentAccount,
+      allWallets,
+      currentWallet,
+      currentChain
+    },
     setCurrentAccount,
-    setCurrentWallet
+    setCurrentWallet,
+    setCurrentChain
   } = useNetworkAccountsContext()
 
   const isLoading =
@@ -62,6 +70,10 @@ export const WalletConnectButton = () => {
               justifyContent: 'right'
             }}
           >
+            <NetworkSelect
+              currentChain={currentChain?.name}
+              onChange={setCurrentChain}
+            />
             <AccountSelect
               currentAccount={currentAccount}
               accounts={currentWallet?.accounts}

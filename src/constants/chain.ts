@@ -8,8 +8,14 @@ import {
 } from 'useink/chains'
 
 export const CHAINS_ALLOWED: ArrayOneOrMore<Chain> = [
+  RococoContractsTestnet,
   Astar,
   ShidenKusama,
-  ShibuyaTestnet,
-  RococoContractsTestnet
+  ShibuyaTestnet
 ]
+
+export const createChainObject = (chainList: Chain[]) => {
+  return chainList.reduce((acc, cv) => {
+    return { ...acc, [cv.id]: cv }
+  }, {}) as { [name: string]: Chain }
+}
