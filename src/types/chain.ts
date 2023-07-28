@@ -1,4 +1,4 @@
-import { Chain } from 'useink/chains'
+import { Chain } from 'useink/dist/chains'
 
 export type ChainExtended = Chain & {
   logo: {

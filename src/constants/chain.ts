@@ -6,7 +6,7 @@ import {
   RococoContractsTestnet,
   ShibuyaTestnet,
   ShidenKusama
-} from 'useink/chains'
+} from 'useink/dist/chains'
 
 export const CHAINS_ALLOWED: ArrayOneOrMore<Chain> = [
   RococoContractsTestnet,
