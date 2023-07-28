@@ -50,7 +50,7 @@ type Props = {
   open: boolean
   handleClose: () => void
   wallets: Wallet[]
-  setCurrentWallet: (walletName: string) => void
+  setCurrentWallet: (wallet: Wallet) => void
 }
 export function ModalWallet({
   open,
@@ -90,7 +90,7 @@ export function ModalWallet({
                     <ListItemButton
                       sx={listItemSx}
                       onClick={() => {
-                        setCurrentWallet(w.extensionName)
+                        setCurrentWallet(w)
                         handleClose()
                       }}
                     >
@@ -115,7 +115,7 @@ export function ModalWallet({
                     <ListItemButton
                       sx={listItemSx}
                       onClick={() => {
-                        setCurrentWallet(w.extensionName)
+                        setCurrentWallet(w)
                         handleClose()
                       }}
                     >

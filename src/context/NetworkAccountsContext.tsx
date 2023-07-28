@@ -1,11 +1,9 @@
-import React, { createContext, useEffect, useState, useContext } from 'react'
+import React, { createContext, useState, useContext } from 'react'
 import { ApiPromise } from '@polkadot/api'
 import jsonrpc from '@polkadot/types/interfaces/jsonrpc'
-import { WalletConnectionEvents } from '@/domain/DomainEvents'
-import { WalletState, useAllWallets, useWallet } from 'useink'
-import { CHAINS_ALLOWED } from '@/constants/chain'
-import { Wallet, WalletLogoProps } from '@/types'
-import { WALLET_DETAILS, WalletImg } from '@/constants/wallets'
+import { useAllWallets, useWallet } from 'useink'
+import { Wallet, WalletAccount, WalletLogoProps } from '@/types'
+import { WALLET_DETAILS } from '@/constants/wallets'
 
 type NetworkState = 'DISCONNECTED' | 'CONNECTING' | 'CONNECTED' | 'ERROR'
 
@@ -15,15 +13,12 @@ export interface NetworkAccountsContextState {
   api?: ApiPromise
   apiError?: string
   accountStatus: NetworkState
-  currentWallet?: WalletState
-  allWallets?: Wallet[]
   walletLogo: WalletLogoProps
 }
 
 export const initialState: NetworkAccountsContextState = {
   jsonRpc: { ...jsonrpc },
   accountStatus: 'DISCONNECTED',
-  currentWallet: undefined,
   walletLogo: {} as WalletLogoProps
 }
 
@@ -31,41 +26,12 @@ export const NetworkAccountsContext = createContext(
   {} as {
     state: NetworkAccountsContextState
     setCurrentAccount: (account: string) => void
-    setCurrentWallet: (walletExtensionName: string) => void
+    setCurrentWallet: (wallet: Wallet) => void
+    accounts: WalletAccount[] | undefined
+    allWallets: Wallet[]
+    connect: (walletName: string) => void
   }
 )
-
-const loadAccounts = (
-  state: NetworkAccountsContextState,
-  updateState: React.Dispatch<
-    React.SetStateAction<NetworkAccountsContextState>
-  >,
-  wallet: WalletState
-) => {
-  if (state.currentWallet) return
-  const AsyncLoadAccounts = async () => {
-    updateState(prev => ({
-      ...prev,
-      accountStatus: 'CONNECTED',
-      currentWallet: wallet,
-      currentAccount: wallet.account?.address
-    }))
-  }
-
-  AsyncLoadAccounts()
-}
-
-const listWallets = (
-  updateState: React.Dispatch<
-    React.SetStateAction<NetworkAccountsContextState>
-  >,
-  allWallets: Wallet[]
-) => {
-  updateState(prev => ({
-    ...prev,
-    allWallets
-  }))
-}
 
 export function NetworkAccountsContextProvider({
   children
@@ -74,74 +40,62 @@ export function NetworkAccountsContextProvider({
 }) {
   const [state, setState] = useState<NetworkAccountsContextState>(initialState)
   const allWallets = useAllWallets()
-  const wallet = useWallet()
+  const { accounts, connect, disconnect } = useWallet()
 
   // TODO: Add API Provider
   // const apiProvider = useApi()
   // const apiPromise = apiProvider?.api
 
-  useEffect(() => {
-    const savedWallet = localStorage.getItem('currentWallet')
-    console.log('savedWallet', savedWallet)
-    if (!savedWallet) return
-    console.log('wallet', wallet)
-    setCurrentWallet(savedWallet)
-    loadAccounts(state, setState, wallet)
+  const disconnectWallet = () => {
+    disconnect()
+    setState(prev => ({
+      ...prev,
+      accountStatus: 'DISCONNECTED',
+      currentAccount: undefined,
+      walletLogo: {} as WalletLogoProps
+    }))
+  }
 
-    console.log('currentState', state)
-  }, [])
-
-  useEffect(() => {
-    document.addEventListener(WalletConnectionEvents.walletConnectInit, () => {
-      loadAccounts(state, setState, wallet)
-    })
-
-    document.addEventListener(WalletConnectionEvents.listAllWallets, () => {
-      listWallets(setState, allWallets)
-    })
-
-    return () => {
-      document.removeEventListener(
-        WalletConnectionEvents.walletConnectInit,
-        () => loadAccounts(state, setState, wallet)
-      )
-
-      document.removeEventListener(
-        WalletConnectionEvents.listAllWallets,
-        () => {
-          listWallets(setState, allWallets)
-        }
-      )
+  const setCurrentAccount = (accountAddress: string) => {
+    if (accountAddress === 'disconnect') {
+      disconnectWallet()
+      return
     }
-  }, [state, allWallets, wallet])
-
-  function setCurrentAccount(accountAddress: string) {
-    const account = wallet.accounts?.filter(
+    const account: WalletAccount = accounts?.filter(
       element => element.address === accountAddress
     )[0]
-    wallet.setAccount(account)
+    connect(account.wallet?.extensionName as string)
     setState(prev => ({ ...prev, currentAccount: account.address }))
   }
 
-  function setCurrentWallet(walletExtensionName: string) {
+  const setCurrentWallet = async (wallet: Wallet) => {
+    const { extensionName, getAccounts } = wallet
+    await wallet.enable('contract-wizard')
+    const accounts = await getAccounts()
+
     // Save currentWallet
     if (!localStorage.getItem('currentWallet')) {
-      localStorage.setItem('currentWallet', walletExtensionName)
+      localStorage.setItem('currentWallet', extensionName)
     }
-    wallet.connect(walletExtensionName)
+    connect(extensionName)
     setState(prev => ({
       ...prev,
-      currentWallet: wallet,
-      walletLogo: WALLET_DETAILS[walletExtensionName]
+      accountStatus: 'CONNECTED',
+      currentAccount: accounts[0].address,
+      walletLogo: WALLET_DETAILS[extensionName]
     }))
-    document.dispatchEvent(
-      new CustomEvent(WalletConnectionEvents.walletConnectInit)
-    )
   }
 
   return (
     <NetworkAccountsContext.Provider
-      value={{ state, setCurrentAccount, setCurrentWallet }}
+      value={{
+        state,
+        setCurrentAccount,
+        setCurrentWallet,
+        accounts,
+        allWallets,
+        connect
+      }}
     >
       {children}
     </NetworkAccountsContext.Provider>

@@ -25,45 +25,20 @@ export const ButtonConnection = styled(StyledButton)<MyButtonProps>(() => ({
 
 export const WalletConnectButton = () => {
   const {
-    state: {
-      accountStatus,
-      currentAccount,
-      allWallets,
-      currentWallet,
-      walletLogo
-    },
+    state: { accountStatus, currentAccount, walletLogo },
     setCurrentAccount,
-    setCurrentWallet
+    setCurrentWallet,
+    accounts,
+    allWallets
   } = useNetworkAccountsContext()
 
-  const isLoading =
-    accountStatus === 'CONNECTING' || (currentWallet as unknown as boolean)
   const [openModal, setOpenModal] = useState(false)
-  const noAccounts = accountStatus === 'CONNECTED' && !currentAccount
-
-  useOnceWhen({
-    condition: noAccounts,
-    callback: () => setOpenModal(true)
-  })
-
-  const dispatchConnect = () => {
-    document.dispatchEvent(
-      // new CustomEvent(WalletConnectionEvents.walletConnectInit)
-      new CustomEvent(WalletConnectionEvents.listAllWallets)
-    )
-  }
+  const noAccounts = accountStatus === 'CONNECTED' && accounts?.length === 0
 
   return (
     <>
-      {accountStatus === 'DISCONNECTED' || accountStatus === 'CONNECTING' ? (
-        <ButtonConnection
-          loading={isLoading}
-          size="small"
-          onClick={() => {
-            dispatchConnect()
-            setOpenModal(true)
-          }}
-        >
+      {accountStatus === 'DISCONNECTED' ? (
+        <ButtonConnection size="small" onClick={() => setOpenModal(true)}>
           Connect your wallet{' '}
           <CircleIcon
             style={{
@@ -83,8 +58,8 @@ export const WalletConnectButton = () => {
           >
             <AccountSelect
               walletLogo={walletLogo}
-              currentAccount={currentAccount}
-              accounts={currentWallet?.accounts}
+              currentAccount={currentAccount as string}
+              accounts={accounts}
               onChange={setCurrentAccount}
             />
           </Box>
