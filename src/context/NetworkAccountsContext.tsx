@@ -2,19 +2,11 @@ import React, { createContext, useEffect, useState, useContext } from 'react'
 import { ApiPromise } from '@polkadot/api'
 import jsonrpc from '@polkadot/types/interfaces/jsonrpc'
 import { WalletConnectionEvents } from '@/domain/DomainEvents'
-import {
-  WalletState,
-  useAllWallets,
-  useChain,
-  useChainRpc,
-  useChainRpcList,
-  useWallet
-} from 'useink'
-import { CHAINS_ALLOWED, createChainObject } from '@/constants/chain'
+import { WalletState, useAllWallets, useChainRpcList, useWallet } from 'useink'
+import { ALL_CHAINS_OBJ } from '@/constants/chain'
 import { Wallet } from '@/types'
 import { ChainProperties } from '@/infrastructure/NetworkAccountRepository'
-import { Chain, ChainId } from 'useink/chains'
-import { chain } from 'lodash'
+import { ChainExtended } from 'src/types/chain'
 
 type NetworkState = 'DISCONNECTED' | 'CONNECTING' | 'CONNECTED' | 'ERROR'
 
@@ -27,14 +19,14 @@ export interface NetworkAccountsContextState {
   chainInfo?: ChainProperties
   currentWallet?: WalletState
   allWallets?: Wallet[]
-  currentChain: Chain
+  currentChain?: ChainExtended
 }
 
 export const initialState: NetworkAccountsContextState = {
   jsonRpc: { ...jsonrpc },
   accountStatus: 'DISCONNECTED',
   currentWallet: undefined,
-  currentChain: {} as Chain
+  currentChain: {} as ChainExtended
 }
 
 export const NetworkAccountsContext = createContext(
@@ -42,12 +34,9 @@ export const NetworkAccountsContext = createContext(
     state: NetworkAccountsContextState
     setCurrentAccount: (account: string) => void
     setCurrentWallet: (walletExtensionName: string) => void
-    setCurrentChain: (Chain) => void
+    setCurrentChain: (chain: ChainExtended) => void
   }
 )
-
-export const chainObj: { [name: string]: Chain } =
-  createChainObject(CHAINS_ALLOWED)
 
 const loadAccounts = (
   state: NetworkAccountsContextState,
@@ -64,7 +53,7 @@ const loadAccounts = (
       accountStatus: 'CONNECTED',
       currentWallet: wallet,
       currentAccount: wallet.account?.address,
-      currentChain: chainObj['astar']
+      currentChain: ALL_CHAINS_OBJ['astar']
     }))
   }
 
@@ -89,8 +78,6 @@ export function NetworkAccountsContextProvider({
   children: React.ReactNode
 }) {
   const [state, setState] = useState<NetworkAccountsContextState>(initialState)
-  const [networkId, setNetworkId] = useState<number | undefined>()
-
   const allWallets = useAllWallets()
   const wallet = useWallet()
   const { setChainRpc } = useChainRpcList()
@@ -98,14 +85,6 @@ export function NetworkAccountsContextProvider({
   // TODO: Add API Provider
   // const apiProvider = useApi()
   // const apiPromise = apiProvider?.api
-
-  useEffect(() => {
-    if (networkId) return
-    // TODO: Replace with the chain selector
-    // first network Element
-    const paraId = CHAINS_ALLOWED[0]?.paraId
-    setNetworkId(paraId)
-  }, [networkId])
 
   useEffect(() => {
     document.addEventListener(WalletConnectionEvents.walletConnectInit, () => {
@@ -147,15 +126,14 @@ export function NetworkAccountsContextProvider({
     )
   }
 
-  function setCurrentChain(chainObj: Chain) {
+  function setCurrentChain(chainObj: ChainExtended) {
     const { id, rpcs } = chainObj
+    // Select the first rpc from the list
     setChainRpc(rpcs[0], id)
-
     setState(prev => ({
       ...prev,
       currentChain: chainObj
     }))
-    console.log('state', state)
   }
 
   return (

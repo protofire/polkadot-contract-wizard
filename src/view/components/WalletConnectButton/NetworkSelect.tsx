@@ -5,17 +5,18 @@ import {
   SelectProps,
   SelectChangeEvent,
   Stack,
-  styled
+  styled,
+  Avatar
 } from '@mui/material'
-import { CHAINS_ALLOWED } from '@/constants/chain'
-import { Chain, ChainId } from 'useink/chains'
-import { chainObj } from '@/context/NetworkAccountsContext'
+import { ALL_CHAINS_OBJ } from '@/constants/chain'
+import { ChainExtended } from 'src/types/chain'
 
 const StyledSelect = styled(Select)<SelectProps>(() => ({
   color: 'white',
   padding: '0',
   margin: '0.5rem 0.5rem',
   borderRadius: '0.5rem',
+  width: '202px',
   height: '2.88em',
   display: 'flex',
 
@@ -24,11 +25,17 @@ const StyledSelect = styled(Select)<SelectProps>(() => ({
   },
 
   '& p': {
-    marginLeft: '0.5rem'
+    marginLeft: '0.5rem',
+    paddingTop: '0.5rem'
   },
 
   '& legend': {
     display: 'none'
+  },
+
+  '& img': {
+    width: 'auto',
+    height: 'auto'
   }
 }))
 
@@ -36,7 +43,11 @@ const StyledMenuItem = styled(MenuItem)<MenuItemProps>(() => ({
   color: 'white',
   '& p': {
     marginLeft: '1rem',
-    fontWeight: '600'
+    paddingTop: '0.5rem'
+  },
+  '& img': {
+    width: 'auto',
+    height: 'auto'
   }
 }))
 
@@ -44,14 +55,15 @@ export function NetworkSelect({
   currentChain,
   onChange
 }: {
-  currentChain: Chain
-  onChange: (chain: Chain) => void
+  currentChain: ChainExtended
+  onChange: (chain: ChainExtended) => void
 }) {
   const _handleChangeChain = (event: SelectChangeEvent<unknown>) => {
     const chainId = event.target.value as string
-    const chain = chainObj[chainId]
+    const chain = ALL_CHAINS_OBJ[chainId]
     onChange(chain)
   }
+
   return (
     <>
       <StyledSelect
@@ -59,7 +71,7 @@ export function NetworkSelect({
         value={currentChain.id}
         onChange={_handleChangeChain}
       >
-        {CHAINS_ALLOWED.map(option => (
+        {Object.values(ALL_CHAINS_OBJ).map(option => (
           <StyledMenuItem
             sx={{ color: 'white' }}
             selected={currentChain.name === option.name}
@@ -67,7 +79,7 @@ export function NetworkSelect({
             value={option.id}
           >
             <Stack sx={{ display: 'flex', flexDirection: 'row' }}>
-              {/* <AvatarAccount address={option.name} /> */}
+              <Avatar src={option.logo.src} alt={option.logo.alt} />{' '}
               <Stack>
                 <p>{option.name}</p>
               </Stack>

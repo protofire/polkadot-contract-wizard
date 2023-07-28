@@ -48,7 +48,6 @@ export function ModalWallet({
                 {w.installed ? (
                   <ListItemButton
                     onClick={() => {
-                      console.log('desde ACA', w)
                       setCurrentWallet(w.extensionName)
                       handleClose()
                     }}

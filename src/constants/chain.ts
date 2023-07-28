@@ -1,4 +1,5 @@
 import { ArrayOneOrMore } from '@/types'
+import { ChainExtended } from 'src/types/chain'
 import {
   Astar,
   Chain,
@@ -14,8 +15,16 @@ export const CHAINS_ALLOWED: ArrayOneOrMore<Chain> = [
   ShibuyaTestnet
 ]
 
-export const createChainObject = (chainList: Chain[]) => {
+export const createChainObject = (chainList: ChainExtended[]) => {
+  const imgPath = `/assets/chains/`
   return chainList.reduce((acc, cv) => {
+    cv.logo = {
+      src: `${imgPath}${cv.id}.png`,
+      alt: `${cv.name} img`
+    }
     return { ...acc, [cv.id]: cv }
-  }, {}) as { [name: string]: Chain }
+  }, {}) as { [name: string]: ChainExtended }
 }
+
+export const ALL_CHAINS_OBJ: { [name: string]: ChainExtended } =
+  createChainObject(CHAINS_ALLOWED as unknown as ChainExtended[])

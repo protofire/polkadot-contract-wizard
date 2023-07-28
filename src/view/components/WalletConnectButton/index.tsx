@@ -71,7 +71,7 @@ export const WalletConnectButton = () => {
             }}
           >
             <NetworkSelect
-              currentChain={currentChain?.name}
+              currentChain={currentChain}
               onChange={setCurrentChain}
             />
             <AccountSelect
