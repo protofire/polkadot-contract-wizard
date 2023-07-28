@@ -9,17 +9,29 @@ import { AccountSelect } from './AccountsSelect'
 import { useOnceWhen } from 'src/hooks/useOnceWhen'
 import { ModalWallet } from '../ModalWallet'
 import { Box } from '@mui/material'
+import CircleIcon from '@mui/icons-material/Circle'
 
 export const ButtonConnection = styled(StyledButton)<MyButtonProps>(() => ({
   fontSize: '1rem',
   height: '2.5rem',
-  borderRadius: '0.5rem',
-  margin: '0.5rem 0'
+  borderRadius: '1.5rem',
+  margin: '0.5rem 0',
+  backgroundColor: '#FF7900',
+  color: '#FFFF',
+  border: '0px',
+  padding: '1.3rem',
+  textTransform: 'none'
 }))
 
 export const WalletConnectButton = () => {
   const {
-    state: { accountStatus, currentAccount, allWallets, currentWallet },
+    state: {
+      accountStatus,
+      currentAccount,
+      allWallets,
+      currentWallet,
+      walletLogo
+    },
     setCurrentAccount,
     setCurrentWallet
   } = useNetworkAccountsContext()
@@ -52,7 +64,14 @@ export const WalletConnectButton = () => {
             setOpenModal(true)
           }}
         >
-          Connect
+          Connect your wallet{' '}
+          <CircleIcon
+            style={{
+              marginLeft: '15px',
+              fontSize: '0.9rem',
+              color: `rgba(255, 255, 255, 0.62)`
+            }}
+          />
         </ButtonConnection>
       ) : (
         currentAccount && (
@@ -63,6 +82,7 @@ export const WalletConnectButton = () => {
             }}
           >
             <AccountSelect
+              walletLogo={walletLogo}
               currentAccount={currentAccount}
               accounts={currentWallet?.accounts}
               onChange={setCurrentAccount}

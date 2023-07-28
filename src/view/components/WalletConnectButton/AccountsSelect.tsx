@@ -5,11 +5,12 @@ import {
   SelectProps,
   SelectChangeEvent,
   Stack,
-  styled
+  styled,
+  Avatar
 } from '@mui/material'
 import { shortNameLonger, truncateAddress } from '@/utils/formatString'
-import { AvatarAccount } from './AvatarAccount'
-import { WalletAccount } from 'src/types/wallet'
+import { WalletAccount, WalletLogoProps } from 'src/types/wallet'
+import CircleIcon from '@mui/icons-material/Circle'
 
 const StyledSelect = styled(Select)<SelectProps>(() => ({
   color: 'white',
@@ -57,10 +58,12 @@ const StyledMenuItem = styled(MenuItem)<MenuItemProps>(() => ({
 }))
 
 export function AccountSelect({
+  walletLogo,
   accounts,
   currentAccount,
   onChange
 }: {
+  walletLogo: WalletLogoProps | undefined
   accounts: WalletAccount[] | undefined
   currentAccount: string
   onChange: (account: string) => void
@@ -83,11 +86,28 @@ export function AccountSelect({
           value={a.address}
         >
           <Stack sx={{ display: 'flex', flexDirection: 'row' }}>
-            <AvatarAccount address={a.address} />
+            {/* <AvatarAccount address={a.address} /> */}
+
+            {walletLogo && (
+              <Avatar
+                sx={{ height: '30px', width: '30px', marginTop: '3px' }}
+                src={walletLogo.src}
+                alt={walletLogo.alt}
+              />
+            )}
+
             <Stack>
               <span>{shortNameLonger(a.name as string)}</span>
               <p>{truncateAddress(a.address)}</p>
             </Stack>
+            <CircleIcon
+              style={{
+                marginLeft: '15px',
+                marginTop: '10px',
+                fontSize: '0.9rem',
+                color: `#20E24B`
+              }}
+            />
           </Stack>
         </StyledMenuItem>
       ))}

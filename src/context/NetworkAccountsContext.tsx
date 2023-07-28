@@ -4,8 +4,8 @@ import jsonrpc from '@polkadot/types/interfaces/jsonrpc'
 import { WalletConnectionEvents } from '@/domain/DomainEvents'
 import { WalletState, useAllWallets, useWallet } from 'useink'
 import { CHAINS_ALLOWED } from '@/constants/chain'
-import { Wallet } from '@/types'
-import { ChainProperties } from '@/infrastructure/NetworkAccountRepository'
+import { Wallet, WalletLogoProps } from '@/types'
+import { WALLET_DETAILS, WalletImg } from '@/constants/wallets'
 
 type NetworkState = 'DISCONNECTED' | 'CONNECTING' | 'CONNECTED' | 'ERROR'
 
@@ -15,15 +15,16 @@ export interface NetworkAccountsContextState {
   api?: ApiPromise
   apiError?: string
   accountStatus: NetworkState
-  chainInfo?: ChainProperties
   currentWallet?: WalletState
   allWallets?: Wallet[]
+  walletLogo: WalletLogoProps
 }
 
 export const initialState: NetworkAccountsContextState = {
   jsonRpc: { ...jsonrpc },
   accountStatus: 'DISCONNECTED',
-  currentWallet: undefined
+  currentWallet: undefined,
+  walletLogo: {} as WalletLogoProps
 }
 
 export const NetworkAccountsContext = createContext(
@@ -72,8 +73,6 @@ export function NetworkAccountsContextProvider({
   children: React.ReactNode
 }) {
   const [state, setState] = useState<NetworkAccountsContextState>(initialState)
-  const [networkId, setNetworkId] = useState<number | undefined>()
-
   const allWallets = useAllWallets()
   const wallet = useWallet()
 
@@ -82,12 +81,15 @@ export function NetworkAccountsContextProvider({
   // const apiPromise = apiProvider?.api
 
   useEffect(() => {
-    if (networkId) return
-    // TODO: Replace with the chain selector
-    // first network Element
-    const paraId = CHAINS_ALLOWED[0]?.paraId
-    setNetworkId(paraId)
-  }, [networkId])
+    const savedWallet = localStorage.getItem('currentWallet')
+    console.log('savedWallet', savedWallet)
+    if (!savedWallet) return
+    console.log('wallet', wallet)
+    setCurrentWallet(savedWallet)
+    loadAccounts(state, setState, wallet)
+
+    console.log('currentState', state)
+  }, [])
 
   useEffect(() => {
     document.addEventListener(WalletConnectionEvents.walletConnectInit, () => {
@@ -122,8 +124,16 @@ export function NetworkAccountsContextProvider({
   }
 
   function setCurrentWallet(walletExtensionName: string) {
+    // Save currentWallet
+    if (!localStorage.getItem('currentWallet')) {
+      localStorage.setItem('currentWallet', walletExtensionName)
+    }
     wallet.connect(walletExtensionName)
-    setState(prev => ({ ...prev, currentWallett: wallet }))
+    setState(prev => ({
+      ...prev,
+      currentWallet: wallet,
+      walletLogo: WALLET_DETAILS[walletExtensionName]
+    }))
     document.dispatchEvent(
       new CustomEvent(WalletConnectionEvents.walletConnectInit)
     )
