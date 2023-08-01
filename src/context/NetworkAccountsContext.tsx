@@ -1,23 +1,31 @@
 import React, { createContext, useState, useContext } from 'react'
 import { ApiPromise } from '@polkadot/api'
 import jsonrpc from '@polkadot/types/interfaces/jsonrpc'
-import { WalletConnectionEvents } from '@/domain/DomainEvents'
-import { WalletState, useAllWallets, useChainRpcList, useWallet } from 'useink'
+import {
+  WalletState,
+  useAllWallets,
+  useChainRpcList,
+  useWallet,
+  useApi
+} from 'useink'
 import { ALL_CHAINS_OBJ } from '@/constants/chain'
-import { ChainProperties } from '@/infrastructure/NetworkAccountRepository'
 import { ChainExtended } from 'src/types/chain'
 import { Wallet, WalletAccount, WalletLogoProps } from '@/types'
 import { WALLET_DETAILS } from '@/constants/wallets'
+import {
+  ChainProperties,
+  getChainInfo
+} from '@/infrastructure/NetworkAccountRepository'
 
-type NetworkState = 'DISCONNECTED' | 'CONNECTING' | 'CONNECTED' | 'ERROR'
+type NetworkState = 'DISCONNECTED' | 'CONNECTED' | 'ERROR'
 
 export interface NetworkAccountsContextState {
   currentAccount?: string
   jsonRpc: typeof jsonrpc
   api?: ApiPromise
   apiError?: string
-  accountStatus: NetworkState
   chainInfo?: ChainProperties
+  accountStatus: NetworkState
   currentWallet?: WalletState
   allWallets?: Wallet[]
   currentChain?: ChainExtended
@@ -53,10 +61,7 @@ export function NetworkAccountsContextProvider({
   const allWallets = useAllWallets()
   const { accounts, connect, disconnect } = useWallet()
   const { setChainRpc } = useChainRpcList()
-
-  // TODO: Add API Provider
-  // const apiProvider = useApi()
-  // const apiPromise = apiProvider?.api
+  const apiProvider = useApi()
 
   const disconnectWallet = () => {
     disconnect()
@@ -84,18 +89,18 @@ export function NetworkAccountsContextProvider({
     const { extensionName, getAccounts } = wallet
     await wallet.enable('contract-wizard')
     const accounts = await getAccounts()
+    const apiProv = apiProvider?.api
+    const chainInfo = await getChainInfo(apiProv as ApiPromise)
 
-    // Save currentWallet
-    if (!localStorage.getItem('currentWallet')) {
-      localStorage.setItem('currentWallet', extensionName)
-    }
     connect(extensionName)
     setState(prev => ({
       ...prev,
       accountStatus: 'CONNECTED',
       currentAccount: accounts[0].address,
       walletLogo: WALLET_DETAILS[extensionName],
-      currentChain: ALL_CHAINS_OBJ['astar']
+      currentChain: ALL_CHAINS_OBJ['astar'],
+      api: apiProv,
+      chainInfo
     }))
   }
 

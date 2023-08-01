@@ -1,4 +1,4 @@
-import { ArrayOneOrMore } from '@/types'
+import { ArrayOneOrMore } from '../types'
 import { ChainExtended } from 'src/types/chain'
 import {
   Astar,
