@@ -59,7 +59,7 @@ type TestnetNetworkName = keyof typeof AllTestnets
 type TestnetChain = (typeof AllTestnets)[TestnetNetworkName]
 type ProductionNetworkName = keyof typeof AllChains
 type ProductionChain = (typeof AllChains)[ProductionNetworkName]
-type Chain = ProductionChain | TestnetChain
+export type Chain = ProductionChain | TestnetChain
 
 export type ChainExtended = Chain & {
   logo: {

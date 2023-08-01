@@ -1,3 +1,6 @@
+import { ArrayOneOrMore } from '@/types'
+import { Chain } from 'useink/dist/chains'
+
 export const CHAINS_ALLOWED = [
   {
     id: 'rococo-contracts-testnet',
@@ -53,4 +56,4 @@ export const CHAINS_ALLOWED = [
     subscanUrl: 'https://shibuya.subscan.io/',
     rpcs: ['wss://rpc.shibuya.astar.network', 'wss://shibuya-rpc.dwellir.com']
   }
-]
+] as ArrayOneOrMore<Chain>
