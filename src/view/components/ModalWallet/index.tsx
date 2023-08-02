@@ -58,6 +58,8 @@ export function ModalWallet({
   wallets,
   setCurrentWallet
 }: Props) {
+  const walletInstalled = wallets.filter(wallet => wallet.installed)
+  const walletNotInstalled = wallets.filter(wallet => !wallet.installed)
   return (
     <Modal open={open} onClose={handleClose}>
       <Box sx={modalStyle}>
@@ -82,51 +84,47 @@ export function ModalWallet({
             Installed Wallets
           </Typography>
           <List disablePadding sx={listSx}>
-            {wallets
-              .filter(wallet => wallet.installed)
-              .map(w => (
-                <ListItem key={w.title}>
-                  <>
-                    <ListItemButton
-                      sx={listItemSx}
-                      onClick={() => {
-                        setCurrentWallet(w)
-                        handleClose()
-                      }}
-                    >
-                      <ListItemIcon>
-                        <Avatar src={w.logo.src} alt={w.logo.alt} />
-                      </ListItemIcon>
-                      <ListItemText primary={`${w.title}`} />
-                    </ListItemButton>
-                  </>
-                </ListItem>
-              ))}
+            {walletInstalled.map(w => (
+              <ListItem key={w.title}>
+                <>
+                  <ListItemButton
+                    sx={listItemSx}
+                    onClick={() => {
+                      setCurrentWallet(w)
+                      handleClose()
+                    }}
+                  >
+                    <ListItemIcon>
+                      <Avatar src={w.logo.src} alt={w.logo.alt} />
+                    </ListItemIcon>
+                    <ListItemText primary={`${w.title}`} />
+                  </ListItemButton>
+                </>
+              </ListItem>
+            ))}
           </List>
         </Box>
         <Box>
           <Divider style={{ margin: '2rem' }} variant="middle" />
           <List disablePadding sx={listSx}>
-            {wallets
-              .filter(wallet => !wallet.installed)
-              .map(w => (
-                <ListItem key={w.title}>
-                  <>
-                    <ListItemButton
-                      sx={listItemSx}
-                      onClick={() => {
-                        setCurrentWallet(w)
-                        handleClose()
-                      }}
-                    >
-                      <ListItemIcon>
-                        <Avatar src={w.logo.src} alt={w.logo.alt} />
-                      </ListItemIcon>
-                      <ListItemText primary={`Install ${w.title}`} />
-                    </ListItemButton>
-                  </>
-                </ListItem>
-              ))}
+            {walletNotInstalled.map(w => (
+              <ListItem key={w.title}>
+                <>
+                  <ListItemButton
+                    sx={listItemSx}
+                    onClick={() => {
+                      setCurrentWallet(w)
+                      handleClose()
+                    }}
+                  >
+                    <ListItemIcon>
+                      <Avatar src={w.logo.src} alt={w.logo.alt} />
+                    </ListItemIcon>
+                    <ListItemText primary={`Install ${w.title}`} />
+                  </ListItemButton>
+                </>
+              </ListItem>
+            ))}
           </List>
         </Box>
       </Box>
