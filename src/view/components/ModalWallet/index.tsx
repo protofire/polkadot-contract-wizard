@@ -11,7 +11,7 @@ import {
   Modal,
   Typography
 } from '@mui/material'
-import { Wallet } from '@/types'
+import { Wallet } from '@/infrastructure/useink/walletTypes'
 
 const modalStyle = {
   position: 'absolute' as const,

@@ -9,9 +9,13 @@ import {
   Avatar
 } from '@mui/material'
 import { shortNameLonger, truncateAddress } from '@/utils/formatString'
-import { WalletAccount, WalletLogoProps } from 'src/types/wallet'
 import CircleIcon from '@mui/icons-material/Circle'
 import PowerOffIcon from '@mui/icons-material/PowerOff'
+import { OPTION_FOR_DISCONNECTING } from '@/context/NetworkAccountsContext'
+import {
+  WalletAccount,
+  WalletLogoProps
+} from '@/infrastructure/useink/walletTypes'
 
 const StyledSelect = styled(Select)<SelectProps>(() => ({
   color: 'white',
@@ -81,7 +85,7 @@ export function AccountSelect({
     )
   const allAccounts = [
     ...accounts,
-    { name: 'disconnect', address: 'disconnect' }
+    { name: OPTION_FOR_DISCONNECTING, address: OPTION_FOR_DISCONNECTING }
   ]
 
   return (
@@ -99,7 +103,7 @@ export function AccountSelect({
           key={a.address}
           value={a.address}
         >
-          {a.name !== 'disconnect' && (
+          {a.name !== OPTION_FOR_DISCONNECTING && (
             <Stack sx={{ display: 'flex', flexDirection: 'row' }}>
               {/* <AvatarAccount address={a.address} /> */}
               {walletLogo && (
@@ -124,7 +128,7 @@ export function AccountSelect({
             </Stack>
           )}
 
-          {a.name === 'disconnect' && (
+          {a.name === OPTION_FOR_DISCONNECTING && (
             <>
               <PowerOffIcon sx={{ fontSize: '2rem' }} />
               <Stack

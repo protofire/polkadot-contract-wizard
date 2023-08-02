@@ -2,14 +2,17 @@ import React, { createContext, useState, useContext } from 'react'
 import { ApiPromise } from '@polkadot/api'
 import jsonrpc from '@polkadot/types/interfaces/jsonrpc'
 import { useAllWallets, useApi, useWallet } from 'useink'
-import { Wallet, WalletAccount, WalletLogoProps } from '@/types'
-import { WALLET_DETAILS } from '@/constants/wallets'
+
+import { WalletKeys } from '@/constants/wallets'
 import {
   ChainProperties,
   getChainInfo
 } from '@/infrastructure/NetworkAccountRepository'
+import { DAPP_CONFIG } from '../constants'
+import { Wallet, WalletAccount } from '@/infrastructure/useink/walletTypes'
 
 type NetworkState = 'DISCONNECTED' | 'CONNECTED' | 'ERROR'
+export const OPTION_FOR_DISCONNECTING = 'disconnect'
 
 export interface NetworkAccountsContextState {
   currentAccount?: string
@@ -18,13 +21,12 @@ export interface NetworkAccountsContextState {
   apiError?: string
   chainInfo?: ChainProperties
   accountStatus: NetworkState
-  walletLogo: WalletLogoProps
+  walletKey?: WalletKeys
 }
 
 export const initialState: NetworkAccountsContextState = {
   jsonRpc: { ...jsonrpc },
-  accountStatus: 'DISCONNECTED',
-  walletLogo: {} as WalletLogoProps
+  accountStatus: 'DISCONNECTED'
 }
 
 export const NetworkAccountsContext = createContext(
@@ -54,12 +56,12 @@ export function NetworkAccountsContextProvider({
       ...prev,
       accountStatus: 'DISCONNECTED',
       currentAccount: undefined,
-      walletLogo: {} as WalletLogoProps
+      walletKey: undefined
     }))
   }
 
   const setCurrentAccount = (accountAddress: string) => {
-    if (accountAddress === 'disconnect') {
+    if (accountAddress === OPTION_FOR_DISCONNECTING) {
       disconnectWallet()
       return
     }
@@ -72,7 +74,7 @@ export function NetworkAccountsContextProvider({
 
   const setCurrentWallet = async (wallet: Wallet) => {
     const { extensionName, getAccounts } = wallet
-    await wallet.enable('contract-wizard')
+    await wallet.enable(DAPP_CONFIG.name)
     const accounts = await getAccounts()
     const apiProv = apiProvider?.api
     const chainInfo = await getChainInfo(apiProv as ApiPromise)
@@ -82,7 +84,7 @@ export function NetworkAccountsContextProvider({
       ...prev,
       accountStatus: 'CONNECTED',
       currentAccount: accounts[0].address,
-      walletLogo: WALLET_DETAILS[extensionName],
+      walletKey: extensionName,
       api: apiProv,
       chainInfo
     }))

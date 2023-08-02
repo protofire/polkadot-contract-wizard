@@ -4,12 +4,11 @@ import WarningIcon from '@mui/icons-material/Warning'
 
 import { useNetworkAccountsContext } from 'src/context/NetworkAccountsContext'
 import { StyledButton, MyButtonProps } from '../Button'
-import { WalletConnectionEvents } from 'src/domain/DomainEvents'
 import { AccountSelect } from './AccountsSelect'
-import { useOnceWhen } from 'src/hooks/useOnceWhen'
 import { ModalWallet } from '../ModalWallet'
 import { Box } from '@mui/material'
 import CircleIcon from '@mui/icons-material/Circle'
+import { WALLET_IMG_DETAILS } from '@/constants/wallets'
 
 export const ButtonConnection = styled(StyledButton)<MyButtonProps>(() => ({
   fontSize: '1rem',
@@ -25,7 +24,7 @@ export const ButtonConnection = styled(StyledButton)<MyButtonProps>(() => ({
 
 export const WalletConnectButton = () => {
   const {
-    state: { accountStatus, currentAccount, walletLogo },
+    state: { accountStatus, currentAccount, walletKey },
     setCurrentAccount,
     setCurrentWallet,
     accounts,
@@ -56,12 +55,14 @@ export const WalletConnectButton = () => {
               justifyContent: 'right'
             }}
           >
-            <AccountSelect
-              walletLogo={walletLogo}
-              currentAccount={currentAccount as string}
-              accounts={accounts}
-              onChange={setCurrentAccount}
-            />
+            {walletKey && (
+              <AccountSelect
+                walletLogo={WALLET_IMG_DETAILS[walletKey]}
+                currentAccount={currentAccount as string}
+                accounts={accounts}
+                onChange={setCurrentAccount}
+              />
+            )}
           </Box>
         )
       )}

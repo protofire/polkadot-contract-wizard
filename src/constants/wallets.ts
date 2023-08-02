@@ -1,8 +1,9 @@
-import { WalletLogoProps } from '@/types'
+import { WalletLogoProps } from '@/infrastructure/useink/walletTypes'
 
 export type WalletImg = { [name: string]: WalletLogoProps }
+export type WalletKeys = keyof typeof WALLET_IMG_DETAILS
 
-export const WALLET_DETAILS: WalletImg = {
+export const WALLET_IMG_DETAILS: WalletImg = {
   talisman: {
     src: 'data:image/svg+xml,%3Csvg%20width%3D%2224%22%20hei…th-10-inside-1_4684_17034%29%22%2F%3E%3C%2Fsvg%3E',
     alt: 'Talisman Logo'
