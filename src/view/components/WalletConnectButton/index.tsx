@@ -24,11 +24,9 @@ export const ButtonConnection = styled(StyledButton)<MyButtonProps>(() => ({
 
 export const WalletConnectButton = () => {
   const {
-    state: { accountStatus, currentAccount, walletKey },
+    state: { accountStatus, currentAccount, walletKey, allWallets, accounts },
     setCurrentAccount,
-    setCurrentWallet,
-    accounts,
-    allWallets
+    setCurrentWallet
   } = useNetworkAccountsContext()
 
   const [openModal, setOpenModal] = useState(false)

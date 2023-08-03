@@ -1,4 +1,4 @@
-import React, { createContext, useState, useContext } from 'react'
+import React, { createContext, useState, useContext, useEffect } from 'react'
 import { ApiPromise } from '@polkadot/api'
 import jsonrpc from '@polkadot/types/interfaces/jsonrpc'
 import { useAllWallets, useApi, useWallet } from 'useink'
@@ -22,6 +22,8 @@ export interface NetworkAccountsContextState {
   chainInfo?: ChainProperties
   accountStatus: NetworkState
   walletKey?: WalletKeys
+  allWallets?: Wallet[]
+  accounts?: WalletAccount[]
 }
 
 export const initialState: NetworkAccountsContextState = {
@@ -34,8 +36,6 @@ export const NetworkAccountsContext = createContext(
     state: NetworkAccountsContextState
     setCurrentAccount: (account: string) => void
     setCurrentWallet: (wallet: Wallet) => void
-    accounts: WalletAccount[] | undefined
-    allWallets: Wallet[]
     connect: (walletName: string) => void
   }
 )
@@ -50,13 +50,25 @@ export function NetworkAccountsContextProvider({
   const { accounts, connect, disconnect } = useWallet()
   const apiProvider = useApi()
 
+  useEffect(() => {
+    setState(prev => ({
+      ...prev,
+      allWallets
+    }))
+  }, [allWallets])
+
+  useEffect(() => {
+    setState(prev => ({
+      ...prev,
+      accounts
+    }))
+  }, [accounts])
+
   const disconnectWallet = () => {
     disconnect()
     setState(prev => ({
       ...prev,
-      accountStatus: 'DISCONNECTED',
-      currentAccount: undefined,
-      walletKey: undefined
+      accountStatus: 'DISCONNECTED'
     }))
   }
 
@@ -96,8 +108,6 @@ export function NetworkAccountsContextProvider({
         state,
         setCurrentAccount,
         setCurrentWallet,
-        accounts,
-        allWallets,
         connect
       }}
     >
