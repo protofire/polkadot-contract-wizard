@@ -21,9 +21,9 @@ import {
 import { CustomSnackBar as AppNotification } from 'src/view/components/Snackbar'
 import { StorageContractsProvider } from '@/context'
 import { LocalStorageContractRepository } from '@/infrastructure/LocalStorageContractRepository'
-import { DOMAIN } from '@/constants/config'
+import { DOMAIN, DAPP_CONFIG } from '@/constants/config'
 import { UseInkProvider } from 'useink'
-import { RococoContractsTestnet, ShibuyaTestnet } from 'useink/chains'
+import { CHAINS_ALLOWED } from '@/constants/chain'
 
 type CustomAppProps = AppProps & {
   emotionCache: EmotionCache
@@ -49,31 +49,12 @@ export default function App(props: CustomAppProps) {
         <meta name="viewport" content="initial-scale=1, width=device-width" />
       </Head>
       <PlausibleProvider domain={DOMAIN}>
-        {/* <NetworkAccountsContextProvider>
-          <AppNotificationContextProvider
-            repository={repositoryAppNotification}
-          >
-            <StorageContractsProvider repository={repositoryDeploys}>
-              <SettingsConsumer>
-                {({ settings }) => {
-                  return (
-                    <ThemeCustomization settings={settings}>
-                      {getLayout(<Component {...pageProps} />)}
-                    </ThemeCustomization>
-                  )
-                }}
-              </SettingsConsumer>
-            </StorageContractsProvider>
-            <AppNotification />
-          </AppNotificationContextProvider>
-        </NetworkAccountsContextProvider> */}
         <UseInkProvider
           config={{
-            dappName: 'Contract Wizard',
-            chains: [RococoContractsTestnet, ShibuyaTestnet]
+            dappName: DAPP_CONFIG.name,
+            chains: CHAINS_ALLOWED
           }}
         >
-          {/* <MyRoutes /> */}
           <NetworkAccountsContextProvider>
             <AppNotificationContextProvider
               repository={repositoryAppNotification}
