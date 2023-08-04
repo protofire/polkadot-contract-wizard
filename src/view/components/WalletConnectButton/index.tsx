@@ -31,11 +31,16 @@ export const WalletConnectButton = () => {
 
   const [openModal, setOpenModal] = useState(false)
   const noAccounts = accountStatus === 'CONNECTED' && accounts?.length === 0
+  const isLoading = accountStatus === 'CONNECTING'
 
   return (
     <>
-      {accountStatus === 'DISCONNECTED' ? (
-        <ButtonConnection size="small" onClick={() => setOpenModal(true)}>
+      {accountStatus === 'DISCONNECTED' || accountStatus === 'CONNECTING' ? (
+        <ButtonConnection
+          size="small"
+          loading={isLoading}
+          onClick={() => setOpenModal(true)}
+        >
           Connect your wallet{' '}
           <CircleIcon
             style={{

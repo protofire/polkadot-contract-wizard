@@ -1,5 +1,5 @@
 import React, { createContext, useState, useContext, useEffect } from 'react'
-import { ApiPromise } from '@polkadot/api'
+import { ApiPromise, WsProvider } from '@polkadot/api'
 import jsonrpc from '@polkadot/types/interfaces/jsonrpc'
 import { useAllWallets, useApi, useWallet } from 'useink'
 
@@ -11,7 +11,7 @@ import {
 import { DAPP_CONFIG } from '../constants'
 import { Wallet, WalletAccount } from '@/infrastructure/useink/walletTypes'
 
-type NetworkState = 'DISCONNECTED' | 'CONNECTED' | 'ERROR'
+type NetworkState = 'DISCONNECTED' | 'CONNECTING' | 'CONNECTED' | 'ERROR'
 export const OPTION_FOR_DISCONNECTING = 'disconnect'
 
 export interface NetworkAccountsContextState {
@@ -39,6 +39,42 @@ export const NetworkAccountsContext = createContext(
     connect: (walletName: string) => void
   }
 )
+const connectApi = async (
+  state: NetworkAccountsContextState,
+  updateState: React.Dispatch<
+    React.SetStateAction<NetworkAccountsContextState>
+  >,
+  wallet: Wallet
+) => {
+  if (state.accountStatus !== 'DISCONNECTED') return
+  console.info(`Connecting socket: ${DAPP_CONFIG.providerSocket}`)
+
+  const provider = new WsProvider(DAPP_CONFIG.providerSocket)
+  const _api = new ApiPromise({ provider, rpc: jsonrpc })
+
+  _api.on('connected', () => {
+    updateState(prev => ({ ...prev, api: _api }))
+    _api.isReady.then(async _api => {
+      const chainInfo = await getChainInfo(_api)
+      const accounts = await wallet.getAccounts()
+      updateState(prev => ({
+        ...prev,
+        accountStatus: 'CONNECTED',
+        // Select the fist account from the wallet by default
+        currentAccount: accounts[0].address,
+        walletKey: wallet.extensionName,
+        api: _api,
+        chainInfo
+      }))
+    })
+  })
+  _api.on('ready', () =>
+    updateState(prev => ({ ...prev, accountStatus: 'CONNECTED' }))
+  )
+  _api.on('error', err =>
+    updateState(prev => ({ ...prev, accountStatus: 'ERROR', apiError: err }))
+  )
+}
 
 export function NetworkAccountsContextProvider({
   children
@@ -48,7 +84,6 @@ export function NetworkAccountsContextProvider({
   const [state, setState] = useState<NetworkAccountsContextState>(initialState)
   const allWallets = useAllWallets()
   const { accounts, connect, disconnect } = useWallet()
-  const apiProvider = useApi()
 
   useEffect(() => {
     setState(prev => ({
@@ -85,21 +120,9 @@ export function NetworkAccountsContextProvider({
   }
 
   const setCurrentWallet = async (wallet: Wallet) => {
-    const { extensionName, getAccounts } = wallet
-    await wallet.enable(DAPP_CONFIG.name)
-    const accounts = await getAccounts()
-    const apiProv = apiProvider?.api
-    const chainInfo = await getChainInfo(apiProv as ApiPromise)
-
-    connect(extensionName)
-    setState(prev => ({
-      ...prev,
-      accountStatus: 'CONNECTED',
-      currentAccount: accounts[0].address,
-      walletKey: extensionName,
-      api: apiProv,
-      chainInfo
-    }))
+    setState(prev => ({ ...prev, accountStatus: 'CONNECTING' }))
+    connect(wallet.extensionName)
+    connectApi(state, setState, wallet)
   }
 
   return (
