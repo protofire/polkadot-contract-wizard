@@ -10,6 +10,7 @@ import {
 } from '@mui/material'
 import { ALL_CHAINS_OBJ } from '@/constants/chain'
 import { ChainExtended } from 'src/types/chain'
+import { CHAINS_ALLOWED } from '@/constants/chain'
 
 const StyledSelect = styled(Select)<SelectProps>(() => ({
   color: 'white',
@@ -47,7 +48,8 @@ const StyledMenuItem = styled(MenuItem)<MenuItemProps>(() => ({
   },
   '& img': {
     width: 'auto',
-    height: 'auto'
+    height: 'auto',
+    fontWeight: '600'
   }
 }))
 

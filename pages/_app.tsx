@@ -21,7 +21,7 @@ import {
 import { CustomSnackBar as AppNotification } from 'src/view/components/Snackbar'
 import { StorageContractsProvider } from '@/context'
 import { LocalStorageContractRepository } from '@/infrastructure/LocalStorageContractRepository'
-import { DOMAIN } from '@/constants/config'
+import { DAPP_CONFIG, DOMAIN } from '@/constants/config'
 import { UseInkProvider } from 'useink'
 import { CHAINS_ALLOWED } from '@/constants/chain'
 
@@ -51,7 +51,7 @@ export default function App(props: CustomAppProps) {
       <PlausibleProvider domain={DOMAIN}>
         <UseInkProvider
           config={{
-            dappName: 'Contract Wizard',
+            dappName: DAPP_CONFIG.name,
             chains: CHAINS_ALLOWED
           }}
         >

@@ -10,6 +10,7 @@ import { Box } from '@mui/material'
 import { NetworkSelect } from './NetworkSelect'
 import CircleIcon from '@mui/icons-material/Circle'
 import { ChainExtended } from 'src/types/chain'
+import { WALLET_IMG_DETAILS } from '@/constants/wallets'
 
 export const ButtonConnection = styled(StyledButton)<MyButtonProps>(() => ({
   fontSize: '1rem',
@@ -25,21 +26,31 @@ export const ButtonConnection = styled(StyledButton)<MyButtonProps>(() => ({
 
 export const WalletConnectButton = () => {
   const {
-    state: { accountStatus, currentAccount, walletLogo, currentChain },
+    state: {
+      accountStatus,
+      currentAccount,
+      walletKey,
+      allWallets,
+      accounts,
+      currentChain
+    },
     setCurrentAccount,
-    setCurrentChain,
     setCurrentWallet,
-    accounts,
-    allWallets
+    setCurrentChain
   } = useNetworkAccountsContext()
 
   const [openModal, setOpenModal] = useState(false)
   const noAccounts = accountStatus === 'CONNECTED' && accounts?.length === 0
+  const isLoading = accountStatus === 'CONNECTING'
 
   return (
     <>
-      {accountStatus === 'DISCONNECTED' ? (
-        <ButtonConnection size="small" onClick={() => setOpenModal(true)}>
+      {accountStatus === 'DISCONNECTED' || accountStatus === 'CONNECTING' ? (
+        <ButtonConnection
+          size="small"
+          loading={isLoading}
+          onClick={() => setOpenModal(true)}
+        >
           Connect your wallet{' '}
           <CircleIcon
             style={{
@@ -61,12 +72,14 @@ export const WalletConnectButton = () => {
               currentChain={currentChain as ChainExtended}
               onChange={setCurrentChain}
             />
-            <AccountSelect
-              walletLogo={walletLogo}
-              currentAccount={currentAccount as string}
-              accounts={accounts}
-              onChange={setCurrentAccount}
-            />
+            {walletKey && (
+              <AccountSelect
+                walletLogo={WALLET_IMG_DETAILS[walletKey]}
+                currentAccount={currentAccount as string}
+                accounts={accounts}
+                onChange={setCurrentAccount}
+              />
+            )}
           </Box>
         )
       )}

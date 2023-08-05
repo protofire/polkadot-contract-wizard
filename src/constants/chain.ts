@@ -4,7 +4,7 @@ import {
   RococoContractsTestnet,
   ShibuyaTestnet,
   ShidenKusama
-} from './chains'
+} from '@/infrastructure/useink/chains'
 import { ArrayOneOrMore, ChainExtended } from '@/types'
 
 export const CHAINS_ALLOWED: ArrayOneOrMore<Chain> = [

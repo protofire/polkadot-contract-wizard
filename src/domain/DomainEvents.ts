@@ -1,7 +1,6 @@
 export const enum WalletConnectionEvents {
   walletConnectInit = 'walletConnectInit',
-  changeAccountAddress = 'changeAccountAddress',
-  listAllWallets = 'listAllWallets'
+  changeAccountAddress = 'changeAccountAddress'
 }
 
 export const enum AppNotificationEvents {

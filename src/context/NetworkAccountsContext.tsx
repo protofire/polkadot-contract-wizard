@@ -1,23 +1,21 @@
-import React, { createContext, useState, useContext } from 'react'
-import { ApiPromise } from '@polkadot/api'
+import React, { createContext, useState, useContext, useEffect } from 'react'
+import { ApiPromise, WsProvider } from '@polkadot/api'
 import jsonrpc from '@polkadot/types/interfaces/jsonrpc'
-import {
-  WalletState,
-  useAllWallets,
-  useChainRpcList,
-  useWallet,
-  useApi
-} from 'useink'
+import { WalletState, useAllWallets, useChainRpcList, useWallet } from 'useink'
 import { ALL_CHAINS_OBJ } from '@/constants/chain'
 import { ChainExtended } from 'src/types/chain'
-import { Wallet, WalletAccount, WalletLogoProps } from '@/types'
-import { WALLET_DETAILS } from '@/constants/wallets'
+import { WalletKeys } from '@/constants/wallets'
+
 import {
   ChainProperties,
   getChainInfo
 } from '@/infrastructure/NetworkAccountRepository'
+import { DAPP_CONFIG } from '../constants'
+import { Wallet, WalletAccount } from '@/infrastructure/useink/walletTypes'
 
-type NetworkState = 'DISCONNECTED' | 'CONNECTED' | 'ERROR'
+type NetworkState = 'DISCONNECTED' | 'CONNECTING' | 'CONNECTED' | 'ERROR'
+export const OPTION_FOR_DISCONNECTING = 'disconnect'
+export const DEFAULT_CHAIN = 'astar'
 
 export interface NetworkAccountsContextState {
   currentAccount?: string
@@ -29,15 +27,13 @@ export interface NetworkAccountsContextState {
   currentWallet?: WalletState
   allWallets?: Wallet[]
   currentChain?: ChainExtended
-  walletLogo: WalletLogoProps
+  walletKey?: WalletKeys
+  accounts?: WalletAccount[]
 }
 
 export const initialState: NetworkAccountsContextState = {
   jsonRpc: { ...jsonrpc },
-  accountStatus: 'DISCONNECTED',
-  currentWallet: undefined,
-  currentChain: {} as ChainExtended,
-  walletLogo: {} as WalletLogoProps
+  accountStatus: 'DISCONNECTED'
 }
 
 export const NetworkAccountsContext = createContext(
@@ -46,11 +42,48 @@ export const NetworkAccountsContext = createContext(
     setCurrentAccount: (account: string) => void
     setCurrentWallet: (wallet: Wallet) => void
     setCurrentChain: (chain: ChainExtended) => void
-    accounts: WalletAccount[] | undefined
-    allWallets: Wallet[]
     connect: (walletName: string) => void
   }
 )
+const connectApi = async (
+  state: NetworkAccountsContextState,
+  updateState: React.Dispatch<
+    React.SetStateAction<NetworkAccountsContextState>
+  >,
+  wallet: Wallet
+) => {
+  if (state.accountStatus !== 'DISCONNECTED') return
+  console.log(state.currentChain, 'chain')
+  const defaultRpc = state.currentChain?.rpcs[0]
+  console.log('rpc', defaultRpc)
+  console.info(`Connecting socket: ${DAPP_CONFIG.providerSocket}`)
+
+  const provider = new WsProvider(DAPP_CONFIG.providerSocket)
+  const _api = new ApiPromise({ provider, rpc: jsonrpc })
+
+  _api.on('connected', () => {
+    updateState(prev => ({ ...prev, api: _api }))
+    _api.isReady.then(async _api => {
+      const chainInfo = await getChainInfo(_api)
+      const accounts = await wallet.getAccounts()
+      updateState(prev => ({
+        ...prev,
+        accountStatus: 'CONNECTED',
+        // Select the fist account from the wallet by default
+        currentAccount: accounts[0].address,
+        walletKey: wallet.extensionName,
+        api: _api,
+        chainInfo
+      }))
+    })
+  })
+  _api.on('ready', () =>
+    updateState(prev => ({ ...prev, accountStatus: 'CONNECTED' }))
+  )
+  _api.on('error', err =>
+    updateState(prev => ({ ...prev, accountStatus: 'ERROR', apiError: err }))
+  )
+}
 
 export function NetworkAccountsContextProvider({
   children
@@ -61,20 +94,31 @@ export function NetworkAccountsContextProvider({
   const allWallets = useAllWallets()
   const { accounts, connect, disconnect } = useWallet()
   const { setChainRpc } = useChainRpcList()
-  const apiProvider = useApi()
+
+  useEffect(() => {
+    setState(prev => ({
+      ...prev,
+      allWallets
+    }))
+  }, [allWallets])
+
+  useEffect(() => {
+    setState(prev => ({
+      ...prev,
+      accounts
+    }))
+  }, [accounts])
 
   const disconnectWallet = () => {
     disconnect()
     setState(prev => ({
       ...prev,
-      accountStatus: 'DISCONNECTED',
-      currentAccount: undefined,
-      walletLogo: {} as WalletLogoProps
+      accountStatus: 'DISCONNECTED'
     }))
   }
 
   const setCurrentAccount = (accountAddress: string) => {
-    if (accountAddress === 'disconnect') {
+    if (accountAddress === OPTION_FOR_DISCONNECTING) {
       disconnectWallet()
       return
     }
@@ -86,22 +130,13 @@ export function NetworkAccountsContextProvider({
   }
 
   const setCurrentWallet = async (wallet: Wallet) => {
-    const { extensionName, getAccounts } = wallet
-    await wallet.enable('contract-wizard')
-    const accounts = await getAccounts()
-    const apiProv = apiProvider?.api
-    const chainInfo = await getChainInfo(apiProv as ApiPromise)
-
-    connect(extensionName)
     setState(prev => ({
       ...prev,
-      accountStatus: 'CONNECTED',
-      currentAccount: accounts[0].address,
-      walletLogo: WALLET_DETAILS[extensionName],
-      currentChain: ALL_CHAINS_OBJ['astar'],
-      api: apiProv,
-      chainInfo
+      accountStatus: 'CONNECTING',
+      currentChain: ALL_CHAINS_OBJ[DEFAULT_CHAIN]
     }))
+    connect(wallet.extensionName)
+    connectApi(state, setState, wallet)
   }
 
   function setCurrentChain(chainObj: ChainExtended) {
@@ -120,10 +155,8 @@ export function NetworkAccountsContextProvider({
         state,
         setCurrentAccount,
         setCurrentWallet,
-        accounts,
-        allWallets,
-        connect,
-        setCurrentChain
+        setCurrentChain,
+        connect
       }}
     >
       {children}
