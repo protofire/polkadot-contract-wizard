@@ -7,7 +7,9 @@ import { StyledButton, MyButtonProps } from '../Button'
 import { AccountSelect } from './AccountsSelect'
 import { ModalWallet } from '../ModalWallet'
 import { Box } from '@mui/material'
+import { NetworkSelect } from './NetworkSelect'
 import CircleIcon from '@mui/icons-material/Circle'
+import { ChainExtended } from 'src/types/chain'
 import { WALLET_IMG_DETAILS } from '@/constants/wallets'
 
 export const ButtonConnection = styled(StyledButton)<MyButtonProps>(() => ({
@@ -24,9 +26,17 @@ export const ButtonConnection = styled(StyledButton)<MyButtonProps>(() => ({
 
 export const WalletConnectButton = () => {
   const {
-    state: { accountStatus, currentAccount, walletKey, allWallets, accounts },
+    state: {
+      accountStatus,
+      currentAccount,
+      walletKey,
+      allWallets,
+      accounts,
+      currentChain
+    },
     setCurrentAccount,
-    setCurrentWallet
+    setCurrentWallet,
+    setCurrentChain
   } = useNetworkAccountsContext()
 
   const [openModal, setOpenModal] = useState(false)
@@ -58,6 +68,10 @@ export const WalletConnectButton = () => {
               justifyContent: 'right'
             }}
           >
+            <NetworkSelect
+              currentChain={currentChain as ChainExtended}
+              onChange={setCurrentChain}
+            />
             {walletKey && (
               <AccountSelect
                 walletLogo={WALLET_IMG_DETAILS[walletKey]}

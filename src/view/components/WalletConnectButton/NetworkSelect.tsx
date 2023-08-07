@@ -5,8 +5,11 @@ import {
   SelectProps,
   SelectChangeEvent,
   Stack,
-  styled
+  styled,
+  Avatar
 } from '@mui/material'
+import { ALL_CHAINS_OBJ } from '@/constants/chain'
+import { ChainExtended } from 'src/types/chain'
 import { CHAINS_ALLOWED } from '@/constants/chain'
 
 const StyledSelect = styled(Select)<SelectProps>(() => ({
@@ -14,6 +17,7 @@ const StyledSelect = styled(Select)<SelectProps>(() => ({
   padding: '0',
   margin: '0.5rem 0.5rem',
   borderRadius: '0.5rem',
+  width: '202px',
   height: '2.88em',
   display: 'flex',
 
@@ -22,11 +26,17 @@ const StyledSelect = styled(Select)<SelectProps>(() => ({
   },
 
   '& p': {
-    marginLeft: '0.5rem'
+    marginLeft: '0.5rem',
+    paddingTop: '0.5rem'
   },
 
   '& legend': {
     display: 'none'
+  },
+
+  '& img': {
+    width: 'auto',
+    height: 'auto'
   }
 }))
 
@@ -34,36 +44,44 @@ const StyledMenuItem = styled(MenuItem)<MenuItemProps>(() => ({
   color: 'white',
   '& p': {
     marginLeft: '1rem',
+    paddingTop: '0.5rem'
+  },
+  '& img': {
+    width: 'auto',
+    height: 'auto',
     fontWeight: '600'
   }
 }))
 
 export function NetworkSelect({
-  currentNetwork,
+  currentChain,
   onChange
 }: {
-  currentNetwork: string
-  onChange: (account: string) => void
+  currentChain: ChainExtended
+  onChange: (chain: ChainExtended) => void
 }) {
-  const _handleChangeNetwork = (event: SelectChangeEvent<unknown>) => {
-    onChange(event.target.value as string)
+  const _handleChangeChain = (event: SelectChangeEvent<unknown>) => {
+    const chainId = event.target.value as string
+    const chain = ALL_CHAINS_OBJ[chainId]
+    onChange(chain)
   }
+
   return (
     <>
       <StyledSelect
         placeholder="Select Network..."
-        value={currentNetwork}
-        onChange={_handleChangeNetwork}
+        value={currentChain.id}
+        onChange={_handleChangeChain}
       >
-        {CHAINS_ALLOWED.map(option => (
+        {Object.values(ALL_CHAINS_OBJ).map(option => (
           <StyledMenuItem
             sx={{ color: 'white' }}
-            selected={currentNetwork === option.name}
+            selected={currentChain.name === option.name}
             key={option.id}
-            value={option.name}
+            value={option.id}
           >
             <Stack sx={{ display: 'flex', flexDirection: 'row' }}>
-              {/* <AvatarAccount address={option.name} /> */}
+              <Avatar src={option.logo.src} alt={option.logo.alt} />{' '}
               <Stack>
                 <p>{option.name}</p>
               </Stack>

@@ -1,18 +1,21 @@
 import React, { createContext, useState, useContext, useEffect } from 'react'
 import { ApiPromise, WsProvider } from '@polkadot/api'
 import jsonrpc from '@polkadot/types/interfaces/jsonrpc'
-import { useAllWallets, useApi, useWallet } from 'useink'
-
+import { WalletState, useAllWallets, useChainRpcList, useWallet } from 'useink'
+import { ALL_CHAINS_OBJ } from '@/constants/chain'
+import { ChainExtended } from 'src/types/chain'
 import { WalletKeys } from '@/constants/wallets'
+
 import {
   ChainProperties,
   getChainInfo
 } from '@/infrastructure/NetworkAccountRepository'
-import { DAPP_CONFIG } from '../constants'
 import { Wallet, WalletAccount } from '@/infrastructure/useink/walletTypes'
+import { DAPP_CONFIG } from '../constants'
 
 type NetworkState = 'DISCONNECTED' | 'CONNECTING' | 'CONNECTED' | 'ERROR'
 export const OPTION_FOR_DISCONNECTING = 'disconnect'
+export const DEFAULT_CHAIN = 'astar'
 
 export interface NetworkAccountsContextState {
   currentAccount?: string
@@ -21,8 +24,10 @@ export interface NetworkAccountsContextState {
   apiError?: string
   chainInfo?: ChainProperties
   accountStatus: NetworkState
-  walletKey?: WalletKeys
+  currentWallet?: WalletState
   allWallets?: Wallet[]
+  currentChain?: ChainExtended
+  walletKey?: WalletKeys
   accounts?: WalletAccount[]
 }
 
@@ -36,6 +41,7 @@ export const NetworkAccountsContext = createContext(
     state: NetworkAccountsContextState
     setCurrentAccount: (account: string) => void
     setCurrentWallet: (wallet: Wallet) => void
+    setCurrentChain: (chain: ChainExtended) => void
     connect: (walletName: string) => void
   }
 )
@@ -47,8 +53,9 @@ const connectApi = async (
   wallet: Wallet
 ) => {
   if (state.accountStatus !== 'DISCONNECTED') return
+  const defaultRpc = state.currentChain?.rpcs[0]
+  console.log(defaultRpc)
   console.info(`Connecting socket: ${DAPP_CONFIG.providerSocket}`)
-
   const provider = new WsProvider(DAPP_CONFIG.providerSocket)
   const _api = new ApiPromise({ provider, rpc: jsonrpc })
 
@@ -84,6 +91,7 @@ export function NetworkAccountsContextProvider({
   const [state, setState] = useState<NetworkAccountsContextState>(initialState)
   const allWallets = useAllWallets()
   const { accounts, connect, disconnect } = useWallet()
+  const { setChainRpc } = useChainRpcList()
 
   useEffect(() => {
     setState(prev => ({
@@ -120,9 +128,23 @@ export function NetworkAccountsContextProvider({
   }
 
   const setCurrentWallet = async (wallet: Wallet) => {
-    setState(prev => ({ ...prev, accountStatus: 'CONNECTING' }))
+    setState(prev => ({
+      ...prev,
+      accountStatus: 'CONNECTING',
+      currentChain: ALL_CHAINS_OBJ[DEFAULT_CHAIN]
+    }))
     connect(wallet.extensionName)
     connectApi(state, setState, wallet)
+  }
+
+  function setCurrentChain(chainObj: ChainExtended) {
+    const { id, rpcs } = chainObj
+    // Select the first rpc from the list
+    setChainRpc(rpcs[0], id)
+    setState(prev => ({
+      ...prev,
+      currentChain: chainObj
+    }))
   }
 
   return (
@@ -131,6 +153,7 @@ export function NetworkAccountsContextProvider({
         state,
         setCurrentAccount,
         setCurrentWallet,
+        setCurrentChain,
         connect
       }}
     >
