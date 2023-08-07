@@ -10,8 +10,8 @@ import {
   ChainProperties,
   getChainInfo
 } from '@/infrastructure/NetworkAccountRepository'
-import { DAPP_CONFIG } from '../constants'
 import { Wallet, WalletAccount } from '@/infrastructure/useink/walletTypes'
+import { DAPP_CONFIG } from '../constants'
 
 type NetworkState = 'DISCONNECTED' | 'CONNECTING' | 'CONNECTED' | 'ERROR'
 export const OPTION_FOR_DISCONNECTING = 'disconnect'
@@ -53,11 +53,9 @@ const connectApi = async (
   wallet: Wallet
 ) => {
   if (state.accountStatus !== 'DISCONNECTED') return
-  console.log(state.currentChain, 'chain')
   const defaultRpc = state.currentChain?.rpcs[0]
-  console.log('rpc', defaultRpc)
+  console.log(defaultRpc)
   console.info(`Connecting socket: ${DAPP_CONFIG.providerSocket}`)
-
   const provider = new WsProvider(DAPP_CONFIG.providerSocket)
   const _api = new ApiPromise({ provider, rpc: jsonrpc })
 
