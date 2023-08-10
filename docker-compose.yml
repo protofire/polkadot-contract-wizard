@@ -7,10 +7,7 @@ networks:
 services:
   web:
     container_name: ${CONTAINER_BASE}_web
-    build:
-      context: .
-      dockerfile: .docker/web/dev.Dockerfile
-      target: runner
+    image: ${WEB_IMAGE}
     ports:
       - ${WEB_EXTERNAL_PORT}:3000
     environment:
@@ -27,9 +24,7 @@ services:
             fi'
   compiler-be:
     container_name: ${CONTAINER_BASE}_backend
-    build:
-      context: ./ink-compiler-be
-      dockerfile: ./Dockerfile
+    image: ${COMPILER_BE_IMAGE}
     ports:
       - ${BACKEND_EXTERNAL_PORT}:8000
     environment:
