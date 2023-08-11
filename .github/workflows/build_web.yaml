@@ -49,6 +49,7 @@ jobs:
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
       run: |
+        cp .env.example .env
         docker build -f .docker/web/dev.Dockerfile -t ${{ env.REPOSITORY }}:$GITHUB_REF_NAME . 
 
     - name: Set tag and push web image to Amazon ECR

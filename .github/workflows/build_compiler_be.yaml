@@ -49,8 +49,9 @@ jobs:
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
       run: |
+        pwd
         docker build -t ${{ env.REPOSITORY }}:$GITHUB_REF_NAME . 
-      working-directory: ./ink-compiler-be
+      working-directory: polkadot-contract-wizard/ink-compiler-be/
 
     - name: Set tag and push compiler-be image to Amazon ECR
       id: push-image
