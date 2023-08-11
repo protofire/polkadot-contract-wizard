@@ -51,7 +51,7 @@ jobs:
       run: |
         pwd
         docker build -t ${{ env.REPOSITORY }}:$GITHUB_REF_NAME . 
-      working-directory: polkadot-contract-wizard/ink-compiler-be/
+      working-directory: ink-compiler-be/
 
     - name: Set tag and push compiler-be image to Amazon ECR
       id: push-image
