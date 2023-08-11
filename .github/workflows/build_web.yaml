@@ -69,7 +69,7 @@ jobs:
         echo $SSH_KEY | tr -d '\r' > ~/.ssh/private_key
         chmod 600 ~/.ssh/private_key
         eval "$(ssh-agent -s)"
-        ssh-add ~/.ssh/id_rsa
+        ssh-add ~/.ssh/private_key
         ssh-keyscan -H $DEPLOYMENT_SERVER_IP >> ~/.ssh/known_hosts
         #Export Image URI from ECR
         export IMAGE_URL=$ECR_REGISTRY/${{ env.REPOSITORY }}:$GITHUB_REF_NAME
