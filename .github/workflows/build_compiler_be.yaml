@@ -32,6 +32,8 @@ jobs:
     steps:   
     - name: Check out Git repository
       uses: actions/checkout@v3
+      with:
+        submodules: 'true'
     
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v2
