@@ -50,7 +50,6 @@ jobs:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
       run: |
         docker build -f .docker/web/dev.Dockerfile -t ${{ env.REPOSITORY }}:$GITHUB_REF_NAME . 
-      working-directory: polkadot-contract-wizard
 
     - name: Set tag and push web image to Amazon ECR
       id: push-image
