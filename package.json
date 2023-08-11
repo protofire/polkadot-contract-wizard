@@ -18,7 +18,7 @@
     "@emotion/server": "^11.10.0",
     "@emotion/styled": "^11.10.5",
     "@mui/icons-material": "^5.11.0",
-    "@mui/lab": "^5.0.0-alpha.137",
+    "@mui/lab": "^5.0.0-alpha.139",
     "@mui/material": "^5.11.4",
     "@next/font": "13.4.12",
     "@polkadot/api": "^10.4.1",
