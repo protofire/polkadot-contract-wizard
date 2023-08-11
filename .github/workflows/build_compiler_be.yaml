@@ -65,5 +65,6 @@ jobs:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
       run: |
         export IMAGE_URL=$ECR_REGISTRY/${{ env.REPOSITORY }}:$GITHUB_REF_NAME
-        ssh -i $SSH_KEY ubuntu@$DEPLOYMENT_SERVER_IP "export IMAGE_URL=$IMAGE_URL; sed -i '/COMPILER_BE_IMAGE/d' /home/ubuntu/polkadot-contract-wizard/.docker/dev.docker.env; echo COMPILER_BE_IMAGE=$IMAGE_URL >> /home/ubuntu/polkadot-contract-wizard/.docker/dev.docker.env; cd polkadot-contract-wizard/; docker-compose --env-file .docker/dev.docker.env down; sleep 5; docker-compose --env-file .docker/dev.docker.env up -d"
+        echo $SSH_KEY > key.pem && chmod 400 key.pem
+        ssh -o "StrictHostKeyChecking no" -i key.pem ubuntu@$DEPLOYMENT_SERVER_IP "export IMAGE_URL=$IMAGE_URL; sed -i '/COMPILER_BE_IMAGE/d' /home/ubuntu/polkadot-contract-wizard/.docker/dev.docker.env; echo COMPILER_BE_IMAGE=$IMAGE_URL >> /home/ubuntu/polkadot-contract-wizard/.docker/dev.docker.env; cd polkadot-contract-wizard/; docker-compose --env-file .docker/dev.docker.env down; sleep 5; docker-compose --env-file .docker/dev.docker.env up -d"
 
