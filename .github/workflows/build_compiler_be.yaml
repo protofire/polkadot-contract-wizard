@@ -51,7 +51,6 @@ jobs:
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
       run: |
-        pwd
         docker build -t ${{ env.REPOSITORY }}:$GITHUB_REF_NAME . 
       working-directory: ink-compiler-be/
 
