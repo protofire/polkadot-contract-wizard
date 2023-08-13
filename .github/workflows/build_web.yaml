@@ -64,15 +64,7 @@ jobs:
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
       run: |
-        #Setup ssh key
-        mkdir -p ~/.ssh
-        echo "$SSH_KEY" | tr -d '\r' > ~/.ssh/private_key
-        chmod 600 ~/.ssh/private_key
-        eval "$(ssh-agent -s)"
-        ssh-add ~/.ssh/private_key
-        ssh-keyscan -H $DEPLOYMENT_SERVER_IP >> ~/.ssh/known_hosts
-        #Export Image URI from ECR
         export IMAGE_URL=$ECR_REGISTRY/${{ env.REPOSITORY }}:$GITHUB_REF_NAME
-        echo $IMAGE_URL
-        ssh ubuntu@$DEPLOYMENT_SERVER_IP "export IMAGE_URL=$IMAGE_URL; sed -i '/WEB_IMAGE/d' /home/ubuntu/polkadot-contract-wizard/.docker/dev.docker.env; echo WEB_IMAGE=$IMAGE_URL >> /home/ubuntu/polkadot-contract-wizard/.docker/dev.docker.env; cd polkadot-contract-wizard/; docker-compose --env-file .docker/dev.docker.env down; sleep 5; docker-compose --env-file .docker/dev.docker.env up -d"
+        echo "$SSH_KEY" | tr -d '\r' > key.pem && chmod 400 key.pem
+        ssh -o "StrictHostKeyChecking no" -i "key.pem" ubuntu@$D
 
