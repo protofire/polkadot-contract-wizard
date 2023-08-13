@@ -12,6 +12,7 @@ services:
       - ${WEB_EXTERNAL_PORT}:3000
     environment:
       - NODE_ENV=${WEB_ENVIRONMENT}
+      - NODE_OPTIONS='--max-old-space-size=2048'
     networks:
       - polkadot-wizard
     depends_on:
@@ -44,5 +45,17 @@ services:
     image: mongo:5.0.16
     networks:
       - polkadot-wizard
-  
+    volumes:
+      - /data/mongodb:/data/db
+  mongoexpress:
+    image: mongo-express:0.54.0
+    ports:
+      - 8081:8081
+    container_name: ${CONTAINER_BASE}_mongoexpress
+    environment:
+      - ME_CONFIG_MONGODB_SERVER=mongodb
+    networks:
+      - polkadot-wizard
+    depends_on:
+      - mongodb
 
