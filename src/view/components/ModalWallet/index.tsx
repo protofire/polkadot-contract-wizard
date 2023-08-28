@@ -81,8 +81,8 @@ export function ModalWallet({
                     </ListItemIcon>
                     <ListItemText primary={`${w.title}`} />
                     <Chip
-                      label="Install"
-                      color="secondary"
+                      label="Installation needed"
+                      color="primary"
                       variant="outlined"
                       size="small"
                     />

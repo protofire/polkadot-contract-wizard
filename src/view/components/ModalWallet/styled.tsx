@@ -13,7 +13,7 @@ import {
 
 export const ModalStyledList = styled(List)<ListProps>(() => ({
   margin: '0 auto',
-  width: '20rem',
+  width: '21rem',
 
   '&:hover': {
     borderRadius: '1.8rem'
