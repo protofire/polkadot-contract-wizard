@@ -2,6 +2,7 @@ import React from 'react'
 import {
   Avatar,
   Box,
+  Chip,
   ListItem,
   ListItemIcon,
   ListItemText,
@@ -37,7 +38,6 @@ export function ModalWallet({
           Connect your wallet
         </ModalTypography>
         <Box>
-          <ModalTypography variant="h6">Installed Wallets</ModalTypography>
           <ModalStyledList disablePadding>
             {walletInstalled.map(w => (
               <ListItem key={w.title}>
@@ -52,6 +52,12 @@ export function ModalWallet({
                       <Avatar src={w.logo.src} alt={w.logo.alt} />
                     </ListItemIcon>
                     <ListItemText primary={`${w.title}`} />
+                    <Chip
+                      label="Installed"
+                      color="success"
+                      variant="outlined"
+                      size="small"
+                    />
                   </ModalStyledListItem>
                 </>
               </ListItem>
@@ -73,7 +79,13 @@ export function ModalWallet({
                     <ListItemIcon>
                       <Avatar src={w.logo.src} alt={w.logo.alt} />
                     </ListItemIcon>
-                    <ListItemText primary={`Install ${w.title}`} />
+                    <ListItemText primary={`${w.title}`} />
+                    <Chip
+                      label="Install"
+                      color="secondary"
+                      variant="outlined"
+                      size="small"
+                    />
                   </ModalStyledListItem>
                 </>
               </ListItem>
