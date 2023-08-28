@@ -17,9 +17,6 @@ export const ButtonConnection = styled(StyledButton)<MyButtonProps>(() => ({
   height: '2.5rem',
   borderRadius: '1.5rem',
   margin: '0.5rem 0',
-  backgroundColor: '#FF7900',
-  color: '#FFFF',
-  border: '0px',
   padding: '1.3rem',
   textTransform: 'none'
 }))
