@@ -3,11 +3,13 @@ import {
   Avatar,
   Box,
   Chip,
+  IconButton,
   ListItem,
   ListItemIcon,
   ListItemText,
   Modal
 } from '@mui/material'
+import CloseIcon from '@mui/icons-material/Close'
 import { Wallet } from '@/infrastructure/useink/walletTypes'
 import {
   ModalStyled,
@@ -37,6 +39,18 @@ export function ModalWallet({
         <ModalTypography id="modal-modal-title" variant="h3">
           Connect your wallet
         </ModalTypography>
+        <IconButton
+          aria-label="close"
+          onClick={handleClose}
+          sx={{
+            position: 'absolute',
+            right: 8,
+            top: 8,
+            color: theme => theme.palette.grey[500]
+          }}
+        >
+          <CloseIcon />
+        </IconButton>
         <Box>
           <ModalStyledList disablePadding>
             {walletInstalled.map(w => (
