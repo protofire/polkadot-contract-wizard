@@ -1,5 +1,11 @@
+import { Chain } from '@/infrastructure/useink/chains'
+
 export const IS_PRODUCTION = process.env.NODE_ENV === ('production' as string)
 export const IS_DEVELOPMENT = process.env.NODE_ENV === ('development' as string)
+
+export const DEFAULT_CHAIN: Chain['id'] = IS_DEVELOPMENT
+  ? 'shibuya-testnet'
+  : 'astar'
 
 export const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN as string
 

@@ -23,7 +23,7 @@ import { StorageContractsProvider } from '@/context'
 import { LocalStorageContractRepository } from '@/infrastructure/LocalStorageContractRepository'
 import { DAPP_CONFIG, DOMAIN } from '@/constants/config'
 import { UseInkProvider } from 'useink'
-import { CHAINS_ALLOWED } from '@/constants/chain'
+import { CHAINS } from '@/constants/chains'
 
 type CustomAppProps = AppProps & {
   emotionCache: EmotionCache
@@ -52,7 +52,7 @@ export default function App(props: CustomAppProps) {
         <UseInkProvider
           config={{
             dappName: DAPP_CONFIG.name,
-            chains: CHAINS_ALLOWED
+            chains: CHAINS
           }}
         >
           <NetworkAccountsContextProvider>

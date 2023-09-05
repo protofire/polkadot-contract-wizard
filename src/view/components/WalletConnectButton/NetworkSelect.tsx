@@ -8,9 +8,9 @@ import {
   styled,
   Avatar
 } from '@mui/material'
-import { ALL_CHAINS_OBJ } from '@/constants/chain'
+import { ALL_CHAINS_OBJ } from '@/constants/chains'
 import { ChainExtended } from 'src/types/chain'
-import { CHAINS_ALLOWED } from '@/constants/chain'
+import { CHAINS_ALLOWED } from '@/constants/chains'
 
 const StyledSelect = styled(Select)<SelectProps>(() => ({
   color: 'white',
