@@ -4,12 +4,11 @@ import WarningIcon from '@mui/icons-material/Warning'
 
 import { useNetworkAccountsContext } from 'src/context/NetworkAccountsContext'
 import { StyledButton, MyButtonProps } from '../Button'
-import { AccountSelect } from './AccountsSelect'
+import { AccountSelect } from './AccountSelect'
 import { ModalWallet } from '../ModalWallet'
 import { Box } from '@mui/material'
 import { NetworkSelect } from './NetworkSelect'
 import CircleIcon from '@mui/icons-material/Circle'
-import { ChainExtended } from 'src/types/chain'
 import { WALLET_IMG_DETAILS } from '@/constants/wallets'
 
 export const ButtonConnection = styled(StyledButton)<MyButtonProps>(() => ({
@@ -65,10 +64,12 @@ export const WalletConnectButton = () => {
               justifyContent: 'right'
             }}
           >
-            <NetworkSelect
-              currentChain={currentChain as ChainExtended}
-              onChange={setCurrentChain}
-            />
+            {currentChain && (
+              <NetworkSelect
+                currentChain={currentChain.id}
+                onChange={setCurrentChain}
+              />
+            )}
             {walletKey && (
               <AccountSelect
                 walletLogo={WALLET_IMG_DETAILS[walletKey]}

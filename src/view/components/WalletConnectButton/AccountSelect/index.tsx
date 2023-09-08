@@ -1,13 +1,4 @@
-import {
-  MenuItem,
-  MenuItemProps,
-  Select,
-  SelectProps,
-  SelectChangeEvent,
-  Stack,
-  styled,
-  Avatar
-} from '@mui/material'
+import { SelectChangeEvent, Stack, Avatar } from '@mui/material'
 import { shortNameLonger, truncateAddress } from '@/utils/formatString'
 import CircleIcon from '@mui/icons-material/Circle'
 import PowerOffIcon from '@mui/icons-material/PowerOff'
@@ -16,51 +7,7 @@ import {
   WalletAccount,
   WalletLogoProps
 } from '@/infrastructure/useink/walletTypes'
-
-const StyledSelect = styled(Select)<SelectProps>(() => ({
-  color: 'white',
-  display: 'flex',
-  margin: '0.5rem 0',
-  padding: '0',
-  height: '2.88em',
-  borderRadius: '0.5rem',
-
-  '& fieldset': {
-    top: '0'
-  },
-
-  '& span': {
-    fontSize: '0.8rem',
-    marginLeft: '1rem'
-  },
-
-  '& p': {
-    fontSize: '0.8rem',
-    marginLeft: '1rem',
-    fontWeight: '600',
-    lineHeight: '12px'
-  },
-
-  '& legend': {
-    display: 'none'
-  }
-}))
-
-const StyledMenuItem = styled(MenuItem)<MenuItemProps>(() => ({
-  color: 'white',
-
-  '& span': {
-    fontSize: '0.8rem',
-    marginLeft: '1rem'
-  },
-
-  '& p': {
-    fontSize: '0.8rem',
-    marginLeft: '1rem',
-    fontWeight: '600',
-    lineHeight: '12px'
-  }
-}))
+import { StyledMenuItem, StyledSelect } from './styled'
 
 export function AccountSelect({
   walletLogo,

@@ -24,6 +24,7 @@ import { LocalStorageContractRepository } from '@/infrastructure/LocalStorageCon
 import { DAPP_CONFIG, DOMAIN } from '@/constants/config'
 import { UseInkProvider } from 'useink'
 import { CHAINS } from '@/constants/chains'
+import { LocalDbProvider } from '@/context/LocalDbContext'
 
 type CustomAppProps = AppProps & {
   emotionCache: EmotionCache
@@ -55,24 +56,26 @@ export default function App(props: CustomAppProps) {
             chains: CHAINS
           }}
         >
-          <NetworkAccountsContextProvider>
-            <AppNotificationContextProvider
-              repository={repositoryAppNotification}
-            >
-              <StorageContractsProvider repository={repositoryDeploys}>
-                <SettingsConsumer>
-                  {({ settings }) => {
-                    return (
-                      <ThemeCustomization settings={settings}>
-                        {getLayout(<Component {...pageProps} />)}
-                      </ThemeCustomization>
-                    )
-                  }}
-                </SettingsConsumer>
-              </StorageContractsProvider>
-              <AppNotification />
-            </AppNotificationContextProvider>
-          </NetworkAccountsContextProvider>
+          <LocalDbProvider>
+            <NetworkAccountsContextProvider>
+              <AppNotificationContextProvider
+                repository={repositoryAppNotification}
+              >
+                <StorageContractsProvider repository={repositoryDeploys}>
+                  <SettingsConsumer>
+                    {({ settings }) => {
+                      return (
+                        <ThemeCustomization settings={settings}>
+                          {getLayout(<Component {...pageProps} />)}
+                        </ThemeCustomization>
+                      )
+                    }}
+                  </SettingsConsumer>
+                </StorageContractsProvider>
+                <AppNotification />
+              </AppNotificationContextProvider>
+            </NetworkAccountsContextProvider>
+          </LocalDbProvider>
         </UseInkProvider>
       </PlausibleProvider>{' '}
     </CacheProvider>

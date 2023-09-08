@@ -2,7 +2,6 @@ import React, { createContext, useState, useContext, useEffect } from 'react'
 import { ApiPromise, WsProvider } from '@polkadot/api'
 import jsonrpc from '@polkadot/types/interfaces/jsonrpc'
 import { WalletState, useAllWallets, useChainRpcList, useWallet } from 'useink'
-import { CHAINS_ALLOWED } from '@/constants/chains'
 import { ChainExtended } from 'src/types/chain'
 import { WalletKeys } from '@/constants/wallets'
 
@@ -11,8 +10,8 @@ import {
   getChainInfo
 } from '@/infrastructure/NetworkAccountRepository'
 import { Wallet, WalletAccount } from '@/infrastructure/useink/walletTypes'
-import { DAPP_CONFIG, DEFAULT_CHAIN } from '../constants'
-import { LocalStorageNetworkRepository } from '@/infrastructure/LocalStorageNetworkRepository'
+import { DAPP_CONFIG } from '../constants'
+import { useLocalDbContext } from './LocalDbContext'
 
 type NetworkState = 'DISCONNECTED' | 'CONNECTING' | 'CONNECTED' | 'ERROR'
 export const OPTION_FOR_DISCONNECTING = 'disconnect'
@@ -83,8 +82,6 @@ const connectApi = async (
   )
 }
 
-const networkRepository = new LocalStorageNetworkRepository()
-
 export function NetworkAccountsContextProvider({
   children
 }: {
@@ -94,6 +91,7 @@ export function NetworkAccountsContextProvider({
   const allWallets = useAllWallets()
   const { accounts, connect, disconnect } = useWallet()
   const { setChainRpc } = useChainRpcList()
+  const { networkRepository } = useLocalDbContext()
 
   useEffect(() => {
     setState(prev => ({
@@ -133,7 +131,7 @@ export function NetworkAccountsContextProvider({
     setState(prev => ({
       ...prev,
       accountStatus: 'CONNECTING',
-      currentChain: CHAINS_ALLOWED[DEFAULT_CHAIN]
+      currentChain: networkRepository.getNetworkSelected()
     }))
     connect(wallet.extensionName)
     connectApi(state, setState, wallet)

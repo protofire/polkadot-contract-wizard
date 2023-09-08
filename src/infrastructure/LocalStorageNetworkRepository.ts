@@ -5,24 +5,19 @@ import {
 import { ChainId } from '@/infrastructure/useink/chains/types'
 import { getChain } from '@/constants/chains'
 import { ChainExtended } from '@/types'
+import { DEFAULT_CHAIN } from '../constants'
+import { INetworkRepository } from '@/domain/repositories/INetworkRepository'
 
 type ReturnChainId = ChainId
-
-interface INetworkRepository {
-  getNetworkSelected(): ChainExtended | null
-  setNetworkSelected(chainId: string): void
-}
 
 export class LocalStorageNetworkRepository implements INetworkRepository {
   private readonly storageKey = 'networkSelected'
 
-  getNetworkSelected(): ChainExtended | null {
+  getNetworkSelected(): ChainExtended {
     const result = getLocalStorageState<ReturnChainId | null>(
       this.storageKey,
-      null
-    ) as ChainId | null
-
-    if (result === null) return null
+      DEFAULT_CHAIN
+    ) as ChainId
 
     return getChain(result) as ChainExtended
   }
