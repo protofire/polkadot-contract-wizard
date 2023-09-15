@@ -10,6 +10,8 @@ import { Box } from '@mui/material'
 import { NetworkSelect } from './NetworkSelect'
 import CircleIcon from '@mui/icons-material/Circle'
 import { WALLET_IMG_DETAILS } from '@/constants/wallets'
+import { useRecentlyClicked } from '@/hooks/useRecentlyClicked'
+import { useDelay } from '@/hooks/useDelay'
 
 export const ButtonConnection = styled(StyledButton)<MyButtonProps>(() => ({
   fontSize: '1rem',
@@ -22,27 +24,27 @@ export const ButtonConnection = styled(StyledButton)<MyButtonProps>(() => ({
 
 export const WalletConnectButton = () => {
   const {
-    state: {
-      accountStatus,
-      currentAccount,
-      walletKey,
-      allWallets,
-      accounts,
-      currentChain
-    },
+    state: { accountStatus, walletKey, allWallets, accounts },
+    isConnected,
+    disconnectWallet,
+    accountConnected,
+    networkConnected,
     setCurrentAccount,
     setCurrentWallet,
     setCurrentChain
   } = useNetworkAccountsContext()
-
+  const isDelayFinished = useDelay()
   const [openModal, setOpenModal] = useState(false)
   const noAccounts = accountStatus === 'CONNECTED' && accounts?.length === 0
-  const isLoading = accountStatus === 'CONNECTING'
+  const { ref: buttonRef, recentlyClicked } = useRecentlyClicked()
+  const isLoading = recentlyClicked || !isDelayFinished
+  // console.log('__isConnected', isConnected, accountConnected)
 
   return (
     <>
-      {accountStatus === 'DISCONNECTED' || accountStatus === 'CONNECTING' ? (
+      {!isConnected || isLoading ? (
         <ButtonConnection
+          ref={buttonRef}
           size="small"
           loading={isLoading}
           onClick={() => setOpenModal(true)}
@@ -57,27 +59,26 @@ export const WalletConnectButton = () => {
           />
         </ButtonConnection>
       ) : (
-        currentAccount && (
+        accountConnected && (
           <Box
             sx={{
               display: 'flex',
               justifyContent: 'right'
             }}
           >
-            {currentChain && (
+            {accountConnected && networkConnected && (
               <NetworkSelect
-                currentChain={currentChain.id}
+                currentChain={networkConnected}
                 onChange={setCurrentChain}
               />
             )}
-            {walletKey && (
-              <AccountSelect
-                walletLogo={WALLET_IMG_DETAILS[walletKey]}
-                currentAccount={currentAccount as string}
-                accounts={accounts}
-                onChange={setCurrentAccount}
-              />
-            )}
+            <AccountSelect
+              accountConnected={accountConnected}
+              accounts={accounts}
+              setAccount={setCurrentAccount}
+              disconnectWallet={disconnectWallet}
+            />
+            )
           </Box>
         )
       )}

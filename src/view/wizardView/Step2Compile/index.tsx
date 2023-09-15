@@ -17,9 +17,8 @@ const StyledCopyBlock = styled(Box)(() => ({
 
 export default function Step2Compile({ tokenType }: { tokenType: TokenType }) {
   const { handleBack, handleNext, dataForm, setDataForm } = useStepsSCWizard()
-  const {
-    state: { currentAccount }
-  } = useNetworkAccountsContext()
+  const { accountConnected } = useNetworkAccountsContext()
+  const currentAccount = accountConnected?.address
   const isWalletConnected = useMemo(
     () => isValidAddress(currentAccount),
     [currentAccount]

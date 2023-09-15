@@ -3,6 +3,8 @@ import {
   MenuItemProps,
   Select,
   SelectProps,
+  Typography,
+  TypographyProps,
   styled
 } from '@mui/material'
 
@@ -49,4 +51,10 @@ export const StyledMenuItem = styled(MenuItem)<MenuItemProps>(() => ({
     fontWeight: '600',
     lineHeight: '12px'
   }
+}))
+
+export const StyledTypography = styled(Typography)<TypographyProps>(() => ({
+  marginLeft: '0',
+  height: '10px',
+  fontSize: '1rem'
 }))

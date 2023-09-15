@@ -1,5 +1,5 @@
 import { ContractCompiled } from '@/infrastructure'
-import { CompileContractBody } from '@/infrastructure/ApiCompileContractRepository'
+import { CompileContractBody } from '@/infrastructure/backendApi/ApiCompileContractRepository'
 
 export interface CompileContractRepository {
   create: (compileContract: CompileContractBody) => Promise<ContractCompiled>

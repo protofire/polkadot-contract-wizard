@@ -8,7 +8,6 @@ import {
   styled,
   Avatar
 } from '@mui/material'
-import { ChainExtended } from 'src/types/chain'
 import { CHAINS_ALLOWED, getChain } from '@/constants/chains'
 import { ChainId } from '@/infrastructure/useink/chains/types'
 
@@ -58,14 +57,13 @@ export function NetworkSelect({
   onChange
 }: {
   currentChain: ChainId
-  onChange: (chain: ChainExtended) => void
+  onChange: (chain: ChainId) => void
 }) {
-  const chain = getChain(currentChain as ChainId)
+  const chain = getChain(currentChain)
 
   const _handleChangeChain = (event: SelectChangeEvent<unknown>) => {
     const chainId = event.target.value as ChainId
-    const chain = getChain(chainId)
-    onChange(chain)
+    onChange(chainId)
   }
 
   return (
@@ -75,7 +73,7 @@ export function NetworkSelect({
         value={chain.id}
         onChange={_handleChangeChain}
       >
-        {Object.values(CHAINS_ALLOWED).map(option => (
+        {CHAINS_ALLOWED.map(option => (
           <StyledMenuItem
             sx={{ color: 'white' }}
             selected={chain.name === option.name}

@@ -19,6 +19,7 @@ import {
   transformUserInput
 } from '@/infrastructure/contractDryRun'
 import { useReportError } from './useReportError'
+import { useNetworkApi } from '@/hooks/useNetworkApi'
 
 type ReturnValue = GetServiceData
 
@@ -114,9 +115,9 @@ export const useDeployContract = (): ReturnValue & {
   const [error, setError] = useState<string | undefined>()
   const { reportErrorWithToast } = useReportError()
   const { addContractToStorage } = useStorageContractsContext()
-  const {
-    state: { api, currentAccount }
-  } = useNetworkAccountsContext()
+  const { accountConnected } = useNetworkAccountsContext()
+  const currentAccount = accountConnected?.address
+  const { apiPromise: api } = useNetworkApi()
 
   const deployContract = useCallback(
     async ({

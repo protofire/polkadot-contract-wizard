@@ -1,3 +1,5 @@
+const isString = (value: unknown) => typeof value === 'string'
+
 export const getLocalStorageState = <T>(
   nameItem: string,
   defaultValue: T
@@ -8,7 +10,7 @@ export const getLocalStorageState = <T>(
     const storedData: string | null = window.localStorage.getItem(nameItem)
 
     if (storedData) {
-      state = { ...JSON.parse(storedData) }
+      state = isString(storedData) ? storedData : { ...JSON.parse(storedData) }
     } else {
       state = defaultValue
     }
@@ -19,6 +21,11 @@ export const getLocalStorageState = <T>(
   }
 }
 
-export const setLocalStorageState = <T>(nameItem: string, value: T) => {
-  window.localStorage.setItem(nameItem, JSON.stringify(value))
+export const setLocalStorageState = <T extends string | object>(
+  nameItem: string,
+  value: T
+) => {
+  const _value = isString(value) ? (value as string) : JSON.stringify(value)
+
+  window.localStorage.setItem(nameItem, _value)
 }

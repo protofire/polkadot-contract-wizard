@@ -9,20 +9,39 @@ import {
 } from '@/infrastructure/useink/walletTypes'
 import { StyledMenuItem, StyledSelect } from './styled'
 
-export function AccountSelect({
-  walletLogo,
-  accounts,
-  currentAccount,
-  onChange
-}: {
-  walletLogo: WalletLogoProps | undefined
+interface AccountSelectProps {
   accounts: WalletAccount[] | undefined
-  currentAccount: string
-  onChange: (account: string) => void
-}) {
+  accountConnected: WalletAccount | undefined
+  setAccount: (account: WalletAccount) => void
+  disconnectWallet: () => void
+}
+
+// {/* <AvatarAccount address={a.address} /> */}
+export function AccountSelect({
+  accounts,
+  accountConnected,
+  setAccount,
+  disconnectWallet
+}: AccountSelectProps) {
   const _handleChange = (event: SelectChangeEvent<unknown>) => {
-    onChange(event.target.value as string)
+    const address = event.target.value as string
+
+    if (address === OPTION_FOR_DISCONNECTING) {
+      disconnectWallet()
+      return
+    }
+    const newAccount = accounts?.find(element => element.address === address)
+    if (!newAccount) {
+      console.error(
+        `Theres not an account with this address ${event.target.value}`
+      )
+      return
+    }
+    setAccount(newAccount)
   }
+
+  const currentAccount = accountConnected?.address
+
   if (!accounts)
     return (
       <StyledSelect
@@ -30,6 +49,15 @@ export function AccountSelect({
         placeholder="Select Account..."
       ></StyledSelect>
     )
+
+  if (!currentAccount)
+    return (
+      <StyledSelect
+        value={'No Account'}
+        placeholder="No account"
+      ></StyledSelect>
+    )
+
   const allAccounts = [
     ...accounts,
     { name: OPTION_FOR_DISCONNECTING, address: OPTION_FOR_DISCONNECTING }
@@ -37,29 +65,23 @@ export function AccountSelect({
 
   return (
     <StyledSelect
-      value={currentAccount}
+      value={accountConnected.address}
       placeholder="Select Account..."
       onChange={_handleChange}
     >
       {allAccounts.map(a => (
         <StyledMenuItem
-          sx={{
-            color: 'white'
-          }}
-          selected={currentAccount === a.address}
           key={a.address}
+          selected={accountConnected.address === a.address}
           value={a.address}
         >
           {a.name !== OPTION_FOR_DISCONNECTING && (
             <Stack sx={{ display: 'flex', flexDirection: 'row' }}>
-              {/* <AvatarAccount address={a.address} /> */}
-              {walletLogo && (
-                <Avatar
-                  sx={{ height: '30px', width: '30px', marginTop: '3px' }}
-                  src={walletLogo.src}
-                  alt={walletLogo.alt}
-                />
-              )}
+              <Avatar
+                sx={{ height: '30px', width: '30px', marginTop: '3px' }}
+                src={accountConnected.wallet?.logo.src}
+                alt={accountConnected.wallet?.logo.alt}
+              />
               <Stack>
                 <span>{shortNameLonger(a.name as string)}</span>
                 <p>{truncateAddress(a.address)}</p>
