@@ -1,5 +1,5 @@
 import { BackendApiConfig } from '@/constants/config'
-import { CompileContractRepository } from '@/domain/CompileContractRepository'
+import { CompileContractRepository } from '@/domain/repositories/CompileContractRepository'
 import { AllowedFeatures, ContractCompiled, request } from '@/infrastructure'
 
 export interface CompileContractBody {
