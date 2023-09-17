@@ -15,9 +15,7 @@ const Token: Record<TokenType, TokenType> = {
 }
 
 function Home() {
-  const {
-    state: { currentAccount }
-  } = useNetworkAccountsContext()
+  const { accountConnected } = useNetworkAccountsContext()
   const { contracts } = useStorageContractsContext()
 
   return (
@@ -59,7 +57,7 @@ function Home() {
           imgProps={{ width: 75, height: 65 }}
         />
       </Stack>
-      {currentAccount && <ContractsTableWidget contracts={contracts} />}
+      {accountConnected && <ContractsTableWidget contracts={contracts} />}
     </>
   )
 }

@@ -26,3 +26,12 @@ function toErrorWithMessage(maybeError: unknown): ErrorWithMessage {
 export function getErrorMessage(error: unknown) {
   return toErrorWithMessage(error).message
 }
+
+/** Creates a console error message to warn that a function is not implemented.
+ *
+ * @example
+ * const myFunction = () => createNotImplementedWarning('myFunction');
+ */
+export const createNotImplementedWarning = (methodName: string): void => {
+  console.error(`${methodName} is not implemented`)
+}

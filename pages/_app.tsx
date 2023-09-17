@@ -21,7 +21,10 @@ import {
 import { CustomSnackBar as AppNotification } from 'src/view/components/Snackbar'
 import { StorageContractsProvider } from '@/context'
 import { LocalStorageContractRepository } from '@/infrastructure/LocalStorageContractRepository'
-import { DOMAIN } from '@/constants/config'
+import { DAPP_CONFIG, DOMAIN } from '@/constants/config'
+import { UseInkProvider } from 'useink'
+import { CHAINS } from '@/constants/chains'
+import { LocalDbProvider } from '@/context/LocalDbContext'
 
 type CustomAppProps = AppProps & {
   emotionCache: EmotionCache
@@ -47,24 +50,33 @@ export default function App(props: CustomAppProps) {
         <meta name="viewport" content="initial-scale=1, width=device-width" />
       </Head>
       <PlausibleProvider domain={DOMAIN}>
-        <NetworkAccountsContextProvider>
-          <AppNotificationContextProvider
-            repository={repositoryAppNotification}
-          >
-            <StorageContractsProvider repository={repositoryDeploys}>
-              <SettingsConsumer>
-                {({ settings }) => {
-                  return (
-                    <ThemeCustomization settings={settings}>
-                      {getLayout(<Component {...pageProps} />)}
-                    </ThemeCustomization>
-                  )
-                }}
-              </SettingsConsumer>
-            </StorageContractsProvider>
-            <AppNotification />
-          </AppNotificationContextProvider>
-        </NetworkAccountsContextProvider>
+        <UseInkProvider
+          config={{
+            dappName: DAPP_CONFIG.name,
+            chains: CHAINS
+          }}
+        >
+          <LocalDbProvider>
+            <NetworkAccountsContextProvider>
+              <AppNotificationContextProvider
+                repository={repositoryAppNotification}
+              >
+                <StorageContractsProvider repository={repositoryDeploys}>
+                  <SettingsConsumer>
+                    {({ settings }) => {
+                      return (
+                        <ThemeCustomization settings={settings}>
+                          {getLayout(<Component {...pageProps} />)}
+                        </ThemeCustomization>
+                      )
+                    }}
+                  </SettingsConsumer>
+                </StorageContractsProvider>
+                <AppNotification />
+              </AppNotificationContextProvider>
+            </NetworkAccountsContextProvider>
+          </LocalDbProvider>
+        </UseInkProvider>
       </PlausibleProvider>{' '}
     </CacheProvider>
   )

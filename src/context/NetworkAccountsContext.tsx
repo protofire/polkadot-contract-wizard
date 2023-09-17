@@ -1,129 +1,105 @@
-import React, { createContext, useEffect, useState, useContext } from 'react'
-import { ApiPromise, WsProvider } from '@polkadot/api'
+import React, {
+  createContext,
+  useState,
+  useContext,
+  useEffect,
+  useCallback
+} from 'react'
+import { ApiPromise } from '@polkadot/api'
 import jsonrpc from '@polkadot/types/interfaces/jsonrpc'
-import { keyring as KeyringUI, Keyring } from '@polkadot/ui-keyring'
+import { WalletState, useAllWallets, useWallet } from 'useink'
+import { WalletKeys } from '@/constants/wallets'
 
-import { DAPP_CONFIG } from '@/constants/index'
-import { WalletConnectionEvents } from '@/domain/DomainEvents'
-import { accountsInPossession } from '@/domain/KeyringAccouns'
-import {
-  getChainInfo,
-  ChainProperties
-} from '@/infrastructure/NetworkAccountRepository'
+import { ChainProperties } from '@/infrastructure/NetworkAccountRepository'
+import { Wallet, WalletAccount } from '@/infrastructure/useink/walletTypes'
+import { DEFAULT_CHAIN } from '../constants'
+import { useLocalDbContext } from './LocalDbContext'
+import { ChainId } from '@/infrastructure/useink/chains'
+import { createNotImplementedWarning } from '@/utils/error'
+import { WalletConnectionEvents } from '@/domain'
 
 type NetworkState = 'DISCONNECTED' | 'CONNECTING' | 'CONNECTED' | 'ERROR'
+export const OPTION_FOR_DISCONNECTING = 'disconnect'
 
 export interface NetworkAccountsContextState {
-  currentAccount?: string
   jsonRpc: typeof jsonrpc
-  apiStatus: NetworkState
   api?: ApiPromise
   apiError?: string
-  accountStatus: NetworkState // keyring state
-  keyring?: Keyring
   chainInfo?: ChainProperties
+  accountStatus: NetworkState
+  currentWallet?: WalletState
+  allWallets?: Wallet[]
+  currentChain?: ChainId
+  walletKey?: WalletKeys
+  accounts?: WalletAccount[]
 }
 
 export const initialState: NetworkAccountsContextState = {
   jsonRpc: { ...jsonrpc },
-  apiStatus: 'DISCONNECTED',
   accountStatus: 'DISCONNECTED'
 }
 
-export const NetworkAccountsContext = createContext(
-  {} as {
-    state: NetworkAccountsContextState
-    setCurrentAccount: (account: string) => void
-  }
-)
-
-// Connecting to the Substrate node
-const connect = (
-  state: NetworkAccountsContextState,
-  updateState: React.Dispatch<React.SetStateAction<NetworkAccountsContextState>>
-) => {
-  if (state.apiStatus !== 'DISCONNECTED') return
-
-  updateState(prev => ({ ...prev, apiStatus: 'CONNECTING' }))
-  console.info(`Connecting socket: ${DAPP_CONFIG.providerSocket}`)
-
-  const provider = new WsProvider(DAPP_CONFIG.providerSocket)
-  const _api = new ApiPromise({ provider, rpc: jsonrpc })
-
-  // Set listeners for disconnection and reconnection event.
-  _api.on('connected', () => {
-    updateState(prev => ({ ...prev, api: _api }))
-    // `ready` event is not emitted upon reconnection and is checked explicitly here.
-    _api.isReady.then(async _api => {
-      const chainInfo = await getChainInfo(_api)
-      updateState(prev => ({
-        ...prev,
-        apiStatus: 'CONNECTED',
-        api: _api,
-        chainInfo
-      }))
-    })
-  })
-  _api.on('ready', () =>
-    updateState(prev => ({ ...prev, apiStatus: 'CONNECTED' }))
-  )
-  _api.on('error', err =>
-    updateState(prev => ({ ...prev, apiStatus: 'ERROR', apiError: err }))
-  )
+interface NetworkContextProps {
+  state: NetworkAccountsContextState
+  isConnected: boolean
+  accountConnected: WalletAccount | undefined
+  networkConnected: ChainId
+  setCurrentAccount: (account: WalletAccount) => void
+  setCurrentWallet: (wallet: Wallet) => void
+  setCurrentChain: (chain: ChainId) => void
+  connect: (walletName: string) => void
+  disconnectWallet: () => void
 }
 
-let keyringLoadAll = false
+export const NetworkAccountsContext = createContext<NetworkContextProps>({
+  state: initialState,
+  isConnected: false,
+  accountConnected: undefined,
+  networkConnected: DEFAULT_CHAIN,
+  setCurrentAccount: () => createNotImplementedWarning('setCurrentAccount'),
+  setCurrentWallet: () => createNotImplementedWarning('setCurrentWallet'),
+  setCurrentChain: () => createNotImplementedWarning('setCurrentChain'),
+  connect: () => createNotImplementedWarning('connect'),
+  disconnectWallet: () => createNotImplementedWarning('disconnectWallet')
+})
 
-const loadAccounts = (
-  state: NetworkAccountsContextState,
-  updateState: React.Dispatch<React.SetStateAction<NetworkAccountsContextState>>
-) => {
-  const { api, apiStatus, accountStatus: keyringStatus, chainInfo } = state
-  if (
-    apiStatus !== 'CONNECTED' ||
-    keyringLoadAll ||
-    keyringStatus !== 'DISCONNECTED' ||
-    !chainInfo
-  )
-    return
-  if (!api) {
-    throw Error('Api providers has an connection error')
-  }
+// const connectApi = async (
+//   state: NetworkAccountsContextState,
+//   updateState: React.Dispatch<
+//     React.SetStateAction<NetworkAccountsContextState>
+//   >,
+//   wallet: Wallet
+// ) => {
+//   if (state.accountStatus !== 'DISCONNECTED') return
+//   const defaultRpc = getChain(state.currentChain)?.rpcs[0]
+//   console.log(defaultRpc)
+//   console.info(`Connecting socket: ${DAPP_CONFIG.providerSocket}`)
+//   const provider = new WsProvider(DAPP_CONFIG.providerSocket)
+//   const _api = new ApiPromise({ provider, rpc: jsonrpc })
 
-  keyringLoadAll = true
-  updateState(prev => ({ ...prev, accountStatus: 'CONNECTING' }))
-  const { isDevelopment } = chainInfo
-
-  const asyncLoadAccounts = async () => {
-    try {
-      const { web3Enable, web3Accounts } = await import(
-        '@polkadot/extension-dapp'
-      )
-      await web3Enable(DAPP_CONFIG.name)
-      let allAccounts = await web3Accounts()
-      allAccounts = allAccounts.map(({ address, meta }) => ({
-        address,
-        meta: { ...meta, name: `${meta.name} (${meta.source})` }
-      }))
-
-      KeyringUI.loadAll({ isDevelopment }, allAccounts)
-      const accounts = accountsInPossession(KeyringUI)
-      const initialAddress = accounts.length > 0 ? accounts[0].address : ''
-
-      updateState(prev => ({
-        ...prev,
-        currentAccount: initialAddress,
-        accountStatus: 'CONNECTED',
-        keyring: KeyringUI
-      }))
-    } catch (e) {
-      console.error(e)
-      updateState(prev => ({ ...prev, accountStatus: 'ERROR' }))
-    }
-  }
-
-  asyncLoadAccounts()
-}
+//   _api.on('connected', () => {
+//     updateState(prev => ({ ...prev, api: _api }))
+//     _api.isReady.then(async _api => {
+//       const chainInfo = await getChainInfo(_api)
+//       const accounts = await wallet.getAccounts()
+//       updateState(prev => ({
+//         ...prev,
+//         accountStatus: 'CONNECTED',
+//         // Select the fist account from the wallet by default
+//         currentAccount: accounts[0].address,
+//         walletKey: wallet.extensionName,
+//         api: _api,
+//         chainInfo
+//       }))
+//     })
+//   })
+//   _api.on('ready', () =>
+//     updateState(prev => ({ ...prev, accountStatus: 'CONNECTED' }))
+//   )
+//   _api.on('error', err =>
+//     updateState(prev => ({ ...prev, accountStatus: 'ERROR', apiError: err }))
+//   )
+// }
 
 export function NetworkAccountsContextProvider({
   children
@@ -131,30 +107,84 @@ export function NetworkAccountsContextProvider({
   children: React.ReactNode
 }) {
   const [state, setState] = useState<NetworkAccountsContextState>(initialState)
-  connect(state, setState)
+  const allWallets = useAllWallets()
+  const { account, accounts, connect, disconnect, isConnected, setAccount } =
+    useWallet()
+  const { networkRepository } = useLocalDbContext()
+  const [networkId, setNetworkId] = useState<ChainId>(DEFAULT_CHAIN)
+
+  const loadNetworkConnected = useCallback(() => {
+    const networkSelected = networkRepository.getNetworkSelected()
+
+    setNetworkId(networkSelected.id)
+  }, [networkRepository])
 
   useEffect(() => {
-    document.addEventListener(WalletConnectionEvents.walletConnectInit, () =>
-      loadAccounts(state, setState)
+    loadNetworkConnected()
+  }, [loadNetworkConnected])
+
+  useEffect(() => {
+    document.addEventListener(
+      WalletConnectionEvents.networkChanged,
+      loadNetworkConnected
     )
 
     return () => {
       document.removeEventListener(
-        WalletConnectionEvents.walletConnectInit,
-        () => loadAccounts(state, setState)
+        WalletConnectionEvents.networkChanged,
+        loadNetworkConnected
       )
     }
-  }, [state])
+  }, [loadNetworkConnected])
 
-  function setCurrentAccount(account: string) {
-    setState(prev => ({ ...prev, currentAccount: account }))
-    document.dispatchEvent(
-      new CustomEvent(WalletConnectionEvents.changeAccountAddress)
-    )
+  useEffect(() => {
+    setState(prev => ({
+      ...prev,
+      allWallets
+    }))
+  }, [allWallets])
+
+  useEffect(() => {
+    setState(prev => ({
+      ...prev,
+      accounts
+    }))
+  }, [accounts])
+
+  const setCurrentWallet = async (wallet: Wallet) => {
+    setState(prev => ({
+      ...prev,
+      accountStatus: 'CONNECTING',
+      currentChain: networkRepository.getNetworkSelected().id
+    }))
+    connect(wallet.extensionName)
   }
 
+  const setCurrentChain = useCallback(
+    (chainId: ChainId) => {
+      networkRepository.setNetworkSelected(chainId)
+
+      document.dispatchEvent(
+        new CustomEvent(WalletConnectionEvents.networkChanged)
+      )
+    },
+    [networkRepository]
+  )
+
   return (
-    <NetworkAccountsContext.Provider value={{ state, setCurrentAccount }}>
+    <NetworkAccountsContext.Provider
+      value={{
+        state,
+        isConnected,
+        accountConnected: account,
+        networkConnected: networkId,
+        setCurrentAccount: setAccount,
+        setCurrentWallet,
+        setCurrentChain,
+        disconnectWallet: disconnect,
+        connect
+      }}
+    >
       {children}
     </NetworkAccountsContext.Provider>
   )

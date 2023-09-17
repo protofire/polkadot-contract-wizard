@@ -34,9 +34,7 @@ export default function Step3Deploy({
   constructorFields?: ControlsToken<'Constructor'>
   onDeployContract: (deployedContract: ContractDeployed) => void
 }) {
-  const {
-    state: { chainInfo }
-  } = useNetworkAccountsContext()
+  const { networkConnected } = useNetworkAccountsContext()
   const { handleBack, handleNext, dataForm } = useStepsSCWizard()
   const [contractCompiled, setContractCompiled] = useState<
     ContractResponse | undefined
@@ -103,7 +101,7 @@ export default function Step3Deploy({
   const _handleDeploy = async (
     constructorParams: ContractConstructorDataForm
   ) => {
-    if (!contractCompiled || !chainInfo) return
+    if (!contractCompiled || !networkConnected) return
 
     const result = await deployContract({
       wasm: contractCompiled.wasm,
@@ -111,7 +109,7 @@ export default function Step3Deploy({
       argsForm: constructorParams,
       code_id: contractCompiled.code_id,
       tokenType,
-      blockchain: chainInfo.systemChain || 'unknown'
+      blockchain: networkConnected
     })
 
     if (result) {

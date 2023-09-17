@@ -1,9 +1,14 @@
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, MutableRefObject } from 'react'
 
 type RefType = HTMLButtonElement | null
 const ONE_SECOND = 1000 // ms
 
-export function useRecentlyClicked(waitTime = ONE_SECOND) {
+interface UseRecentlyClicked {
+  ref: MutableRefObject<RefType>
+  recentlyClicked: boolean
+}
+
+export function useRecentlyClicked(waitTime = ONE_SECOND): UseRecentlyClicked {
   const [clicked, setClicked] = useState(false)
   const ref = useRef<RefType>(null)
 

@@ -28,15 +28,13 @@ export function StorageContractsProvider({
   repository: StorageContractRepository
 }) {
   const [contracts, setContracts] = useState<Contract[]>([])
-  const {
-    state: { currentAccount }
-  } = useNetworkAccountsContext()
+  const { accountConnected } = useNetworkAccountsContext()
 
   const loadContractRepository = useCallback(() => {
-    if (!currentAccount) return
+    if (!accountConnected?.address) return
 
-    setContracts(repository.searchBy(currentAccount))
-  }, [currentAccount, repository])
+    setContracts(repository.searchBy(accountConnected.address))
+  }, [accountConnected?.address, repository])
 
   useEffect(() => {
     loadContractRepository()

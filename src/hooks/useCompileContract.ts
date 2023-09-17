@@ -3,7 +3,7 @@ import { useCallback, useState } from 'react'
 import {
   ApiCompileContractRepository,
   CompileContractBody
-} from '@/infrastructure/ApiCompileContractRepository'
+} from '@/infrastructure/backendApi/ApiCompileContractRepository'
 import { GetServiceData } from '@/types'
 import { TokenType, SecurityOfToken } from '@/domain'
 import { BACKEND_API } from '@/constants/index'
