@@ -33,7 +33,7 @@
     "big.js": "^6.2.1",
     "bn.js": "^5.2.1",
     "copy-to-clipboard": "^3.3.3",
-    "dotenv": "^16.0.3",
+    "dotenv": "^16.3.1",
     "lodash": "^4.17.21",
     "next": "13.1.1",
     "next-plausible": "^3.11.1",
