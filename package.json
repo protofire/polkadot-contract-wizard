@@ -35,7 +35,7 @@
     "copy-to-clipboard": "^3.3.3",
     "dotenv": "^16.3.1",
     "lodash": "^4.17.21",
-    "next": "13.1.1",
+    "next": "13.4.19",
     "next-plausible": "^3.11.1",
     "react": "18.2.0",
     "react-code-blocks": "^0.0.9-0",
