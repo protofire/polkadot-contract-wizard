@@ -1,40 +1,68 @@
 import { BackendApiConfig } from '@/constants/config'
 import {
-  DeploymentRaw,
+  DeploymentItem,
   DeploymentsRepository
 } from '@/domain/repositories/DeploymentRepository'
 import { ChainId } from '@/infrastructure/useink/chains'
 import { request } from '@/infrastructure/common/request'
+import { RootApiResponse } from './types'
 
-interface ApiResponse {
-  data: string
-  error: string | null
+interface DeploymentRaw {
+  contract_name: string
+  contract_address: string
+  network: ChainId
+  code_id: string
+  user_address: string
+}
+
+function adaptDeployment(deploymentRaw: DeploymentRaw): DeploymentItem {
+  return {
+    contractName: deploymentRaw.contract_name,
+    contractAddress: deploymentRaw.contract_address,
+    network: deploymentRaw.network,
+    codeId: deploymentRaw.code_id,
+    userAddress: deploymentRaw.user_address
+  }
 }
 
 export class ApiDeploymentRepository
-  implements DeploymentsRepository<ApiResponse>
+  implements DeploymentsRepository<RootApiResponse<string>, DeploymentItem[]>
 {
   constructor(private readonly backenApiConfig: BackendApiConfig) {}
 
-  async add(deployment: DeploymentRaw): Promise<ApiResponse> {
-    return request(this.backenApiConfig.routes.createDeployment.url, {
-      method: this.backenApiConfig.routes.createCompileContract.method,
-      body: JSON.stringify(deployment)
-    })
+  async add(deployment: DeploymentItem): Promise<RootApiResponse<string>> {
+    return request<RootApiResponse<string>>(
+      this.backenApiConfig.routes.createDeployment.url,
+      {
+        method: this.backenApiConfig.routes.createCompileContract.method,
+        body: JSON.stringify({
+          contract_name: deployment.contractName,
+          contract_address: deployment.contractAddress,
+          network: deployment.network,
+          code_id: deployment.codeId,
+          user_address: deployment.userAddress
+        })
+      }
+    )
   }
+
   async findBy(
     userAddress: string,
     networkId?: ChainId | undefined
-  ): Promise<DeploymentRaw> {
+  ): Promise<DeploymentItem[]> {
     const { url, method } = this.backenApiConfig.routes.listDeployment
 
-    return request<DeploymentRaw>(
-      `${url}${encodeURIComponent(userAddress)}${encodeURIComponent(
-        networkId
-      )}`,
+    const suffixUrl = networkId
+      ? `network=${encodeURIComponent(networkId)}`
+      : ''
+
+    const { data } = await request<RootApiResponse<DeploymentRaw[]>>(
+      `${url}${encodeURIComponent(userAddress)}${suffixUrl}`,
       {
         method: method
       }
     )
+
+    return data.map(e => adaptDeployment(e))
   }
 }

@@ -1,14 +1,14 @@
 import { ChainId } from '@/infrastructure/useink/chains'
 
-export interface DeploymentRaw {
-  contract_name: string
-  contract_address: string
+export interface DeploymentItem {
+  contractName: string
+  contractAddress: string
   network: ChainId
-  code_id: string
-  user_address: string
+  codeId: string
+  userAddress: string
 }
 
-export interface DeploymentsRepository<R> {
-  add: (deployment: DeploymentRaw) => Promise<R>
-  findBy: (userAddress: string, networkId?: ChainId) => Promise<DeploymentRaw>
+export interface DeploymentsRepository<A, B> {
+  add: (deployment: DeploymentItem) => Promise<A>
+  findBy: (userAddress: string, networkId?: ChainId) => Promise<B>
 }
