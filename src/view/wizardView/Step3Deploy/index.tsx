@@ -24,6 +24,8 @@ import {
   FormConstructorContract,
   ConstructorTokenFieldProps
 } from './FormConstructorContract'
+import { useAddContractDeployments } from '@/hooks/deployments/useAddContractsDeployments'
+import { ChainId } from '@/infrastructure/useink/chains'
 
 export default function Step3Deploy({
   constructorFields,
@@ -34,7 +36,7 @@ export default function Step3Deploy({
   constructorFields?: ControlsToken<'Constructor'>
   onDeployContract: (deployedContract: ContractDeployed) => void
 }) {
-  const { networkConnected } = useNetworkAccountsContext()
+  const { networkConnected, accountConnected } = useNetworkAccountsContext()
   const { handleBack, handleNext, dataForm } = useStepsSCWizard()
   const [contractCompiled, setContractCompiled] = useState<
     ContractResponse | undefined
@@ -51,6 +53,8 @@ export default function Step3Deploy({
   const { deployContract, isLoading: isDeploying } = useDeployContract()
   const { ref: refButton, recentlyClicked } = useRecentlyClicked(500)
   const _isDeploying = recentlyClicked || isDeploying
+  // TODO
+  const { addDeployment } = useAddContractDeployments()
 
   useEffect(() => {
     if (!dataForm.currentAccount || !mustLoad.current) return
@@ -101,7 +105,7 @@ export default function Step3Deploy({
   const _handleDeploy = async (
     constructorParams: ContractConstructorDataForm
   ) => {
-    if (!contractCompiled || !networkConnected) return
+    if (!contractCompiled || !networkConnected || !accountConnected) return
 
     const result = await deployContract({
       wasm: contractCompiled.wasm,
@@ -109,7 +113,15 @@ export default function Step3Deploy({
       argsForm: constructorParams,
       code_id: contractCompiled.code_id,
       tokenType,
-      blockchain: networkConnected
+      blockchain: networkConnected,
+      successCallback: contractDeployed =>
+        addDeployment({
+          userAddress: accountConnected.address,
+          contractName: contractDeployed.type,
+          codeId: contractDeployed.code_id,
+          contractAddress: contractDeployed.address,
+          network: contractDeployed.blockchain as ChainId
+        })
     })
 
     if (result) {

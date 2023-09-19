@@ -27,6 +27,7 @@ export type UseDeployContract = ContractMetadata & {
   argsForm: ContractConstructorDataForm
   tokenType: TokenType
   blockchain: ContractDeployed['blockchain']
+  successCallback?: (contractDeployed: ContractDeployed) => void
 }
 
 type UIStorageDeposit = {
@@ -126,7 +127,8 @@ export const useDeployContract = (): ReturnValue & {
       argsForm,
       code_id,
       tokenType,
-      blockchain
+      blockchain,
+      successCallback
     }: UseDeployContract): Promise<ContractDeployed | void> => {
       if (!currentAccount || !api) return
       setIsLoading(true)
@@ -134,6 +136,7 @@ export const useDeployContract = (): ReturnValue & {
 
       const metadataAbi = new Abi(metadata, api.registry.getChainProperties())
       try {
+        debugger
         const { storageDeposit, gasRequired } = await contractDryRun({
           currentAccount,
           api,
@@ -166,9 +169,10 @@ export const useDeployContract = (): ReturnValue & {
           address: result.contractAddress,
           blockchain,
           name: '',
-          txHash: result.txHash.toString()
+          txHash: result.txHash
         }
 
+        successCallback?.(contractDeployed)
         addContractToStorage(currentAccount, contractDeployed)
 
         return contractDeployed

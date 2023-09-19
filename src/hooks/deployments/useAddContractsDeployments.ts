@@ -12,7 +12,7 @@ interface UseAddDeployment {
   error?: string
 }
 
-export function useAddDeployment(): UseAddDeployment {
+export function useAddContractDeployments(): UseAddDeployment {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | undefined>()
 
