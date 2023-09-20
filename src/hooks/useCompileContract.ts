@@ -9,7 +9,7 @@ import { TokenType, SecurityOfToken } from '@/domain'
 import { BACKEND_API } from '@/constants/index'
 import { AllowedFeatures, ContractResponse } from '@/infrastructure'
 import { useAppNotificationContext } from '@/context/AppNotificationContext'
-import { useStorageContractsContext } from '@/context'
+import { useAddCompiledContract } from './compileContract/useAddCompiledContracts'
 
 type ReturnValue = GetServiceData
 
@@ -44,7 +44,7 @@ export const useCompileContract = (): ReturnValue & {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | undefined>()
   const { addNotification } = useAppNotificationContext()
-  const { addContractToStorage } = useStorageContractsContext()
+  const { save: addContractToStorage } = useAddCompiledContract()
 
   const compileContract = useCallback(
     async ({

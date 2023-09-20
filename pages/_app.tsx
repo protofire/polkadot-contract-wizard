@@ -19,8 +19,6 @@ import {
   StorageNotificationsRepository
 } from 'src/context/AppNotificationContext'
 import { CustomSnackBar as AppNotification } from 'src/view/components/Snackbar'
-import { StorageContractsProvider } from '@/context'
-import { LocalStorageContractRepository } from '@/infrastructure/LocalStorageContractRepository'
 import { DAPP_CONFIG, DOMAIN } from '@/constants/config'
 import { UseInkProvider } from 'useink'
 import { CHAINS } from '@/constants/chains'

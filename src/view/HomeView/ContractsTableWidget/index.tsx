@@ -4,7 +4,6 @@ import { useSearchCompileContract } from '@/hooks'
 import { Contract } from '@/domain'
 import { ContractTableItem } from '@/domain/wizard/ContractTableItem'
 import { downloadMetadata } from '@/utils/downloadMetadata'
-import { useListContractDeployments } from '@/hooks/deployments/useListContractsDeployments'
 
 function updateContractItem(
   codeId: string,

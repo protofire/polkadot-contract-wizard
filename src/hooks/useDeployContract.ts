@@ -11,7 +11,6 @@ import { useNetworkAccountsContext } from 'src/context/NetworkAccountsContext'
 import { BIG_ZERO_BN } from '@/constants/numbers'
 import { ContractConstructorDataForm } from '@/domain/wizard/step3DeployForm.types'
 import { deployContractService } from '@/infrastructure/deployContract'
-import { useStorageContractsContext } from '@/context'
 import { ContractDeployed, ContractMetadata, TokenType } from '@/domain'
 import { genRanHex } from '@/utils/blockchain'
 import {
@@ -20,6 +19,7 @@ import {
 } from '@/infrastructure/contractDryRun'
 import { useReportError } from './useReportError'
 import { useNetworkApi } from '@/hooks/useNetworkApi'
+import { useAddCompiledContract } from './compileContract/useAddCompiledContracts'
 
 type ReturnValue = GetServiceData
 
@@ -115,7 +115,7 @@ export const useDeployContract = (): ReturnValue & {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | undefined>()
   const { reportErrorWithToast } = useReportError()
-  const { addContractToStorage } = useStorageContractsContext()
+  const { save: addContractToStorage } = useAddCompiledContract()
   const { accountConnected } = useNetworkAccountsContext()
   const currentAccount = accountConnected?.address
   const { apiPromise: api } = useNetworkApi()
