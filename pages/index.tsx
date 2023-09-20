@@ -7,6 +7,7 @@ import { TokenType } from '@/domain'
 import { useNetworkAccountsContext } from 'src/context/NetworkAccountsContext'
 import { useStorageContractsContext } from '@/context'
 import { ContractsTableWidget } from '@/view/HomeView/ContractsTableWidget'
+import { useListContractDeployments } from '@/hooks/deployments/useListContractsDeployments'
 
 const Token: Record<TokenType, TokenType> = {
   psp22: 'psp22',
@@ -17,6 +18,7 @@ const Token: Record<TokenType, TokenType> = {
 function Home() {
   const { accountConnected } = useNetworkAccountsContext()
   const { contracts } = useStorageContractsContext()
+  const deployments = useListContractDeployments()
 
   return (
     <>

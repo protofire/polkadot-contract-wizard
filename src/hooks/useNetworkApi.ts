@@ -11,6 +11,5 @@ export function useNetworkApi() {
   const { networkConnected } = useNetworkAccountsContext()
   const api = useApi(networkConnected)
 
-  console.log('__api', api, networkConnected)
   return { apiPromise: api?.api, network: networkConnected }
 }

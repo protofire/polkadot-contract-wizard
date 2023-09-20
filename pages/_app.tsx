@@ -35,7 +35,6 @@ type CustomAppProps = AppProps & {
 
 const clientEmotionCache = buildEmotionCache()
 const repositoryAppNotification = new StorageNotificationsRepository()
-const repositoryDeploys = new LocalStorageContractRepository()
 
 export default function App(props: CustomAppProps) {
   const { Component, emotionCache = clientEmotionCache, pageProps } = props
@@ -61,17 +60,15 @@ export default function App(props: CustomAppProps) {
               <AppNotificationContextProvider
                 repository={repositoryAppNotification}
               >
-                <StorageContractsProvider repository={repositoryDeploys}>
-                  <SettingsConsumer>
-                    {({ settings }) => {
-                      return (
-                        <ThemeCustomization settings={settings}>
-                          {getLayout(<Component {...pageProps} />)}
-                        </ThemeCustomization>
-                      )
-                    }}
-                  </SettingsConsumer>
-                </StorageContractsProvider>
+                <SettingsConsumer>
+                  {({ settings }) => {
+                    return (
+                      <ThemeCustomization settings={settings}>
+                        {getLayout(<Component {...pageProps} />)}
+                      </ThemeCustomization>
+                    )
+                  }}
+                </SettingsConsumer>
                 <AppNotification />
               </AppNotificationContextProvider>
             </NetworkAccountsContextProvider>

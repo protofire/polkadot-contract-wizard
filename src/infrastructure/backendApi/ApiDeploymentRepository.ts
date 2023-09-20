@@ -1,7 +1,7 @@
 import { BackendApiConfig } from '@/constants/config'
 import {
   DeploymentItem,
-  DeploymentsRepository
+  IDeploymentsRepository
 } from '@/domain/repositories/DeploymentRepository'
 import { ChainId } from '@/infrastructure/useink/chains'
 import { request } from '@/infrastructure/common/request'
@@ -15,6 +15,11 @@ interface DeploymentRaw {
   user_address: string
 }
 
+export type IApiDeploymentRepository = IDeploymentsRepository<
+  RootApiResponse<string>,
+  DeploymentItem[]
+>
+
 function adaptDeployment(deploymentRaw: DeploymentRaw): DeploymentItem {
   return {
     contractName: deploymentRaw.contract_name,
@@ -25,9 +30,7 @@ function adaptDeployment(deploymentRaw: DeploymentRaw): DeploymentItem {
   }
 }
 
-export class ApiDeploymentRepository
-  implements DeploymentsRepository<RootApiResponse<string>, DeploymentItem[]>
-{
+export class ApiDeploymentRepository implements IApiDeploymentRepository {
   constructor(private readonly backenApiConfig: BackendApiConfig) {}
 
   async add(deployment: DeploymentItem): Promise<RootApiResponse<string>> {

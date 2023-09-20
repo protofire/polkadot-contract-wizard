@@ -7,9 +7,9 @@ import {
 } from 'react'
 
 import { Contract, SmartContractEvents, isContractDeployed } from '@/domain'
-import { StorageContractRepository } from '@/infrastructure/LocalStorageContractRepository'
 import { useNetworkAccountsContext } from './NetworkAccountsContext'
 import { useMultiEventListener } from '@/hooks/useMultipleEventListener'
+import { useLocalDbContext } from './LocalDbContext'
 
 interface StorageContractContextValues {
   contracts: Contract[]
@@ -21,24 +21,23 @@ const StorageContractsContext = createContext<StorageContractContextValues>(
 )
 
 export function StorageContractsProvider({
-  children,
-  repository
+  children
 }: {
   children: React.ReactNode
-  repository: StorageContractRepository
 }) {
   const [contracts, setContracts] = useState<Contract[]>([])
   const { accountConnected } = useNetworkAccountsContext()
+  const { compilationRepository } = useLocalDbContext()
 
   const loadContractRepository = useCallback(() => {
     if (!accountConnected?.address) return
 
-    setContracts(repository.searchBy(accountConnected.address))
-  }, [accountConnected?.address, repository])
+    setContracts(compilationRepository.searchBy(accountConnected.address))
+  }, [accountConnected?.address, compilationRepository])
 
   useEffect(() => {
     loadContractRepository()
-  }, [loadContractRepository, repository])
+  }, [loadContractRepository, compilationRepository])
 
   // update repository when events triggered
   useMultiEventListener(
@@ -51,7 +50,7 @@ export function StorageContractsProvider({
 
   const save = useCallback(
     (accountAddress: string, smartContract: Contract) => {
-      repository.save(accountAddress, smartContract)
+      compilationRepository.save(accountAddress, smartContract)
 
       document.dispatchEvent(
         new CustomEvent(
@@ -61,7 +60,7 @@ export function StorageContractsProvider({
         )
       )
     },
-    [repository]
+    [compilationRepository]
   )
 
   return (

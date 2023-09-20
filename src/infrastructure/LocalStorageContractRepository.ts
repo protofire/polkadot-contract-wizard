@@ -4,13 +4,13 @@ export interface AccountContractsMap {
   [account: string]: Array<Contract>
 }
 
-export interface StorageContractRepository {
+export interface ICompiledContractRepository {
   searchBy(accountAddress: string): Contract[]
   save(accountAddress: string, smartContract: Contract): void
 }
 
 export class LocalStorageContractRepository
-  implements StorageContractRepository
+  implements ICompiledContractRepository
 {
   localStorageKey = 'repositoryContracts'
 

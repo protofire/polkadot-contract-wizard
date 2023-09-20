@@ -53,7 +53,6 @@ export default function Step3Deploy({
   const { deployContract, isLoading: isDeploying } = useDeployContract()
   const { ref: refButton, recentlyClicked } = useRecentlyClicked(500)
   const _isDeploying = recentlyClicked || isDeploying
-  // TODO
   const { addDeployment } = useAddContractDeployments()
 
   useEffect(() => {

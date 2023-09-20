@@ -8,7 +8,7 @@ export interface DeploymentItem {
   userAddress: string
 }
 
-export interface DeploymentsRepository<A, B> {
+export interface IDeploymentsRepository<A, B> {
   add: (deployment: DeploymentItem) => Promise<A>
   findBy: (userAddress: string, networkId?: ChainId) => Promise<B>
 }
