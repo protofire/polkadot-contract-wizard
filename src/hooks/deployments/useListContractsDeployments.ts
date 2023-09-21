@@ -1,11 +1,13 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useState } from 'react'
 
 import { DeploymentItem } from '@/domain/repositories/DeploymentRepository'
-import { useNetworkAccountsContext } from '@/context/NetworkAccountsContext'
 import { useLocalDbContext } from '@/context/LocalDbContext'
+import { getErrorMessage } from '@/utils/error'
 
 interface UseAddDeployment {
-  listDeployments: DeploymentItem[]
+  userContractsFromApi: (
+    userAddress: string
+  ) => Promise<DeploymentItem[] | undefined>
   isLoading: boolean
   error?: string
 }
@@ -14,19 +16,24 @@ export function useListContractDeployments(): UseAddDeployment {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | undefined>()
   const { deploymentsRepository } = useLocalDbContext()
-  const { accountConnected } = useNetworkAccountsContext()
-  const [listDeployments, setListDeployments] = useState<DeploymentItem[]>([])
 
-  useEffect(() => {
-    if (!accountConnected?.address) return
+  const userContractsFromApi = useCallback(
+    async (userAddress: string) => {
+      setIsLoading(true)
+      setError(undefined)
 
-    setIsLoading(true)
-    deploymentsRepository
-      .findBy(accountConnected?.address)
-      .then(result => setListDeployments(result))
-      .catch(e => setError(e))
-      .finally(() => setIsLoading(false))
-  }, [accountConnected?.address, deploymentsRepository])
+      try {
+        const deployments = await deploymentsRepository.findBy(userAddress)
 
-  return { listDeployments, isLoading, error }
+        return deployments
+      } catch (e) {
+        setError(getErrorMessage(e))
+      } finally {
+        setIsLoading(false)
+      }
+    },
+    [deploymentsRepository]
+  )
+
+  return { userContractsFromApi, isLoading, error }
 }

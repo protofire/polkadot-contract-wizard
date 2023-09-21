@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { ContractsTable } from '@/view/HomeView/ContractsTableWidget/ContractsTable'
 import { useSearchCompileContract } from '@/hooks'
-import { Contract } from '@/domain'
+import { UserContractDetails } from '@/domain'
 import { ContractTableItem } from '@/domain/wizard/ContractTableItem'
 import { downloadMetadata } from '@/utils/downloadMetadata'
 
@@ -13,7 +13,7 @@ function updateContractItem(
     'isDownloading' | 'sourceJsonString'
   >
 ) {
-  const index = contractsItem.findIndex(item => item.code_id === codeId)
+  const index = contractsItem.findIndex(item => item.codeHash === codeId)
 
   if (index) {
     contractsItem[index] = {
@@ -25,7 +25,11 @@ function updateContractItem(
   return contractsItem
 }
 
-export function ContractsTableWidget({ contracts }: { contracts: Contract[] }) {
+export function ContractsTableWidget({
+  contracts
+}: {
+  contracts: UserContractDetails[]
+}) {
   const { searchCompileContract } = useSearchCompileContract()
   const [contractsItem, setContractsItem] =
     useState<ContractTableItem[]>(contracts)
@@ -46,7 +50,7 @@ export function ContractsTableWidget({ contracts }: { contracts: Contract[] }) {
 
   const searchMetadata = async (codeId: string): Promise<string | void> => {
     const contractWithMeta = contractsItem.find(
-      contract => contract.code_id === codeId && contract.sourceJsonString
+      contract => contract.codeHash === codeId && contract.sourceJsonString
     )
 
     if (contractWithMeta) return contractWithMeta.sourceJsonString

@@ -5,13 +5,13 @@ export interface RootApiResponse<T> {
   error?: { message: string }
 }
 
-export interface ContractResponse {
+export interface ContractCompiledRaw {
   code_id: string
   metadata: string
   wasm: Uint8Array
 }
 
-export type ContractCompiled = RootApiResponse<ContractResponse>
+export type ContractCompiledResponse = RootApiResponse<ContractCompiledRaw>
 
 export type AllowedFeatures =
   | TokenType

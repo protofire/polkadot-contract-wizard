@@ -22,7 +22,7 @@ export type IApiDeploymentRepository = IDeploymentsRepository<
 
 function adaptDeployment(deploymentRaw: DeploymentRaw): DeploymentItem {
   return {
-    contractName: deploymentRaw.contract_name,
+    contractName: deploymentRaw.contract_name as DeploymentItem['contractName'],
     contractAddress: deploymentRaw.contract_address,
     network: deploymentRaw.network,
     codeId: deploymentRaw.code_id,

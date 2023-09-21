@@ -6,8 +6,7 @@ import { ROUTES, TOKEN_PATHS } from '@/constants/index'
 import { TokenType } from '@/domain'
 import { useNetworkAccountsContext } from 'src/context/NetworkAccountsContext'
 import { ContractsTableWidget } from '@/view/HomeView/ContractsTableWidget'
-import { useListContractDeployments } from '@/hooks/deployments/useListContractsDeployments'
-import { useListCompiledContracts } from '@/hooks/compileContract/useListCompiledContracts'
+import { useListUserContracts } from '@/hooks/userContracts/useListUserContracts'
 
 const Token: Record<TokenType, TokenType> = {
   psp22: 'psp22',
@@ -17,8 +16,9 @@ const Token: Record<TokenType, TokenType> = {
 
 function Home() {
   const { accountConnected } = useNetworkAccountsContext()
-  const { contracts } = useListCompiledContracts()
-  const deployments = useListContractDeployments()
+  const { userContracts: contracts } = useListUserContracts(
+    accountConnected?.address
+  )
 
   return (
     <>

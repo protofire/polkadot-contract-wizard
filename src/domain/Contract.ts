@@ -1,7 +1,7 @@
 import { TokenType } from '@/domain/TokenType'
-import { ContractResponse } from '@/infrastructure'
+import { ContractCompiledRaw } from '@/infrastructure'
 
-export type ContractMetadata = ContractResponse
+export type ContractMetadata = ContractCompiledRaw
 
 interface ContractDetails {
   code_id: string

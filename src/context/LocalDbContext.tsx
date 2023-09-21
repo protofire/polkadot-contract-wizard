@@ -6,25 +6,31 @@ import {
 } from '@/infrastructure/backendApi/ApiDeploymentRepository'
 import React, { createContext, PropsWithChildren, useContext } from 'react'
 import { BACKEND_API } from '../constants'
+import { MyDatabase } from '@/infrastructure/localDB'
+import { UserContractsRepository } from '@/infrastructure/localDB/UserContractsRepository'
+import { IUserContractsRepository } from '@/domain/repositories/IUserContractsRepository'
 import {
-  LocalStorageContractRepository,
-  ICompiledContractRepository
-} from '@/infrastructure/LocalStorageContractRepository'
+  ApiCompileContractRepository,
+  IApiCompileContractRepository
+} from '@/infrastructure/backendApi/ApiCompileContractRepository'
 
 interface DbContext {
   networkRepository: INetworkRepository
   deploymentsRepository: IApiDeploymentRepository
-  compilationRepository: ICompiledContractRepository
+  userContractsRepository: IUserContractsRepository
+  compileContractRepository: IApiCompileContractRepository
 }
 
 const networkRepository = new LocalStorageNetworkRepository()
 const deploymentsRepository = new ApiDeploymentRepository(BACKEND_API)
-const compilationRepository = new LocalStorageContractRepository()
+const compileContractRepository = new ApiCompileContractRepository(BACKEND_API)
+const userContractsRepository = new UserContractsRepository(new MyDatabase())
 
 const DbContext = createContext<DbContext>({
   networkRepository,
   deploymentsRepository,
-  compilationRepository
+  userContractsRepository,
+  compileContractRepository
 })
 
 export const LocalDbProvider: React.FC<PropsWithChildren> = ({ children }) => {
@@ -33,7 +39,8 @@ export const LocalDbProvider: React.FC<PropsWithChildren> = ({ children }) => {
       value={{
         networkRepository,
         deploymentsRepository,
-        compilationRepository
+        userContractsRepository,
+        compileContractRepository
       }}
     >
       {children}
