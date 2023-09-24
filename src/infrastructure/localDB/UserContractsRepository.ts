@@ -21,10 +21,10 @@ export class UserContractsRepository implements IUserContractsRepository {
 
   async searchBy(
     userAddress: string,
-    networkId: ChainId
+    blockchain: ChainId
   ): Promise<UserContractDetails[]> {
     return await this.db.userContracts
-      .where({ userAddress, networkId })
+      .where({ userAddress, blockchain })
       .toArray()
   }
 

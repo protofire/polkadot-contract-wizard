@@ -15,9 +15,10 @@ const Token: Record<TokenType, TokenType> = {
 }
 
 function Home() {
-  const { accountConnected } = useNetworkAccountsContext()
+  const { accountConnected, networkConnected } = useNetworkAccountsContext()
   const { userContracts: contracts } = useListUserContracts(
-    accountConnected?.address
+    accountConnected?.address,
+    networkConnected
   )
 
   return (

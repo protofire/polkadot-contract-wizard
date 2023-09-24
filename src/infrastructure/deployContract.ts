@@ -51,7 +51,6 @@ export async function deployContractService({
             const blockHash = status.asInBlock.toHex()
             const block = await api.rpc.chain.getBlock(blockHash)
             const blockNumber = block.block.header.number.toNumber()
-            console.log('__status', tx.hash)
 
             events
               .filter(({ event }) => api.events.contracts.CodeStored.is(event))

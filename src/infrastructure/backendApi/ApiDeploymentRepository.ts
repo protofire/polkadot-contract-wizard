@@ -56,7 +56,7 @@ export class ApiDeploymentRepository implements IApiDeploymentRepository {
     const { url, method } = this.backenApiConfig.routes.listDeployment
 
     const suffixUrl = networkId
-      ? `network=${encodeURIComponent(networkId)}`
+      ? `&network=${encodeURIComponent(networkId)}`
       : ''
 
     const { data } = await request<RootApiResponse<DeploymentRaw[]>>(

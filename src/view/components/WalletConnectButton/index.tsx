@@ -9,7 +9,6 @@ import { ModalWallet } from '../ModalWallet'
 import { Box } from '@mui/material'
 import { NetworkSelect } from './NetworkSelect'
 import CircleIcon from '@mui/icons-material/Circle'
-import { WALLET_IMG_DETAILS } from '@/constants/wallets'
 import { useRecentlyClicked } from '@/hooks/useRecentlyClicked'
 import { useDelay } from '@/hooks/useDelay'
 
@@ -24,7 +23,7 @@ export const ButtonConnection = styled(StyledButton)<MyButtonProps>(() => ({
 
 export const WalletConnectButton = () => {
   const {
-    state: { accountStatus, walletKey, allWallets, accounts },
+    state: { accountStatus, allWallets, accounts },
     isConnected,
     disconnectWallet,
     accountConnected,
@@ -38,7 +37,6 @@ export const WalletConnectButton = () => {
   const noAccounts = accountStatus === 'CONNECTED' && accounts?.length === 0
   const { ref: buttonRef, recentlyClicked } = useRecentlyClicked()
   const isLoading = recentlyClicked || !isDelayFinished
-  // console.log('__isConnected', isConnected, accountConnected)
 
   return (
     <>
@@ -78,7 +76,6 @@ export const WalletConnectButton = () => {
               setAccount={setCurrentAccount}
               disconnectWallet={disconnectWallet}
             />
-            )
           </Box>
         )
       )}

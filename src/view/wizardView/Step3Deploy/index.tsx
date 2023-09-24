@@ -26,6 +26,7 @@ import {
 import { useCreateContractDeployments } from '@/hooks/deployments/useCreateContractsDeployments'
 import { ChainId } from '@/infrastructure/useink/chains'
 import { StackStyled } from './styled'
+import { useAddUserContracts } from '@/hooks/userContracts/useAddUserContracts'
 
 interface StepDeployProps {
   tokenType: TokenType
@@ -55,7 +56,8 @@ export default function Step3Deploy({
   const { deployContract, isLoading: isDeploying } = useDeployContract()
   const { ref: refButton, recentlyClicked } = useRecentlyClicked(500)
   const _isDeploying = recentlyClicked || isDeploying
-  const { addDeployment } = useCreateContractDeployments()
+  const { newDeployment } = useCreateContractDeployments()
+  const { addUserContract } = useAddUserContracts()
 
   useEffect(() => {
     if (!dataForm.currentAccount || !mustLoad.current) return
@@ -115,14 +117,16 @@ export default function Step3Deploy({
       code_id: contractCompiled.code_id,
       tokenType,
       blockchain: networkConnected,
-      successCallback: contractDeployed =>
-        addDeployment({
+      successCallback: userContractsDetail => {
+        newDeployment({
           userAddress: accountConnected.address,
-          contractName: contractDeployed.type as TokenType,
-          codeId: contractDeployed.codeHash,
-          contractAddress: contractDeployed.address,
-          network: contractDeployed.blockchain as ChainId
+          contractName: userContractsDetail.name as TokenType,
+          codeId: userContractsDetail.codeHash,
+          contractAddress: userContractsDetail.address,
+          network: userContractsDetail.blockchain as ChainId
         })
+        addUserContract(userContractsDetail)
+      }
     })
 
     if (result) {

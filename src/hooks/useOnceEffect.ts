@@ -1,22 +1,23 @@
-import { useEffect, useRef, useCallback } from 'react'
+import { useEffect, useRef, DependencyList } from 'react'
 
-export function useOnceEffect(callback: () => void) {
+export function useOnceEffect<TDeps extends DependencyList>(
+  callback: () => void,
+  dependencies: TDeps
+) {
   const hasRun = useRef(false)
 
-  const runCallback = useCallback(() => {
-    if (!hasRun.current) {
-      callback()
-      hasRun.current = true
-    }
-  }, [callback])
-
   useEffect(() => {
-    runCallback()
-  }, [runCallback])
+    if (!hasRun.current) {
+      if (dependencies.every(dep => dep !== undefined && dep !== null)) {
+        callback()
+        hasRun.current = true
+      }
+    }
+  }, [callback, dependencies])
 
-  const reset = useCallback(() => {
+  const reset = () => {
     hasRun.current = false
-  }, [])
+  }
 
   return { reset }
 }

@@ -15,7 +15,7 @@ import FileDownloadIcon from '@mui/icons-material/FileDownload'
 import HourglassBottomIcon from '@mui/icons-material/HourglassBottom'
 
 import { CopyToClipboardButton, TokenIconSvg } from '@/components'
-import { capitalizeFirstLetter, truncateAddress } from '@/utils/formatString'
+import { truncateAddress } from '@/utils/formatString'
 import { TokenType } from '@/domain'
 import { ContractTableItem } from '@/domain/wizard/ContractTableItem'
 import { useRecentlyClicked } from 'src/hooks/useRecentlyClicked'
@@ -41,7 +41,7 @@ function ContractTableRow({
 } & Pick<ContractsTableProps, 'onDownloadMeta'>) {
   const { ref: refButton, recentlyClicked } = useRecentlyClicked()
   const isDownloading = recentlyClicked || contract.isDownloading
-  const type = contract.type as TokenType
+  const type = contract.name as TokenType
 
   return (
     <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
@@ -98,14 +98,14 @@ export function ContractsTable({
             <TableRow>
               <TableCell>TYPE</TableCell>
               <TableCell>ADDRESS</TableCell>
-              <TableCell>STATUS</TableCell>
+              <TableCell>ADDED</TableCell>
               <TableCell align="right">METADATA</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {contracts.map(contract => (
               <ContractTableRow
-                key={contract.codeHash}
+                key={contract.address}
                 contract={contract}
                 onDownloadMeta={onDownloadMeta}
               />

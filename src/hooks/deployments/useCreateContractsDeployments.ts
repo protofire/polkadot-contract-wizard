@@ -1,13 +1,10 @@
 import { useCallback, useState } from 'react'
 
-import { BACKEND_API } from '@/constants/index'
-import { ApiDeploymentRepository } from '@/infrastructure/backendApi/ApiDeploymentRepository'
 import { DeploymentItem } from '@/domain/repositories/DeploymentRepository'
-
-const deploymentApi = new ApiDeploymentRepository(BACKEND_API)
+import { useLocalDbContext } from '@/context/LocalDbContext'
 
 interface UseAddDeployment {
-  addDeployment: (deployment: DeploymentItem) => Promise<string | undefined>
+  newDeployment: (deployment: DeploymentItem) => Promise<string | undefined>
   isLoading: boolean
   error?: string
 }
@@ -15,14 +12,15 @@ interface UseAddDeployment {
 export function useCreateContractDeployments(): UseAddDeployment {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | undefined>()
+  const { deploymentsRepository } = useLocalDbContext()
 
-  const addDeployment = useCallback(
+  const newDeployment = useCallback(
     async (deployment: DeploymentItem): Promise<string | undefined> => {
       setError(undefined)
       setIsLoading(true)
 
       try {
-        const response = await deploymentApi.add(deployment)
+        const response = await deploymentsRepository.add(deployment)
 
         setIsLoading(false)
         if (response.error) {
@@ -36,8 +34,8 @@ export function useCreateContractDeployments(): UseAddDeployment {
         console.error(error)
       }
     },
-    []
+    [deploymentsRepository]
   )
 
-  return { addDeployment, isLoading, error }
+  return { newDeployment, isLoading, error }
 }

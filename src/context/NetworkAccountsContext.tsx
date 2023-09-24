@@ -124,20 +124,6 @@ export function NetworkAccountsContextProvider({
   }, [loadNetworkConnected])
 
   useEffect(() => {
-    document.addEventListener(
-      WalletConnectionEvents.networkChanged,
-      loadNetworkConnected
-    )
-
-    return () => {
-      document.removeEventListener(
-        WalletConnectionEvents.networkChanged,
-        loadNetworkConnected
-      )
-    }
-  }, [loadNetworkConnected])
-
-  useEffect(() => {
     setState(prev => ({
       ...prev,
       allWallets
@@ -152,17 +138,21 @@ export function NetworkAccountsContextProvider({
   }, [accounts])
 
   const setCurrentWallet = async (wallet: Wallet) => {
-    setState(prev => ({
-      ...prev,
-      accountStatus: 'CONNECTING',
-      currentChain: networkRepository.getNetworkSelected().id
-    }))
     connect(wallet.extensionName)
   }
 
+  const _setAccount = (account: WalletAccount) => {
+    setAccount(account)
+
+    document.dispatchEvent(
+      new CustomEvent(WalletConnectionEvents.changeAccountAddress)
+    )
+  }
+
   const setCurrentChain = useCallback(
-    (chainId: ChainId) => {
+    async (chainId: ChainId) => {
       networkRepository.setNetworkSelected(chainId)
+      setNetworkId(chainId)
 
       document.dispatchEvent(
         new CustomEvent(WalletConnectionEvents.networkChanged)
@@ -178,7 +168,7 @@ export function NetworkAccountsContextProvider({
         isConnected,
         accountConnected: account,
         networkConnected: networkId,
-        setCurrentAccount: setAccount,
+        setCurrentAccount: _setAccount,
         setCurrentWallet,
         setCurrentChain,
         disconnectWallet: disconnect,

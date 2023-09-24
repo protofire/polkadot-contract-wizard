@@ -137,7 +137,6 @@ export const useDeployContract = (): ReturnValue & {
 
       const metadataAbi = new Abi(metadata, api.registry.getChainProperties())
       try {
-        debugger
         const { storageDeposit, gasRequired } = await contractDryRun({
           currentAccount,
           api,
