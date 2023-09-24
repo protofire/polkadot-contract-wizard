@@ -15,7 +15,7 @@ import FileDownloadIcon from '@mui/icons-material/FileDownload'
 import HourglassBottomIcon from '@mui/icons-material/HourglassBottom'
 
 import { CopyToClipboardButton, TokenIconSvg } from '@/components'
-import { truncateAddress } from '@/utils/formatString'
+import { isoToReadableDate, truncateAddress } from '@/utils/formatString'
 import { TokenType } from '@/domain'
 import { ContractTableItem } from '@/domain/wizard/ContractTableItem'
 import { useRecentlyClicked } from 'src/hooks/useRecentlyClicked'
@@ -63,7 +63,7 @@ function ContractTableRow({
           />
         </Stack>
       </TableCell>
-      <TableCell>{contract.date}</TableCell>
+      <TableCell>{isoToReadableDate(contract.date)}</TableCell>
       <TableCell align="right">
         <IconButton
           ref={refButton}
