@@ -66,5 +66,9 @@ jobs:
       run: |
         export IMAGE_URL=$ECR_REGISTRY/${{ env.REPOSITORY }}:$GITHUB_REF_NAME
         echo "$SSH_KEY" | tr -d '\r' > key.pem && chmod 400 key.pem
-        ssh -o "StrictHostKeyChecking no" -i "key.pem" ubuntu@$DEPLOYMENT_SERVER_IP "export IMAGE_URL=$IMAGE_URL; sed -i '/WEB_IMAGE/d' /home/ubuntu/polkadot-contract-wizard/.docker/dev.docker.env; echo WEB_IMAGE=$IMAGE_URL >> /home/ubuntu/polkadot-contract-wizard/.docker/dev.docker.env; cd polkadot-contract-wizard/; docker-compose --env-file .docker/dev.docker.env down; sleep 5; docker-compose --env-file .docker/dev.docker.env up -d"
+        ssh -o "StrictHostKeyChecking no" -i "key.pem" ubuntu@$DEPLOYMENT_SERVER_IP "\
+          export IMAGE_URL=$IMAGE_URL; sed -i '/WEB_IMAGE/d' /home/ubuntu/polkadot-contract-wizard/.docker/dev.docker.env; \
+          echo WEB_IMAGE=$IMAGE_URL >> /home/ubuntu/polkadot-contract-wizard/.docker/dev.docker.env; cd polkadot-contract-wizard/; \
+          docker-compose -f docker-compose.prod.yml --env-file .docker/dev.docker.env down; sleep 5; \
+          docker-compose -f docker-compose.prod.yml --env-file .docker/dev.docker.env up -d"
 
