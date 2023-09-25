@@ -8,7 +8,7 @@ type EventNames =
   | keyof typeof SmartContractEvents
 
 export function useMultiEventListener(
-  events: EventNames[], // accept any array of strings as event names
+  events: EventNames[] | EventNames, // accept any array of strings as event names
   callback: EventCallback
 ): void {
   const callbackRef = useRef<EventCallback>(callback)
@@ -25,14 +25,16 @@ export function useMultiEventListener(
       callback()
     }
 
-    events.forEach(eventName => {
+    const _events = Array.isArray(events) ? events : [events]
+
+    _events.forEach(eventName => {
       document.addEventListener(eventName, handleEvent)
     })
 
     return () => {
-      events.forEach(eventName => {
+      _events.forEach(eventName => {
         document.removeEventListener(eventName, handleEvent)
       })
     }
-  }, [callback, events])
+  }, [events, callback])
 }

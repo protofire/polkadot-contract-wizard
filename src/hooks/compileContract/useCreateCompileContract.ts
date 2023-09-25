@@ -7,9 +7,8 @@ import {
 import { GetServiceData } from '@/types'
 import { TokenType, SecurityOfToken } from '@/domain'
 import { BACKEND_API } from '@/constants/index'
-import { AllowedFeatures, ContractResponse } from '@/infrastructure'
+import { AllowedFeatures, ContractCompiledRaw } from '@/infrastructure'
 import { useAppNotificationContext } from '@/context/AppNotificationContext'
-import { useStorageContractsContext } from '@/context'
 
 type ReturnValue = GetServiceData
 
@@ -39,12 +38,11 @@ function getAllowedFeaturesApi(
 export const useCompileContract = (): ReturnValue & {
   compileContract: (
     props: UseCreateCompilation
-  ) => Promise<ContractResponse | void>
+  ) => Promise<ContractCompiledRaw | void>
 } => {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | undefined>()
   const { addNotification } = useAppNotificationContext()
-  const { addContractToStorage } = useStorageContractsContext()
 
   const compileContract = useCallback(
     async ({
@@ -53,7 +51,7 @@ export const useCompileContract = (): ReturnValue & {
       tokenType,
       security,
       isPausable
-    }: UseCreateCompilation): Promise<ContractResponse | void> => {
+    }: UseCreateCompilation): Promise<ContractCompiledRaw | void> => {
       setError(undefined)
       setIsLoading(true)
 
@@ -69,11 +67,7 @@ export const useCompileContract = (): ReturnValue & {
           console.log(response.error.message)
           throw Error(response.error.message)
         }
-        addContractToStorage(address, {
-          code_id: response.data.code_id,
-          status: 'compiled',
-          type: tokenType
-        })
+
         return response['data']
       } catch (error) {
         const _errorMsg = `An error occurred when trying to compile the smart contract on the server`
@@ -85,46 +79,8 @@ export const useCompileContract = (): ReturnValue & {
         console.error(error)
       }
     },
-    [addContractToStorage, addNotification]
-  )
-
-  return { compileContract, isLoading, error }
-}
-
-export const useSearchCompileContract = (): ReturnValue & {
-  searchCompileContract: (codeId: string) => Promise<ContractResponse | void>
-} => {
-  const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState<string | undefined>()
-  const { addNotification } = useAppNotificationContext()
-
-  const searchCompileContract = useCallback(
-    async (codeId: string): Promise<ContractResponse | void> => {
-      setError(undefined)
-      setIsLoading(true)
-
-      try {
-        const response = await compileContractApi.search(codeId)
-
-        setIsLoading(false)
-        if (response.error) {
-          console.log(response.error.message)
-          throw Error(response.error.message)
-        }
-
-        return response['data']
-      } catch (error) {
-        const _errorMsg = `An error occurred when trying to search compiled contract`
-        setError(_errorMsg)
-        addNotification({
-          message: _errorMsg,
-          type: 'error'
-        })
-        console.error(error)
-      }
-    },
     [addNotification]
   )
 
-  return { searchCompileContract, isLoading, error }
+  return { compileContract, isLoading, error }
 }

@@ -5,46 +5,22 @@ import {
   Table,
   TableBody,
   TableCell,
-  TableContainer,
-  TableContainerProps,
   TableHead,
   TableRow,
   Typography,
   Stack,
   Tooltip
 } from '@mui/material'
-import { styled } from '@mui/material/styles'
 import FileDownloadIcon from '@mui/icons-material/FileDownload'
 import HourglassBottomIcon from '@mui/icons-material/HourglassBottom'
 
 import { CopyToClipboardButton, TokenIconSvg } from '@/components'
-import { capitalizeFirstLetter, truncateAddress } from '@/utils/formatString'
-import { TokenType, isContractDeployed } from '@/domain'
+import { isoToReadableDate, truncateAddress } from '@/utils/formatString'
+import { TokenType } from '@/domain'
 import { ContractTableItem } from '@/domain/wizard/ContractTableItem'
 import { useRecentlyClicked } from 'src/hooks/useRecentlyClicked'
 import { MonoTypography } from '@/components'
-
-const StyledTableContainer = styled(TableContainer)<TableContainerProps>(
-  ({ theme }) => ({
-    [theme.breakpoints.down('md')]: {
-      /* styles here */
-    },
-    '& .MuiTable-root': {
-      margin: '2rem auto',
-      width: '80%'
-    },
-    '& .MuiTableCell-root': {
-      color: theme.palette.secondary.light,
-      fontSize: '1.1rem',
-      fontFeatureSettings: '"ss01", "ss02"'
-    }
-  })
-)
-
-const TokenWrapper = styled(Stack)(() => ({
-  flexDirection: 'row',
-  gap: '0.5rem'
-}))
+import { StyledTableContainer, TokenWrapper } from './styled'
 
 const typeMap: Record<TokenType, string> = {
   psp34: 'NFT',
@@ -63,53 +39,42 @@ function ContractTableRow({
 }: {
   contract: ContractTableItem
 } & Pick<ContractsTableProps, 'onDownloadMeta'>) {
-  const _isContractDeployed = isContractDeployed(contract)
   const { ref: refButton, recentlyClicked } = useRecentlyClicked()
   const isDownloading = recentlyClicked || contract.isDownloading
+  const type = contract.name as TokenType
 
   return (
     <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
       <TableCell component="th" scope="row">
         <TokenWrapper>
-          <TokenIconSvg label={contract.type} />
-          {typeMap[contract.type]}
+          <TokenIconSvg label={type} />
+          {typeMap[type]}
         </TokenWrapper>
       </TableCell>
       <TableCell>
-        {_isContractDeployed && contract.address && (
-          <Stack direction="row">
-            <MonoTypography>
-              {truncateAddress(contract.address, 4)}
-            </MonoTypography>
-            <CopyToClipboardButton
-              id="copy-contract-address"
-              sx={{ marginLeft: '0.5rem' }}
-              data={contract.address}
-            />
-          </Stack>
-        )}
+        <Stack direction="row">
+          <MonoTypography>
+            {truncateAddress(contract.address, 4)}
+          </MonoTypography>
+          <CopyToClipboardButton
+            id="copy-contract-address"
+            sx={{ marginLeft: '0.5rem' }}
+            data={contract.address}
+          />
+        </Stack>
       </TableCell>
-      <TableCell>
-        <Chip
-          label={capitalizeFirstLetter(contract.status)}
-          variant="outlined"
-          color={_isContractDeployed ? 'primary' : 'secondary'}
-          size="small"
-        />
-      </TableCell>
+      <TableCell>{isoToReadableDate(contract.date)}</TableCell>
       <TableCell align="right">
         <IconButton
           ref={refButton}
-          disabled={isDownloading || contract.status === 'compiled'}
-          onClick={() => onDownloadMeta(contract.code_id)}
+          disabled={isDownloading}
+          onClick={() => onDownloadMeta(contract.codeHash)}
         >
           {isDownloading ? (
             <HourglassBottomIcon />
           ) : (
             <Tooltip title="download .json" placement="top">
-              <FileDownloadIcon
-                color={contract.status === 'compiled' ? 'secondary' : 'inherit'}
-              />
+              <FileDownloadIcon color={'inherit'} />
             </Tooltip>
           )}
         </IconButton>
@@ -133,14 +98,14 @@ export function ContractsTable({
             <TableRow>
               <TableCell>TYPE</TableCell>
               <TableCell>ADDRESS</TableCell>
-              <TableCell>STATUS</TableCell>
+              <TableCell>ADDED</TableCell>
               <TableCell align="right">METADATA</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {contracts.map(contract => (
               <ContractTableRow
-                key={contract.code_id}
+                key={contract.address}
                 contract={contract}
                 onDownloadMeta={onDownloadMeta}
               />

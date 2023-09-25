@@ -18,6 +18,7 @@ import {
   ModalStyledListItem,
   ModalTypography
 } from './styled'
+import { openInNewTab } from '@/utils/browserMethods'
 
 type Props = {
   open: boolean
@@ -33,6 +34,7 @@ export function ModalWallet({
 }: Props) {
   const walletInstalled = wallets.filter(wallet => wallet.installed)
   const walletNotInstalled = wallets.filter(wallet => !wallet.installed)
+
   return (
     <Modal open={open} onClose={handleClose}>
       <ModalStyled>
@@ -86,8 +88,7 @@ export function ModalWallet({
                 <>
                   <ModalStyledListItem
                     onClick={() => {
-                      setCurrentWallet(w)
-                      handleClose()
+                      openInNewTab(w.installUrl)
                     }}
                   >
                     <ListItemIcon>

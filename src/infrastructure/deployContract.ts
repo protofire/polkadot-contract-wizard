@@ -7,7 +7,8 @@ import { getErrorMessage } from '@/utils/error'
 
 export interface DeployContractService {
   contractAddress: string
-  txHash: number
+  txHash: string
+  blockNumber: number
 }
 
 type DeployContractParams = {
@@ -79,8 +80,9 @@ export async function deployContractService({
 
             unsub()
             return resolve({
-              txHash: blockNumber,
-              contractAddress
+              txHash: tx.hash.toString(),
+              contractAddress,
+              blockNumber
             })
           }
         }

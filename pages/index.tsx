@@ -5,8 +5,8 @@ import { HomeButton } from '@/components'
 import { ROUTES, TOKEN_PATHS } from '@/constants/index'
 import { TokenType } from '@/domain'
 import { useNetworkAccountsContext } from 'src/context/NetworkAccountsContext'
-import { useStorageContractsContext } from '@/context'
 import { ContractsTableWidget } from '@/view/HomeView/ContractsTableWidget'
+import { useListUserContracts } from '@/hooks/userContracts/useListUserContracts'
 
 const Token: Record<TokenType, TokenType> = {
   psp22: 'psp22',
@@ -15,8 +15,11 @@ const Token: Record<TokenType, TokenType> = {
 }
 
 function Home() {
-  const { accountConnected } = useNetworkAccountsContext()
-  const { contracts } = useStorageContractsContext()
+  const { accountConnected, networkConnected } = useNetworkAccountsContext()
+  const { userContracts: contracts } = useListUserContracts(
+    accountConnected?.address,
+    networkConnected
+  )
 
   return (
     <>

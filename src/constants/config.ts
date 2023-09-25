@@ -26,8 +26,8 @@ const backendRouterApi = {
     pathName: 'deployments',
     method: 'POST'
   },
-  ListDeployment: {
-    pathName: 'deployments',
+  listDeployment: {
+    pathName: 'deployments?user_address=',
     method: 'GET'
   },
   createCompileContract: {

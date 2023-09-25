@@ -2,9 +2,9 @@ import React from 'react'
 import { Box, BoxProps, Stack, Typography } from '@mui/material'
 import { styled } from '@mui/material/styles'
 
-import { ContractDeployed } from '@/domain'
 import { emptyAsDash, truncateAddress } from '@/utils/formatString'
 import { CopyToClipboardButton, MonoTypography } from '@/components'
+import { UserContractDetails } from '@/domain'
 
 const BoxGridStyled = styled(Box)<BoxProps>(() => ({
   display: 'grid',
@@ -21,7 +21,7 @@ const BoxRow = styled(Box)<BoxProps>(() => ({
 export function GridDeployInfo({
   deployedContract
 }: {
-  deployedContract: ContractDeployed | undefined
+  deployedContract: UserContractDetails | undefined
 }) {
   return (
     <BoxGridStyled>
