@@ -7,14 +7,12 @@ networks:
 services:
   web:
     container_name: ${CONTAINER_BASE}_web
-    build:
-      context: .
-      dockerfile: .docker/web/dev.Dockerfile
-      target: runner
+    image: ${WEB_IMAGE}
     ports:
       - ${WEB_EXTERNAL_PORT}:3000
     environment:
       - NODE_ENV=${WEB_ENVIRONMENT}
+      - NODE_OPTIONS='--max-old-space-size=2048'
     networks:
       - polkadot-wizard
     depends_on:
@@ -27,9 +25,7 @@ services:
             fi'
   compiler-be:
     container_name: ${CONTAINER_BASE}_backend
-    build:
-      context: ./ink-compiler-be
-      dockerfile: ./Dockerfile
+    image: ${COMPILER_BE_IMAGE}
     ports:
       - ${BACKEND_EXTERNAL_PORT}:8000
     environment:
@@ -49,3 +45,17 @@ services:
     image: mongo:5.0.16
     networks:
       - polkadot-wizard
+    volumes:
+      - /data/mongodb:/data/db
+  mongoexpress:
+    image: mongo-express:0.54.0
+    ports:
+      - 8081:8081
+    container_name: ${CONTAINER_BASE}_mongoexpress
+    environment:
+      - ME_CONFIG_MONGODB_SERVER=mongodb
+    networks:
+      - polkadot-wizard
+    depends_on:
+      - mongodb
+
