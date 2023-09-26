@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { Stack, Typography } from '@mui/material'
 
-import { HomeButton, HomeButtonHorizontal } from '@/components'
+import { HomeButton, HomeButtonCustom } from '@/components'
 import { CustomContract, ROUTES, TOKEN_PATHS } from '@/constants/index'
 import { TokenType } from '@/domain'
 import { useNetworkAccountsContext } from 'src/context/NetworkAccountsContext'
@@ -67,7 +67,7 @@ function Home() {
         m={{ xs: 2, sm: 4, md: 3 }}
       >
         <Typography variant="h5">Import your own contract ⚡</Typography>
-        <HomeButtonHorizontal
+        <HomeButtonCustom
           LinkComponent={Link}
           href={`/`}
           title="CUSTOM CONTRACT"

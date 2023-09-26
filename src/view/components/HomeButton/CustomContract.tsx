@@ -46,14 +46,14 @@ const WrapperButton = styled(Button)<ButtonProps>(({ theme }) => ({
   }
 }))
 
-export const HomeButton = (props: Props) => {
+export const HomeButtonCustom = (props: Props) => {
   const { title, subtitle, imgProps, imgPath, ...restProps } = props
 
   return (
     <WrapperButton variant="contained" {...restProps}>
       <Stack
         spacing={{ xs: 1, sm: 0, md: 0 }}
-        direction={{ xs: 'column', lg: 'column' }}
+        direction="row"
         alignItems="center"
       >
         <Stack
@@ -68,8 +68,7 @@ export const HomeButton = (props: Props) => {
           direction="column"
           alignItems={{ xs: 'center', md: 'center', lg: 'center' }}
           sx={{
-            width: { xs: '100%', md: '100%', lg: '100%' },
-            marginTop: '1rem !important'
+            width: { xs: '100%', md: '100%', lg: '100%' }
           }}
         >
           <Typography
