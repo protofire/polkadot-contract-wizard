@@ -2,7 +2,7 @@ import Link from 'next/link'
 import { Stack, Typography } from '@mui/material'
 
 import { HomeButton } from '@/components'
-import { ROUTES, TOKEN_PATHS } from '@/constants/index'
+import { CustomContract, ROUTES, TOKEN_PATHS } from '@/constants/index'
 import { TokenType } from '@/domain'
 import { useNetworkAccountsContext } from 'src/context/NetworkAccountsContext'
 import { ContractsTableWidget } from '@/view/HomeView/ContractsTableWidget'
@@ -31,7 +31,7 @@ function Home() {
       </Typography>
       <Stack
         spacing={{ xs: 1, sm: 2, md: 4 }}
-        direction="column"
+        direction="row"
         alignItems="center"
         m={{ xs: 2, sm: 4, md: 8 }}
       >
@@ -58,6 +58,21 @@ function Home() {
           subtitle="Standard smart contract for a Multi Token"
           imgPath={TOKEN_PATHS[Token.psp37]}
           imgProps={{ width: 75, height: 65 }}
+        />
+      </Stack>
+      <Stack
+        spacing={{ xs: 1, sm: 2, md: 4 }}
+        direction="column"
+        alignItems="center"
+        m={{ xs: 2, sm: 4, md: 8 }}
+      >
+        <HomeButton
+          LinkComponent={Link}
+          href={`/`}
+          title="CUSTOM CONTRACT"
+          subtitle="Upload a new contract code"
+          imgPath={CustomContract}
+          imgProps={{ width: 60, height: 60 }}
         />
       </Stack>
       {accountConnected && <ContractsTableWidget contracts={contracts} />}
