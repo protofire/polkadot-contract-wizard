@@ -69,7 +69,57 @@ export const HomeButton = (props: Props) => {
           alignItems={{ xs: 'center', md: 'center', lg: 'center' }}
           sx={{
             width: { xs: '100%', md: '100%', lg: '100%' },
-            marginTop: { sm: '1rem !important', lg: '1rem !important' }
+            marginTop: '1rem !important'
+          }}
+        >
+          <Typography
+            variant="h3"
+            sx={{
+              fontSize: { xs: '1rem', md: '1.1rem', lg: '1.2rem' }
+            }}
+          >
+            {title}
+          </Typography>
+          <Typography
+            variant="subtitle1"
+            align="center"
+            sx={{
+              fontSize: { xs: '0.8rem', md: '0.9rem', lg: '0.9rem' },
+              opacity: '0.6',
+              fontWeight: '400'
+            }}
+          >
+            {subtitle}
+          </Typography>
+        </Stack>
+      </Stack>
+    </WrapperButton>
+  )
+}
+export const HomeButtonHorizontal = (props: Props) => {
+  const { title, subtitle, imgProps, imgPath, ...restProps } = props
+
+  return (
+    <WrapperButton variant="contained" {...restProps}>
+      <Stack
+        spacing={{ xs: 1, sm: 0, md: 0 }}
+        direction="row"
+        alignItems="center"
+      >
+        <Stack
+          spacing={0}
+          direction="column"
+          alignItems="center"
+          sx={{ width: '5rem' }}
+        >
+          <Image alt={title} src={imgPath} {...imgProps} />
+        </Stack>
+        <Stack
+          direction="column"
+          alignItems={{ xs: 'center', md: 'center', lg: 'center' }}
+          sx={{
+            width: { xs: '100%', md: '100%', lg: '100%' },
+            marginTop: '1rem !important'
           }}
         >
           <Typography
