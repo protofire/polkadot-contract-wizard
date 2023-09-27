@@ -31,7 +31,7 @@ function Home() {
       </Typography>
       <Stack
         spacing={{ xs: 1, sm: 2, md: 4 }}
-        direction="row"
+        direction={{ xs: 'column', md: 'row' }}
         alignItems="center"
         m={{ xs: 2, sm: 4, md: 4 }}
       >

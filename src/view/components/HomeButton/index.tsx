@@ -53,7 +53,7 @@ export const HomeButton = (props: Props) => {
     <WrapperButton variant="contained" {...restProps}>
       <Stack
         spacing={{ xs: 1, sm: 0, md: 0 }}
-        direction={{ xs: 'column', lg: 'column' }}
+        direction={{ xs: 'row', lg: 'column' }}
         alignItems="center"
       >
         <Stack
