@@ -1,8 +1,9 @@
 import Box from '@mui/material/Box'
-import Button, { ButtonProps } from '@mui/material/Button'
+import { ButtonProps } from '@mui/material/Button'
 import CircularProgress from '@mui/material/CircularProgress'
 import * as React from 'react'
 import { ReactNode } from 'react'
+import { StyledButton } from './styled'
 
 export interface LoadingButtonProps
   extends Pick<
@@ -22,9 +23,10 @@ export const LoadingButton: React.FC<LoadingButtonProps> = React.forwardRef<
   ref
 ) {
   return (
-    <Button
+    <StyledButton
       ref={ref}
       {...props}
+      isLoading={!isLoading}
       disabled={isLoading}
       sx={{ position: 'relative' }}
       startIcon={startIcon}
@@ -49,6 +51,6 @@ export const LoadingButton: React.FC<LoadingButtonProps> = React.forwardRef<
           }}
         />
       )}
-    </Button>
+    </StyledButton>
   )
 })

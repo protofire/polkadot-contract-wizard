@@ -182,7 +182,7 @@ export default function Step3Deploy({
           ref: refButton,
           endIcon: isButtonNextDisabled ? '🚫' : '🚀',
           disabled: isButtonNextDisabled,
-          loading: _isDeploying,
+          isLoading: _isDeploying,
           ...(contractConstructorFields.length && {
             type: 'submit',
             form: 'deploy-form'
