@@ -1,7 +1,8 @@
 import {
   LocalLibrary,
   SvgIconComponent,
-  SettingsSuggestRounded
+  SettingsSuggestRounded,
+  DashboardCustomizeRounded
 } from '@mui/icons-material'
 import { ROUTES } from '@/constants/routes'
 
@@ -16,7 +17,8 @@ export type NavLink = {
 
 const icons = {
   SettingsSuggestRounded,
-  LocalLibrary
+  LocalLibrary,
+  DashboardCustomizeRounded
 }
 
 export const MENU_ITEMS: NavLink[] = [
@@ -30,10 +32,10 @@ export const MENU_ITEMS: NavLink[] = [
   },
   {
     id: 'home',
-    title: 'Contract Dashboard',
+    title: 'Dashboard',
     type: 'item',
     url: ROUTES.DASHBOARD,
-    icon: icons.SettingsSuggestRounded,
+    icon: icons.DashboardCustomizeRounded,
     target: true
   },
   {
