@@ -10,9 +10,9 @@ import {
 } from '@mui/material'
 import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet'
 
-import Transitions from '@/view/components/Transitions'
-import LogoMobile from '@/view/components/LogoMobile'
-import { WalletConnectButton } from '@/view/components/WalletConnectButton'
+import Transitions from '@/components/Transitions'
+import LogoMobile from '@/components/LogoMobile'
+import { WalletConnectButton } from '@/components/WalletConnectButton'
 
 // ==============================|| HEADER CONTENT - MOBILE ||============================== //
 const MobileSection = () => {
