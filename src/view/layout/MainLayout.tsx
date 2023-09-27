@@ -2,7 +2,7 @@ import React, { ReactNode, useEffect, useState } from 'react'
 import { Box, styled } from '@mui/material'
 
 import MainDrawer from './MainDrawer'
-import { useUserThemeSettings } from 'src/hooks/userThemeSettings'
+import { useUserThemeSettings } from '@/hooks/userThemeSettings'
 import { useMatchDownSM } from '@/hooks'
 import { BoxProps } from '@mui/system'
 import Header from './Header'

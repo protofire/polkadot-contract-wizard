@@ -4,7 +4,7 @@ import {
   getLocalStorageState,
   setLocalStorageState
 } from '@/utils/localStorage'
-import { Settings } from 'src/themes/types'
+import { Settings } from '@/themes/types'
 
 const ITEM_LOCAL_STORAGE = 'settingsTheme'
 

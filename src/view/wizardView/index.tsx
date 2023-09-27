@@ -10,7 +10,7 @@ import { ControlsToken, ROUTES } from '@/constants/index'
 import {
   factoryControlsToken,
   factoryOptionTokenValues
-} from 'src/domain/wizard/factoriesContract'
+} from '@/domain/wizard/factoriesContract'
 import { TokenType, UserContractDetails } from '@/domain'
 import { StackCard } from '@/components'
 import { GridDeployInfo } from './GridDeployInfo'

@@ -10,15 +10,15 @@ import '../public/fonts/inter.css'
 import 'react-toastify/dist/ReactToastify.css'
 
 import ThemeCustomization from '@/themes'
-import { MainLayout } from 'src/view/layout'
+import { MainLayout } from '@/view/layout'
 import { buildEmotionCache } from '@/utils/builderEmotionCache'
-import { SettingsConsumer } from 'src/context/settingsTheme'
-import { NetworkAccountsContextProvider } from 'src/context/NetworkAccountsContext'
+import { SettingsConsumer } from '@/context/settingsTheme'
+import { NetworkAccountsContextProvider } from '@/context/NetworkAccountsContext'
 import {
   AppNotificationContextProvider,
   StorageNotificationsRepository
-} from 'src/context/AppNotificationContext'
-import { CustomSnackBar as AppNotification } from 'src/view/components/Snackbar'
+} from '@/context/AppNotificationContext'
+import { CustomSnackBar as AppNotification } from '@/view/components/Snackbar'
 import { DAPP_CONFIG, DOMAIN } from '@/constants/config'
 import { UseInkProvider } from 'useink'
 import { CHAINS } from '@/constants/chains'

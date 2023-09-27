@@ -1,7 +1,7 @@
 import { ApiPromise } from '@polkadot/api'
 import { useApi } from 'useink'
 
-import { useNetworkAccountsContext } from 'src/context/NetworkAccountsContext'
+import { useNetworkAccountsContext } from '@/context/NetworkAccountsContext'
 
 export interface UseNetworkApi {
   apiPromise: ApiPromise
