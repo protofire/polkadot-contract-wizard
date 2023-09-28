@@ -1,20 +1,6 @@
 import { Box, Link, Stack, Typography } from '@mui/material'
-import Image from 'next/image'
 
-const ImageResponsive = ({ alt, src }: { alt: string; src: string }) => {
-  return (
-    <Image
-      alt={alt}
-      src={src}
-      width={0}
-      height={0}
-      sizes="100vw"
-      style={{ width: '100%', height: 'auto' }}
-    />
-  )
-}
-
-export default function Dashboard() {
+export default function Contracts() {
   return (
     <Box
       sx={{
@@ -23,7 +9,7 @@ export default function Dashboard() {
       }}
     >
       <Typography variant="h1" align="center">
-        Dashboard
+        Contracts
       </Typography>
       <Stack mt={8} flexDirection="column" gap={4} justifyContent={'center'}>
         <Typography variant="h3">Sample title</Typography>
