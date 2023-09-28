@@ -17,13 +17,13 @@ const WrapperButton = styled(Button)<ButtonProps>(({ theme }) => ({
   color: 'white',
   fontSize: '1.4rem',
   borderRadius: '1rem',
-  width: '85%',
+  width: '100%',
   backgroundColor: 'transparent',
   display: 'flex',
   alignItems: 'center',
   margin: '0',
   position: 'relative',
-  padding: '2rem',
+  padding: '1.5rem',
   border: 'solid 1px transparent',
   backgroundImage:
     'linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0)), linear-gradient(180deg, #B214AC, #8C7524)',
@@ -52,8 +52,8 @@ export const HomeButton = (props: Props) => {
   return (
     <WrapperButton variant="contained" {...restProps}>
       <Stack
-        spacing={{ xs: 1, sm: 0, md: 4 }}
-        direction={{ xs: 'column', lg: 'row' }}
+        spacing={{ xs: 1, sm: 0, md: 0 }}
+        direction={{ xs: 'row', lg: 'column' }}
         alignItems="center"
       >
         <Stack
@@ -66,16 +66,16 @@ export const HomeButton = (props: Props) => {
         </Stack>
         <Stack
           direction="column"
-          alignItems={{ xs: 'center', md: 'center', lg: 'flex-start' }}
+          alignItems={{ xs: 'center', md: 'center', lg: 'center' }}
           sx={{
-            width: { xs: '100%', md: '100%', lg: '27rem' },
-            marginTop: { sm: '1rem !important', lg: '0 !important' }
+            width: { xs: '100%', md: '100%', lg: '100%' },
+            marginTop: '1rem !important'
           }}
         >
           <Typography
             variant="h3"
             sx={{
-              fontSize: { xs: '1rem', md: '1.2rem', lg: '1.4rem' }
+              fontSize: { xs: '1rem', md: '1.1rem', lg: '1.2rem' }
             }}
           >
             {title}
