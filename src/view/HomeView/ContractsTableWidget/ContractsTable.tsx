@@ -1,7 +1,6 @@
 import * as React from 'react'
 import {
   IconButton,
-  Chip,
   Table,
   TableBody,
   TableCell,
@@ -18,7 +17,7 @@ import { CopyToClipboardButton, TokenIconSvg } from '@/components'
 import { isoToReadableDate, truncateAddress } from '@/utils/formatString'
 import { TokenType } from '@/domain'
 import { ContractTableItem } from '@/domain/wizard/ContractTableItem'
-import { useRecentlyClicked } from 'src/hooks/useRecentlyClicked'
+import { useRecentlyClicked } from '@/hooks/useRecentlyClicked'
 import { MonoTypography } from '@/components'
 import { StyledTableContainer, TokenWrapper } from './styled'
 

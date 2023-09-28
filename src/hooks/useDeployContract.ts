@@ -7,7 +7,7 @@ import { WeightV2 } from '@polkadot/types/interfaces'
 import { Bytes } from '@polkadot/types'
 
 import { GetServiceData } from '@/types'
-import { useNetworkAccountsContext } from 'src/context/NetworkAccountsContext'
+import { useNetworkAccountsContext } from '@/context/NetworkAccountsContext'
 import { BIG_ZERO_BN } from '@/constants/numbers'
 import { ContractConstructorDataForm } from '@/domain/wizard/step3DeployForm.types'
 import { deployContractService } from '@/infrastructure/deployContract'

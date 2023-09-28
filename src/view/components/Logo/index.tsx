@@ -4,7 +4,7 @@ import NextLink from 'next/link'
 import { ROUTES } from '@/constants/routes'
 import Image from 'next/image'
 
-import { CW_POLKADOT, LOGO_POLKADOT } from 'src/constants/images'
+import { CW_POLKADOT, LOGO_POLKADOT } from '@/constants/images'
 
 export default function Logo() {
   return (
