@@ -1,7 +1,7 @@
 import { Grid, Box, styled, BoxProps } from '@mui/material'
 import { West as WestIcon, East as EastIcon } from '@mui/icons-material'
 
-import { StyledButton as Button, MyButtonProps } from '@/components'
+import { LoadingButton as Button, LoadingButtonProps } from '@/components'
 
 type Props = {
   nextLabel?: React.ReactNode
@@ -10,8 +10,8 @@ type Props = {
   handleBack: () => void
   isNextDisabled?: boolean
   isDoingNext?: boolean
-  nextButtonProps?: MyButtonProps
-  backButtonProps?: MyButtonProps
+  nextButtonProps?: LoadingButtonProps
+  backButtonProps?: LoadingButtonProps
   hiddenBack?: boolean
 }
 

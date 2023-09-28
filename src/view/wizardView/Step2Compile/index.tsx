@@ -5,9 +5,9 @@ import { CopyBlock, atomOneDark } from 'react-code-blocks'
 import { useStepsSCWizard } from '@/context'
 import BackNextButton from '../BackNextButtons'
 import { TokenType } from '@/domain'
-import { useNetworkAccountsContext } from 'src/context/NetworkAccountsContext'
+import { useNetworkAccountsContext } from '@/context/NetworkAccountsContext'
 import { isValidAddress } from '@/utils/blockchain'
-import { useAppNotificationContext } from 'src/context/AppNotificationContext'
+import { useAppNotificationContext } from '@/context/AppNotificationContext'
 import { generateCode } from './generator'
 
 const StyledCopyBlock = styled(Box)(() => ({

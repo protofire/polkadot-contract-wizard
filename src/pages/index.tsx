@@ -4,7 +4,7 @@ import { Stack, Typography } from '@mui/material'
 import { HomeButton, HomeButtonCustom } from '@/components'
 import { CustomContract, ROUTES, TOKEN_PATHS } from '@/constants/index'
 import { TokenType } from '@/domain'
-import { useNetworkAccountsContext } from 'src/context/NetworkAccountsContext'
+import { useNetworkAccountsContext } from '@/context/NetworkAccountsContext'
 import { ContractsTableWidget } from '@/view/HomeView/ContractsTableWidget'
 import { useListUserContracts } from '@/hooks/userContracts/useListUserContracts'
 

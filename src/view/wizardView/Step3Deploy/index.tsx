@@ -15,10 +15,10 @@ import { FormEvent } from '@/domain/common/FormEvent'
 import { useCompileContract } from '@/hooks/compileContract'
 import { ContractCompiledRaw } from '@/infrastructure'
 import { generateCode } from '../Step2Compile/generator'
-import { useDeployContract } from 'src/hooks/useDeployContract'
+import { useDeployContract } from '@/hooks/useDeployContract'
 import { ContractConstructorDataForm } from '@/domain/wizard/step3DeployForm.types'
-import { useNetworkAccountsContext } from 'src/context/NetworkAccountsContext'
-import { useRecentlyClicked } from 'src/hooks/useRecentlyClicked'
+import { useNetworkAccountsContext } from '@/context/NetworkAccountsContext'
+import { useRecentlyClicked } from '@/hooks/useRecentlyClicked'
 import {
   FormConstructorContract,
   ConstructorTokenFieldProps
@@ -182,7 +182,7 @@ export default function Step3Deploy({
           ref: refButton,
           endIcon: isButtonNextDisabled ? '🚫' : '🚀',
           disabled: isButtonNextDisabled,
-          loading: _isDeploying,
+          isLoading: _isDeploying,
           ...(contractConstructorFields.length && {
             type: 'submit',
             form: 'deploy-form'
