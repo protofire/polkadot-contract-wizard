@@ -1,9 +1,21 @@
+import React from 'react'
 import { styled } from '@mui/material/styles'
 import { Button, ButtonProps } from '@mui/material'
 
-export const StyledButton = styled(Button)<
-  ButtonProps & { isLoading: boolean }
->(({ theme, isLoading }) => ({
+interface StyledButtonProps extends ButtonProps {
+  isLoading?: boolean
+}
+
+export const StyledButtonWrapper = React.forwardRef<
+  HTMLButtonElement,
+  StyledButtonProps
+>(function RefStyledButton({ isLoading, ...rest }, ref) {
+  return <Button ref={ref} {...rest} />
+})
+
+export const StyledButton = styled(StyledButtonWrapper, {
+  shouldForwardProp: prop => prop !== 'isLoading'
+})<StyledButtonProps>(({ theme, isLoading }) => ({
   textTransform: 'uppercase',
   color: theme.palette.primary.main,
   fontSize: '1.4rem',

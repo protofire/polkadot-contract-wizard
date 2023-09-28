@@ -19,7 +19,7 @@ export const LoadingButton: React.FC<LoadingButtonProps> = React.forwardRef<
   HTMLButtonElement,
   LoadingButtonProps
 >(function RefLoadingButton(
-  { isLoading, children, startIcon, endIcon, ...props },
+  { isLoading, children, startIcon, endIcon, disabled, ...props },
   ref
 ) {
   return (
@@ -27,7 +27,7 @@ export const LoadingButton: React.FC<LoadingButtonProps> = React.forwardRef<
       ref={ref}
       {...props}
       isLoading={!isLoading}
-      disabled={isLoading}
+      disabled={isLoading || disabled}
       sx={{ position: 'relative' }}
       startIcon={startIcon}
       endIcon={endIcon}

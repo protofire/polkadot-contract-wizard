@@ -1,18 +1,10 @@
 import React, { useMemo, useState } from 'react'
-import {
-  Typography,
-  StepLabel,
-  Step,
-  Stepper,
-  Box,
-  Grid,
-  Button
-} from '@mui/material'
+import { Typography, StepLabel, Step, Stepper, Box, Grid } from '@mui/material'
 import NextLink from 'next/link'
 import dynamic from 'next/dynamic'
 
 import Step1Extensions from './Step1Extensions'
-import { Stepper as StepperWrapper } from '@/components'
+import { StyledButton as Button, Stepper as StepperWrapper } from '@/components'
 import { StepsSCWizardContext } from '@/context'
 import { ControlsToken, ROUTES } from '@/constants/index'
 import {

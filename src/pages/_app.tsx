@@ -6,7 +6,6 @@ import { EmotionCache } from '@emotion/cache'
 import { CacheProvider } from '@emotion/react'
 import PlausibleProvider from 'next-plausible'
 import 'styles/globals.css'
-import 'public/fonts/inter.css'
 import 'react-toastify/dist/ReactToastify.css'
 
 import ThemeCustomization from '@/themes'
