@@ -2,7 +2,7 @@ import Link from 'next/link'
 import { Stack, Typography } from '@mui/material'
 
 import { HomeButton, HomeButtonCustom } from '@/components'
-import { CustomContract, ROUTES, TOKEN_PATHS } from '@/constants/index'
+import { CUSTOM_CONTRACT, ROUTES, TOKEN_PATHS } from '@/constants/index'
 import { TokenType } from '@/domain'
 import { useNetworkAccountsContext } from '@/context/NetworkAccountsContext'
 import { ContractsTableWidget } from '@/view/HomeView/ContractsTableWidget'
@@ -72,7 +72,7 @@ function Home() {
           href={`/`}
           title="CUSTOM CONTRACT"
           subtitle="Upload a new contract code"
-          imgPath={CustomContract}
+          imgPath={CUSTOM_CONTRACT}
           imgProps={{ width: 60, height: 60 }}
         />
       </Stack>
