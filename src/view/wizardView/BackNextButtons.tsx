@@ -19,7 +19,8 @@ const BoxStyled = styled(Box)<BoxProps>(() => ({
   display: 'flex',
   width: '100%',
   justifyContent: 'space-evenly',
-  alignItems: 'center'
+  alignItems: 'center',
+  gap: '0.5rem'
 }))
 
 export default function BackNextButton(props: Props) {
