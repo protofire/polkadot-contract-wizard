@@ -75,7 +75,6 @@ export async function contractDryRun({
     ...Object.values(params)
   )) as ContractInstantiateResult
 
-  debugger
   if (dryRunResult?.result.isOk) return dryRunResult
 
   const dryRunError =

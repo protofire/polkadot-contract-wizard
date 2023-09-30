@@ -138,7 +138,6 @@ export const useDeployContract = (): ReturnValue & {
           wasm
         })
 
-        debugger
         const predictedStorageDeposit = decodeStorageDeposit(storageDeposit)
         const tx = createInstatiateTx(
           api,

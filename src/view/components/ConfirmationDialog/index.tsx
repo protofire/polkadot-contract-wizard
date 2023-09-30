@@ -11,22 +11,26 @@ interface ConfirmationDialogProps {
   open: boolean
   onClose: () => void
   onConfirm: () => void
+  message?: string
 }
+
+const TEXT_CONFIRM = 'Be sure you want to perform this action?'
 
 function ConfirmationDialog({
   open,
   onClose,
-  onConfirm
+  onConfirm,
+  message = TEXT_CONFIRM
 }: ConfirmationDialogProps) {
   return (
     <Dialog open={open} onClose={onClose}>
-      <DialogTitle>Confirmar Acción</DialogTitle>
+      <DialogTitle>Confirm Action</DialogTitle>
       <DialogContent>
-        <p>Be sure you want to perform this action?</p>
+        <p>{message}</p>
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClose}>Cancelar</Button>
-        <Button onClick={onConfirm}>Confirmar</Button>
+        <Button onClick={onClose}>Cancel</Button>
+        <Button onClick={onConfirm}>Confirm</Button>
       </DialogActions>
     </Dialog>
   )
