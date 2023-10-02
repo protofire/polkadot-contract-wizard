@@ -1,10 +1,10 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Box, Stack, Typography } from '@mui/material'
 import { StyledTextField } from '@/components'
+import { useParseMetadataField } from '@/hooks/useParseMetadataField'
 import { DropZone } from '@/view/components/DropZone'
 import { DropzoneWrapper } from '@/view/components/DropZone/DropzoneWrapper'
-
 export default function CustomContracts() {
+  const { metadata, metadataFile, onChange, onRemove } = useParseMetadataField()
   return (
     <Box
       sx={{
@@ -24,16 +24,10 @@ export default function CustomContracts() {
         <DropzoneWrapper>
           <DropZone
             label="Drop a .json file or click to select it"
-            accept={{}}
-            file={undefined}
-            onChange={function (_file: File): void {
-              throw new Error('Function not implemented.')
-            }}
-            onRemove={function (): void {
-              throw new Error('Function not implemented.')
-            }} // file={metadataFile}
-            // onChange={onChange}
-            //  onRemove={_onRemove}
+            accept={{ 'application/json': ['.json', '.contract'] }}
+            file={metadataFile}
+            onChange={onChange}
+            onRemove={_onRemove}
           />
         </DropzoneWrapper>
       </Stack>
