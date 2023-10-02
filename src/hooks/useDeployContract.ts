@@ -13,10 +13,7 @@ import { ContractConstructorDataForm } from '@/domain/wizard/step3DeployForm.typ
 import { deployContractService } from '@/infrastructure/deployContract'
 import { ContractMetadata, TokenType, UserContractDetails } from '@/domain'
 import { genRanHex } from '@/utils/blockchain'
-import {
-  contractDryRun,
-  transformUserInput
-} from '@/infrastructure/contractDryRun'
+import { contractDryRun, userInput } from '@/infrastructure/contractDryRun'
 import { useReportError } from './useReportError'
 import { useNetworkApi } from '@/hooks/useNetworkApi'
 import { ChainId } from '@/infrastructure/useink/chains'
@@ -95,11 +92,7 @@ function createInstatiateTx(
       ? new BlueprintPromise(api, metadata, codeHash)
       : new CodePromise(api, metadata, wasm)
 
-    const transformed = transformUserInput(
-      api.registry,
-      constructor.args,
-      argValues
-    )
+    const transformed = userInput(constructor.args, argValues)
 
     return constructor.args.length > 0
       ? codeOrBlueprint.tx[constructor.method](options, ...transformed)
