@@ -10,6 +10,7 @@ export interface DeploymentItem {
   network: ChainId
   codeId: string
   userAddress: string
+  date: string
 }
 
 export interface IDeploymentsRepository<A, B> {

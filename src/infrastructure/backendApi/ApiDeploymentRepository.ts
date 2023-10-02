@@ -13,6 +13,7 @@ interface DeploymentRaw {
   network: ChainId
   code_id: string
   user_address: string
+  date: string
 }
 
 export type IApiDeploymentRepository = IDeploymentsRepository<
@@ -26,7 +27,8 @@ function adaptDeployment(deploymentRaw: DeploymentRaw): DeploymentItem {
     contractAddress: deploymentRaw.contract_address,
     network: deploymentRaw.network,
     codeId: deploymentRaw.code_id,
-    userAddress: deploymentRaw.user_address
+    userAddress: deploymentRaw.user_address,
+    date: deploymentRaw.date
   }
 }
 
@@ -43,7 +45,8 @@ export class ApiDeploymentRepository implements IApiDeploymentRepository {
           contract_address: deployment.contractAddress,
           network: deployment.network,
           code_id: deployment.codeId,
-          user_address: deployment.userAddress
+          user_address: deployment.userAddress,
+          date: new Date().toISOString()
         })
       }
     )
