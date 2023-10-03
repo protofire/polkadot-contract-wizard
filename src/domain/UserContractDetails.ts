@@ -1,5 +1,6 @@
 import { TokenType } from '@/domain/TokenType'
 import { ContractCompiledRaw } from '@/infrastructure'
+import { ContractType } from '@/domain/repositories/DeploymentRepository'
 
 export type ContractMetadata = ContractCompiledRaw
 
@@ -9,11 +10,11 @@ export interface UserContractDetails {
   address: string
   txHash: string
   codeHash: string
-  type?: TokenType
+  type: ContractType
   name: string
-  abi?: Record<string, unknown>
   date: string
-  external: boolean
+  abi?: Record<string, unknown>
+  external: boolean // Contracts not deployed by PCW are custom and external
 }
 
 export type ContractCompiled = Pick<
@@ -22,20 +23,3 @@ export type ContractCompiled = Pick<
 > & {
   type: TokenType
 }
-
-// export type ContractDeployed = Required<ContractDetails> & {
-//   status: 'deployed'
-// }
-// export type UserContracts = ContractCompiled | ContractDeployed
-
-// export function isContractCompiled(
-//   contract: UserContracts
-// ): contract is ContractCompiled {
-//   return contract.status === 'compiled'
-// }
-
-// export function isContractDeployed(
-//   contract: UserContracts
-// ): contract is ContractDeployed {
-//   return contract.status === 'deployed'
-// }

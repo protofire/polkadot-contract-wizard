@@ -119,12 +119,14 @@ export default function Step3Deploy({
       blockchain: networkConnected,
       successCallback: userContractsDetail => {
         newDeployment({
-          userAddress: accountConnected.address,
           contractName: userContractsDetail.name as TokenType,
-          codeId: userContractsDetail.codeHash,
           contractAddress: userContractsDetail.address,
           network: userContractsDetail.blockchain as ChainId,
-          date: userContractsDetail.date
+          codeId: userContractsDetail.codeHash,
+          userAddress: accountConnected.address,
+          txHash: userContractsDetail.txHash,
+          date: userContractsDetail.date,
+          contractType: userContractsDetail.type
         })
         addUserContract(userContractsDetail)
       }
