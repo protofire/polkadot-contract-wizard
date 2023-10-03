@@ -114,7 +114,6 @@ export function NetworkSelect({
         onClose={closeModal}
         onConfirm={() => {
           closeModal()
-          router.replace(ROUTES.HOME)
           onChange(newChainId)
         }}
       />
