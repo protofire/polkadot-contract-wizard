@@ -4,8 +4,14 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
-  Button
+  Button,
+  Typography,
+  Box
 } from '@mui/material'
+
+const style = {
+  backgroundColor: 'background.paper'
+}
 
 interface ConfirmationDialogProps {
   open: boolean
@@ -14,7 +20,7 @@ interface ConfirmationDialogProps {
   message?: string
 }
 
-const TEXT_CONFIRM = 'Be sure you want to perform this action?'
+const TEXT_CONFIRM = 'Are you sure you want to change the network?'
 
 function ConfirmationDialog({
   open,
@@ -24,14 +30,22 @@ function ConfirmationDialog({
 }: ConfirmationDialogProps) {
   return (
     <Dialog open={open} onClose={onClose}>
-      <DialogTitle>Confirm Action</DialogTitle>
-      <DialogContent>
-        <p>{message}</p>
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={onClose}>Cancel</Button>
-        <Button onClick={onConfirm}>Confirm</Button>
-      </DialogActions>
+      <Box sx={style}>
+        <DialogTitle>
+          <Typography variant="h5" color="white">
+            Change Network confirmation
+          </Typography>
+        </DialogTitle>
+        <DialogContent>
+          <Typography variant="body1" color="white">
+            {message}
+          </Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={onClose}>Cancel</Button>
+          <Button onClick={onConfirm}>Confirm</Button>
+        </DialogActions>
+      </Box>
     </Dialog>
   )
 }
