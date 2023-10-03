@@ -46,7 +46,7 @@ export class ApiDeploymentRepository implements IApiDeploymentRepository {
           network: deployment.network,
           code_id: deployment.codeId,
           user_address: deployment.userAddress,
-          date: new Date().toISOString()
+          date: deployment.date
         })
       }
     )
