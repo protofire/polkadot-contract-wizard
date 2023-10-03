@@ -8,6 +8,7 @@ import {
   Typography,
   Box
 } from '@mui/material'
+import { title } from 'process'
 
 const style = {
   backgroundColor: 'background.paper'
@@ -18,22 +19,25 @@ interface ConfirmationDialogProps {
   onClose: () => void
   onConfirm: () => void
   message?: string
+  title?: string
 }
 
-const TEXT_CONFIRM = 'Are you sure you want to change the network?'
+const TITLE_CONFIRM = 'Confirm to continue'
+const TEXT_CONFIRM = 'Are you sure you want to continue?'
 
 function ConfirmationDialog({
   open,
   onClose,
   onConfirm,
-  message = TEXT_CONFIRM
+  message = TEXT_CONFIRM,
+  title = TITLE_CONFIRM
 }: ConfirmationDialogProps) {
   return (
     <Dialog open={open} onClose={onClose}>
       <Box sx={style}>
         <DialogTitle>
           <Typography variant="h5" color="white">
-            Change Network confirmation
+            {title}
           </Typography>
         </DialogTitle>
         <DialogContent>

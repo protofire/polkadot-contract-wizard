@@ -112,6 +112,8 @@ export function NetworkSelect({
       <ConfirmationDialog
         open={isOpen}
         onClose={closeModal}
+        title="Change Network confirmation"
+        message="Are you sure you want to change the network?"
         onConfirm={() => {
           closeModal()
           onChange(newChainId)
