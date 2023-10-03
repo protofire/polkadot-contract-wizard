@@ -4,7 +4,7 @@ import { useParseMetadataField } from '@/hooks/useParseMetadataField'
 import { DropZone } from '@/view/components/DropZone'
 import { DropzoneWrapper } from '@/view/components/DropZone/DropzoneWrapper'
 export default function CustomContracts() {
-  const { metadata, metadataFile, onChange, onRemove } = useParseMetadataField()
+  const { metadataFile, onChange, onRemove } = useParseMetadataField()
   return (
     <Box
       sx={{
@@ -27,7 +27,7 @@ export default function CustomContracts() {
             accept={{ 'application/json': ['.json', '.contract'] }}
             file={metadataFile}
             onChange={onChange}
-            onRemove={_onRemove}
+            onRemove={onRemove}
           />
         </DropzoneWrapper>
       </Stack>
