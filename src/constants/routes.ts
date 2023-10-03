@@ -3,5 +3,5 @@ export const ROUTES = {
   WIZARD: '/wizard',
   DOCS: '/docs',
   CONTRACTS: '/contracts',
-  CUSTOM: 'custom'
+  CUSTOM: 'custom-contract'
 } as const
