@@ -163,6 +163,7 @@ export const useDeployContract = (): ReturnValue & {
           codeHash: code_id,
           name: tokenType,
           abi: metadataAbi.json,
+          type: tokenType,
           date: new Date().toISOString(),
           external: false
         }

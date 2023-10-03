@@ -2,7 +2,6 @@ import { Abi } from '@polkadot/api-contract'
 import { AbiParam, AbiMessage } from '@polkadot/api-contract/types'
 import { ApiPromise } from '@polkadot/api'
 import { ContractInstantiateResult } from '@polkadot/types/interfaces'
-import { Registry } from '@polkadot/types-codec/types'
 
 import { ContractConstructorDataForm } from '@/domain/wizard/step3DeployForm.types'
 import { BIG_ZERO_BN } from '@/constants/numbers'
