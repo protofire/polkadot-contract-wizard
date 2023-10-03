@@ -5,9 +5,9 @@ import { CopyBlock, atomOneDark } from 'react-code-blocks'
 import { useStepsSCWizard } from '@/context'
 import BackNextButton from '../BackNextButtons'
 import { TokenType } from '@/domain'
-import { useNetworkAccountsContext } from 'src/context/NetworkAccountsContext'
+import { useNetworkAccountsContext } from '@/context/NetworkAccountsContext'
 import { isValidAddress } from '@/utils/blockchain'
-import { useAppNotificationContext } from 'src/context/AppNotificationContext'
+import { useAppNotificationContext } from '@/context/AppNotificationContext'
 import { generateCode } from './generator'
 
 const StyledCopyBlock = styled(Box)(() => ({
@@ -17,9 +17,8 @@ const StyledCopyBlock = styled(Box)(() => ({
 
 export default function Step2Compile({ tokenType }: { tokenType: TokenType }) {
   const { handleBack, handleNext, dataForm, setDataForm } = useStepsSCWizard()
-  const {
-    state: { currentAccount }
-  } = useNetworkAccountsContext()
+  const { accountConnected } = useNetworkAccountsContext()
+  const currentAccount = accountConnected?.address
   const isWalletConnected = useMemo(
     () => isValidAddress(currentAccount),
     [currentAccount]

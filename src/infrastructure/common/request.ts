@@ -5,6 +5,7 @@ export async function request<TResponse>(
   config: RequestInit
 ): Promise<TResponse> {
   const response = await fetch(url, config)
+
   return await response.json()
 }
 

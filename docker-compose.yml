@@ -49,6 +49,3 @@ services:
     image: mongo:5.0.16
     networks:
       - polkadot-wizard
-  
-
-  

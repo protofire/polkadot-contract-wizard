@@ -1,0 +1,61 @@
+version: '3.8'
+
+networks:
+  polkadot-wizard:
+    name: polkadot-wizard 
+
+services:
+  web:
+    container_name: ${CONTAINER_BASE}_web
+    image: ${WEB_IMAGE}
+    ports:
+      - ${WEB_EXTERNAL_PORT}:3000
+    environment:
+      - NODE_ENV=${WEB_ENVIRONMENT}
+      - NODE_OPTIONS='--max-old-space-size=2048'
+    networks:
+      - polkadot-wizard
+    depends_on:
+      - compiler-be
+    command:
+      sh -c 'if [ "$WEB_ENVIRONMENT" = "development" ]; then
+                yarn dev;
+              else
+                yarn start;
+            fi'
+  compiler-be:
+    container_name: ${CONTAINER_BASE}_backend
+    image: ${COMPILER_BE_IMAGE}
+    ports:
+      - ${BACKEND_EXTERNAL_PORT}:8000
+    environment:
+      - MONGOURI=mongodb://mongodb:27017
+    networks:
+      - polkadot-wizard
+    depends_on:
+      - mongodb
+  mongodb:
+    ports:
+      - ${DB_EXTERNAL_PORT}:27017
+    container_name: ${CONTAINER_BASE}_mongodb
+    restart: always
+    logging:
+        options:
+            max-size: 1g
+    image: mongo:5.0.16
+    networks:
+      - polkadot-wizard
+    volumes:
+      - /data/mongodb:/data/db
+  mongoexpress:
+    image: mongo-express:0.54.0
+    ports:
+      - 8081:8081
+    container_name: ${CONTAINER_BASE}_mongoexpress
+    environment:
+      - ME_CONFIG_MONGODB_SERVER=mongodb
+    networks:
+      - polkadot-wizard
+    depends_on:
+      - mongodb
+

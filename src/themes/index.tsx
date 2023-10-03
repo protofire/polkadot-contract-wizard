@@ -5,7 +5,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles'
 import Palette from './palette'
 import typographyOptions from './typography'
 import CustomShadows from './shadows'
-import { Settings } from 'src/themes/types'
+import { Settings } from '@/themes/types'
 import componentsOverride from './overrides'
 
 // ==============================|| DEFAULT THEME - MAIN  ||============================== //

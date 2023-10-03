@@ -31,6 +31,8 @@ const mapSmallIconSize: MapSmallIconSize = tokenTypes
   }, {} as MapSmallIconSize)
 
 export function TokenIconSvg({ label }: Props) {
+  if (!TITLE_MAP_TOKEN[label]) return null
+
   const { title, imgPath } = TITLE_MAP_TOKEN[label]
   const { width, height } = mapSmallIconSize[label]
 

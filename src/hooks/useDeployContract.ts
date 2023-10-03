@@ -7,25 +7,24 @@ import { WeightV2 } from '@polkadot/types/interfaces'
 import { Bytes } from '@polkadot/types'
 
 import { GetServiceData } from '@/types'
-import { useNetworkAccountsContext } from 'src/context/NetworkAccountsContext'
+import { useNetworkAccountsContext } from '@/context/NetworkAccountsContext'
 import { BIG_ZERO_BN } from '@/constants/numbers'
 import { ContractConstructorDataForm } from '@/domain/wizard/step3DeployForm.types'
 import { deployContractService } from '@/infrastructure/deployContract'
-import { useStorageContractsContext } from '@/context'
-import { ContractDeployed, ContractMetadata, TokenType } from '@/domain'
+import { ContractMetadata, TokenType, UserContractDetails } from '@/domain'
 import { genRanHex } from '@/utils/blockchain'
-import {
-  contractDryRun,
-  transformUserInput
-} from '@/infrastructure/contractDryRun'
+import { contractDryRun, userInput } from '@/infrastructure/contractDryRun'
 import { useReportError } from './useReportError'
+import { useNetworkApi } from '@/hooks/useNetworkApi'
+import { ChainId } from '@/infrastructure/useink/chains'
 
 type ReturnValue = GetServiceData
 
 export type UseDeployContract = ContractMetadata & {
   argsForm: ContractConstructorDataForm
   tokenType: TokenType
-  blockchain: ContractDeployed['blockchain']
+  blockchain: ChainId
+  successCallback?: (contractDeployed: UserContractDetails) => void
 }
 
 type UIStorageDeposit = {
@@ -93,11 +92,7 @@ function createInstatiateTx(
       ? new BlueprintPromise(api, metadata, codeHash)
       : new CodePromise(api, metadata, wasm)
 
-    const transformed = transformUserInput(
-      api.registry,
-      constructor.args,
-      argValues
-    )
+    const transformed = userInput(constructor.args, argValues)
 
     return constructor.args.length > 0
       ? codeOrBlueprint.tx[constructor.method](options, ...transformed)
@@ -108,15 +103,16 @@ function createInstatiateTx(
 }
 
 export const useDeployContract = (): ReturnValue & {
-  deployContract: (props: UseDeployContract) => Promise<ContractDeployed | void>
+  deployContract: (
+    props: UseDeployContract
+  ) => Promise<UserContractDetails | void>
 } => {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | undefined>()
   const { reportErrorWithToast } = useReportError()
-  const { addContractToStorage } = useStorageContractsContext()
-  const {
-    state: { api, currentAccount }
-  } = useNetworkAccountsContext()
+  const { accountConnected } = useNetworkAccountsContext()
+  const currentAccount = accountConnected?.address
+  const { apiPromise: api } = useNetworkApi()
 
   const deployContract = useCallback(
     async ({
@@ -125,8 +121,9 @@ export const useDeployContract = (): ReturnValue & {
       argsForm,
       code_id,
       tokenType,
-      blockchain
-    }: UseDeployContract): Promise<ContractDeployed | void> => {
+      blockchain,
+      successCallback
+    }: UseDeployContract): Promise<UserContractDetails | void> => {
       if (!currentAccount || !api) return
       setIsLoading(true)
       setError(undefined)
@@ -158,17 +155,19 @@ export const useDeployContract = (): ReturnValue & {
         )
 
         const result = await deployContractService({ api, tx, currentAccount })
-        const contractDeployed = {
-          code_id,
-          type: tokenType,
-          status: 'deployed' as const,
-          address: result.contractAddress,
+        const contractDeployed: UserContractDetails = {
+          userAddress: currentAccount,
           blockchain,
-          name: '',
-          txHash: result.txHash.toString()
+          txHash: result.txHash,
+          address: result.contractAddress,
+          codeHash: code_id,
+          name: tokenType,
+          abi: metadataAbi.json,
+          date: new Date().toISOString(),
+          external: false
         }
 
-        addContractToStorage(currentAccount, contractDeployed)
+        successCallback?.(contractDeployed)
 
         return contractDeployed
       } catch (error) {
@@ -177,7 +176,7 @@ export const useDeployContract = (): ReturnValue & {
         setIsLoading(false)
       }
     },
-    [addContractToStorage, api, currentAccount, reportErrorWithToast]
+    [api, currentAccount, reportErrorWithToast]
   )
 
   return { isLoading, error, deployContract }

@@ -1,6 +1,7 @@
 export * as Transitions from './Transitions'
 export * from './HomeButton'
-export * from './Button'
+export * from './LoadingButton/styled'
+export * from './LoadingButton'
 export { default as Stepper } from './StepperWrapper'
 export * from './ModalMessage'
 export * from './MonoTypography'

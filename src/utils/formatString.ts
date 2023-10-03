@@ -93,3 +93,32 @@ export function emptyAsDash(value: string | undefined): string {
 export function takeFirstChars(str: string, nChars = 6): string {
   return str.slice(0, nChars)
 }
+
+/**
+ * Converts a Date or ISO date string to a human-readable format.
+ *
+ * @param {Date | string} lastUpdate - The date to be converted.
+ * @returns {string} A human-readable representation of the time elapsed since `lastUpdate`.
+ */
+export const isoToReadableDate = (lastUpdate: Date | string): string => {
+  const lastUpdateDate =
+    typeof lastUpdate === 'string' ? new Date(lastUpdate) : lastUpdate
+
+  if (isNaN(lastUpdateDate.getTime())) {
+    throw new Error('Invalid date input')
+  }
+
+  const currentDate = new Date()
+  const diffTime = currentDate.getTime() - lastUpdateDate.getTime()
+  const diffDays = Math.round(diffTime / (1000 * 3600 * 24))
+
+  if (diffDays === 0) {
+    return 'today'
+  }
+
+  if (diffDays > 30) {
+    return 'more than a month ago'
+  }
+
+  return `${diffDays} days ago`
+}

@@ -1,0 +1,72 @@
+name:  "Build, push to ECR and deploy to EC2 instance"
+
+on:
+  push:
+    tags:
+      - 'be-v*'
+  workflow_dispatch:
+
+jobs:
+  build_and_push_to_ECR:
+    name: Build & push polkadot-wizard image to ECR.
+    runs-on: ubuntu-latest
+    env:
+      # Secrets
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      AWS_REGION: ${{ secrets.AWS_REGION }}
+      SSH_KEY: ${{ secrets.SSH_KEY }}
+
+      # Env variables
+      ACCOUNT_ID: 711012187398
+      REPOSITORY: 'polkadot-contract-wizard-compiler-be'
+      DEPLOYMENT_SERVER_IP: '3.139.60.27' 
+
+      CONTAINER_BASE: "pkw"
+      DB_EXTERNAL_PORT: 27027
+      BACKEND_EXTERNAL_PORT: 8000
+      WEB_EXTERNAL_PORT: 3000
+      WEB_ENVIRONMENT: "production"
+      BRANCH: "develop"
+
+    steps:   
+    - name: Check out Git repository
+      uses: actions/checkout@v3
+      with:
+        submodules: 'true'
+    
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v2
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ env.AWS_REGION }}
+
+    - name: Login to Amazon ECR
+      id: login-ecr
+      uses: aws-actions/amazon-ecr-login@v1
+       
+    - name: Build compiler-be docker-image
+      id: build-compiler-be-image
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+      run: |
+        docker build -t ${{ env.REPOSITORY }}:$GITHUB_REF_NAME . 
+      working-directory: ink-compiler-be/
+
+    - name: Set tag and push compiler-be image to Amazon ECR
+      id: push-image
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+      run: |
+        docker tag ${{ env.REPOSITORY }}:$GITHUB_REF_NAME $ECR_REGISTRY/${{ env.REPOSITORY }}:$GITHUB_REF_NAME
+        docker push $ECR_REGISTRY/${{ env.REPOSITORY }}:$GITHUB_REF_NAME
+    
+    - name: Update Docker Compose Deployment
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+      run: |
+        export IMAGE_URL=$ECR_REGISTRY/${{ env.REPOSITORY }}:$GITHUB_REF_NAME
+        echo "$SSH_KEY" | tr -d '\r' > key.pem && chmod 400 key.pem
+        ssh -o "StrictHostKeyChecking no" -i "key.pem" ubuntu@$DEPLOYMENT_SERVER_IP "export IMAGE_URL=$IMAGE_URL; sed -i '/COMPILER_BE_IMAGE/d' /home/ubuntu/polkadot-contract-wizard/.docker/dev.docker.env; echo COMPILER_BE_IMAGE=$IMAGE_URL >> /home/ubuntu/polkadot-contract-wizard/.docker/dev.docker.env; cd polkadot-contract-wizard/; docker-compose --env-file .docker/dev.docker.env down; sleep 5; docker-compose --env-file .docker/dev.docker.env up -d"
+

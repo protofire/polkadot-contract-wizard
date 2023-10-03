@@ -1,6 +1,6 @@
-import { Contract } from '@/domain/Contract'
+import { UserContractDetails } from '@/domain/UserContractDetails'
 
-export type ContractTableItem = Contract & {
+export type ContractTableItem = UserContractDetails & {
   sourceJsonString?: string
   isDownloading?: boolean
 }

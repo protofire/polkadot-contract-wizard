@@ -4,7 +4,7 @@ import { ToastContainer, toast } from 'react-toastify'
 import {
   AppNotification,
   useAppNotificationContext
-} from 'src/context/AppNotificationContext'
+} from '@/context/AppNotificationContext'
 
 type SnackbarMessage = AppNotification
 
