@@ -1,8 +1,7 @@
 import { ChainId } from '@/infrastructure/useink/chains'
 import { TokenType } from '../TokenType'
 
-// TODO implement on API
-type ContractType = TokenType | 'custom'
+export type ContractType = TokenType | 'custom'
 
 export interface DeploymentItem {
   contractName: TokenType
@@ -10,7 +9,10 @@ export interface DeploymentItem {
   network: ChainId
   codeId: string
   userAddress: string
+  txHash?: string
   date: string
+  contractType: ContractType
+  externalAbi?: Record<string, unknown>
 }
 
 export interface IDeploymentsRepository<A, B> {
