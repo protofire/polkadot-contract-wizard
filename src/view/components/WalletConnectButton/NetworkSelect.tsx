@@ -10,6 +10,12 @@ import {
 } from '@mui/material'
 import { CHAINS_ALLOWED, getChain } from '@/constants/chains'
 import { ChainId } from '@/infrastructure/useink/chains/types'
+import ConfirmationDialog from '../ConfirmationDialog'
+import { useModalBehaviour } from '@/hooks/useModalBehaviour'
+import { useCompareCurrentPath } from '@/hooks/useCompareCurrentPath'
+import { ROUTES } from '@/constants'
+import { useEffect, useState } from 'react'
+import { useRouter } from 'next/router'
 
 const StyledSelect = styled(Select)<SelectProps>(() => ({
   color: 'white',
@@ -60,10 +66,24 @@ export function NetworkSelect({
   onChange: (chain: ChainId) => void
 }) {
   const chain = getChain(currentChain)
+  const { closeModal, isOpen, openModal } = useModalBehaviour()
+  const { isEqual: isCurrentPathHome } = useCompareCurrentPath(ROUTES.HOME)
+  const [newChainId, setNewChainId] = useState(currentChain)
+  const router = useRouter()
+
+  useEffect(() => {
+    setNewChainId(currentChain)
+  }, [currentChain])
 
   const _handleChangeChain = (event: SelectChangeEvent<unknown>) => {
     const chainId = event.target.value as ChainId
-    onChange(chainId)
+    setNewChainId(chainId)
+
+    if (isCurrentPathHome) {
+      onChange(chainId)
+    } else {
+      openModal()
+    }
   }
 
   return (
@@ -89,6 +109,16 @@ export function NetworkSelect({
           </StyledMenuItem>
         ))}
       </StyledSelect>
+      <ConfirmationDialog
+        open={isOpen}
+        onClose={closeModal}
+        title="Change Network confirmation"
+        message="Are you sure you want to change the network?"
+        onConfirm={() => {
+          closeModal()
+          onChange(newChainId)
+        }}
+      />
     </>
   )
 }

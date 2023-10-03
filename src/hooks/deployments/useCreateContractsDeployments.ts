@@ -3,13 +3,13 @@ import { useCallback, useState } from 'react'
 import { DeploymentItem } from '@/domain/repositories/DeploymentRepository'
 import { useLocalDbContext } from '@/context/LocalDbContext'
 
-interface UseAddDeployment {
+interface UseServiceAddDeployment {
   newDeployment: (deployment: DeploymentItem) => Promise<string | undefined>
   isLoading: boolean
   error?: string
 }
 
-export function useCreateContractDeployments(): UseAddDeployment {
+export function useCreateContractDeployments(): UseServiceAddDeployment {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | undefined>()
   const { deploymentsRepository } = useLocalDbContext()

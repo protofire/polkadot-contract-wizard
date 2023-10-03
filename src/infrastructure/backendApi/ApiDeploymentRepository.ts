@@ -1,5 +1,6 @@
 import { BackendApiConfig } from '@/constants/config'
 import {
+  ContractType,
   DeploymentItem,
   IDeploymentsRepository
 } from '@/domain/repositories/DeploymentRepository'
@@ -13,6 +14,10 @@ interface DeploymentRaw {
   network: ChainId
   code_id: string
   user_address: string
+  tx_hash?: string
+  date: string
+  contract_type: ContractType
+  external_abi?: string
 }
 
 export type IApiDeploymentRepository = IDeploymentsRepository<
@@ -26,7 +31,13 @@ function adaptDeployment(deploymentRaw: DeploymentRaw): DeploymentItem {
     contractAddress: deploymentRaw.contract_address,
     network: deploymentRaw.network,
     codeId: deploymentRaw.code_id,
-    userAddress: deploymentRaw.user_address
+    userAddress: deploymentRaw.user_address,
+    txHash: deploymentRaw.tx_hash,
+    date: deploymentRaw.date,
+    contractType: deploymentRaw.contract_type,
+    externalAbi: deploymentRaw.external_abi
+      ? JSON.parse(deploymentRaw.external_abi)
+      : undefined
   }
 }
 
@@ -43,7 +54,13 @@ export class ApiDeploymentRepository implements IApiDeploymentRepository {
           contract_address: deployment.contractAddress,
           network: deployment.network,
           code_id: deployment.codeId,
-          user_address: deployment.userAddress
+          user_address: deployment.userAddress,
+          tx_hash: deployment.txHash,
+          date: deployment.date,
+          contract_type: deployment.contractType,
+          ...(deployment.externalAbi && {
+            external_abi: deployment.externalAbi
+          })
         })
       }
     )

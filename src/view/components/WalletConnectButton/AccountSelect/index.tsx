@@ -1,7 +1,7 @@
 import { SelectChangeEvent, Stack, Avatar } from '@mui/material'
 import { shortNameLonger, truncateAddress } from '@/utils/formatString'
 import CircleIcon from '@mui/icons-material/Circle'
-import PowerOffIcon from '@mui/icons-material/PowerOff'
+import PowerSettingsNewRoundedIcon from '@mui/icons-material/PowerSettingsNewRounded'
 import { OPTION_FOR_DISCONNECTING } from '@/context/NetworkAccountsContext'
 import {
   WalletAccount,
@@ -86,20 +86,22 @@ export function AccountSelect({
                 <span>{shortNameLonger(a.name as string)}</span>
                 <p>{truncateAddress(a.address)}</p>
               </Stack>
-              <CircleIcon
-                style={{
-                  marginLeft: '15px',
-                  marginTop: '10px',
-                  fontSize: '0.9rem',
-                  color: `#20E24B`
-                }}
-              />
+              {accountConnected.address === a.address && (
+                <CircleIcon
+                  style={{
+                    marginLeft: '16px',
+                    marginTop: '10px',
+                    fontSize: '0.9rem',
+                    color: `#20E24B`
+                  }}
+                />
+              )}
             </Stack>
           )}
 
           {a.name === OPTION_FOR_DISCONNECTING && (
             <>
-              <PowerOffIcon sx={{ fontSize: '2rem' }} />
+              <PowerSettingsNewRoundedIcon sx={{ fontSize: '1.4rem' }} />
               <Stack
                 sx={{
                   height: '20px',
@@ -115,7 +117,7 @@ export function AccountSelect({
                       fontSize: '1rem'
                     }}
                   >
-                    Disconect Wallet
+                    Disconnect Wallet
                   </p>
                 </Stack>
               </Stack>
