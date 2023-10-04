@@ -1,9 +1,10 @@
 import React from 'react'
-import { Box, BoxProps, Stack, Typography } from '@mui/material'
+import { Box, BoxProps, Link, Stack, Typography } from '@mui/material'
 import { styled } from '@mui/material/styles'
 
 import { emptyAsDash, truncateAddress } from '@/utils/formatString'
 import { CopyToClipboardButton, MonoTypography } from '@/components'
+import OpenInNewRoundedIcon from '@mui/icons-material/OpenInNewRounded'
 import { UserContractDetails } from '@/domain'
 
 const BoxGridStyled = styled(Box)<BoxProps>(() => ({
@@ -52,18 +53,30 @@ export function GridDeployInfo({
       </BoxRow>
       <BoxRow>
         <Typography variant="caption" fontWeight="500">
-          Block Number
+          Transaction Hash
         </Typography>
         <Stack direction="row" alignSelf="center">
           <MonoTypography variant="body1">
             {truncateAddress(deployedContract?.txHash, 8)}
           </MonoTypography>
           {deployedContract?.txHash && (
-            <CopyToClipboardButton
-              id="copy-block-number"
-              sx={{ marginLeft: '0.5rem' }}
-              data={deployedContract.txHash}
-            />
+            <Box flexDirection="row">
+              <CopyToClipboardButton
+                id="copy-block-number"
+                sx={{ marginLeft: '0.5rem' }}
+                data={deployedContract.txHash}
+              />
+              <Link
+                href="https://www.subscan.io/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <OpenInNewRoundedIcon
+                  fontSize="small"
+                  sx={{ marginTop: '0.3rem' }}
+                />
+              </Link>
+            </Box>
           )}
         </Stack>
       </BoxRow>
