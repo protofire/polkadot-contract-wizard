@@ -1,21 +1,22 @@
 import React from 'react'
-import { Box, BoxProps, Link, Stack, Typography } from '@mui/material'
+import { Box, BoxProps, Stack, Typography } from '@mui/material'
 import { styled } from '@mui/material/styles'
 
 import { emptyAsDash, truncateAddress } from '@/utils/formatString'
 import { CopyToClipboardButton, MonoTypography } from '@/components'
 import OpenInNewRoundedIcon from '@mui/icons-material/OpenInNewRounded'
 import { UserContractDetails } from '@/domain'
+import { ExplorerLink } from '@/components/ExplorerLink'
 
-const BoxGridStyled = styled(Box)<BoxProps>(() => ({
+export const BoxGridStyled = styled(Box)<BoxProps>(() => ({
   display: 'grid',
   gridTemplateColumns: '1fr',
   gridTemplateRows: 'repeat(3, 1fr)',
   gap: '1rem',
-  paddingTop: '2rem'
+  ngTop: '2rem'
 }))
 
-const BoxRow = styled(Box)<BoxProps>(() => ({
+export const BoxRow = styled(Box)<BoxProps>(() => ({
   display: 'inherit'
 }))
 
@@ -66,16 +67,10 @@ export function GridDeployInfo({
                 sx={{ marginLeft: '0.5rem' }}
                 data={deployedContract.txHash}
               />
-              <Link
-                href="https://www.subscan.io/"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <OpenInNewRoundedIcon
-                  fontSize="small"
-                  sx={{ marginTop: '0.3rem' }}
-                />
-              </Link>
+              <ExplorerLink
+                blockchain={deployedContract.blockchain}
+                txHash={deployedContract.txHash}
+              />
             </Box>
           )}
         </Stack>
