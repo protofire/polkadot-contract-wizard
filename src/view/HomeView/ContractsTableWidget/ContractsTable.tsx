@@ -20,7 +20,6 @@ import { ContractTableItem } from '@/domain/wizard/ContractTableItem'
 import { useRecentlyClicked } from '@/hooks/useRecentlyClicked'
 import { MonoTypography } from '@/components'
 import { StyledTableContainer, TokenWrapper } from './styled'
-import { ExplorerLink } from '@/view/components/ExplorerLink'
 
 const typeMap: Record<TokenType, string> = {
   psp34: 'NFT',

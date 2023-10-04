@@ -21,7 +21,6 @@ export function ExplorerLink({
   )
   const linkDisabled = txHash ? false : true
 
-  console.log('__txHash', txHash, linkDisabled)
   if (!explorerUrl) return null
 
   const iconWithStyles = linkDisabled ? (
