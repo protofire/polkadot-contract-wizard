@@ -4,17 +4,19 @@ import { styled } from '@mui/material/styles'
 
 import { emptyAsDash, truncateAddress } from '@/utils/formatString'
 import { CopyToClipboardButton, MonoTypography } from '@/components'
+import OpenInNewRoundedIcon from '@mui/icons-material/OpenInNewRounded'
 import { UserContractDetails } from '@/domain'
+import { ExplorerLink } from '@/components/ExplorerLink'
 
-const BoxGridStyled = styled(Box)<BoxProps>(() => ({
+export const BoxGridStyled = styled(Box)<BoxProps>(() => ({
   display: 'grid',
   gridTemplateColumns: '1fr',
   gridTemplateRows: 'repeat(3, 1fr)',
   gap: '1rem',
-  paddingTop: '2rem'
+  marginTop: '1rem'
 }))
 
-const BoxRow = styled(Box)<BoxProps>(() => ({
+export const BoxRow = styled(Box)<BoxProps>(() => ({
   display: 'inherit'
 }))
 
@@ -52,18 +54,24 @@ export function GridDeployInfo({
       </BoxRow>
       <BoxRow>
         <Typography variant="caption" fontWeight="500">
-          Block Number
+          Transaction Hash
         </Typography>
         <Stack direction="row" alignSelf="center">
           <MonoTypography variant="body1">
             {truncateAddress(deployedContract?.txHash, 8)}
           </MonoTypography>
           {deployedContract?.txHash && (
-            <CopyToClipboardButton
-              id="copy-block-number"
-              sx={{ marginLeft: '0.5rem' }}
-              data={deployedContract.txHash}
-            />
+            <Box flexDirection="row">
+              <CopyToClipboardButton
+                id="copy-block-number"
+                sx={{ marginLeft: '0.5rem' }}
+                data={deployedContract.txHash}
+              />
+              <ExplorerLink
+                blockchain={deployedContract.blockchain}
+                txHash={deployedContract.txHash}
+              />
+            </Box>
           )}
         </Stack>
       </BoxRow>
