@@ -10,6 +10,7 @@ export default function Contracts() {
     accountConnected?.address,
     networkConnected
   )
+                                  
   return (
     <Box
       sx={{
@@ -17,6 +18,7 @@ export default function Contracts() {
         margin: '0 auto 2rem auto'
       }}
     >
+      
       <Typography variant="h1" align="left">
         Your Contracts
       </Typography>
