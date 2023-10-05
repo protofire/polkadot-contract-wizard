@@ -2,7 +2,6 @@ import { useNetworkAccountsContext } from '@/context/NetworkAccountsContext'
 import { useListUserContracts } from '@/hooks/userContracts/useListUserContracts'
 import { ContractsTableWidget } from '@/view/ContractView/ContractsTable'
 import { Box, Paper, Typography } from '@mui/material'
-import WarningIcon from '@mui/icons-material/Warning'
 
 export default function Contracts() {
   const { accountConnected, networkConnected } = useNetworkAccountsContext()
@@ -10,7 +9,7 @@ export default function Contracts() {
     accountConnected?.address,
     networkConnected
   )
-                                  
+
   return (
     <Box
       sx={{
@@ -18,7 +17,6 @@ export default function Contracts() {
         margin: '0 auto 2rem auto'
       }}
     >
-      
       <Typography variant="h1" align="left">
         Your Contracts
       </Typography>
