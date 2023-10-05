@@ -2,14 +2,12 @@ import { Abi } from '@polkadot/api-contract'
 import { AbiParam, AbiMessage } from '@polkadot/api-contract/types'
 import { ApiPromise } from '@polkadot/api'
 import { ContractInstantiateResult } from '@polkadot/types/interfaces'
-import { Registry } from '@polkadot/types-codec/types'
 
 import { ContractConstructorDataForm } from '@/domain/wizard/step3DeployForm.types'
 import { BIG_ZERO_BN } from '@/constants/numbers'
 import { ContractMetadata } from '@/domain'
 
-export function transformUserInput(
-  registry: Registry,
+export function userInput(
   deployConstructor: AbiParam[],
   argsFormValues: ContractConstructorDataForm
 ) {
@@ -17,9 +15,6 @@ export function transformUserInput(
 
   return deployConstructor.map(param => {
     const value = values[param.name] ?? null
-    if (value && param.type) {
-      return registry.createType(param.type.type, value)
-    }
 
     return value
   })
@@ -34,11 +29,7 @@ function getParamsContractInstatiate(
 ) {
   const deployConstructor: AbiMessage = metadataAbi.constructors[0]
   const inputData = deployConstructor.toU8a(
-    transformUserInput(
-      metadataAbi.registry,
-      deployConstructor.args,
-      argsFormValues
-    )
+    userInput(deployConstructor.args, argsFormValues)
   )
 
   return {
