@@ -1,16 +1,7 @@
 import React from 'react'
-import {
-  Box,
-  Button,
-  IconButton,
-  Modal,
-  TextField,
-  Typography
-} from '@mui/material'
+import { Box, Button, IconButton, Modal, Typography } from '@mui/material'
 import CloseIcon from '@mui/icons-material/Close'
 import { ModalStyled, ModalTypography } from './styled'
-import WarningIcon from '@mui/icons-material/Warning'
-import { CopyToClipboardButton } from '../CopyButton'
 import { useCopyToClipboard } from '@/hooks'
 
 type Props = {
@@ -33,12 +24,12 @@ export function ShareContractModal({ open, handleClose, url }: Props) {
           contract directly.
         </Typography>
 
-        <Box display={'flex'} alignItems={'center'} mt={1}>
-          <WarningIcon
-            sx={{ color: '#FFE607', fontSize: '1.2rem' }}
-          ></WarningIcon>
-          <Typography sx={{ fontStyle: 'italic', marginLeft: '0.5rem' }}>
-            Remember the interaction depends on the contract permissions.
+        <Box mt={1}>
+          <Typography>
+            ⚠️{' '}
+            <span style={{ fontStyle: 'italic' }}>
+              Remember the interaction depends on the contract permissions.
+            </span>
           </Typography>
         </Box>
 
