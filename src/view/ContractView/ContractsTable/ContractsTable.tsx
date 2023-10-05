@@ -10,7 +10,6 @@ import {
 
 import { CopyToClipboardButton, TokenIconSvg } from '@/components'
 import { isoToReadableDate, truncateAddress } from '@/utils/formatString'
-import { TokenType } from '@/domain'
 import { ContractTableItem } from '@/domain/wizard/ContractTableItem'
 import { MonoTypography } from '@/components'
 import { StyledTableContainer, TokenWrapper } from './styled'
@@ -26,8 +25,6 @@ export interface ContractsTableProps {
   contracts: ContractTableItem[]
 }
 
-type ContractType = keyof typeof TITLE_MAP_TOKEN
-
 function ContractTableRow({
   contract,
   setOpenModal
@@ -35,7 +32,7 @@ function ContractTableRow({
   contract: ContractTableItem
   setOpenModal: React.Dispatch<React.SetStateAction<boolean>>
 }) {
-  const typeMap = TITLE_MAP_TOKEN[contract.type as ContractType]
+  const typeMap = TITLE_MAP_TOKEN[contract.type]
   return (
     <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
       <TableCell component="th" scope="row">
@@ -51,7 +48,7 @@ function ContractTableRow({
       </TableCell>
       <TableCell component="th" scope="row">
         <TokenWrapper>
-          <TokenIconSvg label={contract.type as ContractType} />
+          <TokenIconSvg label={contract.type} />
           {typeMap.title}
         </TokenWrapper>
       </TableCell>

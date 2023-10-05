@@ -3,10 +3,7 @@ import { shortNameLonger, truncateAddress } from '@/utils/formatString'
 import CircleIcon from '@mui/icons-material/Circle'
 import PowerSettingsNewRoundedIcon from '@mui/icons-material/PowerSettingsNewRounded'
 import { OPTION_FOR_DISCONNECTING } from '@/context/NetworkAccountsContext'
-import {
-  WalletAccount,
-  WalletLogoProps
-} from '@/infrastructure/useink/walletTypes'
+import { WalletAccount } from '@/infrastructure/useink/walletTypes'
 import { StyledMenuItem, StyledSelect } from './styled'
 
 interface AccountSelectProps {
