@@ -4,7 +4,7 @@ import InputAdornment from '@mui/material/InputAdornment'
 import TextField from '@mui/material/TextField'
 import { Search } from '@mui/icons-material'
 import { MenuItem, Select, SelectChangeEvent } from '@mui/material'
-import { typeMap } from './ContractsTable/ContractsTable'
+import { TITLE_MAP_TOKEN } from '@/constants/titleTokenType'
 
 type Props = {
   types: string[]
@@ -16,14 +16,13 @@ export default function SearchInput({ handleChange }: Props) {
 
   const searchType = [
     { name: 'TYPE', value: '' },
-    ...Object.entries(typeMap).map(element => ({
-      name: element[1],
+    ...Object.entries(TITLE_MAP_TOKEN).map(element => ({
+      name: element[1].title,
       value: element[0]
     }))
   ]
 
   const handleSelect = (event: SelectChangeEvent) => {
-    console.log('value', event.target.value)
     setContractType(event.target.value)
   }
 

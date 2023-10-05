@@ -3,9 +3,6 @@ import { styled } from '@mui/material/styles'
 
 export const StyledTableContainer = styled(TableContainer)<TableContainerProps>(
   ({ theme }) => ({
-    [theme.breakpoints.down('md')]: {
-      /* styles here */
-    },
     '& .MuiTable-root': {
       margin: '2rem auto',
       width: '100%'

@@ -1,17 +1,12 @@
 import * as React from 'react'
 import {
-  IconButton,
   Table,
   TableBody,
   TableCell,
   TableHead,
   TableRow,
-  Typography,
-  Stack,
-  Tooltip
+  Stack
 } from '@mui/material'
-import FileDownloadIcon from '@mui/icons-material/FileDownload'
-import HourglassBottomIcon from '@mui/icons-material/HourglassBottom'
 
 import { CopyToClipboardButton, TokenIconSvg } from '@/components'
 import { isoToReadableDate, truncateAddress } from '@/utils/formatString'
@@ -25,16 +20,13 @@ import EditIcon from '@mui/icons-material/Edit'
 import ShareIcon from '@mui/icons-material/Share'
 import DeleteIcon from '@mui/icons-material/Delete'
 import { ShareContractModal } from '@/view/components/ShareContractModal'
-
-export const typeMap: Record<TokenType, string> = {
-  psp34: 'NFT',
-  psp22: 'TOKEN',
-  psp37: 'MULTI TOKEN'
-}
+import { TITLE_MAP_TOKEN } from '@/constants/titleTokenType'
 
 export interface ContractsTableProps {
   contracts: ContractTableItem[]
 }
+
+type ContractType = keyof typeof TITLE_MAP_TOKEN
 
 function ContractTableRow({
   contract,
@@ -43,12 +35,12 @@ function ContractTableRow({
   contract: ContractTableItem
   setOpenModal: React.Dispatch<React.SetStateAction<boolean>>
 }) {
-  const type = contract.name as TokenType
+  const typeMap = TITLE_MAP_TOKEN[contract.type as ContractType]
   return (
     <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
       <TableCell component="th" scope="row">
         <TokenWrapper>
-          {typeMap[type]}
+          {typeMap.title}
           <DefaultToolTipButton
             id="edit-contract-address"
             sx={{ marginLeft: '0.5rem', color: 'white' }}
@@ -59,8 +51,8 @@ function ContractTableRow({
       </TableCell>
       <TableCell component="th" scope="row">
         <TokenWrapper>
-          <TokenIconSvg label={type} />
-          {typeMap[type]}
+          <TokenIconSvg label={contract.type as ContractType} />
+          {typeMap.title}
         </TokenWrapper>
       </TableCell>
       <TableCell>
