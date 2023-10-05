@@ -1,6 +1,5 @@
 import { IconButton, SxProps } from '@mui/material'
 import ContentCopyRoundedIcon from '@mui/icons-material/ContentCopyRounded'
-// import { Tooltip } from 'react-tooltip'
 import Tooltip from '@mui/material/Tooltip'
 
 import { useCopyToClipboard } from '@/hooks'
