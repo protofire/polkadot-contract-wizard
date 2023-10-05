@@ -85,10 +85,7 @@ export function ContractsTableWidget({
           Add new contract
         </Button>
       </Box>
-      <ContractsTable
-        contracts={contractsItem}
-        onDownloadMeta={onDownloadSource}
-      />
+      <ContractsTable contracts={contractsItem} />
     </>
   )
 }

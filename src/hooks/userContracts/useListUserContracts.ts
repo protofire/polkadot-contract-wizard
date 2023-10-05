@@ -1,4 +1,4 @@
-import { use, useCallback, useState } from 'react'
+import { useCallback, useState } from 'react'
 
 import { useLocalDbContext } from '@/context/LocalDbContext'
 import { UserContractDetails, WalletConnectionEvents } from '@/domain'

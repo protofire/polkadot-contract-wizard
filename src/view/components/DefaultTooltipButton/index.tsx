@@ -3,24 +3,19 @@ import Tooltip from '@mui/material/Tooltip'
 import { OverridableComponent } from '@mui/material/OverridableComponent'
 
 interface Props {
-  data: string
   sx?: SxProps
   id: string
   title: string
   Icon: OverridableComponent<SvgIconTypeMap<object, 'svg'>> & {
     muiName: string
   }
+  onClick?: React.MouseEventHandler<HTMLButtonElement>
 }
 
-export const DefaultToolTipButton = ({ data, sx, title, Icon }: Props) => {
+export const DefaultToolTipButton = ({ sx, title, Icon, onClick }: Props) => {
   return (
     <Tooltip placement="top" title={title}>
-      <IconButton
-        size="small"
-        color="primary"
-        onClick={() => undefined}
-        sx={sx}
-      >
+      <IconButton size="small" color="primary" onClick={onClick} sx={sx}>
         <SvgIcon component={Icon} fontSize="inherit" />
       </IconButton>
     </Tooltip>

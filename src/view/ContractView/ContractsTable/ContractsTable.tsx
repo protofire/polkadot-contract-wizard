@@ -17,7 +17,6 @@ import { CopyToClipboardButton, TokenIconSvg } from '@/components'
 import { isoToReadableDate, truncateAddress } from '@/utils/formatString'
 import { TokenType } from '@/domain'
 import { ContractTableItem } from '@/domain/wizard/ContractTableItem'
-import { useRecentlyClicked } from '@/hooks/useRecentlyClicked'
 import { MonoTypography } from '@/components'
 import { StyledTableContainer, TokenWrapper } from './styled'
 import { DefaultToolTipButton } from '@/view/components/DefaultTooltipButton'
@@ -25,6 +24,7 @@ import { DefaultToolTipButton } from '@/view/components/DefaultTooltipButton'
 import EditIcon from '@mui/icons-material/Edit'
 import ShareIcon from '@mui/icons-material/Share'
 import DeleteIcon from '@mui/icons-material/Delete'
+import { ShareContractModal } from '@/view/components/ShareContractModal'
 
 export const typeMap: Record<TokenType, string> = {
   psp34: 'NFT',
@@ -34,15 +34,15 @@ export const typeMap: Record<TokenType, string> = {
 
 export interface ContractsTableProps {
   contracts: ContractTableItem[]
-  onDownloadMeta: (codeId: string) => void
 }
 
 function ContractTableRow({
   contract,
-  onDownloadMeta
+  setOpenModal
 }: {
   contract: ContractTableItem
-} & Pick<ContractsTableProps, 'onDownloadMeta'>) {
+  setOpenModal: React.Dispatch<React.SetStateAction<boolean>>
+}) {
   const type = contract.name as TokenType
   return (
     <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
@@ -52,7 +52,6 @@ function ContractTableRow({
           <DefaultToolTipButton
             id="edit-contract-address"
             sx={{ marginLeft: '0.5rem', color: 'white' }}
-            data={contract.address}
             title="Edit"
             Icon={EditIcon}
           ></DefaultToolTipButton>
@@ -81,14 +80,13 @@ function ContractTableRow({
         <DefaultToolTipButton
           id="share-contract-address"
           sx={{ marginLeft: '0.5rem', color: 'white' }}
-          data={contract.address}
           title="Share"
           Icon={ShareIcon}
+          onClick={() => setOpenModal(true)}
         ></DefaultToolTipButton>
         <DefaultToolTipButton
           id="delete-contract-address"
           sx={{ marginLeft: '0.5rem', color: 'white' }}
-          data={contract.address}
           title="Delete"
           Icon={DeleteIcon}
         ></DefaultToolTipButton>
@@ -98,9 +96,10 @@ function ContractTableRow({
 }
 
 export function ContractsTable({
-  contracts,
-  onDownloadMeta
+  contracts
 }: ContractsTableProps): JSX.Element {
+  const [openModal, setOpenModal] = React.useState(false)
+  const [url, setUrl] = React.useState('')
   return (
     <>
       <StyledTableContainer>
@@ -115,16 +114,27 @@ export function ContractsTable({
             </TableRow>
           </TableHead>
           <TableBody>
-            {contracts.map(contract => (
-              <ContractTableRow
-                key={contract.address}
-                contract={contract}
-                onDownloadMeta={onDownloadMeta}
-              />
-            ))}
+            {contracts.map(contract => {
+              const url = `https://contractwizard.xyz/contract/?user=${contract.userAddress}&contract=${contract.address}`
+              return (
+                <ContractTableRow
+                  key={contract.address}
+                  contract={contract}
+                  setOpenModal={() => {
+                    setUrl(url)
+                    setOpenModal(true)
+                  }}
+                />
+              )
+            })}
           </TableBody>
         </Table>
       </StyledTableContainer>
+      <ShareContractModal
+        open={openModal}
+        handleClose={() => setOpenModal(false)}
+        url={url}
+      ></ShareContractModal>
     </>
   )
 }
