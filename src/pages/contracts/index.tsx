@@ -1,6 +1,14 @@
+import { useNetworkAccountsContext } from '@/context/NetworkAccountsContext'
+import { useListUserContracts } from '@/hooks/userContracts/useListUserContracts'
+import { ContractsTableWidget } from '@/view/ContractView/ContractsTable'
 import { Box, Link, Stack, Typography } from '@mui/material'
 
 export default function Contracts() {
+  const { accountConnected, networkConnected } = useNetworkAccountsContext()
+  const { userContracts: contracts } = useListUserContracts(
+    accountConnected?.address,
+    networkConnected
+  )
   return (
     <Box
       sx={{
@@ -8,7 +16,7 @@ export default function Contracts() {
         margin: '0 auto 2rem auto'
       }}
     >
-      <Typography variant="h1" align="center">
+      <Typography variant="h1" align="left">
         Contracts
       </Typography>
       <Stack mt={8} flexDirection="column" gap={4} justifyContent={'center'}>
@@ -26,6 +34,8 @@ export default function Contracts() {
           </Link>
         </Typography>
       </Stack>
+
+      {accountConnected && <ContractsTableWidget contracts={contracts} />}
     </Box>
   )
 }

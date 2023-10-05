@@ -1,0 +1,71 @@
+import * as React from 'react'
+import Box from '@mui/material/Box'
+import InputAdornment from '@mui/material/InputAdornment'
+import TextField from '@mui/material/TextField'
+import { Search } from '@mui/icons-material'
+import { MenuItem, Select, SelectChangeEvent } from '@mui/material'
+import { typeMap } from './ContractsTable/ContractsTable'
+
+type Props = {
+  types: string[]
+  handleChange: () => void
+}
+
+export default function SearchInput({ handleChange }: Props) {
+  const [contractType, setContractType] = React.useState('')
+
+  const searchType = [
+    { name: 'TYPE', value: '' },
+    ...Object.entries(typeMap).map(element => ({
+      name: element[1],
+      value: element[0]
+    }))
+  ]
+
+  const handleSelect = (event: SelectChangeEvent) => {
+    console.log('value', event.target.value)
+    setContractType(event.target.value)
+  }
+
+  return (
+    <Box
+      sx={{
+        '& > :not(style)': { m: 1, color: 'white' }
+      }}
+    >
+      <TextField
+        id="input-search-table"
+        sx={{ color: 'white', width: '441px' }}
+        InputProps={{
+          startAdornment: (
+            <InputAdornment position="start">
+              <Search />
+            </InputAdornment>
+          )
+        }}
+        placeholder="Search"
+        variant="outlined"
+      />
+
+      <Select
+        sx={{ m: 1, width: '150px' }}
+        value={contractType}
+        onChange={handleSelect}
+        displayEmpty
+        inputProps={{ 'aria-label': 'Without label' }}
+      >
+        {searchType.map(element => {
+          return (
+            <MenuItem
+              key={element.name}
+              value={element.value}
+              sx={{ color: 'white' }}
+            >
+              {element.name}
+            </MenuItem>
+          )
+        })}
+      </Select>
+    </Box>
+  )
+}
