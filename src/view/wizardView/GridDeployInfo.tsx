@@ -13,7 +13,7 @@ export const BoxGridStyled = styled(Box)<BoxProps>(() => ({
   gridTemplateColumns: '1fr',
   gridTemplateRows: 'repeat(3, 1fr)',
   gap: '1rem',
-  ngTop: '2rem'
+  marginTop: '1rem'
 }))
 
 export const BoxRow = styled(Box)<BoxProps>(() => ({
