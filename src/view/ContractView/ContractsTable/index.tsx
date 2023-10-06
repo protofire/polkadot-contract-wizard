@@ -5,7 +5,7 @@ import { UserContractDetails } from '@/domain'
 import { ContractTableItem } from '@/domain/wizard/ContractTableItem'
 import { downloadMetadata } from '@/utils/downloadMetadata'
 import SearchInput from '../SearchInput'
-import { Box, Button, Typography } from '@mui/material'
+import { Box, Button } from '@mui/material'
 
 function updateContractItem(
   codeId: string,
@@ -68,13 +68,11 @@ export function ContractsTableWidget({
 
   return (
     <>
-      <Typography variant="h3" align="left" sx={{ margin: '2rem 0rem' }}>
-        Your Contracts
-      </Typography>
       <Box
         display={'flex'}
         justifyContent={'space-between'}
         alignItems={'center'}
+        mt={6}
       >
         <SearchInput handleChange={() => undefined} types={[]}></SearchInput>
         <Button

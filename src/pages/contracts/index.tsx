@@ -17,7 +17,7 @@ export default function Contracts() {
         margin: '0 auto 2rem auto'
       }}
     >
-      <Typography variant="h1" align="left">
+      <Typography variant="h1" align="center">
         Your Contracts
       </Typography>
       {accountConnected ? (
