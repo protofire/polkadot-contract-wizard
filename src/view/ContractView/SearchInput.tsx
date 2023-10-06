@@ -1,7 +1,7 @@
 import * as React from 'react'
 import Box from '@mui/material/Box'
 import InputAdornment from '@mui/material/InputAdornment'
-import TextField from '@mui/material/TextField'
+import { StyledTextField } from '@/components'
 import { Search } from '@mui/icons-material'
 import { MenuItem, Select, SelectChangeEvent } from '@mui/material'
 import { TITLE_MAP_TOKEN } from '@/constants/titleTokenType'
@@ -32,7 +32,7 @@ export default function SearchInput({ handleChange }: Props) {
         '& > :not(style)': { m: 1, color: 'white' }
       }}
     >
-      <TextField
+      <StyledTextField
         id="input-search-table"
         sx={{ color: 'white', width: '441px' }}
         InputProps={{
