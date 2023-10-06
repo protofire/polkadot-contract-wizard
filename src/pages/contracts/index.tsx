@@ -1,6 +1,15 @@
-import { Box, Link, Stack, Typography } from '@mui/material'
+import { useNetworkAccountsContext } from '@/context/NetworkAccountsContext'
+import { useListUserContracts } from '@/hooks/userContracts/useListUserContracts'
+import { ContractsTableWidget } from '@/view/ContractView/ContractsTable'
+import { Box, Paper, Typography } from '@mui/material'
 
 export default function Contracts() {
+  const { accountConnected, networkConnected } = useNetworkAccountsContext()
+  const { userContracts: contracts } = useListUserContracts(
+    accountConnected?.address,
+    networkConnected
+  )
+
   return (
     <Box
       sx={{
@@ -9,23 +18,47 @@ export default function Contracts() {
       }}
     >
       <Typography variant="h1" align="center">
-        Contracts
+        Your Contracts
       </Typography>
-      <Stack mt={8} flexDirection="column" gap={4} justifyContent={'center'}>
-        <Typography variant="h3">Sample title</Typography>
-        <Typography variant="body1">
-          The Polkadot Contract Wizard is a non-code tool to generate, compile
-          and deploy smart contracts on Polkadot Ecosystem. It provides{' '}
-          <Link
-            href="https://github.com/w3f/PSPs"
-            underline="hover"
-            target="_blank"
-            rel="noopener noreferrer"
+      {accountConnected ? (
+        <ContractsTableWidget contracts={contracts} />
+      ) : (
+        <>
+          <Box
+            sx={{
+              margin: '5rem'
+            }}
           >
-            standard contracts based on PSP.
-          </Link>
-        </Typography>
-      </Stack>
+            <Paper
+              sx={{
+                display: 'flex',
+                justifyContent: 'center',
+                flexDirection: 'column',
+                alignItems: 'center',
+                maxWidth: '870px',
+                minWidth: '700px',
+                height: '343px',
+                margin: '0 auto',
+                borderRadius: '15px',
+                color: '#ffff'
+              }}
+            >
+              <Typography fontSize={'1.5rem'} mb={5}>
+                ⚠️ Wallet not connected
+              </Typography>
+
+              <Typography fontSize={'1.3rem'} variant="body1">
+                No contracts detected since you have not connected your wallet.
+              </Typography>
+
+              <Typography fontSize={'1.3rem'} variant="body1">
+                Please, connect your wallet to see and interact with your
+                contracts
+              </Typography>
+            </Paper>
+          </Box>
+        </>
+      )}
     </Box>
   )
 }
