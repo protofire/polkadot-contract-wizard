@@ -5,7 +5,8 @@ import {
   TableCell,
   TableHead,
   TableRow,
-  Stack
+  Stack,
+  TextField
 } from '@mui/material'
 
 import { CopyToClipboardButton, TokenIconSvg } from '@/components'
@@ -32,17 +33,34 @@ function ContractTableRow({
   contract: ContractTableItem
   setOpenModal: React.Dispatch<React.SetStateAction<boolean>>
 }) {
+  const [editable, setEditable] = React.useState(false)
   const typeMap = TITLE_MAP_TOKEN[contract.type]
+
   return (
     <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-      <TableCell component="th" scope="row">
+      <TableCell
+        sx={{
+          width: '100%',
+          color: 'white',
+          input: {
+            color: 'white'
+          }
+        }}
+        component="th"
+        scope="row"
+      >
         <TokenWrapper>
-          {typeMap.title}
+          {!editable ? (
+            <TextField value={typeMap.title} sx={{}}></TextField>
+          ) : (
+            typeMap.title
+          )}
           <DefaultToolTipButton
             id="edit-contract-address"
             sx={{ marginLeft: '0.5rem', color: 'white' }}
             title="Edit"
             Icon={EditIcon}
+            onClick={() => setEditable(!editable)}
           ></DefaultToolTipButton>
         </TokenWrapper>
       </TableCell>
