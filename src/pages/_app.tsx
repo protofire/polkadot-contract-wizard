@@ -22,6 +22,7 @@ import { DAPP_CONFIG, DOMAIN } from '@/constants/config'
 import { UseInkProvider } from 'useink'
 import { CHAINS } from '@/constants/chains'
 import { LocalDbProvider } from '@/context/LocalDbContext'
+import { Inter } from 'next/font/google'
 
 type CustomAppProps = AppProps & {
   emotionCache: EmotionCache
@@ -29,6 +30,7 @@ type CustomAppProps = AppProps & {
     getLayout?: (_page: React.ReactElement) => React.ReactNode
   }
 }
+const inter = Inter({ subsets: ['latin'] })
 
 const clientEmotionCache = buildEmotionCache()
 const repositoryAppNotification = new StorageNotificationsRepository()
@@ -40,38 +42,40 @@ export default function App(props: CustomAppProps) {
     Component.getLayout ?? (page => <MainLayout>{page}</MainLayout>)
 
   return (
-    <CacheProvider value={emotionCache}>
-      <Head>
-        <title>{`Polkadot Contract Wizard`}</title>
-        <meta name="viewport" content="initial-scale=1, width=device-width" />
-      </Head>
-      <PlausibleProvider domain={DOMAIN}>
-        <UseInkProvider
-          config={{
-            dappName: DAPP_CONFIG.name,
-            chains: CHAINS
-          }}
-        >
-          <LocalDbProvider>
-            <NetworkAccountsContextProvider>
-              <AppNotificationContextProvider
-                repository={repositoryAppNotification}
-              >
-                <SettingsConsumer>
-                  {({ settings }) => {
-                    return (
-                      <ThemeCustomization settings={settings}>
-                        {getLayout(<Component {...pageProps} />)}
-                      </ThemeCustomization>
-                    )
-                  }}
-                </SettingsConsumer>
-                <AppNotification />
-              </AppNotificationContextProvider>
-            </NetworkAccountsContextProvider>
-          </LocalDbProvider>
-        </UseInkProvider>
-      </PlausibleProvider>{' '}
-    </CacheProvider>
+    <div className={inter.className}>
+      <CacheProvider value={emotionCache}>
+        <Head>
+          <title>{`Polkadot Contract Wizard`}</title>
+          <meta name="viewport" content="initial-scale=1, width=device-width" />
+        </Head>
+        <PlausibleProvider domain={DOMAIN}>
+          <UseInkProvider
+            config={{
+              dappName: DAPP_CONFIG.name,
+              chains: CHAINS
+            }}
+          >
+            <LocalDbProvider>
+              <NetworkAccountsContextProvider>
+                <AppNotificationContextProvider
+                  repository={repositoryAppNotification}
+                >
+                  <SettingsConsumer>
+                    {({ settings }) => {
+                      return (
+                        <ThemeCustomization settings={settings}>
+                          {getLayout(<Component {...pageProps} />)}
+                        </ThemeCustomization>
+                      )
+                    }}
+                  </SettingsConsumer>
+                  <AppNotification />
+                </AppNotificationContextProvider>
+              </NetworkAccountsContextProvider>
+            </LocalDbProvider>
+          </UseInkProvider>
+        </PlausibleProvider>{' '}
+      </CacheProvider>
+    </div>
   )
 }
