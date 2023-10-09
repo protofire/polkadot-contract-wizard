@@ -43,7 +43,7 @@
     "react-element-to-jsx-string": "^15.0.0",
     "react-syntax-highlighter": "^15.5.0",
     "semver": "^7.3.8",
-    "sharp": "^0.32.1",
+    "sharp": "^0.32.6",
     "simplebar-react": "^3.2.0",
     "useink": "^1.13.0",
     "whatwg-url": "^13.0.0"
