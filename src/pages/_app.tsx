@@ -47,6 +47,13 @@ export default function App(props: CustomAppProps) {
         <Head>
           <title>{`Polkadot Contract Wizard`}</title>
           <meta name="viewport" content="initial-scale=1, width=device-width" />
+          <style>
+            {`
+              html {
+                font-family: ${inter.style.fontFamily};
+              }
+            `}
+          </style>
         </Head>
         <PlausibleProvider domain={DOMAIN}>
           <UseInkProvider

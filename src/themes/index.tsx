@@ -20,7 +20,7 @@ export default function ThemeCustomization({
   const theme = Palette({ mode, skin })
 
   const themeTypography = typographyOptions(
-    ['Inter !important', 'serif'].join(',')
+    ['Inter !important', 'sans-serif'].join(',')
   )
   const themeCustomShadows = useMemo(() => CustomShadows(theme), [theme])
 
