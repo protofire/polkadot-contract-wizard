@@ -94,7 +94,13 @@ export function ContractsTable({
 
   return (
     <>
-      <Box display="flex" justifyContent="center" alignItems="center" gap={6}>
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        gap={6}
+        mt="3rem"
+      >
         <Typography variant="h3">Last Contracts</Typography>
         <Link href={ROUTES.CONTRACTS}>
           <Typography variant="h5" color="primary">
