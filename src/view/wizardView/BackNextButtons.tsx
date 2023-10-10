@@ -50,7 +50,8 @@ export default function BackNextButton(props: Props) {
     <Grid
       item
       xs={12}
-      mt={9}
+      mt={8}
+      mb={1}
       sx={{ display: 'flex', justifyContent: 'space-between' }}
     >
       {hiddenBack ? (

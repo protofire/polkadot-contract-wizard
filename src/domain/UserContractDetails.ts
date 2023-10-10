@@ -1,12 +1,13 @@
 import { TokenType } from '@/domain/TokenType'
 import { ContractCompiledRaw } from '@/infrastructure'
 import { ContractType } from '@/domain/repositories/DeploymentRepository'
+import { ChainId } from '@/infrastructure/useink/chains'
 
 export type ContractMetadata = ContractCompiledRaw
 
 export interface UserContractDetails {
   userAddress: string
-  blockchain: string
+  blockchain: ChainId
   address: string
   txHash: string
   codeHash: string

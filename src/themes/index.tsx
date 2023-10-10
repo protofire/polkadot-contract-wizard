@@ -19,7 +19,9 @@ export default function ThemeCustomization({
   const { mode, skin } = settings
   const theme = Palette({ mode, skin })
 
-  const themeTypography = typographyOptions(['Inter', 'sans-serif'].join(','))
+  const themeTypography = typographyOptions(
+    ['Inter !important', 'sans-serif'].join(',')
+  )
   const themeCustomShadows = useMemo(() => CustomShadows(theme), [theme])
 
   const themeOptions = useMemo(
