@@ -123,8 +123,8 @@ export function ContractsTable({
             </TableBody>
           </Table>
         ) : (
-          <Typography variant="body1" align="center" color="white">
-            You don&apos;t have any contracts for this network. Create one! ☝️
+          <Typography variant="body1" align="center" color="white" mt="2rem">
+            You don&apos;t have any contracts for this network. Build one! ☝️
           </Typography>
         )}
       </StyledTableContainer>
