@@ -118,35 +118,52 @@ export function ContractsTable({
             description={logo.alt}
           />
         </Box>
-        <Link href={ROUTES.CONTRACTS}>
-          <Typography variant="h5" color="primary">
-            View all contracts ({totalContracts})
-          </Typography>
-        </Link>
       </Box>
       <StyledTableContainer>
         {lastContracts.length > 0 ? (
-          <Table aria-label="simple table">
-            <TableHead>
-              <TableRow>
-                <TableCell>TYPE</TableCell>
-                <TableCell>ADDRESS</TableCell>
-                <TableCell>ADDED</TableCell>
-                <TableCell align="right">METADATA</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {lastContracts.map(contract => (
-                <ContractTableRow
-                  key={contract.address}
-                  contract={contract}
-                  onDownloadMeta={onDownloadMeta}
-                />
-              ))}
-            </TableBody>
-          </Table>
+          <>
+            <Table aria-label="simple table">
+              <TableHead>
+                <TableRow>
+                  <TableCell>TYPE</TableCell>
+                  <TableCell>ADDRESS</TableCell>
+                  <TableCell>ADDED</TableCell>
+                  <TableCell align="right">METADATA</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {lastContracts.map(contract => (
+                  <ContractTableRow
+                    key={contract.address}
+                    contract={contract}
+                    onDownloadMeta={onDownloadMeta}
+                  />
+                ))}
+              </TableBody>
+            </Table>
+            {lastContracts.length > 0 ? (
+              <Link href={ROUTES.CONTRACTS}>
+                <Typography
+                  variant="h5"
+                  color="primary"
+                  textAlign="center"
+                  mb="1rem"
+                >
+                  View all contracts ({totalContracts})
+                </Typography>
+              </Link>
+            ) : (
+              ''
+            )}
+          </>
         ) : (
-          <Typography variant="body1" align="center" color="white" mt="2rem">
+          <Typography
+            variant="body1"
+            align="center"
+            color="white"
+            mt="2rem"
+            mb="1rem"
+          >
             You don&apos;t have any contracts for this network. Build one! ☝️
           </Typography>
         )}

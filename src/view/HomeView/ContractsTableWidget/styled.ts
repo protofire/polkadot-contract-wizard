@@ -7,7 +7,7 @@ export const StyledTableContainer = styled(TableContainer)<TableContainerProps>(
       /* styles here */
     },
     '& .MuiTable-root': {
-      margin: '2rem auto',
+      margin: '2rem auto 1rem',
       width: '80%'
     },
     '& .MuiTableCell-root': {
