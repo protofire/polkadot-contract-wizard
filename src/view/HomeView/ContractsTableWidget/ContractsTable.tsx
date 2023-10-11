@@ -8,7 +8,8 @@ import {
   TableRow,
   Typography,
   Stack,
-  Tooltip
+  Tooltip,
+  Box
 } from '@mui/material'
 import FileDownloadIcon from '@mui/icons-material/FileDownload'
 import HourglassBottomIcon from '@mui/icons-material/HourglassBottom'
@@ -20,6 +21,11 @@ import { ContractTableItem } from '@/domain/wizard/ContractTableItem'
 import { useRecentlyClicked } from '@/hooks/useRecentlyClicked'
 import { MonoTypography } from '@/components'
 import { StyledTableContainer, TokenWrapper } from './styled'
+import Link from 'next/link'
+import { ROUTES } from '@/constants/routes'
+import NetworkBadge from '@/components/NetworkBadge'
+import { getChain } from '@/constants/chains'
+import { useNetworkAccountsContext } from '@/context/NetworkAccountsContext'
 
 const typeMap: Record<TokenType, string> = {
   psp34: 'NFT',
@@ -86,31 +92,81 @@ export function ContractsTable({
   contracts,
   onDownloadMeta
 }: ContractsTableProps): JSX.Element {
+  const totalContracts = contracts.length
+  const lastContracts = contracts.slice(-4).reverse()
+  const { networkConnected: network } = useNetworkAccountsContext()
+  const { logo, name: networkName } = getChain(network)
+
   return (
     <>
-      <Typography variant="h3" align="center" mt="2">
-        Contracts
-      </Typography>
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        gap={6}
+        mt="3rem"
+      >
+        <Box display="flex" alignItems="center" gap={1.25}>
+          <Typography variant="h3">Last Contracts</Typography>
+          <Typography variant="body1" component="p">
+            on
+          </Typography>
+          <NetworkBadge
+            name={networkName}
+            logo={logo.src}
+            logoSize={{ width: 20, height: 20 }}
+            description={logo.alt}
+          />
+        </Box>
+      </Box>
       <StyledTableContainer>
-        <Table aria-label="simple table">
-          <TableHead>
-            <TableRow>
-              <TableCell>TYPE</TableCell>
-              <TableCell>ADDRESS</TableCell>
-              <TableCell>ADDED</TableCell>
-              <TableCell align="right">METADATA</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {contracts.map(contract => (
-              <ContractTableRow
-                key={contract.address}
-                contract={contract}
-                onDownloadMeta={onDownloadMeta}
-              />
-            ))}
-          </TableBody>
-        </Table>
+        {lastContracts.length > 0 ? (
+          <>
+            <Table aria-label="simple table">
+              <TableHead>
+                <TableRow>
+                  <TableCell>TYPE</TableCell>
+                  <TableCell>ADDRESS</TableCell>
+                  <TableCell>ADDED</TableCell>
+                  <TableCell align="right">METADATA</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {lastContracts.map(contract => (
+                  <ContractTableRow
+                    key={contract.address}
+                    contract={contract}
+                    onDownloadMeta={onDownloadMeta}
+                  />
+                ))}
+              </TableBody>
+            </Table>
+            {lastContracts.length > 0 ? (
+              <Link href={ROUTES.CONTRACTS}>
+                <Typography
+                  variant="h5"
+                  color="primary"
+                  textAlign="center"
+                  mb="1rem"
+                >
+                  View all contracts ({totalContracts})
+                </Typography>
+              </Link>
+            ) : (
+              ''
+            )}
+          </>
+        ) : (
+          <Typography
+            variant="body1"
+            align="center"
+            color="white"
+            mt="2rem"
+            mb="1rem"
+          >
+            You don&apos;t have any contracts for this network. Build one! ☝️
+          </Typography>
+        )}
       </StyledTableContainer>
     </>
   )
