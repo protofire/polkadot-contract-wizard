@@ -23,6 +23,9 @@ import { MonoTypography } from '@/components'
 import { StyledTableContainer, TokenWrapper } from './styled'
 import Link from 'next/link'
 import { ROUTES } from '@/constants/routes'
+import NetworkBadge from '@/components/NetworkBadge'
+import { getChain } from '@/constants/chains'
+import { useNetworkAccountsContext } from '@/context/NetworkAccountsContext'
 
 const typeMap: Record<TokenType, string> = {
   psp34: 'NFT',
@@ -91,6 +94,8 @@ export function ContractsTable({
 }: ContractsTableProps): JSX.Element {
   const totalContracts = contracts.length
   const lastContracts = contracts.slice(-4).reverse()
+  const { networkConnected: network } = useNetworkAccountsContext()
+  const { logo, name: networkName } = getChain(network)
 
   return (
     <>
@@ -101,7 +106,18 @@ export function ContractsTable({
         gap={6}
         mt="3rem"
       >
-        <Typography variant="h3">Last Contracts</Typography>
+        <Box display="flex" alignItems="center" gap={1.25}>
+          <Typography variant="h3">Last Contracts</Typography>
+          <Typography variant="body1" component="p">
+            on
+          </Typography>
+          <NetworkBadge
+            name={networkName}
+            logo={logo.src}
+            logoSize={{ width: 20, height: 20 }}
+            description={logo.alt}
+          />
+        </Box>
         <Link href={ROUTES.CONTRACTS}>
           <Typography variant="h5" color="primary">
             View all contracts ({totalContracts})
