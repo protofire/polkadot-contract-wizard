@@ -81,9 +81,23 @@
 
 html,
 body {
-  max-width: 100vw;
+  width: calc(100vw - 8px);
+  scrollbar-width: 8px;
+  scrollbar-color: #E6007A #331425; 
   overflow-x: hidden;
   padding: 0 !important;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-thumb{
+  background: #E6007A;
+  border-radius: 8px;
+}
+::-webkit-scrollbar-track{
+  box-shadow: inset 0 0 5px #E6007A;
+  border-radius: 10px;
 }
 
 body {
