@@ -1,7 +1,8 @@
 import { ReactNode, useMemo } from 'react'
-import { CssBaseline, StyledEngineProvider } from '@mui/material'
+import { CssBaseline, GlobalStyles, StyledEngineProvider } from '@mui/material'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 
+import GlobalStyling from './GlobalStyling'
 import Palette from './palette'
 import typographyOptions from './typography'
 import CustomShadows from './shadows'
@@ -57,6 +58,7 @@ export default function ThemeCustomization({
     <StyledEngineProvider injectFirst>
       <ThemeProvider theme={themes}>
         <CssBaseline />
+        <GlobalStyles styles={() => GlobalStyling(theme) as any} />
         {children}
       </ThemeProvider>
     </StyledEngineProvider>

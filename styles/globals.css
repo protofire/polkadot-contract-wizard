@@ -73,43 +73,6 @@
   }
 }
 
-* {
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
-}
-
-html,
-body {
-  width: calc(100vw - 8px);
-  scrollbar-width: 8px;
-  scrollbar-color: #E6007A #331425; 
-  overflow-x: hidden;
-  padding: 0 !important;
-}
-
-::-webkit-scrollbar {
-  width: 8px;
-}
-::-webkit-scrollbar-thumb{
-  background: #E6007A;
-  border-radius: 8px;
-}
-::-webkit-scrollbar-track{
-  box-shadow: inset 0 0 5px #E6007A;
-  border-radius: 10px;
-}
-
-body {
-  color: whitesmoke;
-  background: #0D0E13;
-}
-
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
 @media (prefers-color-scheme: dark) {
   html {
     color-scheme: dark;
