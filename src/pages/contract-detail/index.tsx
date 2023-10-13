@@ -1,4 +1,6 @@
 // import { Accordion } from '@/view/ContractDetailView/Accordion'
+import SimpleAccordion from '@/view/components/Accordion'
+import BasicTabs from '@/view/components/Tabs'
 import { Box, Typography } from '@mui/material'
 
 export default function ContractDetail() {
@@ -51,6 +53,8 @@ export default function ContractDetail() {
           </Typography>
         </Box>
       </Box>
+      <BasicTabs />
+      <SimpleAccordion />
     </>
   )
 }
