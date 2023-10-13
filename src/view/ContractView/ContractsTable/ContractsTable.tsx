@@ -32,12 +32,12 @@ function ContractTableRow({
   contract: ContractTableItem
   setOpenModal: React.Dispatch<React.SetStateAction<boolean>>
 }) {
-  const typeMap = TITLE_MAP_TOKEN[contract.type]
+  const typeMap = TITLE_MAP_TOKEN[contract.type] || ''
   return (
     <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
       <TableCell component="th" scope="row">
         <TokenWrapper>
-          {typeMap.title}
+          {contract.name}
           <DefaultToolTipButton
             id="edit-contract-address"
             sx={{ marginLeft: '0.5rem', color: 'white' }}
