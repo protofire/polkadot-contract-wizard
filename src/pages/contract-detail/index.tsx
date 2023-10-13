@@ -18,43 +18,48 @@ export default function ContractDetail() {
         <Typography variant="caption" align="left">
           Contract NAME
         </Typography>
+        <Box
+          display="flex"
+          flexDirection="row"
+          justifyContent="space-between"
+          sx={{ margin: '2em 0 3rem' }}
+        >
+          <Box display="flex" flexDirection="column">
+            <Typography variant="caption" align="left">
+              TYPE
+            </Typography>
+            <Typography variant="h5" align="left">
+              PSP22
+            </Typography>
+          </Box>
+          <Box display="flex" flexDirection="column">
+            <Typography variant="caption" align="left">
+              STATUS
+            </Typography>
+            <Typography variant="h5" align="left">
+              Imported
+            </Typography>
+          </Box>
+          <Box display="flex" flexDirection="column">
+            <Typography variant="caption" align="left">
+              CONTRACT VERSION
+            </Typography>
+            <Typography variant="h5" align="left">
+              1.2.1
+            </Typography>
+          </Box>
+          <Box display="flex" flexDirection="column">
+            <Typography variant="caption" align="left">
+              LANGUAGE
+            </Typography>
+            <Typography variant="h5" align="left">
+              INK! 4.0.5
+            </Typography>
+          </Box>
+        </Box>
+        <BasicTabs />
+        <SimpleAccordion />
       </Box>
-      <Box display="flex" flexDirection="row" justifyContent="space-around">
-        <Box display="flex" flexDirection="column">
-          <Typography variant="caption" align="left">
-            TYPE
-          </Typography>
-          <Typography variant="h5" align="left">
-            PSP22
-          </Typography>
-        </Box>
-        <Box display="flex" flexDirection="column">
-          <Typography variant="caption" align="left">
-            STATUS
-          </Typography>
-          <Typography variant="h5" align="left">
-            Imported
-          </Typography>
-        </Box>
-        <Box display="flex" flexDirection="column">
-          <Typography variant="caption" align="left">
-            CONTRACT VERSION
-          </Typography>
-          <Typography variant="h5" align="left">
-            1.2.1
-          </Typography>
-        </Box>
-        <Box display="flex" flexDirection="column">
-          <Typography variant="caption" align="left">
-            LANGUAGE
-          </Typography>
-          <Typography variant="h5" align="left">
-            INK! 4.0.5
-          </Typography>
-        </Box>
-      </Box>
-      <BasicTabs />
-      <SimpleAccordion />
     </>
   )
 }
