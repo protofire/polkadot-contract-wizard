@@ -126,7 +126,8 @@ export default function Step3Deploy({
           userAddress: accountConnected.address,
           txHash: userContractsDetail.txHash,
           date: userContractsDetail.date,
-          contractType: userContractsDetail.type
+          contractType: userContractsDetail.type,
+          hidden: userContractsDetail.hidden
         })
         addUserContract(userContractsDetail)
       }

@@ -3,6 +3,7 @@ import { MyDatabase } from '.'
 import { IUserContractsRepository } from '@/domain/repositories/IUserContractsRepository'
 import { ChainId } from '../useink/chains'
 import { DeploymentItem } from '@/domain/repositories/DeploymentRepository'
+import { ContractTableItem } from '@/domain/wizard/ContractTableItem'
 
 export class UserContractsRepository implements IUserContractsRepository {
   private db: MyDatabase
@@ -41,11 +42,19 @@ export class UserContractsRepository implements IUserContractsRepository {
       type: d.contractName,
       name: d.contractName,
       date: new Date().toISOString(),
-      external: false
+      external: false,
+      hidden: false
     }))
 
     await this.db.userContracts.bulkAdd(data)
 
     return await this.list(userAddress)
+  }
+
+  async updateBy(contract: ContractTableItem): Promise<number> {
+    const { userAddress, blockchain, address } = contract
+    return await this.db.userContracts
+      .where({ userAddress, blockchain, address })
+      .modify({ ...contract })
   }
 }

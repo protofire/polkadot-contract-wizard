@@ -16,6 +16,7 @@ export interface UserContractDetails {
   date: string
   abi?: Record<string, unknown>
   external: boolean // Contracts not deployed by PCW are custom and external
+  hidden: boolean
 }
 
 export type ContractCompiled = Pick<

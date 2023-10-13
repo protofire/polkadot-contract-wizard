@@ -1,5 +1,6 @@
 import { ChainId } from '@/infrastructure/useink/chains'
 import { TokenType } from '../TokenType'
+import { ContractTableItem } from '../wizard/ContractTableItem'
 
 export type ContractType = TokenType | 'custom'
 
@@ -13,9 +14,11 @@ export interface DeploymentItem {
   date: string
   contractType: ContractType
   externalAbi?: Record<string, unknown>
+  hidden: boolean
 }
 
 export interface IDeploymentsRepository<A, B> {
   add: (deployment: DeploymentItem) => Promise<A>
   findBy: (userAddress: string, networkId?: ChainId) => Promise<B>
+  updateBy: (contract: ContractTableItem) => Promise<A>
 }

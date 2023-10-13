@@ -32,7 +32,8 @@ export function useListUserContracts(
     )
 
     if (userContracts.length > 0) {
-      setUserContracts(userContracts)
+      const newUserContracts = [...userContracts]
+      setUserContracts(newUserContracts)
       setIsLoading(false)
       return
     }
@@ -68,7 +69,8 @@ export function useListUserContracts(
   useMultiEventListener(
     [
       WalletConnectionEvents.changeAccountAddress,
-      WalletConnectionEvents.networkChanged
+      WalletConnectionEvents.networkChanged,
+      WalletConnectionEvents.updateContractList
     ],
     () => reset()
   )

@@ -34,7 +34,7 @@ export default function SearchInput({ handleChange }: Props) {
     >
       <TextField
         id="input-search-table"
-        sx={{ color: 'white', width: '441px' }}
+        sx={{ color: 'white', width: '300px', input: { color: 'white' } }}
         InputProps={{
           startAdornment: (
             <InputAdornment position="start">

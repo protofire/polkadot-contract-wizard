@@ -6,7 +6,8 @@ import {
   TableHead,
   TableRow,
   Stack,
-  TextField
+  TextField,
+  Typography
 } from '@mui/material'
 
 import { CopyToClipboardButton, TokenIconSvg } from '@/components'
@@ -19,8 +20,12 @@ import { DefaultToolTipButton } from '@/view/components/DefaultTooltipButton'
 import EditIcon from '@mui/icons-material/Edit'
 import ShareIcon from '@mui/icons-material/Share'
 import DeleteIcon from '@mui/icons-material/Delete'
+import SaveIcon from '@mui/icons-material/Save'
+
 import { ShareContractModal } from '@/view/components/ShareContractModal'
 import { TITLE_MAP_TOKEN } from '@/constants/titleTokenType'
+import { useUpdateUserContracts } from '@/hooks/userContracts/useUpdateUserContracts'
+import { DeleteContractModal } from '@/view/components/DeleteContractModal'
 
 export interface ContractsTableProps {
   contracts: ContractTableItem[]
@@ -28,19 +33,42 @@ export interface ContractsTableProps {
 
 function ContractTableRow({
   contract,
-  setOpenModal
+  setOpenShareModal,
+  setOpenDeleteModal
 }: {
   contract: ContractTableItem
-  setOpenModal: React.Dispatch<React.SetStateAction<boolean>>
+  setOpenShareModal: React.Dispatch<React.SetStateAction<boolean>>
+  setOpenDeleteModal: React.Dispatch<React.SetStateAction<boolean>>
 }) {
   const [editable, setEditable] = React.useState(false)
-  const typeMap = TITLE_MAP_TOKEN[contract.type]
+  const [textInput, setTextInput] = React.useState(contract.name)
+  const { updateContract } = useUpdateUserContracts()
+  console.log('aca', contract)
+  const typeMap = TITLE_MAP_TOKEN[contract.type] ?? 'psp22'
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setTextInput(event.target.value)
+  }
+
+  const handleUpdate = () => {
+    setEditable(!editable)
+    const newContract = { ...contract, name: textInput } as ContractTableItem
+    updateContract({ contract: newContract })
+  }
 
   return (
-    <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+    <TableRow
+      sx={{
+        '&:last-child td, &:last-child th': { border: 0 },
+        ':hover': {
+          backgroundColor: '#AD093029'
+        }
+      }}
+    >
       <TableCell
         sx={{
-          width: '100%',
+          minWidth: '20rem',
+          height: '6rem',
           color: 'white',
           input: {
             color: 'white'
@@ -50,18 +78,29 @@ function ContractTableRow({
         scope="row"
       >
         <TokenWrapper>
-          {!editable ? (
-            <TextField value={typeMap.title} sx={{}}></TextField>
+          {editable ? (
+            <>
+              <TextField value={textInput} onChange={handleChange}></TextField>
+              <DefaultToolTipButton
+                id="save-contract-name"
+                sx={{ marginLeft: '0.5rem', color: 'white' }}
+                title="Save"
+                Icon={SaveIcon}
+                onClick={handleUpdate}
+              ></DefaultToolTipButton>
+            </>
           ) : (
-            typeMap.title
+            <>
+              <Typography>{textInput}</Typography>
+              <DefaultToolTipButton
+                id="edit-contract-address"
+                sx={{ marginLeft: '0.5rem', color: 'white' }}
+                title="Edit"
+                Icon={EditIcon}
+                onClick={() => setEditable(!editable)}
+              ></DefaultToolTipButton>
+            </>
           )}
-          <DefaultToolTipButton
-            id="edit-contract-address"
-            sx={{ marginLeft: '0.5rem', color: 'white' }}
-            title="Edit"
-            Icon={EditIcon}
-            onClick={() => setEditable(!editable)}
-          ></DefaultToolTipButton>
         </TokenWrapper>
       </TableCell>
       <TableCell component="th" scope="row">
@@ -89,13 +128,14 @@ function ContractTableRow({
           sx={{ marginLeft: '0.5rem', color: 'white' }}
           title="Share"
           Icon={ShareIcon}
-          onClick={() => setOpenModal(true)}
+          onClick={() => setOpenShareModal(true)}
         ></DefaultToolTipButton>
         <DefaultToolTipButton
           id="delete-contract-address"
           sx={{ marginLeft: '0.5rem', color: 'white' }}
           title="Delete"
           Icon={DeleteIcon}
+          onClick={() => setOpenDeleteModal(true)}
         ></DefaultToolTipButton>
       </TableCell>
     </TableRow>
@@ -105,8 +145,10 @@ function ContractTableRow({
 export function ContractsTable({
   contracts
 }: ContractsTableProps): JSX.Element {
-  const [openModal, setOpenModal] = React.useState(false)
+  const [openShareModal, setOpenShareModal] = React.useState(false)
+  const [openDeleteModal, setOpenDeleteModal] = React.useState(false)
   const [url, setUrl] = React.useState('')
+  const [contract, setContract] = React.useState({} as ContractTableItem)
   return (
     <>
       <StyledTableContainer>
@@ -123,13 +165,19 @@ export function ContractsTable({
           <TableBody>
             {contracts.map(contract => {
               const url = `https://contractwizard.xyz/contract/?user=${contract.userAddress}&contract=${contract.address}`
-              return (
+              return contract.hidden ? (
+                <></>
+              ) : (
                 <ContractTableRow
                   key={contract.address}
                   contract={contract}
-                  setOpenModal={() => {
+                  setOpenShareModal={() => {
                     setUrl(url)
-                    setOpenModal(true)
+                    setOpenShareModal(true)
+                  }}
+                  setOpenDeleteModal={() => {
+                    setContract(contract)
+                    setOpenDeleteModal(true)
                   }}
                 />
               )
@@ -138,10 +186,16 @@ export function ContractsTable({
         </Table>
       </StyledTableContainer>
       <ShareContractModal
-        open={openModal}
-        handleClose={() => setOpenModal(false)}
+        open={openShareModal}
+        handleClose={() => setOpenShareModal(false)}
         url={url}
       ></ShareContractModal>
+
+      <DeleteContractModal
+        open={openDeleteModal}
+        handleClose={() => setOpenDeleteModal(false)}
+        contract={contract}
+      ></DeleteContractModal>
     </>
   )
 }

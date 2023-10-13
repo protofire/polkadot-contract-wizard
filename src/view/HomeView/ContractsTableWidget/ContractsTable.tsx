@@ -26,6 +26,7 @@ import { ROUTES } from '@/constants/routes'
 import NetworkBadge from '@/components/NetworkBadge'
 import { getChain } from '@/constants/chains'
 import { useNetworkAccountsContext } from '@/context/NetworkAccountsContext'
+import { useUpdateUserContracts } from '@/hooks/userContracts/useUpdateUserContracts'
 
 const typeMap: Record<TokenType, string> = {
   psp34: 'NFT',
@@ -46,7 +47,12 @@ function ContractTableRow({
 } & Pick<ContractsTableProps, 'onDownloadMeta'>) {
   const { ref: refButton, recentlyClicked } = useRecentlyClicked()
   const isDownloading = recentlyClicked || contract.isDownloading
-  const type = contract.name as TokenType
+  const type = contract.type as TokenType
+  const { updateContract } = useUpdateUserContracts()
+  const handleUpdate = async () => {
+    const newContract = { ...contract, hidden: !contract.hidden }
+    await updateContract({ contract: newContract })
+  }
 
   return (
     <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
@@ -83,6 +89,11 @@ function ContractTableRow({
             </Tooltip>
           )}
         </IconButton>
+        {!contract.hidden ? (
+          <span onClick={handleUpdate}>SHOW</span>
+        ) : (
+          <span onClick={handleUpdate}>HIDDEN</span>
+        )}
       </TableCell>
     </TableRow>
   )

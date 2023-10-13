@@ -1,6 +1,6 @@
 import { useNetworkAccountsContext } from '@/context/NetworkAccountsContext'
 import { useListUserContracts } from '@/hooks/userContracts/useListUserContracts'
-import { ContractsTableWidget } from '@/view/ContractView/ContractsTable'
+import { ContractsTableContent } from '@/view/ContractView/ContractsTable'
 import { Box, Paper, Typography } from '@mui/material'
 
 export default function Contracts() {
@@ -21,7 +21,7 @@ export default function Contracts() {
         Your Contracts
       </Typography>
       {accountConnected ? (
-        <ContractsTableWidget contracts={contracts} />
+        <ContractsTableContent contracts={contracts} />
       ) : (
         <>
           <Box
