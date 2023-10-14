@@ -14,16 +14,16 @@ type Props = {
 export function DeleteContractModal({ open, handleClose, contract }: Props) {
   const { updateContract } = useUpdateUserContracts()
   const handleDelete = () => {
-    handleClose()
-    const newContract = { ...contract, hidden: true }
+    const updatedContract = { ...contract, hidden: true }
     updateContract({
-      contract: newContract,
+      contract: updatedContract,
       successCallback: () => {
         document.dispatchEvent(
           new CustomEvent(WalletConnectionEvents.updateContractList)
         )
       }
     })
+    handleClose()
   }
   return (
     <Modal open={open} onClose={handleClose}>

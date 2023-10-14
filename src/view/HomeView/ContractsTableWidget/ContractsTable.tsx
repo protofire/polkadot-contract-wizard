@@ -89,11 +89,14 @@ function ContractTableRow({
             </Tooltip>
           )}
         </IconButton>
-        {!contract.hidden ? (
-          <span onClick={handleUpdate}>SHOW</span>
-        ) : (
-          <span onClick={handleUpdate}>HIDDEN</span>
-        )}
+        {
+          // TODO: Remove this after tests
+          !contract.hidden ? (
+            <span onClick={handleUpdate}>HIDE</span>
+          ) : (
+            <span onClick={handleUpdate}>SHOW</span>
+          )
+        }
       </TableCell>
     </TableRow>
   )

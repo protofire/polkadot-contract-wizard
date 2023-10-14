@@ -21,6 +21,7 @@ import EditIcon from '@mui/icons-material/Edit'
 import ShareIcon from '@mui/icons-material/Share'
 import DeleteIcon from '@mui/icons-material/Delete'
 import SaveIcon from '@mui/icons-material/Save'
+import CancelIcon from '@mui/icons-material/Cancel'
 
 import { ShareContractModal } from '@/view/components/ShareContractModal'
 import { TITLE_MAP_TOKEN } from '@/constants/titleTokenType'
@@ -43,8 +44,8 @@ function ContractTableRow({
   const [editable, setEditable] = React.useState(false)
   const [textInput, setTextInput] = React.useState(contract.name)
   const { updateContract } = useUpdateUserContracts()
-  console.log('aca', contract)
-  const typeMap = TITLE_MAP_TOKEN[contract.type] ?? 'psp22'
+
+  const typeMap = TITLE_MAP_TOKEN[contract.type]
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTextInput(event.target.value)
@@ -87,6 +88,13 @@ function ContractTableRow({
                 title="Save"
                 Icon={SaveIcon}
                 onClick={handleUpdate}
+              ></DefaultToolTipButton>
+              <DefaultToolTipButton
+                id="cancel-contract-name"
+                sx={{ marginLeft: '0.5rem', color: 'white' }}
+                title="Cancel"
+                Icon={CancelIcon}
+                onClick={() => setEditable(!editable)}
               ></DefaultToolTipButton>
             </>
           ) : (

@@ -9,7 +9,7 @@ export interface UserContractDetails {
   userAddress: string
   blockchain: ChainId
   address: string
-  txHash: string
+  txHash: string | undefined
   codeHash: string
   type: ContractType
   name: string

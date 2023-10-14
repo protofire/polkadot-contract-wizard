@@ -3,7 +3,7 @@ import { ContractsTable } from '@/view/ContractView/ContractsTable/ContractsTabl
 import { UserContractDetails } from '@/domain'
 import { ContractTableItem } from '@/domain/wizard/ContractTableItem'
 import SearchInput from '../SearchInput'
-import { Box, Button } from '@mui/material'
+import { Box, Button, Typography } from '@mui/material'
 import Link from 'next/link'
 import { ROUTES } from '@/constants'
 
@@ -37,7 +37,19 @@ export function ContractsTableContent({
           </Button>
         </Link>
       </Box>
-      <ContractsTable contracts={contractsItem} />
+      {contracts.length > 0 ? (
+        <ContractsTable contracts={contractsItem} />
+      ) : (
+        <Box
+          sx={{
+            width: '100%',
+            margin: '2rem',
+            textAlign: 'center'
+          }}
+        >
+          <Typography>There are no contracts to list</Typography>
+        </Box>
+      )}
     </>
   )
 }

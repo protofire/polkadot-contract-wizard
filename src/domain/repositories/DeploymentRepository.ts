@@ -5,7 +5,7 @@ import { ContractTableItem } from '../wizard/ContractTableItem'
 export type ContractType = TokenType | 'custom'
 
 export interface DeploymentItem {
-  contractName: TokenType
+  contractName: string
   contractAddress: string
   network: ChainId
   codeId: string

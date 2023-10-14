@@ -2,7 +2,10 @@ import { UserContractDetails } from '@/domain'
 import { MyDatabase } from '.'
 import { IUserContractsRepository } from '@/domain/repositories/IUserContractsRepository'
 import { ChainId } from '../useink/chains'
-import { DeploymentItem } from '@/domain/repositories/DeploymentRepository'
+import {
+  ContractType,
+  DeploymentItem
+} from '@/domain/repositories/DeploymentRepository'
 import { ContractTableItem } from '@/domain/wizard/ContractTableItem'
 
 export class UserContractsRepository implements IUserContractsRepository {
@@ -37,17 +40,15 @@ export class UserContractsRepository implements IUserContractsRepository {
       userAddress: d.userAddress,
       blockchain: d.network,
       address: d.contractAddress,
-      txHash: '',
+      txHash: d.txHash,
       codeHash: d.codeId,
-      type: d.contractName,
+      type: d.contractType as ContractType,
       name: d.contractName,
       date: new Date().toISOString(),
       external: false,
-      hidden: false
+      hidden: d.hidden
     }))
-
     await this.db.userContracts.bulkAdd(data)
-
     return await this.list(userAddress)
   }
 

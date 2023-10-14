@@ -85,7 +85,6 @@ export class ApiDeploymentRepository implements IApiDeploymentRepository {
         method: method
       }
     )
-
     return data.map(e => adaptDeployment(e))
   }
 

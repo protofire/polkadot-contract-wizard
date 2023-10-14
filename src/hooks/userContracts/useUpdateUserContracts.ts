@@ -21,13 +21,11 @@ export function useUpdateUserContracts() {
       .then(() => {
         return userContractsRepository.updateBy(contract)
       })
-      .then(success => {
-        console.log('success', success)
+      .then(() => {
         if (successCallback) {
           return successCallback()
         }
       })
-      .then(console.log)
       .catch(error => {
         setError(error)
       })

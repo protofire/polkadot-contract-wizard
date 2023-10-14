@@ -1,4 +1,5 @@
 import { useNetworkAccountsContext } from '@/context/NetworkAccountsContext'
+import { ContractTableItem } from '@/domain/wizard/ContractTableItem'
 import { useListUserContracts } from '@/hooks/userContracts/useListUserContracts'
 import { ContractsTableContent } from '@/view/ContractView/ContractsTable'
 import { Box, Paper, Typography } from '@mui/material'
@@ -7,7 +8,8 @@ export default function Contracts() {
   const { accountConnected, networkConnected } = useNetworkAccountsContext()
   const { userContracts: contracts } = useListUserContracts(
     accountConnected?.address,
-    networkConnected
+    networkConnected,
+    (item: ContractTableItem) => !item.hidden
   )
 
   return (
