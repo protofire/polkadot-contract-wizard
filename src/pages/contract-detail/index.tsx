@@ -1,9 +1,26 @@
-// import { Accordion } from '@/view/ContractDetailView/Accordion'
+import { useHasMounted } from '@/hooks/useHasMounted'
 import SimpleAccordion from '@/view/components/Accordion'
+import { CopyToClipboardButton } from '@/view/components/CopyButton'
+import { MonoTypography } from '@/view/components/MonoTypography'
 import BasicTabs from '@/view/components/Tabs'
-import { Box, Typography } from '@mui/material'
+import { Box, Typography, Stack } from '@mui/material'
+import { useNetworkAccountsContext } from '@/context/NetworkAccountsContext'
+import { useListUserContracts } from '@/hooks/userContracts/useListUserContracts'
 
 export default function ContractDetail() {
+  const { accountConnected, networkConnected } = useNetworkAccountsContext()
+  const { userContracts: contracts, isLoading } = useListUserContracts(
+    accountConnected?.address,
+    networkConnected
+  )
+  const hasMounted = useHasMounted()
+
+  if (!hasMounted || isLoading || !contracts.length) {
+    return 'loading'
+  }
+
+  const contract = contracts[0]
+  console.log(contracts)
   return (
     <>
       <Box
@@ -18,6 +35,14 @@ export default function ContractDetail() {
         <Typography variant="caption" align="left">
           Contract NAME
         </Typography>
+        <Stack direction="row">
+          <MonoTypography>{contract.address}</MonoTypography>
+          <CopyToClipboardButton
+            id="copy-contract-address"
+            sx={{ marginLeft: '0.5rem' }}
+            data={contract.address}
+          />
+        </Stack>
         <Box
           display="flex"
           flexDirection="row"
@@ -58,7 +83,12 @@ export default function ContractDetail() {
           </Box>
         </Box>
         <BasicTabs />
-        <SimpleAccordion />
+        <SimpleAccordion
+          elements={[
+            { tittle: 'psp22::approve', content: 'Form approve', id: '1' },
+            { tittle: 'psp22::tranfer', content: 'Form transfer', id: '2' }
+          ]}
+        />
       </Box>
     </>
   )
