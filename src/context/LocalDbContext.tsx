@@ -1,18 +1,18 @@
 import { INetworkRepository } from '@/domain/repositories/INetworkRepository'
-import { LocalStorageNetworkRepository } from '@/infrastructure/LocalStorageNetworkRepository'
+import { LocalStorageNetworkRepository } from '@/services/LocalStorageNetworkRepository'
 import {
   ApiDeploymentRepository,
   IApiDeploymentRepository
-} from '@/infrastructure/backendApi/ApiDeploymentRepository'
+} from '@/services/backendApi/ApiDeploymentRepository'
 import React, { createContext, PropsWithChildren, useContext } from 'react'
 import { BACKEND_API } from '../constants'
-import { MyDatabase } from '@/infrastructure/localDB'
-import { UserContractsRepository } from '@/infrastructure/localDB/UserContractsRepository'
+import { MyDatabase } from '@/services/localDB'
+import { UserContractsRepository } from '@/services/localDB/UserContractsRepository'
 import { IUserContractsRepository } from '@/domain/repositories/IUserContractsRepository'
 import {
   ApiCompileContractRepository,
   IApiCompileContractRepository
-} from '@/infrastructure/backendApi/ApiCompileContractRepository'
+} from '@/services/backendApi/ApiCompileContractRepository'
 
 interface DbContext {
   networkRepository: INetworkRepository

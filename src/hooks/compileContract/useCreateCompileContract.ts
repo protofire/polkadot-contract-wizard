@@ -3,11 +3,11 @@ import { useCallback, useState } from 'react'
 import {
   ApiCompileContractRepository,
   CompileContractBody
-} from '@/infrastructure/backendApi/ApiCompileContractRepository'
+} from '@/services/backendApi/ApiCompileContractRepository'
 import { GetServiceData } from '@/types'
 import { TokenType, SecurityOfToken } from '@/domain'
 import { BACKEND_API } from '@/constants/index'
-import { AllowedFeatures, ContractCompiledRaw } from '@/infrastructure'
+import { AllowedFeatures, ContractCompiledRaw } from '@/services'
 import { useAppNotificationContext } from '@/context/AppNotificationContext'
 
 type ReturnValue = GetServiceData

@@ -1,4 +1,4 @@
-import { Chain } from '@/infrastructure/useink/chains'
+import { Chain } from '@/services/useink/chains'
 
 export type ChainExtended = Chain & {
   logo: {

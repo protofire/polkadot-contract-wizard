@@ -1,6 +1,6 @@
 import { useAppNotificationContext } from '@/context'
 import { useLocalDbContext } from '@/context/LocalDbContext'
-import { ContractCompiledRaw } from '@/infrastructure'
+import { ContractCompiledRaw } from '@/services'
 import { GetServiceData } from '@/types'
 import { useCallback, useState } from 'react'
 

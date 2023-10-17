@@ -2,10 +2,15 @@ import { getContractInfo } from '@/services/substrate/contract'
 import { isValidAddress } from '@/utils/blockchain'
 import { useCallback, useState } from 'react'
 import { useNetworkApi } from '../useNetworkApi'
+import { AnyJson } from '@/services/substrate/types'
 
 interface UseIsOnChain {
   isOnChain: (_address: string) => Promise<string | undefined>
   contractHash: string
+}
+
+interface ContractInfoHumanized {
+  codeHash?: string | null
 }
 
 export function useIsOnChain(): UseIsOnChain {
@@ -24,8 +29,8 @@ export function useIsOnChain(): UseIsOnChain {
 
         if (isOnChain === null) return 'Address is not on-chain'
 
-        console.log('__isOnchain', isOnChain.toHuman())
-        setContractHash(isOnChain.toHuman()?.codeHash)
+        const { codeHash } = isOnChain.toHuman() as ContractInfoHumanized
+        setContractHash(codeHash || '')
       } catch (e) {
         return 'An error ocurred during address validation'
       }

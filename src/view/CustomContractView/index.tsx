@@ -11,6 +11,10 @@ import { useIsOnChain } from '@/hooks/validationForms/useIsOnChain'
 import { useCompareString } from '@/hooks/useCompareString'
 import { useEffect } from 'react'
 
+interface SourceInMetadata {
+  hash: string
+}
+
 export function CustomContractsForm() {
   const { compare: compareCodeHash, error: errorCodeHash } = useCompareString(
     'Source code hash does not match.'
@@ -29,17 +33,12 @@ export function CustomContractsForm() {
     field => (field.required && !field.value) || field.error !== null
   )
 
-  console.log('__contractHash', contractHash)
   useEffect(() => {
-    if (!contractHash || !metadata.source?.source?.hash) return
+    const { hash } = metadata.source?.source as SourceInMetadata
+    if (!contractHash || !hash) return
 
-    compareCodeHash(contractHash, metadata.source?.source?.hash)
-  }, [
-    compareCodeHash,
-    contractHash,
-    errorCodeHash,
-    metadata.source.source.hash
-  ])
+    compareCodeHash(contractHash, hash)
+  }, [compareCodeHash, contractHash, errorCodeHash, metadata.source?.source])
 
   return (
     <Stack mt={8} flexDirection="column" gap={4} justifyContent={'center'}>
