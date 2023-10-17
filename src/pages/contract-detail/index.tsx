@@ -29,12 +29,10 @@ export default function ContractDetail() {
           margin: '0 auto 2rem auto'
         }}
       >
-        <Typography variant="h3" align="left">
-          Custom_01
-        </Typography>
-        <Typography variant="caption" align="left">
-          Contract NAME
-        </Typography>
+        <Stack direction="row" justifyContent="space-between">
+          <Typography variant="h3">Custom_01</Typography>
+          <Typography variant="body1">Added on: 30 July 2023</Typography>
+        </Stack>
         <Stack direction="row">
           <MonoTypography>{contract.address}</MonoTypography>
           <CopyToClipboardButton
