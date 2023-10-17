@@ -1,13 +1,19 @@
-import * as React from 'react'
-import Tabs from '@mui/material/Tabs'
-import Tab from '@mui/material/Tab'
-import Typography from '@mui/material/Typography'
 import Box from '@mui/material/Box'
+import Tab from '@mui/material/Tab'
+import Tabs from '@mui/material/Tabs'
+import * as React from 'react'
+import { StyledTabsContainer } from './styled'
 
 interface TabPanelProps {
   children?: React.ReactNode
   index: number
   value: number
+}
+
+type BasicTabsProps = {
+  options: string[]
+  children: React.ReactNode
+  onChange?: (newValue: number) => void
 }
 
 function CustomTabPanel(props: TabPanelProps) {
@@ -21,47 +27,36 @@ function CustomTabPanel(props: TabPanelProps) {
       aria-labelledby={`simple-tab-${index}`}
       {...other}
     >
-      {value === index && (
-        <Box sx={{ p: 3 }}>
-          <Typography>{children}</Typography>
-        </Box>
-      )}
+      {value === index && <Box className="tab-content">{children}</Box>}
     </div>
   )
 }
 
 function a11yProps(index: number) {
   return {
-    id: `simple-tab-${index}`,
+    id: `assets-tab-${index}`,
     'aria-controls': `simple-tabpanel-${index}`
   }
 }
 
-export default function BasicTabs() {
+export default function BasicTabs(props: BasicTabsProps) {
   const [value, setValue] = React.useState(0)
 
-  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+  const handleChange = (_: React.SyntheticEvent, newValue: number) => {
     setValue(newValue)
+    props.onChange?.(newValue)
   }
 
   return (
-    <Box sx={{ width: '100%' }}>
-      <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-        <Tabs
-          value={value}
-          onChange={handleChange}
-          aria-label="basic tabs example"
-        >
-          <Tab label="Item One" {...a11yProps(0)} />
-          <Tab label="Item Two" {...a11yProps(1)} />
-        </Tabs>
-      </Box>
-      <CustomTabPanel value={value} index={0}>
-        Item One
+    <StyledTabsContainer>
+      <Tabs value={value} onChange={handleChange}>
+        {props.options.map((option, index) => (
+          <Tab key={option} label={option} {...a11yProps(index)} />
+        ))}
+      </Tabs>
+      <CustomTabPanel value={value} index={value}>
+        {props.children}
       </CustomTabPanel>
-      <CustomTabPanel value={value} index={1}>
-        Item Two
-      </CustomTabPanel>
-    </Box>
+    </StyledTabsContainer>
   )
 }

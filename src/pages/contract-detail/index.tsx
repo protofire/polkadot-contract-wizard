@@ -1,3 +1,4 @@
+import React from 'react'
 import { useHasMounted } from '@/hooks/useHasMounted'
 import SimpleAccordion from '@/view/components/Accordion'
 import { CopyToClipboardButton } from '@/view/components/CopyButton'
@@ -7,7 +8,11 @@ import { Box, Typography, Stack } from '@mui/material'
 import { useNetworkAccountsContext } from '@/context/NetworkAccountsContext'
 import { useListUserContracts } from '@/hooks/userContracts/useListUserContracts'
 
+type ContractTabType = 'Read Contract' | 'Write Contract'
+const types: ContractTabType[] = ['Read Contract', 'Write Contract']
+
 export default function ContractDetail() {
+  const [type, setType] = React.useState(types[0])
   const { accountConnected, networkConnected } = useNetworkAccountsContext()
   const { userContracts: contracts, isLoading } = useListUserContracts(
     accountConnected?.address,
@@ -18,9 +23,12 @@ export default function ContractDetail() {
   if (!hasMounted || isLoading || !contracts.length) {
     return 'loading'
   }
-
   const contract = contracts[0]
-  console.log(contracts)
+
+  const handleChange = (newValue: number) => {
+    setType(types[newValue])
+  }
+
   return (
     <>
       <Box
@@ -80,13 +88,34 @@ export default function ContractDetail() {
             </Typography>
           </Box>
         </Box>
-        <BasicTabs />
-        <SimpleAccordion
-          elements={[
-            { tittle: 'psp22::approve', content: 'Form approve', id: '1' },
-            { tittle: 'psp22::tranfer', content: 'Form transfer', id: '2' }
-          ]}
-        />
+        <Box sx={{ width: '100%' }}>
+          <BasicTabs
+            options={['Read Contract', 'Write Contract']}
+            onChange={handleChange}
+          >
+            {!isLoading ? (
+              <>
+                <Typography variant="h4">Read Contract</Typography>
+                <SimpleAccordion
+                  elements={[
+                    {
+                      tittle: 'psp22::approve',
+                      content: 'Form approve',
+                      id: '1'
+                    },
+                    {
+                      tittle: 'psp22::tranfer',
+                      content: 'Form transfer',
+                      id: '2'
+                    }
+                  ]}
+                />
+              </>
+            ) : (
+              <Box mt={2}>Loading</Box>
+            )}
+          </BasicTabs>
+        </Box>{' '}
       </Box>
     </>
   )

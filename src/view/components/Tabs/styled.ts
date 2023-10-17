@@ -1,4 +1,4 @@
-import { styled, Box, alpha } from '@mui/material'
+import { styled, Box } from '@mui/material'
 
 export const StyledTabsContainer = styled(Box)(({ theme }) => ({
   '& .MuiTabs-root': {
