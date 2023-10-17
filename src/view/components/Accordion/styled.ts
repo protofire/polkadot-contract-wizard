@@ -9,7 +9,7 @@ export const StyledAccordionContainer = styled(Box)(({ theme }) => ({
     fontSize: '1rem',
     borderRadius: '0.5rem',
     margin: '0.8rem 0',
-    backgroundColor: alpha(theme.palette.primary.light, 0.1),
+    backgroundColor: alpha(theme.palette.primary.main, 0.1),
     border: '1px solid' + theme.palette.primary.main
   },
   '& .MuiAccordion-root::before': {
@@ -22,11 +22,11 @@ export const StyledAccordionContainer = styled(Box)(({ theme }) => ({
     fontWeight: '400'
   },
   '& .Mui-expanded .MuiAccordionSummary-root': {
-    backgroundColor: alpha(theme.palette.primary.light, 0.4),
+    backgroundColor: alpha(theme.palette.primary.main, 0.4),
     height: '48px !important'
   },
   '& h4': {
-    color: alpha(theme.palette.primary.light, 0.9)
+    color: alpha(theme.palette.primary.main, 0.9)
   },
   '& .Mui-expanded h4': {
     color: theme.palette.common.white
