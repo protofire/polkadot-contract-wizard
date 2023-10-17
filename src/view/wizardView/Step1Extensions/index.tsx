@@ -2,7 +2,7 @@ import { FormGroup, Grid, Stack, Typography } from '@mui/material'
 import { useRouter } from 'next/router'
 
 import { useStepsSCWizard } from '@/context'
-import BackNextButton from '../BackNextButtons'
+import BackNextButton from '../../components/BackNextButtons'
 import { ControlsToken, ROUTES } from '@/constants/index'
 import ExtensionCheckbox from './ExtensionCheckbox'
 import Security from './Security'

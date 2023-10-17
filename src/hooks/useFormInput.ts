@@ -8,6 +8,7 @@ export interface ControlledFormInput<I> {
   loading: boolean
   required: boolean
   touched: boolean
+  setValue: (value: I) => void
 }
 
 export type ValidationFn<I> = (
@@ -59,7 +60,8 @@ export function useFormInput<I>(
     error,
     loading,
     required,
-    touched
+    touched,
+    setValue
   }
 }
 

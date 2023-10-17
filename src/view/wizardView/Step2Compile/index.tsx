@@ -3,7 +3,7 @@ import { Box, Typography, styled } from '@mui/material'
 import { CopyBlock, atomOneDark } from 'react-code-blocks'
 
 import { useStepsSCWizard } from '@/context'
-import BackNextButton from '../BackNextButtons'
+import BackNextButton from '../../components/BackNextButtons'
 import { TokenType } from '@/domain'
 import { useNetworkAccountsContext } from '@/context/NetworkAccountsContext'
 import { isValidAddress } from '@/utils/blockchain'
