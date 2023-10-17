@@ -185,13 +185,14 @@ export function FormConstructorContract({
           metadataFields.map(field => {
             const fieldState = mapStates[field.fieldName]
             const props = {
-              ...fieldState,
+              value: fieldState.value,
+              onChange: fieldState.onChange,
+              required: fieldState.required,
               error: Boolean(fieldState.error),
               helperText: fieldState.error ? fieldState.error : ''
             }
             return (
               <StyledTextField
-                required
                 key={field.name}
                 label={field.name}
                 type={field.type}

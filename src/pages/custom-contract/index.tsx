@@ -1,10 +1,11 @@
-import { Box, Stack, Typography } from '@mui/material'
-import { StyledTextField } from '@/components'
-import { useParseMetadataField } from '@/hooks/useParseMetadataField'
-import { DropZone } from '@/view/components/DropZone'
-import { DropzoneWrapper } from '@/view/components/DropZone/DropzoneWrapper'
-export default function CustomContracts() {
-  const { metadataFile, onChange, onRemove } = useParseMetadataField()
+import { useNetworkAccountsContext } from '@/context/NetworkAccountsContext'
+import { ConnectWalletSection } from '@/view/components/ConnectWalletSection'
+import { CustomContractsForm } from '@/view/CustomContractView'
+import { Box, Typography } from '@mui/material'
+
+export default function CustomContractsPage() {
+  const { accountConnected } = useNetworkAccountsContext()
+
   return (
     <Box
       sx={{
@@ -15,22 +16,15 @@ export default function CustomContracts() {
       <Typography variant="h1" align="center">
         Import Custom Contract
       </Typography>
-      <Stack mt={8} flexDirection="column" gap={4} justifyContent={'center'}>
-        <StyledTextField label="Contract Address" placeholder="502d1..." />
-        <StyledTextField
-          label="Contract Name"
-          placeholder="My imported contract"
+      {accountConnected ? (
+        <CustomContractsForm />
+      ) : (
+        <ConnectWalletSection
+          text={
+            'You need to connect a wallet to interact with an external contract.'
+          }
         />
-        <DropzoneWrapper>
-          <DropZone
-            label="Drop a .json file or click to select it"
-            accept={{ 'application/json': ['.json', '.contract'] }}
-            file={metadataFile}
-            onChange={onChange}
-            onRemove={onRemove}
-          />
-        </DropzoneWrapper>
-      </Stack>
+      )}
     </Box>
   )
 }
