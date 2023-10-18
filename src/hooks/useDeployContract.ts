@@ -10,13 +10,13 @@ import { GetServiceData } from '@/types'
 import { useNetworkAccountsContext } from '@/context/NetworkAccountsContext'
 import { BIG_ZERO_BN } from '@/constants/numbers'
 import { ContractConstructorDataForm } from '@/domain/wizard/step3DeployForm.types'
-import { deployContractService } from '@/infrastructure/deployContract'
+import { deployContractService } from '@/services/deployContract'
 import { ContractMetadata, TokenType, UserContractDetails } from '@/domain'
 import { genRanHex } from '@/utils/blockchain'
-import { contractDryRun, userInput } from '@/infrastructure/contractDryRun'
+import { contractDryRun, userInput } from '@/services/contractDryRun'
 import { useReportError } from './useReportError'
 import { useNetworkApi } from '@/hooks/useNetworkApi'
-import { ChainId } from '@/infrastructure/useink/chains'
+import { ChainId } from '@/services/useink/chains'
 
 type ReturnValue = GetServiceData
 

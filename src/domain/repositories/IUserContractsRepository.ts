@@ -1,4 +1,4 @@
-import { ChainId } from '@/infrastructure/useink/chains'
+import { ChainId } from '@/services/useink/chains'
 import { UserContractDetails } from '../UserContractDetails'
 import { DeploymentItem } from './DeploymentRepository'
 

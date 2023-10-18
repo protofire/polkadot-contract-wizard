@@ -4,8 +4,8 @@ import {
   DeploymentItem,
   IDeploymentsRepository
 } from '@/domain/repositories/DeploymentRepository'
-import { ChainId } from '@/infrastructure/useink/chains'
-import { request } from '@/infrastructure/common/request'
+import { ChainId } from '@/services/useink/chains'
+import { request } from '@/services/common/request'
 import { RootApiResponse } from './types'
 
 interface DeploymentRaw {
