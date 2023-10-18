@@ -26,12 +26,12 @@ import { ROUTES } from '@/constants/routes'
 import NetworkBadge from '@/components/NetworkBadge'
 import { getChain } from '@/constants/chains'
 import { useNetworkAccountsContext } from '@/context/NetworkAccountsContext'
-import { useUpdateUserContracts } from '@/hooks/userContracts/useUpdateUserContracts'
 
 const typeMap: Record<TokenType, string> = {
   psp34: 'NFT',
   psp22: 'TOKEN',
-  psp37: 'MULTI TOKEN'
+  psp37: 'MULTI TOKEN',
+  custom: 'CUSTOM TOKEN'
 }
 
 export interface ContractsTableProps {
@@ -48,12 +48,6 @@ function ContractTableRow({
   const { ref: refButton, recentlyClicked } = useRecentlyClicked()
   const isDownloading = recentlyClicked || contract.isDownloading
   const type = contract.type as TokenType
-  const { updateContract } = useUpdateUserContracts()
-  const handleUpdate = async () => {
-    const newContract = { ...contract, hidden: !contract.hidden }
-    await updateContract({ contract: newContract })
-  }
-
   return (
     <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
       <TableCell component="th" scope="row">
@@ -89,14 +83,6 @@ function ContractTableRow({
             </Tooltip>
           )}
         </IconButton>
-        {
-          // TODO: Remove this after tests
-          !contract.hidden ? (
-            <span onClick={handleUpdate}>HIDE</span>
-          ) : (
-            <span onClick={handleUpdate}>SHOW</span>
-          )
-        }
       </TableCell>
     </TableRow>
   )
