@@ -24,7 +24,7 @@ const icons = {
 export const MENU_ITEMS: NavLink[] = [
   {
     id: 'home',
-    title: 'Contract Builder',
+    title: 'Builder',
     type: 'item',
     url: ROUTES.HOME,
     icon: icons.SettingsSuggestRounded,

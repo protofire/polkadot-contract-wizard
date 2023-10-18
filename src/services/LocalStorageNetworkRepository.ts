@@ -2,7 +2,7 @@ import {
   getLocalStorageState,
   setLocalStorageState
 } from '@/utils/localStorage'
-import { ChainId } from '@/infrastructure/useink/chains/types'
+import { ChainId } from '@/services/useink/chains/types'
 import { getChain } from '@/constants/chains'
 import { ChainExtended } from '@/types'
 import { DEFAULT_CHAIN } from '../constants'

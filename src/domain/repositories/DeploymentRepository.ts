@@ -1,4 +1,4 @@
-import { ChainId } from '@/infrastructure/useink/chains'
+import { ChainId } from '@/services/useink/chains'
 import { TokenType } from '../TokenType'
 
 export type ContractType = TokenType | 'custom'

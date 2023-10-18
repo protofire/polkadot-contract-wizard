@@ -69,7 +69,7 @@ function Home() {
         <Typography variant="h5">Import your own contract ⚡</Typography>
         <HomeButtonCustom
           LinkComponent={Link}
-          href={`/`}
+          href={`${ROUTES.CUSTOM}/`}
           title="CUSTOM CONTRACT"
           subtitle="Upload a new contract code"
           imgPath={CUSTOM_CONTRACT}

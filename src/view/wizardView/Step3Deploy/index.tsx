@@ -3,7 +3,7 @@ import { Grid, Typography } from '@mui/material'
 import Image from 'next/image'
 
 import { useStepsSCWizard } from '@/context'
-import BackNextButton from '../BackNextButtons'
+import BackNextButton from '../../components/BackNextButtons'
 import { TokenType, UserContractDetails } from '@/domain'
 import {
   ControlsToken,
@@ -13,7 +13,7 @@ import {
 } from '@/constants/index'
 import { FormEvent } from '@/domain/common/FormEvent'
 import { useCompileContract } from '@/hooks/compileContract'
-import { ContractCompiledRaw } from '@/infrastructure'
+import { ContractCompiledRaw } from '@/services'
 import { generateCode } from '../Step2Compile/generator'
 import { useDeployContract } from '@/hooks/useDeployContract'
 import { ContractConstructorDataForm } from '@/domain/wizard/step3DeployForm.types'
@@ -24,7 +24,7 @@ import {
   ConstructorTokenFieldProps
 } from './FormConstructorContract'
 import { useCreateContractDeployments } from '@/hooks/deployments/useCreateContractsDeployments'
-import { ChainId } from '@/infrastructure/useink/chains'
+import { ChainId } from '@/services/useink/chains'
 import { StackStyled } from './styled'
 import { useAddUserContracts } from '@/hooks/userContracts/useAddUserContracts'
 

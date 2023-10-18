@@ -4,7 +4,7 @@ import { TypeRegistry } from '@polkadot/types/create'
 import {
   getChainInfo,
   ChainProperties
-} from '@/infrastructure/NetworkAccountRepository'
+} from '@/services/NetworkAccountRepository'
 
 const WS_ROCOCO_PROVIDER = 'wss://rococo-contracts-rpc.polkadot.io'
 const WS_LOCAL_PROVIDER = 'ws://127.0.0.1:9944'

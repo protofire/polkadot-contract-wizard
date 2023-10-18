@@ -9,7 +9,7 @@ import {
   Avatar
 } from '@mui/material'
 import { CHAINS_ALLOWED, getChain } from '@/constants/chains'
-import { ChainId } from '@/infrastructure/useink/chains/types'
+import { ChainId } from '@/services/useink/chains/types'
 import ConfirmationDialog from '../ConfirmationDialog'
 import { useModalBehaviour } from '@/hooks/useModalBehaviour'
 import { useCompareCurrentPath } from '@/hooks/useCompareCurrentPath'
