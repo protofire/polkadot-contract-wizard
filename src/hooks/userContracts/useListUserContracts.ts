@@ -7,7 +7,6 @@ import {
   WalletConnectionEvents
 } from '@/domain'
 import { useListContractDeployments } from '../deployments/useListContractsDeployments'
-import { useOnceEffect } from '../useOnceEffect'
 import { useMultiEventListener } from '../useMultipleEventListener'
 import { ChainId } from '@/infrastructure/useink/chains'
 import { FilterType } from '@/infrastructure/localDB/UserContractsRepository'

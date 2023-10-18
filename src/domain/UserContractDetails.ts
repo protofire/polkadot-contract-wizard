@@ -1,7 +1,7 @@
 import { TokenType } from '@/domain/TokenType'
-import { ContractCompiledRaw } from '@/infrastructure'
+import { ContractCompiledRaw } from '@/services'
 import { ContractType } from '@/domain/repositories/DeploymentRepository'
-import { ChainId } from '@/infrastructure/useink/chains'
+import { ChainId } from '@/services/useink/chains'
 
 export type ContractMetadata = ContractCompiledRaw
 

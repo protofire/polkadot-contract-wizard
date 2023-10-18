@@ -1,5 +1,5 @@
 import { TokenType } from '@/domain/TokenType'
-import { ContractCompiledRaw } from '@/infrastructure'
+import { ContractCompiledRaw } from '@/services'
 
 export type ContractMetadata = ContractCompiledRaw
 

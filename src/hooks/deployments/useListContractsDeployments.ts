@@ -3,7 +3,7 @@ import { useCallback, useState } from 'react'
 import { DeploymentItem } from '@/domain/repositories/DeploymentRepository'
 import { useLocalDbContext } from '@/context/LocalDbContext'
 import { getErrorMessage } from '@/utils/error'
-import { ChainId } from '@/infrastructure/useink/chains'
+import { ChainId } from '@/services/useink/chains'
 
 interface UseAddDeployment {
   userContractsFromApi: (

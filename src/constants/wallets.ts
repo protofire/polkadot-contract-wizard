@@ -1,4 +1,4 @@
-import { WalletLogoProps } from '@/infrastructure/useink/walletTypes'
+import { WalletLogoProps } from '@/services/useink/walletTypes'
 
 export type WalletImg = { [name: string]: WalletLogoProps }
 export type WalletKeys = keyof typeof WALLET_IMG_DETAILS

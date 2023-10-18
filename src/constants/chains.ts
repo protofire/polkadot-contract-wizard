@@ -5,7 +5,7 @@ import {
   RococoContractsTestnet,
   ShibuyaTestnet,
   ShidenKusama
-} from '@/infrastructure/useink/chains'
+} from '@/services/useink/chains'
 import { ArrayOneOrMore, ChainExtended } from '@/types'
 import { CHAINS_IMG_PATH } from './images'
 
