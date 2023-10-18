@@ -7,11 +7,19 @@ import BasicTabs from '@/view/components/Tabs'
 import { Box, Typography, Stack } from '@mui/material'
 import { useNetworkAccountsContext } from '@/context/NetworkAccountsContext'
 import { useListUserContracts } from '@/hooks/userContracts/useListUserContracts'
+import { DefaultToolTipButton } from '@/view/components/DefaultTooltipButton'
+import EditIcon from '@mui/icons-material/Edit'
+import ShareIcon from '@mui/icons-material/Share'
+import DownloadIcon from '@mui/icons-material/Download'
 
 type ContractTabType = 'Read Contract' | 'Write Contract'
 const types: ContractTabType[] = ['Read Contract', 'Write Contract']
 
-export default function ContractDetail() {
+export default function ContractDetail({
+  setOpenModal
+}: {
+  setOpenModal: React.Dispatch<React.SetStateAction<boolean>>
+}) {
   const [type, setType] = React.useState(types[0])
   const { accountConnected, networkConnected } = useNetworkAccountsContext()
   const { userContracts: contracts, isLoading } = useListUserContracts(
@@ -38,8 +46,29 @@ export default function ContractDetail() {
         }}
       >
         <Stack direction="row" justifyContent="space-between">
-          <Typography variant="h3">Custom_01</Typography>
-          <Typography variant="body1">Added on: 30 July 2023</Typography>
+          <Stack direction="row" justifyContent="space-between">
+            <Typography variant="h2">{contract.name}</Typography>
+            <DefaultToolTipButton
+              id="edit-contract-address"
+              sx={{ marginLeft: '0.5rem', color: 'white' }}
+              title="Edit"
+              Icon={EditIcon}
+            ></DefaultToolTipButton>
+            <DefaultToolTipButton
+              id="download-contract-address"
+              sx={{ marginLeft: '0.5rem', color: 'white' }}
+              title="Download metadata"
+              Icon={DownloadIcon}
+            ></DefaultToolTipButton>
+            <DefaultToolTipButton
+              id="share-contract-address"
+              sx={{ marginLeft: '0.5rem', color: 'white' }}
+              title="Share"
+              Icon={ShareIcon}
+              onClick={() => setOpenModal(true)}
+            ></DefaultToolTipButton>
+          </Stack>
+          <Typography variant="body1">Added on: {contract.date}</Typography>
         </Stack>
         <Stack direction="row">
           <MonoTypography>{contract.address}</MonoTypography>
@@ -60,15 +89,15 @@ export default function ContractDetail() {
               TYPE
             </Typography>
             <Typography variant="h5" align="left">
-              PSP22
+              {contract.type}
             </Typography>
           </Box>
           <Box display="flex" flexDirection="column">
             <Typography variant="caption" align="left">
-              STATUS
+              NETWORK
             </Typography>
             <Typography variant="h5" align="left">
-              Imported
+              {contract.blockchain}
             </Typography>
           </Box>
           <Box display="flex" flexDirection="column">
