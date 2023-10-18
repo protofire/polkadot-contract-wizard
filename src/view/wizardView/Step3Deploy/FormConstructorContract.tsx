@@ -21,6 +21,7 @@ import {
 import { BIG_ZERO } from '@/constants/numbers'
 import { FormEvent } from '@/domain/common/FormEvent'
 import { initialSupplyPowDecimal } from './initialSupplyPowDecimal'
+import { useEffect } from 'react'
 
 export const INITIAL_SUPPLY_DECIMAL_FIELD = 'initialSupplyPowDecimal'
 
@@ -72,17 +73,26 @@ export function FormConstructorContract({
     hasMetadata
   )
   const [initialSupplyField] = mandatoryFields
-  // const convertedInitialSupply = useFormDependentInput<Big, string | number>({
-  //   initialValue: initialSupplyPowDecimal([
-  //     mapStates.initialSupply.value,
-  //     mapStates.decimal.value
-  //   ]),
-  //   validations: [
-  //     (value: Big) => (value.lt(BIG_ZERO) ? 'Values not allowed' : undefined)
-  //   ],
-  //   dependencies: [mapStates.initialSupply.value, mapStates.decimal.value],
-  //   onCallback: initialSupplyPowDecimal
-  // })
+  const convertedInitialSupply = useFormInput(
+    initialSupplyPowDecimal([
+      mapStates.initialSupply.value,
+      mapStates.decimal.value
+    ]),
+    [(value: Big) => (value.lt(BIG_ZERO) ? 'Values not allowed' : undefined)]
+  )
+
+  useEffect(() => {
+    convertedInitialSupply.setValue(
+      initialSupplyPowDecimal([
+        mapStates.initialSupply.value,
+        mapStates.decimal.value
+      ])
+    )
+  }, [
+    mapStates.initialSupply.value,
+    mapStates.decimal.value,
+    convertedInitialSupply
+  ])
 
   const _handleSubmit = (event: FormEvent<ConstructorTokenFieldProps>) => {
     const errors = Object.keys(mapStates).some(
@@ -135,7 +145,7 @@ export function FormConstructorContract({
                   : ''
               }
             />
-            {/* {hasMetadata &&
+            {hasMetadata &&
               mapStates.initialSupply.value &&
               mapStates.decimal.value && (
                 <>
@@ -172,12 +182,12 @@ export function FormConstructorContract({
                     hidden={true}
                     name={INITIAL_SUPPLY_DECIMAL_FIELD}
                     {...{
-                      ...convertedInitialSupply,
+                      onChange: convertedInitialSupply.onChange,
                       value: convertedInitialSupply.value.toFixed()
                     }}
                   />
                 </>
-              )} */}
+              )}
           </Stack>
         )}
         {metadataFields &&
