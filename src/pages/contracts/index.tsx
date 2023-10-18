@@ -1,7 +1,7 @@
 import { useNetworkAccountsContext } from '@/context/NetworkAccountsContext'
 import { ContractType } from '@/domain/repositories/DeploymentRepository'
 import { useListUserContracts } from '@/hooks/userContracts/useListUserContracts'
-import { FilterType } from '@/infrastructure/localDB/UserContractsRepository'
+import { FilterType } from '@/services/localDB/UserContractsRepository'
 import { ContractsTableContent } from '@/view/ContractView/ContractsTable'
 import { Box, Paper, Typography } from '@mui/material'
 import { useState } from 'react'

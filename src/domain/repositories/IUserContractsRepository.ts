@@ -2,7 +2,7 @@ import { ChainId } from '@/services/useink/chains'
 import { UserContractDetails } from '../UserContractDetails'
 import { DeploymentItem } from './DeploymentRepository'
 import { ContractTableItem } from '../wizard/ContractTableItem'
-import { FilterType } from '@/infrastructure/localDB/UserContractsRepository'
+import { FilterType } from '@/services/localDB/UserContractsRepository'
 
 export interface IUserContractsRepository {
   add: (deployment: UserContractDetails) => Promise<string>

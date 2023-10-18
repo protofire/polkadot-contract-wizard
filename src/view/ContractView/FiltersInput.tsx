@@ -1,12 +1,7 @@
-import React, { Dispatch, SetStateAction } from 'react'
+import React from 'react'
 import Box from '@mui/material/Box'
-import InputAdornment from '@mui/material/InputAdornment'
-import TextField from '@mui/material/TextField'
-import { Search } from '@mui/icons-material'
 import { MenuItem, Select, SelectChangeEvent } from '@mui/material'
 import { TITLE_MAP_TOKEN } from '@/constants/titleTokenType'
-import { UserContractEvents } from '@/domain'
-import { FilterType } from '@/infrastructure/localDB/UserContractsRepository'
 import { ContractType } from '@/domain/repositories/DeploymentRepository'
 
 export interface FiltersInputProps {

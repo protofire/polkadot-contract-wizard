@@ -8,8 +8,8 @@ import {
 } from '@/domain'
 import { useListContractDeployments } from '../deployments/useListContractsDeployments'
 import { useMultiEventListener } from '../useMultipleEventListener'
-import { ChainId } from '@/infrastructure/useink/chains'
-import { FilterType } from '@/infrastructure/localDB/UserContractsRepository'
+import { ChainId } from '@/services/useink/chains'
+import { FilterType } from '@/services/localDB/UserContractsRepository'
 
 interface UseAddDeployment {
   userContracts: UserContractDetails[]
