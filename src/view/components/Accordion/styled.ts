@@ -22,11 +22,11 @@ export const StyledAccordionContainer = styled(Box)(({ theme }) => ({
     fontWeight: '400'
   },
   '& .Mui-expanded .MuiAccordionSummary-root': {
-    backgroundColor: alpha(theme.palette.primary.main, 0.4),
-    height: '48px !important'
+    backgroundColor: alpha(theme.palette.primary.main, 0.4)
   },
   '& h4': {
-    color: alpha(theme.palette.primary.main, 0.9)
+    color: alpha(theme.palette.common.white, 0.9),
+    fontSize: '1.1rem'
   },
   '& .Mui-expanded h4': {
     color: theme.palette.common.white
