@@ -11,7 +11,8 @@ import { useListUserContracts } from '@/hooks/userContracts/useListUserContracts
 const Token: Record<TokenType, TokenType> = {
   psp22: 'psp22',
   psp34: 'psp34',
-  psp37: 'psp37'
+  psp37: 'psp37',
+  custom: 'custom'
 }
 
 function Home() {

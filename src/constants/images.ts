@@ -12,5 +12,6 @@ export const CUSTOM_CONTRACT = '/assets/custom-contract.png'
 export const TOKEN_PATHS: Record<TokenType, string> = {
   psp22: '/assets/token.png',
   psp34: '/assets/nft.png',
-  psp37: '/assets/multitoken.png'
+  psp37: '/assets/multitoken.png',
+  custom: '/assets/multitoken.png' // TODO: Add missing img
 }

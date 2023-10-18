@@ -10,7 +10,8 @@ interface Props {
 const mapColor: Record<TokenType, ChipLabelProps['color']> = {
   psp22: 'success',
   psp34: 'primary',
-  psp37: 'info'
+  psp37: 'info',
+  custom: 'error'
 }
 
 export function PspChipLabel({ label, size }: Props) {
