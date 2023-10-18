@@ -1,12 +1,16 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 import { useLocalDbContext } from '@/context/LocalDbContext'
-import { UserContractDetails, WalletConnectionEvents } from '@/domain'
+import {
+  UserContractDetails,
+  UserContractEvents,
+  WalletConnectionEvents
+} from '@/domain'
 import { useListContractDeployments } from '../deployments/useListContractsDeployments'
 import { useOnceEffect } from '../useOnceEffect'
 import { useMultiEventListener } from '../useMultipleEventListener'
 import { ChainId } from '@/infrastructure/useink/chains'
-import { ContractTableItem } from '@/domain/wizard/ContractTableItem'
+import { FilterType } from '@/infrastructure/localDB/UserContractsRepository'
 
 interface UseAddDeployment {
   userContracts: UserContractDetails[]
@@ -17,7 +21,7 @@ interface UseAddDeployment {
 export function useListUserContracts(
   userAddress: string | undefined,
   networkConnected: ChainId,
-  filterCondition?: (item: ContractTableItem) => boolean
+  filterBy: FilterType = { hidden: false }
 ): UseAddDeployment {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | undefined>()
@@ -25,26 +29,17 @@ export function useListUserContracts(
   const { userContractsFromApi } = useListContractDeployments()
   const [userContracts, setUserContracts] = useState<UserContractDetails[]>([])
 
-  const filterContracts = useCallback(
-    (contracts: UserContractDetails[]) => {
-      if (filterCondition != undefined) {
-        return contracts.filter(filterCondition)
-      }
-      return contracts
-    },
-    [filterCondition]
-  )
-
   const readInitialData = useCallback(async () => {
-    if (!userAddress) return
+    if (!userAddress || !networkConnected) return
     setIsLoading(true)
     const userContracts = await userContractsRepository.searchBy(
       userAddress,
-      networkConnected
+      networkConnected,
+      filterBy
     )
 
     if (userContracts.length > 0) {
-      setUserContracts([...filterContracts(userContracts)])
+      setUserContracts(userContracts)
       setIsLoading(false)
       return
     }
@@ -57,9 +52,9 @@ export function useListUserContracts(
             deployments
           ))
         userContractsRepository
-          .searchBy(userAddress, networkConnected)
+          .searchBy(userAddress, networkConnected, filterBy)
           .then(response => {
-            setUserContracts([...filterContracts(response)])
+            setUserContracts(response)
           })
       })
       .catch(setError)
@@ -68,30 +63,20 @@ export function useListUserContracts(
     userContractsFromApi,
     networkConnected,
     userContractsRepository,
-    filterContracts
+    filterBy
   ])
 
-  const { reset } = useOnceEffect(() => {
+  useEffect(() => {
     readInitialData()
-  }, [
-    userAddress,
-    userContracts,
-    networkConnected,
-    userContractsFromApi,
-    userContractsRepository
-  ])
+  }, [filterBy, readInitialData])
 
   useMultiEventListener(
     [
       WalletConnectionEvents.changeAccountAddress,
       WalletConnectionEvents.networkChanged,
-      WalletConnectionEvents.updateContractList
+      UserContractEvents.userContractUpdated
     ],
-    () => reset()
-  )
-
-  useMultiEventListener([WalletConnectionEvents.updateContractList], () =>
-    readInitialData()
+    () => readInitialData()
   )
 
   return { userContracts, isLoading, error }

@@ -18,14 +18,8 @@ export function useUpdateUserContracts() {
   }) => {
     setIsLoading(true)
     updateContractsFromApi(contract)
-      .then(() => {
-        return userContractsRepository.updateBy(contract)
-      })
-      .then(() => {
-        if (successCallback) {
-          return successCallback()
-        }
-      })
+      .then(() => userContractsRepository.updateBy(contract))
+      .then(successCallback)
       .catch(error => {
         setError(error)
       })

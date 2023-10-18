@@ -1,29 +1,35 @@
-import * as React from 'react'
+import React, { Dispatch, SetStateAction } from 'react'
 import Box from '@mui/material/Box'
 import InputAdornment from '@mui/material/InputAdornment'
 import TextField from '@mui/material/TextField'
 import { Search } from '@mui/icons-material'
 import { MenuItem, Select, SelectChangeEvent } from '@mui/material'
 import { TITLE_MAP_TOKEN } from '@/constants/titleTokenType'
+import { UserContractEvents } from '@/domain'
+import { FilterType } from '@/infrastructure/localDB/UserContractsRepository'
+import { ContractType } from '@/domain/repositories/DeploymentRepository'
 
-type Props = {
-  types: string[]
-  handleChange: () => void
+export interface FiltersInputProps {
+  setFilterBy: (type: ContractType | '') => void
 }
 
-export default function SearchInput({ handleChange }: Props) {
-  const [contractType, setContractType] = React.useState('')
+type KeyMapToken = keyof typeof TITLE_MAP_TOKEN
 
-  const searchType = [
-    { name: 'TYPE', value: '' },
-    ...Object.entries(TITLE_MAP_TOKEN).map(element => ({
-      name: element[1].title,
-      value: element[0]
-    }))
-  ]
-
+const searchType = [
+  { name: 'ALL', value: '' },
+  ...Object.entries(TITLE_MAP_TOKEN).map(element => ({
+    name: element[1].title,
+    value: element[0] as KeyMapToken
+  }))
+]
+export function FiltersInput({ setFilterBy }: FiltersInputProps) {
+  const [contractType, setContractType] = React.useState<KeyMapToken | ''>('')
   const handleSelect = (event: SelectChangeEvent) => {
-    setContractType(event.target.value)
+    event.preventDefault()
+
+    const value = event.target.value as KeyMapToken | ''
+    setFilterBy(value)
+    setContractType(value)
   }
 
   return (
@@ -32,7 +38,7 @@ export default function SearchInput({ handleChange }: Props) {
         '& > :not(style)': { m: 1, color: 'white' }
       }}
     >
-      <TextField
+      {/* <TextField
         id="input-search-table"
         sx={{ color: 'white', width: '300px', input: { color: 'white' } }}
         InputProps={{
@@ -44,7 +50,7 @@ export default function SearchInput({ handleChange }: Props) {
         }}
         placeholder="Search"
         variant="outlined"
-      />
+      /> */}
 
       <Select
         sx={{ m: 1, width: '150px' }}

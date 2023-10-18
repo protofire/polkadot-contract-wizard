@@ -8,6 +8,13 @@ import {
 } from '@/domain/repositories/DeploymentRepository'
 import { ContractTableItem } from '@/domain/wizard/ContractTableItem'
 
+export type FilterType = Pick<
+  Partial<UserContractDetails>,
+  'hidden' | 'type' | 'external'
+>
+
+type Props = keyof FilterType
+
 export class UserContractsRepository implements IUserContractsRepository {
   private db: MyDatabase
 
@@ -25,11 +32,26 @@ export class UserContractsRepository implements IUserContractsRepository {
 
   async searchBy(
     userAddress: string,
-    blockchain: ChainId
+    blockchain: ChainId,
+    filterBy?: FilterType
   ): Promise<UserContractDetails[]> {
-    return await this.db.userContracts
-      .where({ userAddress, blockchain })
-      .toArray()
+    console.log('where', { userAddress, blockchain, ...filterBy })
+    if (filterBy === undefined) {
+      return await this.db.userContracts
+        .where({ userAddress, blockchain })
+        .toArray()
+    }
+
+    const query = this.db.userContracts.where({ userAddress, blockchain })
+    for (const prop in filterBy) {
+      if (filterBy?.hasOwnProperty(prop)) {
+        query.and(
+          (userContract: UserContractDetails) =>
+            userContract[prop as Props] === filterBy[prop as Props]
+        )
+      }
+    }
+    return await query.toArray()
   }
 
   async bulkAddByUser(

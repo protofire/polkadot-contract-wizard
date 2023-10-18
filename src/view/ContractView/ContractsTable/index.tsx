@@ -2,17 +2,20 @@ import { useEffect, useState } from 'react'
 import { ContractsTable } from '@/view/ContractView/ContractsTable/ContractsTable'
 import { UserContractDetails } from '@/domain'
 import { ContractTableItem } from '@/domain/wizard/ContractTableItem'
-import SearchInput from '../SearchInput'
+import { FiltersInput, FiltersInputProps } from '../SearchInput'
 import { Box, Button, Typography } from '@mui/material'
 import Link from 'next/link'
 import { ROUTES } from '@/constants'
+interface Props extends FiltersInputProps {
+  contracts: UserContractDetails[]
+  isLoading: boolean
+}
 
 export function ContractsTableContent({
-  contracts
-}: {
-  contracts: UserContractDetails[]
-}) {
-  // const { searchCompileContract } = useSearchCompileContract()
+  contracts,
+  setFilterBy,
+  isLoading
+}: Props) {
   const [contractsItem, setContractsItem] =
     useState<ContractTableItem[]>(contracts)
 
@@ -26,7 +29,7 @@ export function ContractsTableContent({
         alignItems={'center'}
         marginTop={'2rem'}
       >
-        <SearchInput handleChange={() => undefined} types={[]}></SearchInput>
+        <FiltersInput setFilterBy={setFilterBy}></FiltersInput>
         <Link href={ROUTES.HOME}>
           <Button
             size="large"
@@ -37,7 +40,8 @@ export function ContractsTableContent({
           </Button>
         </Link>
       </Box>
-      {contracts.length > 0 ? (
+      {isLoading && <Typography>Loading</Typography>}
+      {!isLoading && contracts.length > 0 ? (
         <ContractsTable contracts={contractsItem} />
       ) : (
         <Box

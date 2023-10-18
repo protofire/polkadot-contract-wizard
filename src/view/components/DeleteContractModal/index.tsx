@@ -4,7 +4,7 @@ import CloseIcon from '@mui/icons-material/Close'
 import { ModalStyled, ModalTypography } from './styled'
 import { ContractTableItem } from '@/domain/wizard/ContractTableItem'
 import { useUpdateUserContracts } from '@/hooks/userContracts/useUpdateUserContracts'
-import { WalletConnectionEvents } from '@/domain'
+import { UserContractEvents } from '@/domain'
 
 type Props = {
   open: boolean
@@ -19,7 +19,7 @@ export function DeleteContractModal({ open, handleClose, contract }: Props) {
       contract: updatedContract,
       successCallback: () => {
         document.dispatchEvent(
-          new CustomEvent(WalletConnectionEvents.updateContractList)
+          new CustomEvent(UserContractEvents.userContractUpdated)
         )
       }
     })
