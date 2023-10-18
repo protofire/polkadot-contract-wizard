@@ -11,6 +11,8 @@ import { DefaultToolTipButton } from '@/view/components/DefaultTooltipButton'
 import EditIcon from '@mui/icons-material/Edit'
 import ShareIcon from '@mui/icons-material/Share'
 import DownloadIcon from '@mui/icons-material/Download'
+import { getChain } from '@/constants/chains'
+import NetworkBadge from '@/view/components/NetworkBadge'
 
 type ContractTabType = 'Read Contract' | 'Write Contract'
 const types: ContractTabType[] = ['Read Contract', 'Write Contract']
@@ -32,11 +34,11 @@ export default function ContractDetail({
     return 'loading'
   }
   const contract = contracts[0]
+  const { logo, name: networkName } = getChain(contract.blockchain)
   const isReadContract = type === 'Read Contract'
   const handleChange = (newValue: number) => {
     setType(types[newValue])
   }
-
   return (
     <>
       <Box
@@ -97,7 +99,13 @@ export default function ContractDetail({
               NETWORK
             </Typography>
             <Typography variant="h5" align="left">
-              {contract.blockchain}
+              <NetworkBadge
+                name={networkName}
+                logo={logo.src}
+                logoSize={{ width: 20, height: 20 }}
+                description={logo.alt}
+                textTooltip="This network is the one that the contract has been deployed."
+              />
             </Typography>
           </Box>
           <Box display="flex" flexDirection="column">
