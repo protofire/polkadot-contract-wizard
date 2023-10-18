@@ -128,11 +128,11 @@ export default function ContractDetail({
                 {isReadContract ? (
                   <>
                     <Typography variant="h4">
-                      Interact with your contract 🔁
+                      Learn more about your contract 🔁
                     </Typography>
                     <Typography variant="body1">
                       Let&apos;start to work with your contract displaying each
-                      method
+                      method.
                     </Typography>
                   </>
                 ) : (
