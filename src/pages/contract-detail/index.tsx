@@ -32,7 +32,7 @@ export default function ContractDetail({
     return 'loading'
   }
   const contract = contracts[0]
-
+  const isReadContract = type === 'Read Contract'
   const handleChange = (newValue: number) => {
     setType(types[newValue])
   }
@@ -124,20 +124,56 @@ export default function ContractDetail({
           >
             {!isLoading ? (
               <>
-                <Typography variant="h4">Read Contract</Typography>
+                {/* <Typography variant="h4">{type}</Typography> */}
+                {isReadContract ? (
+                  <>
+                    <Typography variant="h4">
+                      Interact with your contract 🔁
+                    </Typography>
+                    <Typography variant="body1">
+                      Let&apos;start to work with your contract displaying each
+                      method
+                    </Typography>
+                  </>
+                ) : (
+                  <>
+                    <Typography variant="h4">
+                      Interact with your contract 🔁
+                    </Typography>
+                    <Typography variant="body1">
+                      Let&apos;s start to work with your contract doing
+                      different querys.
+                    </Typography>
+                  </>
+                )}
                 <SimpleAccordion
-                  elements={[
-                    {
-                      tittle: 'psp22::approve',
-                      content: 'Form approve',
-                      id: '1'
-                    },
-                    {
-                      tittle: 'psp22::tranfer',
-                      content: 'Form transfer',
-                      id: '2'
-                    }
-                  ]}
+                  elements={
+                    isReadContract
+                      ? [
+                          {
+                            tittle: 'psp22::balance',
+                            content: 'text balance',
+                            id: '1'
+                          },
+                          {
+                            tittle: 'psp22::owners',
+                            content: 'text owners',
+                            id: '2'
+                          }
+                        ]
+                      : [
+                          {
+                            tittle: 'psp22::approve',
+                            content: 'Form approve',
+                            id: '1'
+                          },
+                          {
+                            tittle: 'psp22::tranfer',
+                            content: 'Form transfer',
+                            id: '2'
+                          }
+                        ]
+                  }
                 />
               </>
             ) : (
