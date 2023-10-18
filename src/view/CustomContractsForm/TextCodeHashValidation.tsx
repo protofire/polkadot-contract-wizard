@@ -1,6 +1,6 @@
-import { Stack, Typography } from '@mui/material'
-import TaskAltIcon from '@mui/icons-material/TaskAlt'
+import { Stack } from '@mui/material'
 import WarningIcon from '@mui/icons-material/Warning'
+import ThumbUpIcon from '@mui/icons-material/ThumbUp'
 
 interface Props {
   error?: string | null
@@ -8,21 +8,19 @@ interface Props {
 }
 
 export function TextCodeHashValidation({ error, network }: Props) {
-  if (error) {
-    return (
-      <Typography variant="h5" color="orange">
-        <WarningIcon />
-        {error}
-      </Typography>
-    )
-  }
-
   return (
     <Stack flexDirection={'row'} gap={1}>
-      <TaskAltIcon color="success" />
-      <Typography variant="h5" color="success">
-        Valid contract, Metadata source code hash is the same on {network}
-      </Typography>
+      {error ? (
+        <>
+          <WarningIcon />
+          {error}
+        </>
+      ) : (
+        <>
+          <ThumbUpIcon />
+          metadata source code hash is the same on {network}
+        </>
+      )}
     </Stack>
   )
 }

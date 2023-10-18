@@ -1,28 +1,38 @@
-import { useState, useCallback } from 'react'
+import { useState, useEffect } from 'react'
 
-interface UseCompareCodes {
-  error: string | null
-  compare: (code1?: string, code2?: string) => void
+interface Props {
+  text1: string | undefined
+  text2: string | undefined
+  errorMessage?: string
 }
 
-export function useCompareString(errorMessage: string): UseCompareCodes {
+interface UseCompareString {
+  error: string | null
+  isValid: boolean
+}
+
+export function useCompareString({
+  text1,
+  text2,
+  errorMessage = 'Texts do not match.'
+}: Props): UseCompareString {
   const [error, setError] = useState<string | null>(null)
+  const [isValid, setIsValid] = useState(false)
 
-  const compare = useCallback(
-    (code1?: string, code2?: string) => {
-      setError(null)
+  useEffect(() => {
+    setError(null)
+    setIsValid(false)
 
-      if (!code1 || !code2) return
+    if (!text1 || !text2) return
 
-      if (code1 !== code2) {
-        setError(errorMessage)
-      }
-    },
-    [errorMessage]
-  )
+    if (text1 !== text2) {
+      setError(errorMessage)
+    }
+    setIsValid(true)
+  }, [errorMessage, text1, text2])
 
   return {
     error,
-    compare
+    isValid
   }
 }

@@ -1,11 +1,17 @@
 import { useNetworkAccountsContext } from '@/context/NetworkAccountsContext'
-import BackNextButton from '@/view/components/BackNextButtons'
 import { ConnectWalletSection } from '@/view/components/ConnectWalletSection'
 import { CustomContractsForm } from '@/view/CustomContractsForm'
+import { ImportingContractMessage } from '@/view/CustomContractsForm/CreatingCustomContract'
 import { Box, Typography } from '@mui/material'
+import { useState } from 'react'
 
 export default function CustomContractsPage() {
   const { accountConnected, networkConnected } = useNetworkAccountsContext()
+  const [isImporting, setIsImporting] = useState<boolean | undefined>()
+
+  const onCreate = () => {
+    setIsImporting(true)
+  }
 
   return (
     <>
@@ -19,7 +25,15 @@ export default function CustomContractsPage() {
           Import Custom Contract
         </Typography>
         {accountConnected ? (
-          <CustomContractsForm network={networkConnected} />
+          <>
+            {!isImporting && (
+              <CustomContractsForm
+                network={networkConnected}
+                onCreate={onCreate}
+              />
+            )}
+            <ImportingContractMessage isImporting={isImporting} />
+          </>
         ) : (
           <ConnectWalletSection
             text={

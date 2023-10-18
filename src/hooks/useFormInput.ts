@@ -40,6 +40,7 @@ export function useFormInput<I>(
   const _setvalue = async (newValue: I) => {
     setLoading(true)
     setError(null)
+    setValue(newValue)
     try {
       const errorMessages = await Promise.all(
         validations.map(validate => validate(newValue))
@@ -49,7 +50,6 @@ export function useFormInput<I>(
     } catch (e) {
       setError(getErrorMessage(e))
     } finally {
-      setValue(newValue)
       setLoading(false)
     }
   }

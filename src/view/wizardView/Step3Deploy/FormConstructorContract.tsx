@@ -72,23 +72,22 @@ export function FormConstructorContract({
     hasMetadata
   )
   const [initialSupplyField] = mandatoryFields
-  const convertedInitialSupply = useFormDependentInput<Big, string | number>({
-    initialValue: initialSupplyPowDecimal([
-      mapStates.initialSupply.value,
-      mapStates.decimal.value
-    ]),
-    validations: [
-      (value: Big) => (value.lt(BIG_ZERO) ? 'Values not allowed' : undefined)
-    ],
-    dependencies: [mapStates.initialSupply.value, mapStates.decimal.value],
-    onCallback: initialSupplyPowDecimal
-  })
+  // const convertedInitialSupply = useFormDependentInput<Big, string | number>({
+  //   initialValue: initialSupplyPowDecimal([
+  //     mapStates.initialSupply.value,
+  //     mapStates.decimal.value
+  //   ]),
+  //   validations: [
+  //     (value: Big) => (value.lt(BIG_ZERO) ? 'Values not allowed' : undefined)
+  //   ],
+  //   dependencies: [mapStates.initialSupply.value, mapStates.decimal.value],
+  //   onCallback: initialSupplyPowDecimal
+  // })
 
   const _handleSubmit = (event: FormEvent<ConstructorTokenFieldProps>) => {
-    const errors =
-      Object.keys(mapStates).some(
-        key => mapStates[key as keyof FormStateContract].error
-      ) || convertedInitialSupply.error
+    const errors = Object.keys(mapStates).some(
+      key => mapStates[key as keyof FormStateContract].error
+    )
 
     if (errors) {
       event.preventDefault()
@@ -136,7 +135,7 @@ export function FormConstructorContract({
                   : ''
               }
             />
-            {hasMetadata &&
+            {/* {hasMetadata &&
               mapStates.initialSupply.value &&
               mapStates.decimal.value && (
                 <>
@@ -178,7 +177,7 @@ export function FormConstructorContract({
                     }}
                   />
                 </>
-              )}
+              )} */}
           </Stack>
         )}
         {metadataFields &&
