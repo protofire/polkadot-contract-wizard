@@ -16,7 +16,6 @@ import HourglassBottomIcon from '@mui/icons-material/HourglassBottom'
 
 import { CopyToClipboardButton, TokenIconSvg } from '@/components'
 import { isoToReadableDate, truncateAddress } from '@/utils/formatString'
-import { TokenType } from '@/domain'
 import { ContractTableItem } from '@/domain/wizard/ContractTableItem'
 import { useRecentlyClicked } from '@/hooks/useRecentlyClicked'
 import { MonoTypography } from '@/components'
@@ -26,8 +25,9 @@ import { ROUTES } from '@/constants/routes'
 import NetworkBadge from '@/components/NetworkBadge'
 import { getChain } from '@/constants/chains'
 import { useNetworkAccountsContext } from '@/context/NetworkAccountsContext'
+import { ContractType } from '@/domain/repositories/DeploymentRepository'
 
-const typeMap: Record<TokenType, string> = {
+const typeMap: Record<ContractType, string> = {
   psp34: 'NFT',
   psp22: 'TOKEN',
   psp37: 'MULTI TOKEN',
@@ -47,7 +47,7 @@ function ContractTableRow({
 } & Pick<ContractsTableProps, 'onDownloadMeta'>) {
   const { ref: refButton, recentlyClicked } = useRecentlyClicked()
   const isDownloading = recentlyClicked || contract.isDownloading
-  const type = contract.type as TokenType
+  const type = contract.type
   return (
     <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
       <TableCell component="th" scope="row">

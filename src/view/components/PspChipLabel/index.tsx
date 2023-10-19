@@ -1,13 +1,12 @@
-import { TokenType } from '@/domain/TokenType'
-
 import { ChipLabel, ChipLabelProps } from './ChipLabel'
+import { ContractType } from '@/domain/repositories/DeploymentRepository'
 
 interface Props {
-  label: TokenType
+  label: ContractType
   size?: ChipLabelProps['size']
 }
 
-const mapColor: Record<TokenType, ChipLabelProps['color']> = {
+const mapColor: Record<ContractType, ChipLabelProps['color']> = {
   psp22: 'success',
   psp34: 'primary',
   psp37: 'info',

@@ -27,6 +27,7 @@ import { ShareContractModal } from '@/view/components/ShareContractModal'
 import { TITLE_MAP_TOKEN } from '@/constants/titleTokenType'
 import { useUpdateUserContracts } from '@/hooks/userContracts/useUpdateUserContracts'
 import { DeleteContractModal } from '@/view/components/DeleteContractModal'
+import { UpdateDeployment } from '@/domain/repositories/DeploymentRepository'
 
 export interface ContractsTableProps {
   contracts: ContractTableItem[]
@@ -53,8 +54,17 @@ function ContractTableRow({
 
   const handleUpdate = () => {
     setEditable(!editable)
-    const newContract = { ...contract, name: textInput } as ContractTableItem
-    updateContract({ contract: newContract })
+    const updatedContract: UpdateDeployment = {
+      contractAddress: contract.address,
+      userAddress: contract.userAddress,
+      network: contract.blockchain,
+      contractName: textInput,
+      hidden: false
+    }
+
+    updateContract({
+      deployment: updatedContract
+    })
   }
 
   return (

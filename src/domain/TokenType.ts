@@ -1,4 +1,4 @@
-export const tokenTypes = ['psp22', 'psp34', 'psp37', 'custom'] as const
+export const tokenTypes = ['psp22', 'psp34', 'psp37'] as const
 export type TokenType = (typeof tokenTypes)[number]
 
 export function isOfTypeTokens(value: string | null): value is TokenType {

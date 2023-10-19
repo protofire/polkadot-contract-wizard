@@ -2,11 +2,11 @@ import { useCallback, useState } from 'react'
 
 import { useLocalDbContext } from '@/context/LocalDbContext'
 import { getErrorMessage } from '@/utils/error'
-import { ContractTableItem } from '@/domain/wizard/ContractTableItem'
+import { UpdateDeployment } from '@/domain/repositories/DeploymentRepository'
 
 interface UseAddDeployment {
   updateContractsFromApi: (
-    contract: ContractTableItem
+    deployed: UpdateDeployment
   ) => Promise<{ data: string } | undefined>
   isLoading: boolean
   error?: string
@@ -18,11 +18,18 @@ export function useUpdateContractsDeployments(): UseAddDeployment {
   const { deploymentsRepository } = useLocalDbContext()
 
   const updateContractsFromApi = useCallback(
-    async (contract: ContractTableItem) => {
+    async (deployed: UpdateDeployment) => {
       setIsLoading(true)
       setError(undefined)
+      console.log('deployeed', deployed)
       try {
-        const deployments = await deploymentsRepository.updateBy(contract)
+        const deployments = await deploymentsRepository.updateBy({
+          contractAddress: deployed.contractAddress,
+          userAddress: deployed.userAddress,
+          network: deployed.network,
+          contractName: deployed.contractName,
+          hidden: deployed.hidden
+        })
         return deployments
       } catch (e) {
         setError(getErrorMessage(e))

@@ -3,17 +3,19 @@ import { Stack, Typography } from '@mui/material'
 
 import { HomeButton, HomeButtonCustom } from '@/components'
 import { CUSTOM_CONTRACT, ROUTES, TOKEN_PATHS } from '@/constants/index'
-import { TokenType } from '@/domain'
 import { useNetworkAccountsContext } from '@/context/NetworkAccountsContext'
 import { ContractsTableWidget } from '@/view/HomeView/ContractsTableWidget'
 import { useListUserContracts } from '@/hooks/userContracts/useListUserContracts'
+import { ContractType } from '@/domain/repositories/DeploymentRepository'
 
-const Token: Record<TokenType, TokenType> = {
+const Token: Record<ContractType, ContractType> = {
   psp22: 'psp22',
   psp34: 'psp34',
   psp37: 'psp37',
   custom: 'custom'
 }
+
+type Token = keyof ContractType
 
 function Home() {
   const { accountConnected, networkConnected } = useNetworkAccountsContext()

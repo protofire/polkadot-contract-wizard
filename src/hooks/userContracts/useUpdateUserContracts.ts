@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useLocalDbContext } from '@/context/LocalDbContext'
-import { ContractTableItem } from '@/domain/wizard/ContractTableItem'
 import { useUpdateContractsDeployments } from '../deployments/useUpdateContractsDeployments'
+import { UpdateDeployment } from '@/domain/repositories/DeploymentRepository'
 
 export function useUpdateUserContracts() {
   const [isLoading, setIsLoading] = useState(false)
@@ -10,15 +10,15 @@ export function useUpdateUserContracts() {
   const { updateContractsFromApi } = useUpdateContractsDeployments()
 
   const updateContract = async ({
-    contract,
+    deployment,
     successCallback
   }: {
-    contract: ContractTableItem
+    deployment: UpdateDeployment
     successCallback?: () => void
   }) => {
     setIsLoading(true)
-    updateContractsFromApi(contract)
-      .then(() => userContractsRepository.updateBy(contract))
+    updateContractsFromApi(deployment)
+      .then(() => userContractsRepository.updateBy(deployment))
       .then(successCallback)
       .catch(error => {
         setError(error)

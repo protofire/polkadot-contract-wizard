@@ -2,12 +2,12 @@ import { BackendApiConfig } from '@/constants/config'
 import {
   ContractType,
   DeploymentItem,
+  UpdateDeployment,
   IDeploymentsRepository
 } from '@/domain/repositories/DeploymentRepository'
 import { ChainId } from '@/services/useink/chains'
 import { request } from '@/services/common/request'
 import { RootApiResponse } from './types'
-import { ContractTableItem } from '@/domain/wizard/ContractTableItem'
 
 interface DeploymentRaw {
   contract_name: string
@@ -89,23 +89,18 @@ export class ApiDeploymentRepository implements IApiDeploymentRepository {
   }
 
   async updateBy(
-    contract: ContractTableItem
+    deployment: UpdateDeployment
   ): Promise<RootApiResponse<string>> {
     return request<RootApiResponse<string>>(
       this.backenApiConfig.routes.createDeployment.url,
       {
         method: this.backenApiConfig.routes.updateDeployment.method,
         body: JSON.stringify({
-          code_id: contract.codeHash,
-          contract_address: contract.address,
-          contract_name: contract.name,
-          contract_type: contract.type,
-          date: contract.date,
-          external_abi: contract.abi,
-          hidden: contract.hidden ?? false,
-          network: contract.blockchain,
-          tx_hash: contract.txHash,
-          user_address: contract.userAddress
+          contract_address: deployment.contractAddress,
+          user_address: deployment.userAddress,
+          network: deployment.network,
+          contract_name: deployment.contractName,
+          hidden: deployment.hidden ?? false
         })
       }
     )

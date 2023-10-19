@@ -2,8 +2,9 @@ import React from 'react'
 import { Box, Button, IconButton, Modal, Typography } from '@mui/material'
 import CloseIcon from '@mui/icons-material/Close'
 import { ModalStyled, ModalTypography } from './styled'
-import { ContractTableItem } from '@/domain/wizard/ContractTableItem'
 import { useUpdateUserContracts } from '@/hooks/userContracts/useUpdateUserContracts'
+import { ContractTableItem } from '@/domain/wizard/ContractTableItem'
+import { UpdateDeployment } from '@/domain/repositories/DeploymentRepository'
 import { UserContractEvents } from '@/domain'
 
 type Props = {
@@ -14,9 +15,16 @@ type Props = {
 export function DeleteContractModal({ open, handleClose, contract }: Props) {
   const { updateContract } = useUpdateUserContracts()
   const handleDelete = () => {
-    const updatedContract = { ...contract, hidden: true }
+    const updatedContract: UpdateDeployment = {
+      contractAddress: contract.address,
+      userAddress: contract.userAddress,
+      network: contract.blockchain,
+      contractName: contract.name,
+      hidden: true
+    }
+
     updateContract({
-      contract: updatedContract,
+      deployment: updatedContract,
       successCallback: () => {
         document.dispatchEvent(
           new CustomEvent(UserContractEvents.userContractUpdated)

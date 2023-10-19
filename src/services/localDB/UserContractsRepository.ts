@@ -4,9 +4,9 @@ import { IUserContractsRepository } from '@/domain/repositories/IUserContractsRe
 import { ChainId } from '../useink/chains'
 import {
   ContractType,
-  DeploymentItem
+  DeploymentItem,
+  UpdateDeployment
 } from '@/domain/repositories/DeploymentRepository'
-import { ContractTableItem } from '@/domain/wizard/ContractTableItem'
 
 export type FilterType = Pick<
   Partial<UserContractDetails>,
@@ -35,7 +35,6 @@ export class UserContractsRepository implements IUserContractsRepository {
     blockchain: ChainId,
     filterBy?: FilterType
   ): Promise<UserContractDetails[]> {
-    console.log('where', { userAddress, blockchain, ...filterBy })
     if (filterBy === undefined) {
       return await this.db.userContracts
         .where({ userAddress, blockchain })
@@ -74,10 +73,10 @@ export class UserContractsRepository implements IUserContractsRepository {
     return await this.list(userAddress)
   }
 
-  async updateBy(contract: ContractTableItem): Promise<number> {
-    const { userAddress, blockchain, address } = contract
+  async updateBy(deployed: UpdateDeployment): Promise<number> {
+    const { userAddress, network, contractAddress } = deployed
     return await this.db.userContracts
-      .where({ userAddress, blockchain, address })
-      .modify({ ...contract })
+      .where({ userAddress, blockchain: network, address: contractAddress })
+      .modify({ name: deployed.contractName, hidden: deployed.hidden })
   }
 }
