@@ -1,6 +1,7 @@
 import { useNetworkAccountsContext } from '@/context/NetworkAccountsContext'
 import { ContractType } from '@/domain/repositories/DeploymentRepository'
 import { useListUserContracts } from '@/hooks/userContracts/useListUserContracts'
+import { EmptyString } from '@/services/common/EmptyString'
 import { FilterType } from '@/services/localDB/UserContractsRepository'
 import { ContractsTableContent } from '@/view/ContractView/ContractsTable'
 import { Box, Paper, Typography } from '@mui/material'
@@ -15,7 +16,7 @@ export default function Contracts() {
     filterBy
   )
 
-  const changeType = (type: ContractType | '') => {
+  const changeType = (type: ContractType | EmptyString) => {
     setFilterBy(prev => {
       if (!type) {
         delete prev.type

@@ -3,9 +3,11 @@ import Box from '@mui/material/Box'
 import { MenuItem, Select, SelectChangeEvent } from '@mui/material'
 import { TITLE_MAP_TOKEN } from '@/constants/titleTokenType'
 import { ContractType } from '@/domain/repositories/DeploymentRepository'
+import { EmptyString } from '@/services/common/EmptyString'
+import { SearchInput } from './SearchInput'
 
 export interface FiltersInputProps {
-  setFilterBy: (type: ContractType | '') => void
+  setFilterBy: (type: ContractType | EmptyString) => void
 }
 
 type KeyMapToken = keyof typeof TITLE_MAP_TOKEN
@@ -18,11 +20,12 @@ const searchType = [
   }))
 ]
 export function FiltersInput({ setFilterBy }: FiltersInputProps) {
-  const [contractType, setContractType] = React.useState<KeyMapToken | ''>('')
+  const [contractType, setContractType] = React.useState<
+    KeyMapToken | EmptyString
+  >('')
   const handleSelect = (event: SelectChangeEvent) => {
     event.preventDefault()
-
-    const value = event.target.value as KeyMapToken | ''
+    const value = event.target.value as KeyMapToken | EmptyString
     setFilterBy(value)
     setContractType(value)
   }
@@ -33,20 +36,7 @@ export function FiltersInput({ setFilterBy }: FiltersInputProps) {
         '& > :not(style)': { m: 1, color: 'white' }
       }}
     >
-      {/* <TextField
-        id="input-search-table"
-        sx={{ color: 'white', width: '300px', input: { color: 'white' } }}
-        InputProps={{
-          startAdornment: (
-            <InputAdornment position="start">
-              <Search />
-            </InputAdornment>
-          )
-        }}
-        placeholder="Search"
-        variant="outlined"
-      /> */}
-
+      <SearchInput></SearchInput>
       <Select
         sx={{ m: 1, width: '150px' }}
         value={contractType}
