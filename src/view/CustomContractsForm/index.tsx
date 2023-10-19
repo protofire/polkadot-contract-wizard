@@ -79,7 +79,7 @@ export function CustomContractsForm({ network, onCreate }: Props) {
         label="Contract Name"
         placeholder="My imported contract"
         value={formData.contractName.value}
-        disabled={anyInvalidField}
+        disabled={!Boolean(formData.contractAddress.value)}
         onChange={formData.contractName.onChange}
         error={Boolean(formData.contractName.error)}
         helperText={

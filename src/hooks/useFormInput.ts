@@ -21,47 +21,66 @@ interface UseFormInput<I> {
   required?: boolean
 }
 
+interface FormInputState<I> {
+  value: I
+  error: null | string
+  loading: boolean
+  touched: boolean
+}
+
 export function useFormInput<I>(
   initialValue: UseFormInput<I>['initialValue'],
   validations: UseFormInput<I>['validations'] = [],
   required: UseFormInput<I>['required'] = true
 ): ControlledFormInput<I> {
-  const [value, setValue] = useState(initialValue)
-  const [error, setError] = useState<string | null>(null)
-  const [loading, setLoading] = useState(false)
-  const [touched, setTouched] = useState(false)
+  const [inputState, setInputState] = useState<FormInputState<I>>({
+    value: initialValue,
+    error: null,
+    loading: false,
+    touched: false
+  })
 
   async function handleChange(e: React.BaseSyntheticEvent) {
-    setTouched(true)
     const newValue = e.target.value
     await _setvalue(newValue)
   }
 
   const _setvalue = async (newValue: I) => {
-    setLoading(true)
-    setError(null)
-    setValue(newValue)
+    setInputState(prevState => ({
+      ...prevState,
+      value: newValue,
+      error: null,
+      loading: true,
+      touched: true
+    }))
+
     try {
       const errorMessages = await Promise.all(
         validations.map(validate => validate(newValue))
       )
       const firstError = errorMessages.find(message => !!message)
       if (firstError) throw new Error(firstError)
+      setInputState(prevState => ({
+        ...prevState,
+        loading: false
+      }))
     } catch (e) {
-      setError(getErrorMessage(e))
-    } finally {
-      setLoading(false)
+      setInputState(prevState => ({
+        ...prevState,
+        error: getErrorMessage(e),
+        loading: false
+      }))
     }
   }
 
   return {
-    value,
+    value: inputState.value,
     onChange: handleChange,
-    error,
-    loading,
+    error: inputState.error,
+    loading: inputState.loading,
     required,
-    touched,
-    setValue
+    touched: inputState.touched,
+    setValue: _setvalue
   }
 }
 
