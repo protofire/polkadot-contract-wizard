@@ -165,6 +165,7 @@ export const useDeployContract = (): ReturnValue & {
           abi: metadataAbi.json,
           type: tokenType,
           date: new Date().toISOString(),
+          hidden: false,
           external: false
         }
 

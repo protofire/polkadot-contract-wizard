@@ -37,6 +37,10 @@ const backendRouterApi = {
   searchCompileContract: {
     pathName: 'contract?code_id=',
     method: 'GET'
+  },
+  updateDeployment: {
+    pathName: 'deployments',
+    method: 'PATCH'
   }
 }
 

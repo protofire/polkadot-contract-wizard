@@ -2,7 +2,6 @@ import { getContractInfo } from '@/services/substrate/contract'
 import { isValidAddress } from '@/utils/blockchain'
 import { useCallback, useState } from 'react'
 import { useNetworkApi } from '../useNetworkApi'
-import { AnyJson } from '@/services/substrate/types'
 
 interface UseIsOnChain {
   isOnChain: (_address: string) => Promise<string | undefined>

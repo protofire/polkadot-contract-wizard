@@ -2,9 +2,10 @@ import { ChainId } from '@/services/useink/chains'
 import { TokenType } from '../TokenType'
 
 export type ContractType = TokenType | 'custom'
+export type UpdateDeployment = Partial<DeploymentItem>
 
 export interface DeploymentItem {
-  contractName: TokenType
+  contractName: string
   contractAddress: string
   network: ChainId
   codeId: string
@@ -13,9 +14,11 @@ export interface DeploymentItem {
   date: string
   contractType: ContractType
   externalAbi?: Record<string, unknown>
+  hidden: boolean
 }
 
 export interface IDeploymentsRepository<A, B> {
   add: (deployment: DeploymentItem) => Promise<A>
   findBy: (userAddress: string, networkId?: ChainId) => Promise<B>
+  updateBy: (deployment: UpdateDeployment) => Promise<A>
 }

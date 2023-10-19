@@ -29,7 +29,6 @@ export function useListContractDeployments(): UseAddDeployment {
           userAddress,
           networkId
         )
-
         return deployments
       } catch (e) {
         setError(getErrorMessage(e))
