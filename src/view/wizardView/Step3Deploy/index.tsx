@@ -23,7 +23,7 @@ import {
   FormConstructorContract,
   ConstructorTokenFieldProps
 } from './FormConstructorContract'
-import { useCreateContractDeployments } from '@/hooks/deployments/useCreateContractsDeployments'
+import { useCreateDeployments } from '@/hooks/deployments/useCreateDeployments'
 import { ChainId } from '@/services/useink/chains'
 import { StackStyled } from './styled'
 import { useAddUserContracts } from '@/hooks/userContracts/useAddUserContracts'
@@ -56,7 +56,7 @@ export default function Step3Deploy({
   const { deployContract, isLoading: isDeploying } = useDeployContract()
   const { ref: refButton, recentlyClicked } = useRecentlyClicked(500)
   const _isDeploying = recentlyClicked || isDeploying
-  const { newDeployment } = useCreateContractDeployments()
+  const { newDeployment } = useCreateDeployments()
   const { addUserContract } = useAddUserContracts()
 
   useEffect(() => {

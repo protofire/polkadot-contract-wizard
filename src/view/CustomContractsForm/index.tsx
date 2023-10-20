@@ -14,10 +14,16 @@ import { ChainId } from '@/services/useink/chains'
 import BackNextButton from '@/components/BackNextButtons'
 import { ROUTES } from '@/constants'
 import router from 'next/router'
+import { DeploymentItem } from '@/domain/repositories/DeploymentRepository'
+
+export type CustomDeploymentDataForm = Pick<
+  DeploymentItem,
+  'contractName' | 'contractAddress' | 'externalAbi'
+>
 
 interface Props {
   network: ChainId
-  onCreate: () => void
+  onCreate: (data: CustomDeploymentDataForm) => void
 }
 
 interface SourceInMetadata {
@@ -59,7 +65,11 @@ export function CustomContractsForm({ network, onCreate }: Props) {
   }
 
   const _handlerNext = () => {
-    onCreate()
+    // onCreate({
+    //   contractAddress: formData.contractAddress,
+    //   contractName: formData.contractName,
+    //   abi: metadata
+    // })
   }
 
   return (

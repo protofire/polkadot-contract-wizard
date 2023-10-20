@@ -9,7 +9,7 @@ interface UseServiceAddDeployment {
   error?: string
 }
 
-export function useCreateContractDeployments(): UseServiceAddDeployment {
+export function useCreateDeployments(): UseServiceAddDeployment {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | undefined>()
   const { deploymentsRepository } = useLocalDbContext()

@@ -14,7 +14,7 @@ interface UseAddDeployment {
   error?: string
 }
 
-export function useListContractDeployments(): UseAddDeployment {
+export function useListDeployments(): UseAddDeployment {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | undefined>()
   const { deploymentsRepository } = useLocalDbContext()
