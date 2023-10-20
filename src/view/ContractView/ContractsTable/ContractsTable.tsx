@@ -20,7 +20,7 @@ import { DefaultToolTipButton } from '@/view/components/DefaultTooltipButton'
 import EditIcon from '@mui/icons-material/Edit'
 import ShareIcon from '@mui/icons-material/Share'
 import DeleteIcon from '@mui/icons-material/Delete'
-import SaveIcon from '@mui/icons-material/Save'
+import CheckIcon from '@mui/icons-material/CheckCircleOutlineRounded'
 import CancelIcon from '@mui/icons-material/Cancel'
 
 import { ShareContractModal } from '@/view/components/ShareContractModal'
@@ -96,7 +96,7 @@ function ContractTableRow({
                 id="save-contract-name"
                 sx={{ marginLeft: '0.5rem', color: 'white' }}
                 title="Save"
-                Icon={SaveIcon}
+                Icon={CheckIcon}
                 onClick={handleUpdate}
               ></DefaultToolTipButton>
               <DefaultToolTipButton
