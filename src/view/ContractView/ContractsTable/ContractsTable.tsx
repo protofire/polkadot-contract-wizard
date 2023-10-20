@@ -78,8 +78,8 @@ function ContractTableRow({
     >
       <TableCell
         sx={{
-          minWidth: '20rem',
-          height: '6rem',
+          minWidth: { lg: '10rem', xl: '16rem' },
+          height: '5rem',
           color: 'white',
           input: {
             color: 'white'
