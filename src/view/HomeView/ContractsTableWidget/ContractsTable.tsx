@@ -125,10 +125,18 @@ export function ContractsTable({
             <Table aria-label="simple table">
               <TableHead>
                 <TableRow>
-                  <TableCell>TYPE</TableCell>
-                  <TableCell>ADDRESS</TableCell>
-                  <TableCell>ADDED</TableCell>
-                  <TableCell align="right">METADATA</TableCell>
+                  <TableCell>
+                    <Typography variant="caption">TYPE</Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography variant="caption">ADDRESS</Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography variant="caption">ADDED</Typography>
+                  </TableCell>
+                  <TableCell align="right">
+                    <Typography variant="caption">METADATA</Typography>
+                  </TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>

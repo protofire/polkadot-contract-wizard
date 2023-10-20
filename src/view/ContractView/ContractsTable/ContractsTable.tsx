@@ -94,14 +94,14 @@ function ContractTableRow({
               <TextField value={textInput} onChange={handleChange}></TextField>
               <DefaultToolTipButton
                 id="save-contract-name"
-                sx={{ marginLeft: '0.5rem', color: 'white' }}
+                sx={{ color: 'green' }}
                 title="Save"
                 Icon={CheckIcon}
                 onClick={handleUpdate}
               ></DefaultToolTipButton>
               <DefaultToolTipButton
                 id="cancel-contract-name"
-                sx={{ marginLeft: '0.5rem', color: 'white' }}
+                sx={{ color: 'tomato' }}
                 title="Cancel"
                 Icon={CancelIcon}
                 onClick={() => setEditable(!editable)}
@@ -112,7 +112,7 @@ function ContractTableRow({
               <Typography>{textInput}</Typography>
               <DefaultToolTipButton
                 id="edit-contract-address"
-                sx={{ marginLeft: '0.5rem', color: 'white' }}
+                sx={{ color: 'white' }}
                 title="Edit"
                 Icon={EditIcon}
                 onClick={() => setEditable(!editable)}
@@ -173,11 +173,21 @@ export function ContractsTable({
         <Table aria-label="simple table">
           <TableHead>
             <TableRow>
-              <TableCell>NAME</TableCell>
-              <TableCell>TYPE</TableCell>
-              <TableCell>ADDRESS</TableCell>
-              <TableCell>ADDED ON</TableCell>
-              <TableCell align="right">ACTIONS</TableCell>
+              <TableCell>
+                <Typography variant="caption">NAME</Typography>
+              </TableCell>
+              <TableCell>
+                <Typography variant="caption">TYPE</Typography>
+              </TableCell>
+              <TableCell>
+                <Typography variant="caption">ADDRESS</Typography>
+              </TableCell>
+              <TableCell>
+                <Typography variant="caption">ADDED ON</Typography>
+              </TableCell>
+              <TableCell align="right">
+                <Typography variant="caption">ACTIONS</Typography>
+              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
