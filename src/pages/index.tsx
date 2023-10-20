@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { Stack, Typography } from '@mui/material'
+import { Stack, Typography, Box } from '@mui/material'
 
 import { HomeButton, HomeButtonCustom } from '@/components'
 import { CUSTOM_CONTRACT, ROUTES, TOKEN_PATHS } from '@/constants/index'
@@ -25,7 +25,12 @@ function Home() {
   )
 
   return (
-    <>
+    <Box
+      sx={{
+        width: { sm: '90%', md: '75%', lg: '100%', xl: '75%' },
+        margin: { lg: '1rem auto 2rem auto', xl: '2rem auto 2rem auto' }
+      }}
+    >
       <Typography variant="h1" align="center">
         Start building something amazing on Polkadot
       </Typography>
@@ -80,7 +85,7 @@ function Home() {
         />
       </Stack>
       {accountConnected && <ContractsTableWidget contracts={contracts} />}
-    </>
+    </Box>
   )
 }
 

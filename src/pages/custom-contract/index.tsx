@@ -14,34 +14,32 @@ export default function CustomContractsPage() {
   }
 
   return (
-    <>
-      <Box
-        sx={{
-          width: { sm: '90%', md: '75%', lg: '80%', xl: '60%' },
-          margin: '0 auto 2rem auto'
-        }}
-      >
-        <Typography variant="h1" align="center">
-          Import Custom Contract
-        </Typography>
-        {accountConnected ? (
-          <>
-            {!isImporting && (
-              <CustomContractsForm
-                network={networkConnected}
-                onCreate={onCreate}
-              />
-            )}
-            <ImportingContractMessage isImporting={isImporting} />
-          </>
-        ) : (
-          <ConnectWalletSection
-            text={
-              'You need to connect a wallet to interact with an external contract.'
-            }
-          />
-        )}
-      </Box>
-    </>
+    <Box
+      sx={{
+        width: { sm: '90%', md: '75%', lg: '100%', xl: '75%' },
+        margin: { lg: '1rem auto 2rem auto', xl: '2rem auto 2rem auto' }
+      }}
+    >
+      <Typography variant="h1" align="center">
+        Import Custom Contract
+      </Typography>
+      {accountConnected ? (
+        <>
+          {!isImporting && (
+            <CustomContractsForm
+              network={networkConnected}
+              onCreate={onCreate}
+            />
+          )}
+          <ImportingContractMessage isImporting={isImporting} />
+        </>
+      ) : (
+        <ConnectWalletSection
+          text={
+            'You need to connect a wallet to interact with an external contract.'
+          }
+        />
+      )}
+    </Box>
   )
 }
