@@ -1,3 +1,5 @@
+import { Signer } from '@polkadot/api/types'
+
 export type SubscriptionFn = (
   accounts: WalletAccount[] | undefined
 ) => void | Promise<void>
@@ -14,7 +16,7 @@ export interface WalletAccount {
   source: string
   name?: string
   wallet?: Wallet
-  signer?: unknown
+  signer?: Signer | undefined
 }
 
 interface WalletData {
@@ -42,11 +44,6 @@ interface WalletExtension {
   // Refer to a specific wallet's extension documentation
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   signer: any
-}
-
-interface Signer {
-  // Sign function
-  sign?: (address: string, payload: string) => unknown
 }
 
 interface Connector {
