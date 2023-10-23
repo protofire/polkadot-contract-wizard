@@ -20,7 +20,7 @@ interface UseAddDeployment {
 export function useListUserContracts(
   userAddress: string | undefined,
   networkConnected: ChainId,
-  filterBy: FilterType = { hidden: false }
+  filterBy?: FilterType
 ): UseAddDeployment {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | undefined>()
@@ -43,6 +43,11 @@ export function useListUserContracts(
       return
     }
 
+    if (userContracts.length === 0) {
+      setUserContracts(userContracts)
+      setIsLoading(false)
+    }
+
     userContractsFromApi(userAddress, networkConnected)
       .then(async deployments => {
         deployments &&
@@ -54,6 +59,7 @@ export function useListUserContracts(
           .searchBy(userAddress, networkConnected, filterBy)
           .then(response => {
             setUserContracts(response)
+            setIsLoading(false)
           })
       })
       .catch(setError)

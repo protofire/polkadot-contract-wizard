@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { ContractsTable } from '@/view/ContractView/ContractsTable/ContractsTable'
 import { UserContractDetails } from '@/domain'
 import { ContractTableItem } from '@/domain/wizard/ContractTableItem'
@@ -9,6 +9,10 @@ import { ROUTES } from '@/constants'
 interface Props extends FiltersInputProps {
   contracts: UserContractDetails[]
   isLoading: boolean
+}
+
+const Loading: React.FC<{ isLoading: boolean }> = ({ isLoading }) => {
+  if (isLoading) return <Typography>Loading</Typography>
 }
 
 export function ContractsTableContent({
@@ -40,7 +44,7 @@ export function ContractsTableContent({
           </Button>
         </Link>
       </Box>
-      {isLoading && <Typography>Loading</Typography>}
+      <Loading isLoading={isLoading} />
       {!isLoading && contracts.length > 0 ? (
         <ContractsTable contracts={contractsItem} />
       ) : (
