@@ -112,11 +112,11 @@ const DrawerContent = ({ version, backendApiVersion }: Props) => {
                   marginTop: '0.1rem'
                 }}
               >
-                FE V{version}
+                UI V{version}
               </Typography>
             </Box>
           )}
-          {version && (
+          {backendApiVersion && (
             <Box display="flex" justifyContent={'right'} pr={'1rem'}>
               <Typography
                 sx={{
@@ -125,7 +125,7 @@ const DrawerContent = ({ version, backendApiVersion }: Props) => {
                   marginTop: '0.1rem'
                 }}
               >
-                BE V{backendApiVersion}
+                API V{backendApiVersion}
               </Typography>
             </Box>
           )}

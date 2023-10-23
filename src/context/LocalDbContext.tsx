@@ -4,7 +4,13 @@ import {
   ApiDeploymentRepository,
   IApiDeploymentRepository
 } from '@/services/backendApi/ApiDeploymentRepository'
-import React, { createContext, PropsWithChildren, useContext } from 'react'
+import React, {
+  createContext,
+  PropsWithChildren,
+  useContext,
+  useEffect,
+  useState
+} from 'react'
 import { BACKEND_API } from '../constants'
 import { MyDatabase } from '@/services/localDB'
 import { UserContractsRepository } from '@/services/localDB/UserContractsRepository'
@@ -13,14 +19,14 @@ import {
   ApiCompileContractRepository,
   IApiCompileContractRepository
 } from '@/services/backendApi/ApiCompileContractRepository'
-import { ApiVersionService } from '@/services/backendApi/ApiVersionService'
+import { apiVersionService } from '@/services/backendApi/ApiVersionService'
 
 interface DbContext {
   networkRepository: INetworkRepository
   deploymentsRepository: IApiDeploymentRepository
   userContractsRepository: IUserContractsRepository
   compileContractRepository: IApiCompileContractRepository
-  apiVersion: string
+  backendApiVersion: string
 }
 
 const networkRepository = new LocalStorageNetworkRepository()
@@ -33,12 +39,18 @@ const DbContext = createContext<DbContext>({
   deploymentsRepository,
   userContractsRepository,
   compileContractRepository,
-  apiVersion: ApiVersionService.DEFAULT_API_VERSION
+  backendApiVersion: ''
 })
 
-export const LocalDbProvider: React.FC<
-  PropsWithChildren<{ apiVersion: string }>
-> = ({ children, apiVersion }) => {
+export const LocalDbProvider: React.FC<PropsWithChildren> = ({ children }) => {
+  const [backendApiVersion, setBackendApiVersion] = useState('')
+
+  useEffect(() => {
+    void apiVersionService
+      .getApiVersion()
+      .then(version => setBackendApiVersion(version))
+  }, [])
+
   return (
     <DbContext.Provider
       value={{
@@ -46,7 +58,7 @@ export const LocalDbProvider: React.FC<
         deploymentsRepository,
         userContractsRepository,
         compileContractRepository,
-        apiVersion
+        backendApiVersion
       }}
     >
       {children}

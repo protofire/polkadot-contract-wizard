@@ -27,7 +27,6 @@ import { apiVersionService } from '@/services/backendApi/ApiVersionService'
 
 type CustomAppProps = AppProps & {
   emotionCache: EmotionCache
-  apiVersion: string
   Component: NextPage & {
     getLayout?: (_page: React.ReactElement) => React.ReactNode
   }
@@ -38,17 +37,11 @@ const clientEmotionCache = buildEmotionCache()
 const repositoryAppNotification = new StorageNotificationsRepository()
 
 export default function App(props: CustomAppProps) {
-  const {
-    Component,
-    emotionCache = clientEmotionCache,
-    pageProps,
-    apiVersion
-  } = props
+  const { Component, emotionCache = clientEmotionCache, pageProps } = props
 
   const getLayout =
     Component.getLayout ?? (page => <MainLayout>{page}</MainLayout>)
 
-  console.log('__apiVer', apiVersion)
   return (
     <div className={inter.className}>
       <CacheProvider value={emotionCache}>
@@ -70,7 +63,7 @@ export default function App(props: CustomAppProps) {
               chains: CHAINS
             }}
           >
-            <LocalDbProvider apiVersion={apiVersion}>
+            <LocalDbProvider>
               <NetworkAccountsContextProvider>
                 <AppNotificationContextProvider
                   repository={repositoryAppNotification}
@@ -93,14 +86,4 @@ export default function App(props: CustomAppProps) {
       </CacheProvider>
     </div>
   )
-}
-
-App.getInitialProps = async (appContext: AppContext) => {
-  const apiVersion = await apiVersionService.getApiVersion()
-
-  return {
-    pageProps:
-      appContext.ctx.res?.statusCode === 200 ? appContext.ctx.query : {},
-    apiVersion
-  }
 }

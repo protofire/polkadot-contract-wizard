@@ -20,7 +20,7 @@ const MainDrawer = ({
   drawerwidth = 260,
   version
 }: Props) => {
-  const { apiVersion: backendApiVersion } = useLocalDbContext()
+  const { backendApiVersion: backendApiVersion } = useLocalDbContext()
   const drawerContent = useMemo(
     () => (
       <DrawerContent version={version} backendApiVersion={backendApiVersion} />
