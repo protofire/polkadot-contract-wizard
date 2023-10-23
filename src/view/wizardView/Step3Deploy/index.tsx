@@ -122,11 +122,12 @@ export default function Step3Deploy({
           contractName: userContractsDetail.name as TokenType,
           contractAddress: userContractsDetail.address,
           network: userContractsDetail.blockchain as ChainId,
-          codeId: userContractsDetail.codeHash,
+          codeId: userContractsDetail.codeId,
           userAddress: accountConnected.address,
           txHash: userContractsDetail.txHash,
           date: userContractsDetail.date,
-          contractType: userContractsDetail.type
+          contractType: userContractsDetail.type,
+          hidden: userContractsDetail.hidden
         })
         addUserContract(userContractsDetail)
       }

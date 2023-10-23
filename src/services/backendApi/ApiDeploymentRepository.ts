@@ -2,6 +2,7 @@ import { BackendApiConfig } from '@/constants/config'
 import {
   ContractType,
   DeploymentItem,
+  UpdateDeployment,
   IDeploymentsRepository
 } from '@/domain/repositories/DeploymentRepository'
 import { ChainId } from '@/services/useink/chains'
@@ -18,6 +19,7 @@ interface DeploymentRaw {
   date: string
   contract_type: ContractType
   external_abi?: string
+  hidden: boolean
 }
 
 export type IApiDeploymentRepository = IDeploymentsRepository<
@@ -35,6 +37,7 @@ function adaptDeployment(deploymentRaw: DeploymentRaw): DeploymentItem {
     txHash: deploymentRaw.tx_hash,
     date: deploymentRaw.date,
     contractType: deploymentRaw.contract_type,
+    hidden: deploymentRaw.hidden,
     externalAbi: deploymentRaw.external_abi
       ? JSON.parse(deploymentRaw.external_abi)
       : undefined
@@ -82,7 +85,24 @@ export class ApiDeploymentRepository implements IApiDeploymentRepository {
         method: method
       }
     )
-
     return data.map(e => adaptDeployment(e))
+  }
+
+  async updateBy(
+    deployment: UpdateDeployment
+  ): Promise<RootApiResponse<string>> {
+    return request<RootApiResponse<string>>(
+      this.backenApiConfig.routes.createDeployment.url,
+      {
+        method: this.backenApiConfig.routes.updateDeployment.method,
+        body: JSON.stringify({
+          contract_address: deployment.contractAddress,
+          user_address: deployment.userAddress,
+          network: deployment.network,
+          contract_name: deployment.contractName,
+          hidden: deployment.hidden ?? false
+        })
+      }
+    )
   }
 }

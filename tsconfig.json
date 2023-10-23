@@ -15,17 +15,11 @@
     "jsx": "preserve",
     "incremental": true,
     "paths": {
-      "@/*": [
-        "./src/*"
-      ],
-      "@/components": [
-        "./src/view/components"
-      ],
-      "@/components/*": [
-        "./src/view/components/*"
-      ],
+      "@/*": ["./src/*"],
+      "@/components": ["./src/view/components"],
+      "@/components/*": ["./src/view/components/*"]
     }
-},
+  },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
-  "exclude": ["node_modules"],
+  "exclude": ["node_modules"]
 }

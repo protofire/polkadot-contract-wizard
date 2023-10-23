@@ -24,7 +24,6 @@ export function useCreateDeployments(): UseServiceAddDeployment {
 
         setIsLoading(false)
         if (response.error) {
-          console.log(response.error.message)
           throw Error(response.error.message)
         }
         return response['data']

@@ -160,11 +160,12 @@ export const useDeployContract = (): ReturnValue & {
           blockchain,
           txHash: result.txHash,
           address: result.contractAddress,
-          codeHash: code_id,
+          codeId: code_id,
           name: tokenType,
           abi: metadataAbi.json,
           type: tokenType,
           date: new Date().toISOString(),
+          hidden: false,
           external: false
         }
 

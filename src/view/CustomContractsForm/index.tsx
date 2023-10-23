@@ -18,7 +18,7 @@ import { DeploymentItem } from '@/domain/repositories/DeploymentRepository'
 
 export type CustomDeploymentDataForm = Pick<
   DeploymentItem,
-  'contractName' | 'contractAddress' | 'externalAbi'
+  'contractName' | 'contractAddress' | 'externalAbi' | 'codeId'
 >
 
 interface Props {
@@ -65,11 +65,14 @@ export function CustomContractsForm({ network, onCreate }: Props) {
   }
 
   const _handlerNext = () => {
-    // onCreate({
-    //   contractAddress: formData.contractAddress,
-    //   contractName: formData.contractName,
-    //   abi: metadata
-    // })
+    if (!metadata) return
+
+    onCreate({
+      contractAddress: formData.contractAddress.value,
+      contractName: formData.contractName.value,
+      externalAbi: metadata.source,
+      codeId: contractHash
+    })
   }
 
   return (

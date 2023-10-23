@@ -20,33 +20,37 @@ export default function CustomContractsPage() {
 
     try {
       if (!accountConnected) return
-      // const customContract: UserContractDetails = {
-      //   userAddress: accountConnected.address,
-      //   blockchain: networkConnected,
-      //   txHash: '',
-      //   address: contractData.contractAddress,
-      //   codeHash: code_id,
-      //   name: tokenType,
-      //   abi: metadataAbi.json,
-      //   type: tokenType,
-      //   date: new Date().toISOString(),
-      //   external: false
-      // }
+      const customContract: UserContractDetails = {
+        userAddress: accountConnected.address,
+        blockchain: networkConnected,
+        txHash: '',
+        address: contractData.contractAddress,
+        codeId: '',
+        name: contractData.contractName,
+        abi: contractData.externalAbi,
+        type: 'custom',
+        date: new Date().toISOString(),
+        external: true,
+        hidden: false
+      }
+      const result = newDeployment({
+        contractName: customContract.name,
+        contractAddress: customContract.address,
+        network: customContract.blockchain,
+        codeId: customContract.codeId,
+        userAddress: accountConnected.address,
+        txHash: customContract.txHash,
+        date: customContract.date,
+        contractType: customContract.type,
+        hidden: false
+      })
+
+      console.log('__result', result)
     } catch {
     } finally {
       setIsImporting(false)
     }
 
-    // newDeployment({
-    //   contractName: userContractsDetail.name as TokenType,
-    //   contractAddress: userContractsDetail.address,
-    //   network: userContractsDetail.blockchain as ChainId,
-    //   codeId: userContractsDetail.codeHash,
-    //   userAddress: accountConnected.address,
-    //   txHash: userContractsDetail.txHash,
-    //   date: userContractsDetail.date,
-    //   contractType: userContractsDetail.type
-    // })
     // addUserContract(userContractsDetail)
   }
 

@@ -9,18 +9,19 @@ export interface UserContractDetails {
   userAddress: string
   blockchain: ChainId
   address: string
-  txHash: string
-  codeHash: string
+  txHash: string | undefined
+  codeId: string
   type: ContractType
   name: string
   date: string
   abi?: Record<string, unknown>
   external: boolean // Contracts not deployed by PCW are custom and external
+  hidden: boolean
 }
 
 export type ContractCompiled = Pick<
   UserContractDetails,
-  'userAddress' | 'codeHash' | 'name' | 'name'
+  'userAddress' | 'codeId' | 'name' | 'name'
 > & {
   type: TokenType
 }

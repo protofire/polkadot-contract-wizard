@@ -1,11 +1,15 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 import { useLocalDbContext } from '@/context/LocalDbContext'
-import { UserContractDetails, WalletConnectionEvents } from '@/domain'
+import {
+  UserContractDetails,
+  WalletConnectionEvents,
+  UserContractEvents
+} from '@/domain'
 import { useListDeployments } from '../deployments/useListDeployments'
-import { useOnceEffect } from '../useOnceEffect'
-import { useMultiEventListener } from '../useMultipleEventListener'
+import { useMultiEventListener } from '@/hooks/useMultipleEventListener'
 import { ChainId } from '@/services/useink/chains'
+import { FilterType } from '@/services/localDB/UserContractsRepository'
 
 interface UseAddDeployment {
   userContracts: UserContractDetails[]
@@ -15,7 +19,8 @@ interface UseAddDeployment {
 
 export function useListUserContracts(
   userAddress: string | undefined,
-  networkConnected: ChainId
+  networkConnected: ChainId,
+  filterBy: FilterType = { hidden: false }
 ): UseAddDeployment {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | undefined>()
@@ -24,11 +29,12 @@ export function useListUserContracts(
   const [userContracts, setUserContracts] = useState<UserContractDetails[]>([])
 
   const readInitialData = useCallback(async () => {
-    if (!userAddress) return
+    if (!userAddress || !networkConnected) return
     setIsLoading(true)
     const userContracts = await userContractsRepository.searchBy(
       userAddress,
-      networkConnected
+      networkConnected,
+      filterBy
     )
 
     if (userContracts.length > 0) {
@@ -37,40 +43,39 @@ export function useListUserContracts(
       return
     }
 
-    userContractsFromApi(userAddress, networkConnected).then(
-      async deployments => {
+    userContractsFromApi(userAddress, networkConnected)
+      .then(async deployments => {
         deployments &&
           (await userContractsRepository.bulkAddByUser(
             userAddress,
             deployments
           ))
         userContractsRepository
-          .searchBy(userAddress, networkConnected)
-          .then(setUserContracts)
-      }
-    )
+          .searchBy(userAddress, networkConnected, filterBy)
+          .then(response => {
+            setUserContracts(response)
+          })
+      })
+      .catch(setError)
   }, [
-    networkConnected,
     userAddress,
     userContractsFromApi,
-    userContractsRepository
+    networkConnected,
+    userContractsRepository,
+    filterBy
   ])
 
-  const { reset } = useOnceEffect(() => {
+  useEffect(() => {
     readInitialData()
-  }, [
-    userAddress,
-    networkConnected,
-    userContractsFromApi,
-    userContractsRepository
-  ])
+  }, [filterBy, readInitialData])
 
   useMultiEventListener(
     [
       WalletConnectionEvents.changeAccountAddress,
-      WalletConnectionEvents.networkChanged
+      WalletConnectionEvents.networkChanged,
+      UserContractEvents.userContractUpdated
     ],
-    () => reset()
+    () => readInitialData()
   )
 
   return { userContracts, isLoading, error }

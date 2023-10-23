@@ -1,14 +1,30 @@
 import { useNetworkAccountsContext } from '@/context/NetworkAccountsContext'
+import { ContractType } from '@/domain/repositories/DeploymentRepository'
 import { useListUserContracts } from '@/hooks/userContracts/useListUserContracts'
-import { ContractsTableWidget } from '@/view/ContractView/ContractsTable'
+import { EmptyString } from '@/services/common/EmptyString'
+import { FilterType } from '@/services/localDB/UserContractsRepository'
+import { ContractsTableContent } from '@/view/ContractView/ContractsTable'
 import { Box, Paper, Typography } from '@mui/material'
+import { useState } from 'react'
 
 export default function Contracts() {
+  const [filterBy, setFilterBy] = useState<FilterType>({ hidden: false })
   const { accountConnected, networkConnected } = useNetworkAccountsContext()
-  const { userContracts: contracts } = useListUserContracts(
+  const { userContracts: contracts, isLoading } = useListUserContracts(
     accountConnected?.address,
-    networkConnected
+    networkConnected,
+    filterBy
   )
+
+  const changeType = (type: ContractType | EmptyString) => {
+    setFilterBy(prev => {
+      if (!type) {
+        delete prev.type
+        return { ...prev }
+      }
+      return { ...prev, type }
+    })
+  }
 
   return (
     <Box
@@ -21,7 +37,11 @@ export default function Contracts() {
         Your Contracts
       </Typography>
       {accountConnected ? (
-        <ContractsTableWidget contracts={contracts} />
+        <ContractsTableContent
+          contracts={contracts}
+          setFilterBy={changeType}
+          isLoading={isLoading}
+        />
       ) : (
         <>
           <Box

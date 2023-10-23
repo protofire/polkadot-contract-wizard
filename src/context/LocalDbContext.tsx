@@ -13,12 +13,14 @@ import {
   ApiCompileContractRepository,
   IApiCompileContractRepository
 } from '@/services/backendApi/ApiCompileContractRepository'
+import { ApiVersionService } from '@/services/backendApi/ApiVersionService'
 
 interface DbContext {
   networkRepository: INetworkRepository
   deploymentsRepository: IApiDeploymentRepository
   userContractsRepository: IUserContractsRepository
   compileContractRepository: IApiCompileContractRepository
+  apiVersion: string
 }
 
 const networkRepository = new LocalStorageNetworkRepository()
@@ -30,17 +32,21 @@ const DbContext = createContext<DbContext>({
   networkRepository,
   deploymentsRepository,
   userContractsRepository,
-  compileContractRepository
+  compileContractRepository,
+  apiVersion: ApiVersionService.DEFAULT_API_VERSION
 })
 
-export const LocalDbProvider: React.FC<PropsWithChildren> = ({ children }) => {
+export const LocalDbProvider: React.FC<
+  PropsWithChildren<{ apiVersion: string }>
+> = ({ children, apiVersion }) => {
   return (
     <DbContext.Provider
       value={{
         networkRepository,
         deploymentsRepository,
         userContractsRepository,
-        compileContractRepository
+        compileContractRepository,
+        apiVersion
       }}
     >
       {children}
