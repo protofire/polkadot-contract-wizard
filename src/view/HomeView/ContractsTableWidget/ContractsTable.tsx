@@ -68,7 +68,13 @@ function ContractTableRow({
           />
         </Stack>
       </TableCell>
-      <TableCell>{isoToReadableDate(contract.date)}</TableCell>
+      <TableCell>
+        <Tooltip placement="top" title={contract.date}>
+          <Typography variant="body1">
+            {isoToReadableDate(contract.date)}
+          </Typography>
+        </Tooltip>
+      </TableCell>
       <TableCell align="right">
         <IconButton
           ref={refButton}
@@ -132,7 +138,7 @@ export function ContractsTable({
                     <Typography variant="caption">ADDRESS</Typography>
                   </TableCell>
                   <TableCell>
-                    <Typography variant="caption">ADDED</Typography>
+                    <Typography variant="caption">ADDED ON</Typography>
                   </TableCell>
                   <TableCell align="right">
                     <Typography variant="caption">METADATA</Typography>
