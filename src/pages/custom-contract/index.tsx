@@ -2,7 +2,8 @@ import { useNetworkAccountsContext } from '@/context/NetworkAccountsContext'
 import { ConnectWalletSection } from '@/view/components/ConnectWalletSection'
 import { CustomContractsForm } from '@/view/CustomContractsForm'
 import { ImportingContractMessage } from '@/view/CustomContractsForm/CreatingCustomContract'
-import { Box, Typography } from '@mui/material'
+import MainContainer from '@/view/layout/MainContainer'
+import { Typography } from '@mui/material'
 import { useState } from 'react'
 
 export default function CustomContractsPage() {
@@ -14,12 +15,7 @@ export default function CustomContractsPage() {
   }
 
   return (
-    <Box
-      sx={{
-        width: { sm: '90%', md: '75%', lg: '100%', xl: '75%' },
-        margin: { lg: '1rem auto 2rem auto', xl: '2rem auto 2rem auto' }
-      }}
-    >
+    <MainContainer>
       <Typography variant="h1" align="center">
         Import Custom Contract
       </Typography>
@@ -40,6 +36,6 @@ export default function CustomContractsPage() {
           }
         />
       )}
-    </Box>
+    </MainContainer>
   )
 }

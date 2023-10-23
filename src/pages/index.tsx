@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { Stack, Typography, Box } from '@mui/material'
+import { Stack, Typography } from '@mui/material'
 
 import { HomeButton, HomeButtonCustom } from '@/components'
 import { CUSTOM_CONTRACT, ROUTES, TOKEN_PATHS } from '@/constants/index'
@@ -7,6 +7,7 @@ import { useNetworkAccountsContext } from '@/context/NetworkAccountsContext'
 import { ContractsTableWidget } from '@/view/HomeView/ContractsTableWidget'
 import { useListUserContracts } from '@/hooks/userContracts/useListUserContracts'
 import { ContractType } from '@/domain/repositories/DeploymentRepository'
+import MainContainer from '@/view/layout/MainContainer'
 
 const Token: Record<ContractType, ContractType> = {
   psp22: 'psp22',
@@ -25,12 +26,7 @@ function Home() {
   )
 
   return (
-    <Box
-      sx={{
-        width: { sm: '90%', md: '75%', lg: '100%', xl: '75%' },
-        margin: { lg: '1rem auto 2rem auto', xl: '2rem auto 2rem auto' }
-      }}
-    >
+    <MainContainer>
       <Typography variant="h1" align="center">
         Start building something amazing on Polkadot
       </Typography>
@@ -85,7 +81,7 @@ function Home() {
         />
       </Stack>
       {accountConnected && <ContractsTableWidget contracts={contracts} />}
-    </Box>
+    </MainContainer>
   )
 }
 

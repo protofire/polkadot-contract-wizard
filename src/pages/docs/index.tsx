@@ -1,3 +1,4 @@
+import MainContainer from '@/view/layout/MainContainer'
 import { Box, Link, Stack, Typography } from '@mui/material'
 import Image from 'next/image'
 
@@ -16,12 +17,7 @@ const ImageResponsive = ({ alt, src }: { alt: string; src: string }) => {
 
 export default function Home() {
   return (
-    <Box
-      sx={{
-        width: { sm: '90%', md: '75%', lg: '100%', xl: '75%' },
-        margin: { lg: '1rem auto 2rem auto', xl: '2rem auto 2rem auto' }
-      }}
-    >
+    <MainContainer>
       <Typography variant="h1" align="center">
         Learn more about Polkadot Contract Wizard
       </Typography>
@@ -155,6 +151,6 @@ export default function Home() {
         </Typography>
         <ImageResponsive alt="ready to interact" src="/assets/docs15.png" />
       </Stack>
-    </Box>
+    </MainContainer>
   )
 }
