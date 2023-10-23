@@ -7,7 +7,8 @@ import {
   TableRow,
   Stack,
   TextField,
-  Typography
+  Typography,
+  Tooltip
 } from '@mui/material'
 
 import { CopyToClipboardButton, TokenIconSvg } from '@/components'
@@ -139,7 +140,13 @@ function ContractTableRow({
           />
         </Stack>
       </TableCell>
-      <TableCell>{isoToReadableDate(contract.date)}</TableCell>
+      <TableCell>
+        <Tooltip placement="top" title={contract.date}>
+          <Typography variant="body1">
+            {isoToReadableDate(contract.date)}
+          </Typography>
+        </Tooltip>
+      </TableCell>
       <TableCell align="right">
         <DefaultToolTipButton
           id="share-contract-address"
