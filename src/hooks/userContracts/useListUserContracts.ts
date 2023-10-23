@@ -20,7 +20,7 @@ interface UseAddDeployment {
 export function useListUserContracts(
   userAddress: string | undefined,
   networkConnected: ChainId,
-  filterBy: FilterType = { hidden: false }
+  filterBy?: FilterType
 ): UseAddDeployment {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | undefined>()
