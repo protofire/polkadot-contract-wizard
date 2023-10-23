@@ -28,6 +28,7 @@ import { TITLE_MAP_TOKEN } from '@/constants/titleTokenType'
 import { useUpdateUserContracts } from '@/hooks/userContracts/useUpdateUserContracts'
 import { DeleteContractModal } from '@/view/components/DeleteContractModal'
 import { UpdateDeployment } from '@/domain/repositories/DeploymentRepository'
+import { nameWithTimestamp } from '@/utils/generators'
 
 export interface ContractsTableProps {
   contracts: ContractTableItem[]
@@ -64,14 +65,16 @@ function ContractTableRow({
 
   const handleUpdate = () => {
     setEditable(!editable)
+    const contractName =
+      textInput.length > 0 ? textInput : nameWithTimestamp('custom')
     const updatedContract: UpdateDeployment = {
       contractAddress: contract.address,
       userAddress: contract.userAddress,
       network: contract.blockchain,
-      contractName: textInput,
+      contractName: contractName,
       hidden: false
     }
-
+    setTextInput(contractName)
     updateContract({
       deployment: updatedContract
     })
