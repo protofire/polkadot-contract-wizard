@@ -12,7 +12,11 @@ import {
 } from '@mui/material'
 
 import { CopyToClipboardButton, TokenIconSvg } from '@/components'
-import { isoToReadableDate, truncateAddress } from '@/utils/formatString'
+import {
+  isoDate,
+  isoToReadableDate,
+  truncateAddress
+} from '@/utils/formatString'
 import { ContractTableItem } from '@/domain/wizard/ContractTableItem'
 import { MonoTypography } from '@/components'
 import { StyledTableContainer, TokenWrapper } from './styled'
@@ -141,7 +145,7 @@ function ContractTableRow({
         </Stack>
       </TableCell>
       <TableCell>
-        <Tooltip placement="top" title={contract.date}>
+        <Tooltip placement="top" title={isoDate(contract.date)}>
           <Typography variant="body1">
             {isoToReadableDate(contract.date)}
           </Typography>

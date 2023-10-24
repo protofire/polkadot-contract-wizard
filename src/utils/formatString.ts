@@ -122,3 +122,22 @@ export const isoToReadableDate = (lastUpdate: Date | string): string => {
 
   return `${diffDays} days ago`
 }
+
+export const isoDate = (isoDateString: string): string => {
+  const options: Intl.DateTimeFormatOptions = {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: 'numeric',
+    second: 'numeric',
+    hour12: true
+  }
+
+  const date = new Date(isoDateString)
+  if (isNaN(date.getTime())) {
+    throw new Error('Invalid ISO date string')
+  }
+
+  return date.toLocaleString(undefined, options)
+}
