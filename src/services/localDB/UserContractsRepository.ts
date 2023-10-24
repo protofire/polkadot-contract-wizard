@@ -65,7 +65,7 @@ export class UserContractsRepository implements IUserContractsRepository {
       codeHash: d.codeId,
       type: d.contractType as ContractType,
       name: d.contractName,
-      date: new Date().toISOString(),
+      date: d.date,
       external: false,
       hidden: d.hidden
     }))
