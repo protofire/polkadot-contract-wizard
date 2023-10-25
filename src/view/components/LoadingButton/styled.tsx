@@ -28,7 +28,15 @@ export const StyledButton = styled(StyledButtonWrapper, {
   '&:hover': {
     backgroundColor: '#e6007b83',
     color: 'white',
-    border: '1px solid #c00569 '
+    border: '1px solid #c00569'
+  },
+
+  '&:disabled': {
+    color: theme.palette.grey[600],
+    opacity: '0.5',
+    '&:hover': {
+      cursor: 'not-allowed'
+    }
   },
 
   ...(!isLoading && {
