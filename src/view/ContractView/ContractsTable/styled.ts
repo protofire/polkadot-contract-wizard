@@ -17,5 +17,8 @@ export const StyledTableContainer = styled(TableContainer)<TableContainerProps>(
 
 export const TokenWrapper = styled(Stack)(() => ({
   flexDirection: 'row',
-  gap: '0.5rem'
+  gap: '0.5rem',
+  fontSize: '1rem',
+  minWidth: '11rem',
+  alignItems: 'center'
 }))

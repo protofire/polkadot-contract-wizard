@@ -7,11 +7,16 @@ import {
   TableRow,
   Stack,
   TextField,
-  Typography
+  Typography,
+  Tooltip
 } from '@mui/material'
 
 import { CopyToClipboardButton, TokenIconSvg } from '@/components'
-import { isoToReadableDate, truncateAddress } from '@/utils/formatString'
+import {
+  isoDate,
+  isoToReadableDate,
+  truncateAddress
+} from '@/utils/formatString'
 import { ContractTableItem } from '@/domain/wizard/ContractTableItem'
 import { MonoTypography } from '@/components'
 import { StyledTableContainer, TokenWrapper } from './styled'
@@ -20,7 +25,7 @@ import { DefaultToolTipButton } from '@/view/components/DefaultTooltipButton'
 import EditIcon from '@mui/icons-material/Edit'
 import ShareIcon from '@mui/icons-material/Share'
 import DeleteIcon from '@mui/icons-material/Delete'
-import SaveIcon from '@mui/icons-material/Save'
+import CheckIcon from '@mui/icons-material/CheckCircleOutlineRounded'
 import CancelIcon from '@mui/icons-material/Cancel'
 
 import { ShareContractModal } from '@/view/components/ShareContractModal'
@@ -78,8 +83,8 @@ function ContractTableRow({
     >
       <TableCell
         sx={{
-          minWidth: '20rem',
-          height: '6rem',
+          minWidth: { lg: '10rem', xl: '16rem' },
+          height: '5rem',
           color: 'white',
           input: {
             color: 'white'
@@ -94,14 +99,14 @@ function ContractTableRow({
               <TextField value={textInput} onChange={handleChange}></TextField>
               <DefaultToolTipButton
                 id="save-contract-name"
-                sx={{ marginLeft: '0.5rem', color: 'white' }}
+                sx={{ color: 'green' }}
                 title="Save"
-                Icon={SaveIcon}
+                Icon={CheckIcon}
                 onClick={handleUpdate}
               ></DefaultToolTipButton>
               <DefaultToolTipButton
                 id="cancel-contract-name"
-                sx={{ marginLeft: '0.5rem', color: 'white' }}
+                sx={{ color: 'tomato' }}
                 title="Cancel"
                 Icon={CancelIcon}
                 onClick={() => setEditable(!editable)}
@@ -112,7 +117,7 @@ function ContractTableRow({
               <Typography>{textInput}</Typography>
               <DefaultToolTipButton
                 id="edit-contract-address"
-                sx={{ marginLeft: '0.5rem', color: 'white' }}
+                sx={{ color: 'white' }}
                 title="Edit"
                 Icon={EditIcon}
                 onClick={() => setEditable(!editable)}
@@ -139,7 +144,13 @@ function ContractTableRow({
           />
         </Stack>
       </TableCell>
-      <TableCell>{isoToReadableDate(contract.date)}</TableCell>
+      <TableCell>
+        <Tooltip placement="top" title={isoDate(contract.date)}>
+          <Typography variant="body1">
+            {isoToReadableDate(contract.date)}
+          </Typography>
+        </Tooltip>
+      </TableCell>
       <TableCell align="right">
         <DefaultToolTipButton
           id="share-contract-address"
@@ -173,11 +184,21 @@ export function ContractsTable({
         <Table aria-label="simple table">
           <TableHead>
             <TableRow>
-              <TableCell>NAME</TableCell>
-              <TableCell>TYPE</TableCell>
-              <TableCell>ADDRESS</TableCell>
-              <TableCell>ADDED ON</TableCell>
-              <TableCell align="right">ACTIONS</TableCell>
+              <TableCell>
+                <Typography variant="caption">NAME</Typography>
+              </TableCell>
+              <TableCell>
+                <Typography variant="caption">TYPE</Typography>
+              </TableCell>
+              <TableCell>
+                <Typography variant="caption">ADDRESS</Typography>
+              </TableCell>
+              <TableCell>
+                <Typography variant="caption">ADDED ON</Typography>
+              </TableCell>
+              <TableCell align="right">
+                <Typography variant="caption">ACTIONS</Typography>
+              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>

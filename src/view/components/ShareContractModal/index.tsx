@@ -48,14 +48,14 @@ export function ShareContractModal({ open, handleClose, url }: Props) {
             sx={{
               overflowY: 'hidden',
               overflowX: 'hidden',
-              maxWidth: '80%',
               minHeight: '56px',
               display: 'flex',
               alignItems: 'center'
             }}
           >
             <Typography
-              sx={{ color: '#EBEBEB', marginLeft: '0.5rem', width: '1300px' }}
+              variant="caption"
+              sx={{ color: '#EBEBEB', marginLeft: '0.5rem', width: '100%' }}
             >
               {url}
             </Typography>

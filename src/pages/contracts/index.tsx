@@ -4,6 +4,7 @@ import { useListUserContracts } from '@/hooks/userContracts/useListUserContracts
 import { EmptyString } from '@/services/common/EmptyString'
 import { FilterType } from '@/services/localDB/UserContractsRepository'
 import { ContractsTableContent } from '@/view/ContractView/ContractsTable'
+import MainContainer from '@/view/layout/MainContainer'
 import { Box, Paper, Typography } from '@mui/material'
 import { useState } from 'react'
 
@@ -27,12 +28,7 @@ export default function Contracts() {
   }
 
   return (
-    <Box
-      sx={{
-        width: { sm: '90%', md: '75%', lg: '80%', xl: '60%' },
-        margin: '0 auto 2rem auto'
-      }}
-    >
+    <MainContainer>
       <Typography variant="h1" align="center">
         Your Contracts
       </Typography>
@@ -79,6 +75,6 @@ export default function Contracts() {
           </Box>
         </>
       )}
-    </Box>
+    </MainContainer>
   )
 }

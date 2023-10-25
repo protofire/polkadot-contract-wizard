@@ -15,7 +15,11 @@ import FileDownloadIcon from '@mui/icons-material/FileDownload'
 import HourglassBottomIcon from '@mui/icons-material/HourglassBottom'
 
 import { CopyToClipboardButton, TokenIconSvg } from '@/components'
-import { isoToReadableDate, truncateAddress } from '@/utils/formatString'
+import {
+  isoDate,
+  isoToReadableDate,
+  truncateAddress
+} from '@/utils/formatString'
 import { ContractTableItem } from '@/domain/wizard/ContractTableItem'
 import { useRecentlyClicked } from '@/hooks/useRecentlyClicked'
 import { MonoTypography } from '@/components'
@@ -68,7 +72,13 @@ function ContractTableRow({
           />
         </Stack>
       </TableCell>
-      <TableCell>{isoToReadableDate(contract.date)}</TableCell>
+      <TableCell>
+        <Tooltip placement="top" title={isoDate(contract.date)}>
+          <Typography variant="body1">
+            {isoToReadableDate(contract.date)}
+          </Typography>
+        </Tooltip>
+      </TableCell>
       <TableCell align="right">
         <IconButton
           ref={refButton}
@@ -125,10 +135,18 @@ export function ContractsTable({
             <Table aria-label="simple table">
               <TableHead>
                 <TableRow>
-                  <TableCell>TYPE</TableCell>
-                  <TableCell>ADDRESS</TableCell>
-                  <TableCell>ADDED</TableCell>
-                  <TableCell align="right">METADATA</TableCell>
+                  <TableCell>
+                    <Typography variant="caption">TYPE</Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography variant="caption">ADDRESS</Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography variant="caption">ADDED ON</Typography>
+                  </TableCell>
+                  <TableCell align="right">
+                    <Typography variant="caption">METADATA</Typography>
+                  </TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
