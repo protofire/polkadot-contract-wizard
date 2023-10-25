@@ -8,11 +8,11 @@ import {
   CustomDeploymentDataForm
 } from '@/view/CustomContractsForm'
 import { ImportingContractMessage } from '@/view/CustomContractsForm/CreatingCustomContract'
-import { MainLayout } from '@/view/layout'
 import { Typography } from '@mui/material'
 import { useReportError } from '@/hooks/useReportError'
 import router from 'next/router'
 import { ROUTES } from '@/constants'
+import MainContainer from '@/view/layout/MainContainer'
 
 export default function CustomContractsPage() {
   const { accountConnected, networkConnected } = useNetworkAccountsContext()
@@ -54,7 +54,7 @@ export default function CustomContractsPage() {
   }
 
   return (
-    <MainLayout>
+    <MainContainer>
       <Typography variant="h1" align="center">
         Import Custom Contract
       </Typography>
@@ -75,6 +75,6 @@ export default function CustomContractsPage() {
           }
         />
       )}
-    </MainLayout>
+    </MainContainer>
   )
 }
