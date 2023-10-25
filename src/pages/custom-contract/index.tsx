@@ -10,11 +10,15 @@ import {
 import { ImportingContractMessage } from '@/view/CustomContractsForm/CreatingCustomContract'
 import { MainLayout } from '@/view/layout'
 import { Typography } from '@mui/material'
+import { useReportError } from '@/hooks/useReportError'
+import router from 'next/router'
+import { ROUTES } from '@/constants'
 
 export default function CustomContractsPage() {
   const { accountConnected, networkConnected } = useNetworkAccountsContext()
   const [isImporting, setIsImporting] = useState<boolean | undefined>()
   const { newDeployment } = useCreateDeployments()
+  const { addNotification, reportErrorWithToast } = useReportError()
 
   const onCreate = async (contractData: CustomDeploymentDataForm) => {
     setIsImporting(true)
@@ -33,13 +37,19 @@ export default function CustomContractsPage() {
         date: new Date().toISOString(),
         hidden: false
       }
-      const result = await newDeployment(customContract)
-
-      // addUserContract()
-      // console.log('__result', result)
-    } catch {
+      await newDeployment({
+        userContract: customContract,
+        onSuccessCallback: () => {
+          addNotification({
+            message: 'Your contract is stored',
+            type: 'success'
+          })
+          router.push(ROUTES.CONTRACTDETAIL)
+        },
+        onErrorCallback: e => reportErrorWithToast(e)
+      })
     } finally {
-      // setIsImporting(false)
+      setIsImporting(false)
     }
   }
 

@@ -4,11 +4,14 @@ import { useLocalDbContext } from '@/context/LocalDbContext'
 import { useAddUserContracts } from '@/hooks/userContracts/useAddUserContracts'
 import { deploymentItemToUserContractDetails } from '@/services/transformers/toUserContractDetails'
 import { UserContractDetailsDraft } from '@/domain'
+import { OnCallbacks } from '@/domain/common/OnCallbacks'
+
+interface NewDeploymentProps extends OnCallbacks<string> {
+  userContract: UserContractDetailsDraft
+}
 
 interface UseServiceAddDeployment {
-  newDeployment: (
-    deployment: UserContractDetailsDraft
-  ) => Promise<string | undefined>
+  newDeployment: (props: NewDeploymentProps) => Promise<string | undefined>
   isLoading: boolean
   error?: string
 }
@@ -20,31 +23,35 @@ export function useCreateDeployments(): UseServiceAddDeployment {
   const { addUserContract } = useAddUserContracts()
 
   const newDeployment = useCallback(
-    async (
-      deployment: UserContractDetailsDraft
-    ): Promise<string | undefined> => {
+    async ({
+      userContract,
+      onSuccessCallback,
+      onErrorCallback
+    }: NewDeploymentProps): Promise<string | undefined> => {
       setError(undefined)
       setIsLoading(true)
 
       try {
-        const response = await deploymentsRepository.add(deployment)
-
-        setIsLoading(false)
+        const response = await deploymentsRepository.add(userContract)
         if (response.error) {
           throw Error(response.error.message)
         }
+
         const newDeployId = response['data']
-        const userContract = deploymentItemToUserContractDetails(
-          deployment,
+        const userContractWithId = deploymentItemToUserContractDetails(
+          userContract,
           newDeployId
         )
-        addUserContract(userContract)
+        addUserContract(userContractWithId)
 
+        onSuccessCallback?.(newDeployId)
         return newDeployId
       } catch (error) {
         const _errorMsg = `An error occurred when trying to upload the deployed contract on the server`
         setError(_errorMsg)
-        console.error(error)
+        onErrorCallback?.(error)
+      } finally {
+        setIsLoading(false)
       }
     },
     [addUserContract, deploymentsRepository]
