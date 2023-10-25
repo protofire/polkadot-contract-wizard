@@ -34,7 +34,7 @@ export default function ContractDetail({
     return 'loading'
   }
   const contract = contracts[0]
-  const { logo, name: networkName } = getChain(contract.blockchain)
+  const { logo, name: networkName } = getChain(contract.network)
   const isReadContract = type === 'Read Contract'
   const handleChange = (newValue: number) => {
     setType(types[newValue])
