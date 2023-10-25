@@ -119,7 +119,7 @@ export default function Step3Deploy({
       tokenType,
       blockchain: networkConnected,
       successCallback: userContractsDetail => {
-        newDeployment(userContractsDetail)
+        newDeployment({ userContract: userContractsDetail })
       }
     })
 
