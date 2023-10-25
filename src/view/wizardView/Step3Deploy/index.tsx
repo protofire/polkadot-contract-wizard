@@ -111,7 +111,7 @@ export default function Step3Deploy({
   ) => {
     if (!contractCompiled || !networkConnected || !accountConnected) return
 
-    const result = await deployContract({
+    await deployContract({
       wasm: contractCompiled.wasm,
       metadata: contractCompiled.metadata,
       argsForm: constructorParams,
@@ -120,13 +120,10 @@ export default function Step3Deploy({
       blockchain: networkConnected,
       successCallback: userContractsDetail => {
         newDeployment({ userContract: userContractsDetail })
+        onDeployContract(userContractsDetail)
+        handleNext()
       }
     })
-
-    if (result) {
-      onDeployContract(result)
-      handleNext()
-    }
   }
 
   return (

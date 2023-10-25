@@ -3,11 +3,7 @@ import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward'
 import Big from 'big.js'
 
-import {
-  useFormInput,
-  ControlledFormInput,
-  useFormDependentInput
-} from '@/hooks'
+import { useFormInput, ControlledFormInput } from '@/hooks'
 import { ConstructorTokenField } from '@/constants/index'
 import { StyledTextField } from '@/components'
 import { useMemoizeFields } from './useMemorizeFields'

@@ -1,5 +1,5 @@
 import { getErrorMessage } from '@/utils/error'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 export interface ControlledFormInput<I> {
   value: I
@@ -82,27 +82,4 @@ export function useFormInput<I>(
     touched: inputState.touched,
     setValue: _setvalue
   }
-}
-
-interface UseFormDependentInput<I, D>
-  extends Omit<UseFormInput<I>, 'initialSupply'> {
-  dependencies: Array<D>
-  onCallback: (inputs: Array<D>) => I
-}
-
-export function useFormDependentInput<I, D>({
-  validations,
-  dependencies,
-  onCallback
-}: UseFormDependentInput<I, D>): ControlledFormInput<I> {
-  const input = useFormInput<I>(onCallback(dependencies), validations)
-
-  useEffect(() => {
-    const event = {
-      target: { value: onCallback(dependencies) }
-    } as unknown as React.ChangeEvent<HTMLInputElement>
-    input.onChange(event)
-  }, [input, dependencies, onCallback])
-
-  return input
 }

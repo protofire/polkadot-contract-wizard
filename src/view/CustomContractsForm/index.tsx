@@ -14,7 +14,8 @@ import { ChainId } from '@/services/useink/chains'
 import BackNextButton from '@/components/BackNextButtons'
 import { ROUTES } from '@/constants'
 import router from 'next/router'
-import { UserContractDetails } from '@/domain'
+import { UserContractDetails, WalletConnectionEvents } from '@/domain'
+import { useMultiEventListener } from '@/hooks/useMultipleEventListener'
 
 export type CustomDeploymentDataForm = Pick<
   UserContractDetails,
@@ -49,10 +50,13 @@ export function CustomContractsForm({ network, onCreate }: Props) {
     }
   )
 
+  useMultiEventListener([WalletConnectionEvents.networkChanged], () =>
+    _resetFormData()
+  )
+
   const _resetFormData = () => {
     formData.address.setValue('')
     formData.name.setValue(nameWithTimestamp('custom'))
-    router.push(ROUTES.HOME)
   }
 
   const _handlerBack = () => {

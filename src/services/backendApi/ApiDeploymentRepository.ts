@@ -5,7 +5,7 @@ import {
   IDeploymentsRepository
 } from '@/domain/repositories/DeploymentRepository'
 import { ChainId } from '@/services/useink/chains'
-import { request } from '@/services/common/request'
+import { createSuffix, request } from '@/services/common/request'
 import { RootApiResponse } from './types'
 import { fromDeploymentItemToRaw } from '@/services/transformers/toDeploymentRaw'
 import { deploymentRawToUserContractDetails } from '../transformers/toUserContractDetails'
@@ -36,6 +36,18 @@ export class ApiDeploymentRepository implements IApiDeploymentRepository {
   async add(
     deployment: UserContractDetailsDraft
   ): Promise<RootApiResponse<string>> {
+    const existingDeployments = await this.findBy(
+      deployment.userAddress,
+      deployment.network,
+      deployment.address
+    )
+
+    const exists = existingDeployments.length > 0
+
+    if (exists) {
+      throw new Error('Deployment Already exists in your records.')
+    }
+
     return request<RootApiResponse<string>>(
       this.backenApiConfig.routes.createDeployment.url,
       {
@@ -47,16 +59,16 @@ export class ApiDeploymentRepository implements IApiDeploymentRepository {
 
   async findBy(
     userAddress: string,
-    networkId?: ChainId | undefined
+    networkId?: ChainId | undefined,
+    address?: string
   ): Promise<UserContractDetails[]> {
     const { url, method } = this.backenApiConfig.routes.listDeployment
 
-    const suffixUrl = networkId
-      ? `&network=${encodeURIComponent(networkId)}`
-      : ''
+    const suffixUrl = createSuffix('network', networkId)
+    const suffixNetwork = createSuffix('contract_address', address)
 
     const { data } = await request<RootApiResponse<DeploymentRaw[]>>(
-      `${url}${encodeURIComponent(userAddress)}${suffixUrl}`,
+      `${url}${encodeURIComponent(userAddress)}${suffixUrl}${suffixNetwork}`,
       {
         method: method
       }

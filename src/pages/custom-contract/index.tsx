@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useNetworkAccountsContext } from '@/context/NetworkAccountsContext'
 import { UserContractDetailsDraft } from '@/domain'
 import { useCreateDeployments } from '@/hooks/deployments/useCreateDeployments'
@@ -19,6 +19,17 @@ export default function CustomContractsPage() {
   const [isImporting, setIsImporting] = useState<boolean | undefined>()
   const { newDeployment } = useCreateDeployments()
   const { addNotification, reportErrorWithToast } = useReportError()
+  const [deploymentId, setNewDeploymentId] = useState<string>()
+
+  useEffect(() => {
+    if (!deploymentId) return
+
+    const timer = setTimeout(() => {
+      router.push(ROUTES.CONTRACTDETAIL)
+    }, 500)
+
+    return () => clearTimeout(timer)
+  }, [deploymentId])
 
   const onCreate = async (contractData: CustomDeploymentDataForm) => {
     setIsImporting(true)
@@ -39,17 +50,21 @@ export default function CustomContractsPage() {
       }
       await newDeployment({
         userContract: customContract,
-        onSuccessCallback: () => {
+        onSuccessCallback: deploymentId => {
           addNotification({
             message: 'Your contract is stored',
             type: 'success'
           })
-          router.push(ROUTES.CONTRACTDETAIL)
+          setNewDeploymentId(deploymentId)
+          setIsImporting(false)
         },
-        onErrorCallback: e => reportErrorWithToast(e)
+        onErrorCallback: e => {
+          reportErrorWithToast(e)
+          setIsImporting(undefined)
+        }
       })
-    } finally {
-      setIsImporting(false)
+    } catch {
+      setIsImporting(undefined)
     }
   }
 
@@ -66,7 +81,10 @@ export default function CustomContractsPage() {
               onCreate={onCreate}
             />
           )}
-          <ImportingContractMessage isImporting={isImporting} />
+          <ImportingContractMessage
+            isCreated={Boolean(deploymentId)}
+            isImporting={isImporting}
+          />
         </>
       ) : (
         <ConnectWalletSection

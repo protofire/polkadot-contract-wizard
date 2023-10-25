@@ -5,9 +5,10 @@ import { GIF_COMPILING, SVG_AWESOME, SVG_SUCCESSFULLY } from '@/constants/index'
 
 interface Props {
   isImporting: boolean | undefined
+  isCreated: boolean | undefined
 }
 
-export function ImportingContractMessage({ isImporting }: Props) {
+export function ImportingContractMessage({ isImporting, isCreated }: Props) {
   if (isImporting === undefined) return null
 
   return (
@@ -15,19 +16,19 @@ export function ImportingContractMessage({ isImporting }: Props) {
       <Grid item>
         <StackStyled>
           <Image
-            alt={isImporting ? 'creating' : 'created'}
-            src={isImporting ? GIF_COMPILING : SVG_SUCCESSFULLY}
+            alt={isCreated ? 'created' : 'creating'}
+            src={isCreated ? SVG_SUCCESSFULLY : GIF_COMPILING}
             width={150}
             height={150}
           />
           <Typography variant="h4" align="center" sx={{ margin: '0 1rem' }}>
-            {isImporting ? (
-              <p>Contract is being Imported.</p>
-            ) : (
+            {isCreated ? (
               <>
                 <p>Contract successfully created.</p>
                 <Image alt="awesome" src={SVG_AWESOME} width={22} height={22} />
               </>
+            ) : (
+              <p>Contract is being Imported.</p>
             )}
           </Typography>
         </StackStyled>
