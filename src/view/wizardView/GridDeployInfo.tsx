@@ -4,8 +4,7 @@ import { styled } from '@mui/material/styles'
 
 import { emptyAsDash, truncateAddress } from '@/utils/formatString'
 import { CopyToClipboardButton, MonoTypography } from '@/components'
-import OpenInNewRoundedIcon from '@mui/icons-material/OpenInNewRounded'
-import { UserContractDetails } from '@/domain'
+import { UserContractDetailsDraft } from '@/domain'
 import { ExplorerLink } from '@/components/ExplorerLink'
 
 export const BoxGridStyled = styled(Box)<BoxProps>(() => ({
@@ -23,7 +22,7 @@ export const BoxRow = styled(Box)<BoxProps>(() => ({
 export function GridDeployInfo({
   deployedContract
 }: {
-  deployedContract: UserContractDetails | undefined
+  deployedContract: UserContractDetailsDraft | undefined
 }) {
   return (
     <BoxGridStyled>
@@ -32,7 +31,7 @@ export function GridDeployInfo({
           Chain Name
         </Typography>
         <Typography variant="body1">
-          {emptyAsDash(deployedContract?.blockchain)}
+          {emptyAsDash(deployedContract?.network)}
         </Typography>
       </BoxRow>
       <BoxRow>
@@ -68,7 +67,7 @@ export function GridDeployInfo({
                 data={deployedContract.txHash}
               />
               <ExplorerLink
-                blockchain={deployedContract.blockchain}
+                blockchain={deployedContract.network}
                 txHash={deployedContract.txHash}
               />
             </Box>

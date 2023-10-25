@@ -1,10 +1,14 @@
 import { useCallback, useState } from 'react'
 
-import { DeploymentItem } from '@/domain/repositories/DeploymentRepository'
 import { useLocalDbContext } from '@/context/LocalDbContext'
+import { useAddUserContracts } from '@/hooks/userContracts/useAddUserContracts'
+import { deploymentItemToUserContractDetails } from '@/services/transformers/toUserContractDetails'
+import { UserContractDetailsDraft } from '@/domain'
 
 interface UseServiceAddDeployment {
-  newDeployment: (deployment: DeploymentItem) => Promise<string | undefined>
+  newDeployment: (
+    deployment: UserContractDetailsDraft
+  ) => Promise<string | undefined>
   isLoading: boolean
   error?: string
 }
@@ -13,9 +17,12 @@ export function useCreateDeployments(): UseServiceAddDeployment {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | undefined>()
   const { deploymentsRepository } = useLocalDbContext()
+  const { addUserContract } = useAddUserContracts()
 
   const newDeployment = useCallback(
-    async (deployment: DeploymentItem): Promise<string | undefined> => {
+    async (
+      deployment: UserContractDetailsDraft
+    ): Promise<string | undefined> => {
       setError(undefined)
       setIsLoading(true)
 
@@ -26,14 +33,21 @@ export function useCreateDeployments(): UseServiceAddDeployment {
         if (response.error) {
           throw Error(response.error.message)
         }
-        return response['data']
+        const newDeployId = response['data']
+        const userContract = deploymentItemToUserContractDetails(
+          deployment,
+          newDeployId
+        )
+        addUserContract(userContract)
+
+        return newDeployId
       } catch (error) {
-        const _errorMsg = `An error occurred when trying to compile the smart contract on the server`
+        const _errorMsg = `An error occurred when trying to upload the deployed contract on the server`
         setError(_errorMsg)
         console.error(error)
       }
     },
-    [deploymentsRepository]
+    [addUserContract, deploymentsRepository]
   )
 
   return { newDeployment, isLoading, error }

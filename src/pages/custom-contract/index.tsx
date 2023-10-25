@@ -1,5 +1,5 @@
 import { useNetworkAccountsContext } from '@/context/NetworkAccountsContext'
-import { UserContractDetails } from '@/domain'
+import { UserContractDetailsDraft } from '@/domain'
 import { useCreateDeployments } from '@/hooks/deployments/useCreateDeployments'
 import { ConnectWalletSection } from '@/view/components/ConnectWalletSection'
 import {
@@ -15,43 +15,31 @@ export default function CustomContractsPage() {
   const [isImporting, setIsImporting] = useState<boolean | undefined>()
   const { newDeployment } = useCreateDeployments()
 
-  const onCreate = (contractData: CustomDeploymentDataForm) => {
+  const onCreate = async (contractData: CustomDeploymentDataForm) => {
     setIsImporting(true)
 
     try {
       if (!accountConnected) return
-      const customContract: UserContractDetails = {
+      const customContract: UserContractDetailsDraft = {
         userAddress: accountConnected.address,
-        blockchain: networkConnected,
-        txHash: '',
-        address: contractData.contractAddress,
+        network: networkConnected,
+        txHash: undefined,
+        address: contractData.address,
+        name: contractData.name,
+        abi: contractData.abi,
         codeId: '',
-        name: contractData.contractName,
-        abi: contractData.externalAbi,
         type: 'custom',
         date: new Date().toISOString(),
-        external: true,
         hidden: false
       }
-      const result = newDeployment({
-        contractName: customContract.name,
-        contractAddress: customContract.address,
-        network: customContract.blockchain,
-        codeId: customContract.codeId,
-        userAddress: accountConnected.address,
-        txHash: customContract.txHash,
-        date: customContract.date,
-        contractType: customContract.type,
-        hidden: false
-      })
+      const result = await newDeployment(customContract)
 
-      console.log('__result', result)
+      // addUserContract()
+      // console.log('__result', result)
     } catch {
     } finally {
-      setIsImporting(false)
+      // setIsImporting(false)
     }
-
-    // addUserContract(userContractsDetail)
   }
 
   return (
@@ -67,7 +55,7 @@ export default function CustomContractsPage() {
         </Typography>
         {accountConnected ? (
           <>
-            {!isImporting && (
+            {isImporting === undefined && (
               <CustomContractsForm
                 network={networkConnected}
                 onCreate={onCreate}

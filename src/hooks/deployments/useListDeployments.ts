@@ -1,15 +1,15 @@
 import { useCallback, useState } from 'react'
 
-import { DeploymentItem } from '@/domain/repositories/DeploymentRepository'
 import { useLocalDbContext } from '@/context/LocalDbContext'
 import { getErrorMessage } from '@/utils/error'
 import { ChainId } from '@/services/useink/chains'
+import { UserContractDetails } from '@/domain'
 
 interface UseAddDeployment {
   userContractsFromApi: (
     userAddress: string,
     networkId?: ChainId
-  ) => Promise<DeploymentItem[] | undefined>
+  ) => Promise<UserContractDetails[] | undefined>
   isLoading: boolean
   error?: string
 }
@@ -20,14 +20,14 @@ export function useListDeployments(): UseAddDeployment {
   const { deploymentsRepository } = useLocalDbContext()
 
   const userContractsFromApi = useCallback(
-    async (userAddress: string, networkId?: ChainId) => {
+    async (userAddress: string, network?: ChainId) => {
       setIsLoading(true)
       setError(undefined)
 
       try {
         const deployments = await deploymentsRepository.findBy(
           userAddress,
-          networkId
+          network
         )
         return deployments
       } catch (e) {

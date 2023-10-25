@@ -2,11 +2,8 @@ import { UserContractDetails } from '@/domain'
 import { MyDatabase } from '.'
 import { IUserContractsRepository } from '@/domain/repositories/IUserContractsRepository'
 import { ChainId } from '../useink/chains'
-import {
-  ContractType,
-  DeploymentItem,
-  UpdateDeployment
-} from '@/domain/repositories/DeploymentRepository'
+import { UpdateDeployment } from '@/domain/repositories/DeploymentRepository'
+import { deploymentItemToUserContractDetails } from '../transformers/toUserContractDetails'
 
 export type FilterType = Pick<
   Partial<UserContractDetails>,
@@ -32,16 +29,16 @@ export class UserContractsRepository implements IUserContractsRepository {
 
   async searchBy(
     userAddress: string,
-    blockchain: ChainId,
+    network: ChainId,
     filterBy?: FilterType
   ): Promise<UserContractDetails[]> {
     if (filterBy === undefined) {
       return await this.db.userContracts
-        .where({ userAddress, blockchain })
+        .where({ userAddress, network })
         .toArray()
     }
 
-    const query = this.db.userContracts.where({ userAddress, blockchain })
+    const query = this.db.userContracts.where({ userAddress, network })
     for (const prop in filterBy) {
       if (filterBy?.hasOwnProperty(prop)) {
         query.and(
@@ -55,28 +52,16 @@ export class UserContractsRepository implements IUserContractsRepository {
 
   async bulkAddByUser(
     userAddress: string,
-    deployments: DeploymentItem[]
+    deployments: UserContractDetails[]
   ): Promise<UserContractDetails[]> {
-    const data: UserContractDetails[] = deployments.map(d => ({
-      userAddress: d.userAddress,
-      blockchain: d.network,
-      address: d.contractAddress,
-      txHash: d.txHash,
-      codeId: d.codeId,
-      type: d.contractType as ContractType,
-      name: d.contractName,
-      date: new Date().toISOString(),
-      external: false,
-      hidden: d.hidden
-    }))
-    await this.db.userContracts.bulkAdd(data)
+    await this.db.userContracts.bulkAdd(deployments)
     return await this.list(userAddress)
   }
 
   async updateBy(deployed: UpdateDeployment): Promise<number> {
-    const { userAddress, network, contractAddress } = deployed
+    const { userAddress, network, address } = deployed
     return await this.db.userContracts
-      .where({ userAddress, blockchain: network, address: contractAddress })
-      .modify({ name: deployed.contractName, hidden: deployed.hidden })
+      .where({ userAddress, blockchain: network, address })
+      .modify({ name: deployed.name, hidden: deployed.hidden })
   }
 }

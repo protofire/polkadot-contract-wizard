@@ -4,7 +4,11 @@ import Image from 'next/image'
 
 import { useStepsSCWizard } from '@/context'
 import BackNextButton from '../../components/BackNextButtons'
-import { TokenType, UserContractDetails } from '@/domain'
+import {
+  TokenType,
+  UserContractDetails,
+  UserContractDetailsDraft
+} from '@/domain'
 import {
   ControlsToken,
   GIF_COMPILING,
@@ -24,14 +28,12 @@ import {
   ConstructorTokenFieldProps
 } from './FormConstructorContract'
 import { useCreateDeployments } from '@/hooks/deployments/useCreateDeployments'
-import { ChainId } from '@/services/useink/chains'
 import { StackStyled } from './styled'
-import { useAddUserContracts } from '@/hooks/userContracts/useAddUserContracts'
 
 interface StepDeployProps {
   tokenType: TokenType
   constructorFields?: ControlsToken<'Constructor'>
-  onDeployContract: (deployedContract: UserContractDetails) => void
+  onDeployContract: (deployedContract: UserContractDetailsDraft) => void
 }
 
 export default function Step3Deploy({
@@ -57,7 +59,6 @@ export default function Step3Deploy({
   const { ref: refButton, recentlyClicked } = useRecentlyClicked(500)
   const _isDeploying = recentlyClicked || isDeploying
   const { newDeployment } = useCreateDeployments()
-  const { addUserContract } = useAddUserContracts()
 
   useEffect(() => {
     if (!dataForm.currentAccount || !mustLoad.current) return
@@ -118,18 +119,7 @@ export default function Step3Deploy({
       tokenType,
       blockchain: networkConnected,
       successCallback: userContractsDetail => {
-        newDeployment({
-          contractName: userContractsDetail.name as TokenType,
-          contractAddress: userContractsDetail.address,
-          network: userContractsDetail.blockchain as ChainId,
-          codeId: userContractsDetail.codeId,
-          userAddress: accountConnected.address,
-          txHash: userContractsDetail.txHash,
-          date: userContractsDetail.date,
-          contractType: userContractsDetail.type,
-          hidden: userContractsDetail.hidden
-        })
-        addUserContract(userContractsDetail)
+        newDeployment(userContractsDetail)
       }
     })
 

@@ -55,10 +55,10 @@ function ContractTableRow({
   const handleUpdate = () => {
     setEditable(!editable)
     const updatedContract: UpdateDeployment = {
-      contractAddress: contract.address,
+      address: contract.address,
       userAddress: contract.userAddress,
-      network: contract.blockchain,
-      contractName: textInput,
+      network: contract.network,
+      name: textInput,
       hidden: false
     }
 
