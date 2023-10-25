@@ -21,7 +21,7 @@ export interface DeploymentRaw {
   tx_hash?: string
   date: string
   contract_type: ContractType
-  external_abi?: Record<string, unknown>
+  external_abi?: string
   hidden: boolean
 }
 

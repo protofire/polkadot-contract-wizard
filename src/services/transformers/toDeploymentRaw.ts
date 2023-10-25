@@ -17,7 +17,7 @@ export function fromDeploymentItemToRaw(
     contract_type: deployment.type,
     hidden: deployment.hidden,
     ...(deployment.abi && {
-      external_abi: deployment.abi
+      external_abi: JSON.stringify(deployment.abi)
     })
   }
 }

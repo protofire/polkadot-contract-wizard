@@ -3,6 +3,7 @@ import {
   UserContractDetailsDraft
 } from '@/domain/UserContractDetails'
 import { DeploymentRaw } from '@/services/backendApi/ApiDeploymentRepository'
+import { parseJsonToRecord } from '@/utils/json'
 
 function _isExternal(
   abi: UserContractDetails['abi'],
@@ -25,6 +26,9 @@ export function deploymentItemToUserContractDetails(
 export function deploymentRawToUserContractDetails(
   deploymentRaw: DeploymentRaw
 ): UserContractDetails {
+  const abi = deploymentRaw.external_abi
+    ? parseJsonToRecord(deploymentRaw.external_abi)
+    : undefined
   return {
     uuid: deploymentRaw._id['$oid'],
     userAddress: deploymentRaw.user_address,
@@ -35,11 +39,8 @@ export function deploymentRawToUserContractDetails(
     type: deploymentRaw.contract_type,
     name: deploymentRaw.contract_name,
     date: deploymentRaw.date,
-    abi: deploymentRaw.external_abi,
-    external: _isExternal(
-      deploymentRaw.external_abi,
-      deploymentRaw.contract_type
-    ),
+    abi: abi,
+    external: _isExternal(abi, deploymentRaw.contract_type),
     hidden: deploymentRaw.hidden
   }
 }
