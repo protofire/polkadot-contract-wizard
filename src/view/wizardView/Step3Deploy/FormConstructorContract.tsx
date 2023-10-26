@@ -1,9 +1,8 @@
 import { InputAdornment, Stack, Tooltip, Typography } from '@mui/material'
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward'
-import Big from 'big.js'
 
-import { useFormInput, ControlledFormInput, ValidationFn } from '@/hooks'
+import { ValidationFn } from '@/hooks'
 import { ConstructorTokenField } from '@/constants/index'
 import { StyledTextField } from '@/components'
 import { useMemoizeFields } from './useMemorizeFields'
@@ -14,8 +13,6 @@ import {
   positiveNumberOrZero,
   maxAllowed
 } from '@/utils/inputValidation'
-import { BIG_ZERO } from '@/constants/numbers'
-import { FormEvent } from '@/domain/common/FormEvent'
 import { initialSupplyPowDecimal } from './initialSupplyPowDecimal'
 import { useEffect } from 'react'
 import { useForm } from '@/hooks/useForm'
@@ -23,7 +20,7 @@ import { useForm } from '@/hooks/useForm'
 export const INITIAL_SUPPLY_DECIMAL_FIELD = 'initialSupplyPowDecimal'
 
 type FieldValues = {
-  initialSupply: number
+  initialSupply: number | string
   name: string
   symbol: string
   decimal: number
@@ -107,8 +104,18 @@ export function FormConstructorContract({
   ])
 
   const _handleSubmit = (values: ConstructorTokenFieldProps) => {
-    // onSubmit(values)
-    console.log(values)
+    let _values = values
+    if (hasMetadata && values.decimal) {
+      _values = {
+        ..._values,
+        initialSupply: initialSupplyPowDecimal([
+          values.initialSupply,
+          values.decimal
+        ]).toFixed()
+      }
+    }
+
+    onSubmit(_values)
   }
 
   return (
@@ -179,14 +186,6 @@ export function FormConstructorContract({
                       : ''
                   }
                 />
-                {/* <input
-                  hidden={true}
-                  name={INITIAL_SUPPLY_DECIMAL_FIELD}
-                  {...{
-                    onChange: convertedInitialSupply.onChange,
-                    value: convertedInitialSupply.value.toFixed()
-                  }}
-                /> */}
               </>
             )}
           </Stack>

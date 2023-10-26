@@ -4,18 +4,13 @@ import Image from 'next/image'
 
 import { useStepsSCWizard } from '@/context'
 import BackNextButton from '../../components/BackNextButtons'
-import {
-  TokenType,
-  UserContractDetails,
-  UserContractDetailsDraft
-} from '@/domain'
+import { TokenType, UserContractDetailsDraft } from '@/domain'
 import {
   ControlsToken,
   GIF_COMPILING,
   SVG_AWESOME,
   SVG_SUCCESSFULLY
 } from '@/constants/index'
-import { FormEvent } from '@/domain/common/FormEvent'
 import { useCompileContract } from '@/hooks/compileContract'
 import { ContractCompiledRaw } from '@/services'
 import { generateCode } from '../Step2Compile/generator'
@@ -87,10 +82,6 @@ export default function Step3Deploy({
   const onSubmit = async (elements: ConstructorTokenFieldProps) => {
     const _dataForm: ContractConstructorDataForm = []
     contractConstructorFields.forEach(field => {
-      if (hasMetadata && field.fieldName === 'initialSupply') {
-        _dataForm.push([field.fieldName, elements.initialSupplyPowDecimal])
-        return
-      }
       if (elements[field.fieldName]) {
         _dataForm.push([field.fieldName, elements[field.fieldName]])
       }

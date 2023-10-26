@@ -9,7 +9,8 @@ export class MyDatabase extends Dexie {
     super('MyDatabase')
 
     this.version(1).stores({
-      userContracts: '[userAddress+network+address],network,hidden,type'
+      userContracts:
+        '[userAddress+network+address],[userAddress+network],hidden,type'
     })
 
     this.userContracts = this.table('userContracts')
