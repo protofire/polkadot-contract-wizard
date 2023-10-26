@@ -4,19 +4,26 @@ import * as React from 'react'
 
 import { StyledStack } from './styled'
 
-export default function NetworkBadge({
-  name,
-  logo,
-  description,
-  logoSize,
-  showTooltip = true
-}: {
+interface Props {
   name: string
   logo: string
   description?: string
   logoSize?: { width: number; height: number }
   showTooltip?: boolean
-}) {
+  textTooltip?: string
+}
+
+const TEXT_TOOLTIP =
+  'This network is the one that has been selected in the top Network selector'
+
+export default function NetworkBadge({
+  name,
+  logo,
+  description,
+  logoSize,
+  showTooltip = true,
+  textTooltip = TEXT_TOOLTIP
+}: Props) {
   return (
     <StyledStack logosize={logoSize}>
       <Stack flexDirection="row" alignItems="center">
@@ -38,10 +45,7 @@ export default function NetworkBadge({
       </Stack>
       <Stack>
         {showTooltip && (
-          <Tooltip
-            placement="right"
-            title="This network is the one that has been selected in the top Network selector"
-          >
+          <Tooltip placement="right" title={textTooltip}>
             <HelpOutlineIcon fontSize="small" />
           </Tooltip>
         )}

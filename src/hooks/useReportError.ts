@@ -29,5 +29,5 @@ export function useReportError(toastError = true) {
     [addNotification, toastError]
   )
 
-  return { reportErrorWithToast }
+  return { reportErrorWithToast, addNotification }
 }

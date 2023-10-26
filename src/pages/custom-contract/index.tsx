@@ -1,17 +1,71 @@
+import { useEffect, useState } from 'react'
 import { useNetworkAccountsContext } from '@/context/NetworkAccountsContext'
+import { UserContractDetailsDraft } from '@/domain'
+import { useCreateDeployments } from '@/hooks/deployments/useCreateDeployments'
 import { ConnectWalletSection } from '@/view/components/ConnectWalletSection'
-import { CustomContractsForm } from '@/view/CustomContractsForm'
+import {
+  CustomContractsForm,
+  CustomDeploymentDataForm
+} from '@/view/CustomContractsForm'
 import { ImportingContractMessage } from '@/view/CustomContractsForm/CreatingCustomContract'
-import MainContainer from '@/view/layout/MainContainer'
 import { Typography } from '@mui/material'
-import { useState } from 'react'
+import { useReportError } from '@/hooks/useReportError'
+import router from 'next/router'
+import { ROUTES } from '@/constants'
+import MainContainer from '@/view/layout/MainContainer'
 
 export default function CustomContractsPage() {
   const { accountConnected, networkConnected } = useNetworkAccountsContext()
   const [isImporting, setIsImporting] = useState<boolean | undefined>()
+  const { newDeployment } = useCreateDeployments()
+  const { addNotification, reportErrorWithToast } = useReportError()
+  const [deploymentId, setNewDeploymentId] = useState<string>()
 
-  const onCreate = () => {
+  useEffect(() => {
+    if (!deploymentId) return
+
+    const timer = setTimeout(() => {
+      router.push(ROUTES.CONTRACTDETAIL)
+    }, 500)
+
+    return () => clearTimeout(timer)
+  }, [deploymentId])
+
+  const onCreate = async (contractData: CustomDeploymentDataForm) => {
     setIsImporting(true)
+
+    try {
+      if (!accountConnected) return
+      const customContract: UserContractDetailsDraft = {
+        userAddress: accountConnected.address,
+        network: networkConnected,
+        txHash: undefined,
+        address: contractData.address,
+        name: contractData.name,
+        abi: contractData.abi,
+        codeId: '',
+        type: 'custom',
+        date: new Date().toISOString(),
+        hidden: false
+      }
+      await newDeployment({
+        userContract: customContract,
+        onSuccessCallback: deploymentId => {
+          addNotification({
+            message: 'Your contract is stored',
+            type: 'success'
+          })
+          setNewDeploymentId(deploymentId)
+          setIsImporting(false)
+        },
+        onErrorCallback: e => {
+          reportErrorWithToast(e)
+          setIsImporting(undefined)
+        }
+      })
+    } catch {
+      setIsImporting(undefined)
+    }
   }
 
   return (
@@ -21,13 +75,16 @@ export default function CustomContractsPage() {
       </Typography>
       {accountConnected ? (
         <>
-          {!isImporting && (
+          {isImporting === undefined && (
             <CustomContractsForm
               network={networkConnected}
               onCreate={onCreate}
             />
           )}
-          <ImportingContractMessage isImporting={isImporting} />
+          <ImportingContractMessage
+            isCreated={Boolean(deploymentId)}
+            isImporting={isImporting}
+          />
         </>
       ) : (
         <ConnectWalletSection

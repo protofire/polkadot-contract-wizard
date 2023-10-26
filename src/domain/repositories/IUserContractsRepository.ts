@@ -1,6 +1,9 @@
 import { ChainId } from '@/services/useink/chains'
-import { UserContractDetails } from '../UserContractDetails'
-import { DeploymentItem, UpdateDeployment } from './DeploymentRepository'
+import {
+  UserContractDetails,
+  UserContractDetailsDraft
+} from '../UserContractDetails'
+import { UpdateDeployment } from './DeploymentRepository'
 import { FilterType } from '@/services/localDB/UserContractsRepository'
 
 export interface IUserContractsRepository {
@@ -8,12 +11,12 @@ export interface IUserContractsRepository {
   list: (userAddress: string) => Promise<UserContractDetails[]>
   searchBy: (
     userAddress: string,
-    networkId: ChainId,
+    network: ChainId,
     filterBy?: FilterType
   ) => Promise<UserContractDetails[]>
   bulkAddByUser(
     userAddress: string,
-    deployments: DeploymentItem[]
+    deployments: UserContractDetailsDraft[]
   ): Promise<UserContractDetails[]>
 
   updateBy(deployment: UpdateDeployment): Promise<number>

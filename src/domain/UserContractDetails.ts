@@ -1,4 +1,3 @@
-import { TokenType } from '@/domain/TokenType'
 import { ContractCompiledRaw } from '@/services'
 import { ContractType } from '@/domain/repositories/DeploymentRepository'
 import { ChainId } from '@/services/useink/chains'
@@ -6,22 +5,21 @@ import { ChainId } from '@/services/useink/chains'
 export type ContractMetadata = ContractCompiledRaw
 
 export interface UserContractDetails {
-  userAddress: string
-  blockchain: ChainId
-  address: string
-  txHash: string | undefined
-  codeHash: string
-  type: ContractType
+  uuid: string
   name: string
+  address: string
+  network: ChainId
+  codeId: string
+  userAddress: string
+  txHash?: string
   date: string
+  type: ContractType
   abi?: Record<string, unknown>
   external: boolean // Contracts not deployed by PCW are custom and external
   hidden: boolean
 }
 
-export type ContractCompiled = Pick<
+export type UserContractDetailsDraft = Omit<
   UserContractDetails,
-  'userAddress' | 'codeHash' | 'name' | 'name'
-> & {
-  type: TokenType
-}
+  'uuid' | 'external'
+>

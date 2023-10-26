@@ -13,3 +13,8 @@ export function createUrl(basePath: string, pathName: string): string {
   const _url = new URL(pathName, basePath)
   return _url.toString()
 }
+
+export function createSuffix(key: string, value?: string | number): string {
+  if (!value) return ''
+  return `&${encodeURIComponent(key)}=${encodeURIComponent(value.toString())}`
+}
