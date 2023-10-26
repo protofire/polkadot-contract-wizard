@@ -3,7 +3,7 @@ import { Grid, Typography } from '@mui/material'
 import Image from 'next/image'
 
 import { useStepsSCWizard } from '@/context'
-import BackNextButton from '../../components/BackNextButtons'
+import BackNextButton from '@/components/BackNextButtons'
 import { TokenType, UserContractDetailsDraft } from '@/domain'
 import {
   ControlsToken,

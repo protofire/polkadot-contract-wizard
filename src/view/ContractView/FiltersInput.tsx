@@ -36,7 +36,6 @@ export function FiltersInput({ setFilterBy }: FiltersInputProps) {
         '& > :not(style)': { m: 1, color: 'white' }
       }}
     >
-      <SearchInput></SearchInput>
       <Select
         sx={{ m: 1, width: '150px' }}
         value={contractType}

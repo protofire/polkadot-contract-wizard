@@ -33,10 +33,14 @@ import { TITLE_MAP_TOKEN } from '@/constants/titleTokenType'
 import { useUpdateUserContracts } from '@/hooks/userContracts/useUpdateUserContracts'
 import { DeleteContractModal } from '@/view/components/DeleteContractModal'
 import { UpdateDeployment } from '@/domain/repositories/DeploymentRepository'
+import { nameWithTimestamp } from '@/utils/generators'
 
 export interface ContractsTableProps {
   contracts: ContractTableItem[]
 }
+
+const MAX_INPUT_LENGTH = 20
+const ERROR_MESSAGE = '20 characters max'
 
 function ContractTableRow({
   contract,
@@ -48,17 +52,26 @@ function ContractTableRow({
   setOpenDeleteModal: React.Dispatch<React.SetStateAction<boolean>>
 }) {
   const [editable, setEditable] = React.useState(false)
+  const [error, setError] = React.useState(false)
   const [textInput, setTextInput] = React.useState(contract.name)
   const { updateContract } = useUpdateUserContracts()
 
   const typeMap = TITLE_MAP_TOKEN[contract.type]
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setTextInput(event.target.value)
+    setError(false)
+    const value = event.target.value
+    if (value.length >= MAX_INPUT_LENGTH) {
+      setError(true)
+      return
+    }
+    setTextInput(value)
   }
 
   const handleUpdate = () => {
     setEditable(!editable)
+    const contractName =
+      textInput.length > 0 ? textInput : nameWithTimestamp('custom')
     const updatedContract: UpdateDeployment = {
       address: contract.address,
       userAddress: contract.userAddress,
@@ -66,7 +79,7 @@ function ContractTableRow({
       name: textInput,
       hidden: false
     }
-
+    setTextInput(contractName)
     updateContract({
       deployment: updatedContract
     })
@@ -96,7 +109,12 @@ function ContractTableRow({
         <TokenWrapper>
           {editable ? (
             <>
-              <TextField value={textInput} onChange={handleChange}></TextField>
+              <TextField
+                error={error}
+                helperText={error ? ERROR_MESSAGE : ''}
+                value={textInput}
+                onChange={handleChange}
+              ></TextField>
               <DefaultToolTipButton
                 id="save-contract-name"
                 sx={{ color: 'green' }}
