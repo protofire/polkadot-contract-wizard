@@ -84,22 +84,15 @@ export default function Step3Deploy({
     dataForm.extensions.Pausable
   ])
 
-  const handleSubmit = async (event: FormEvent<ConstructorTokenFieldProps>) => {
-    event.preventDefault()
-    const { elements } = event.target
+  const onSubmit = async (elements: ConstructorTokenFieldProps) => {
     const _dataForm: ContractConstructorDataForm = []
-
     contractConstructorFields.forEach(field => {
       if (hasMetadata && field.fieldName === 'initialSupply') {
-        _dataForm.push([
-          field.fieldName,
-          elements.initialSupplyPowDecimal.value
-        ])
-
+        _dataForm.push([field.fieldName, elements.initialSupplyPowDecimal])
         return
       }
       if (elements[field.fieldName]) {
-        _dataForm.push([field.fieldName, elements[field.fieldName].value])
+        _dataForm.push([field.fieldName, elements[field.fieldName]])
       }
     })
 
@@ -157,7 +150,7 @@ export default function Step3Deploy({
             <FormConstructorContract
               fields={contractConstructorFields}
               hasMetadata={hasMetadata}
-              handleSubmit={handleSubmit}
+              onSubmit={onSubmit}
             />
           )}
         </Grid>
