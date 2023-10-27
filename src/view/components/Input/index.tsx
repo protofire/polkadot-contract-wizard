@@ -8,8 +8,30 @@ export const StyledTextField = styled(
   TextFieldWithLoading
 )<TextFieldWithLoadingProps>(({ theme }) => ({
   '& .MuiInputBase-input': {
-    color: theme.palette.secondary.light
+    color: theme.palette.secondary.light,
+    '&:disabled': {
+      opacity: '0.5',
+
+      '&:hover': {
+        cursor: 'not-allowed'
+      }
+    }
   },
+  '& .MuiOutlinedInput-root': {
+    '& fieldset': {
+      borderColor: theme.palette.primary.main
+    },
+    '&:hover fieldset': {
+      borderColor: theme.palette.secondary.light
+    },
+    '&.Mui-focused fieldset': {
+      borderColor: theme.palette.primary.main
+    },
+    '&.Mui-disabled fieldset': {
+      borderColor: theme.palette.secondary.dark
+    }
+  },
+
   '& input[type=number]': {
     MozAppearance: 'textfield'
   },
