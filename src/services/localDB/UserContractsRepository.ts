@@ -15,6 +15,7 @@ export type FilterType = Pick<
 
 type Props = keyof FilterType
 
+const SORT_BY_PROPERTY = 'date'
 export class UserContractsRepository implements IUserContractsRepository {
   private db: MyDatabase
 
@@ -38,7 +39,7 @@ export class UserContractsRepository implements IUserContractsRepository {
     if (filterBy === undefined) {
       return await this.db.userContracts
         .where({ userAddress, blockchain })
-        .toArray()
+        .sortBy(SORT_BY_PROPERTY)
     }
 
     const query = this.db.userContracts.where({ userAddress, blockchain })
@@ -50,7 +51,7 @@ export class UserContractsRepository implements IUserContractsRepository {
         )
       }
     }
-    return await query.toArray()
+    return (await query.sortBy(SORT_BY_PROPERTY)).reverse()
   }
 
   async bulkAddByUser(
