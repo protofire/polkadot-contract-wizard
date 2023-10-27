@@ -3,7 +3,6 @@ import { MyDatabase } from '.'
 import { IUserContractsRepository } from '@/domain/repositories/IUserContractsRepository'
 import { ChainId } from '../useink/chains'
 import { UpdateDeployment } from '@/domain/repositories/DeploymentRepository'
-import { deploymentItemToUserContractDetails } from '../transformers/toUserContractDetails'
 
 export type FilterType = Pick<
   Partial<UserContractDetails>,
@@ -36,7 +35,9 @@ export class UserContractsRepository implements IUserContractsRepository {
     if (filterBy === undefined) {
       return await this.db.userContracts
         .where({ userAddress, network })
+        .reverse()
         .sortBy(SORT_BY_PROPERTY)
+        .then(result => result || [])
     }
 
     const query = this.db.userContracts.where({ userAddress, network })
@@ -48,7 +49,10 @@ export class UserContractsRepository implements IUserContractsRepository {
         )
       }
     }
-    return (await query.sortBy(SORT_BY_PROPERTY)).reverse()
+    return await query
+      .reverse()
+      .sortBy(SORT_BY_PROPERTY)
+      .then(result => result || [])
   }
 
   async bulkAddByUser(
