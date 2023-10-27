@@ -3,7 +3,6 @@ import { MyDatabase } from '.'
 import { IUserContractsRepository } from '@/domain/repositories/IUserContractsRepository'
 import { ChainId } from '../useink/chains'
 import { UpdateDeployment } from '@/domain/repositories/DeploymentRepository'
-import { deploymentItemToUserContractDetails } from '../transformers/toUserContractDetails'
 
 export type FilterType = Pick<
   Partial<UserContractDetails>,
@@ -17,6 +16,10 @@ export class UserContractsRepository implements IUserContractsRepository {
 
   constructor(db: MyDatabase) {
     this.db = db
+  }
+
+  async get(uuid: string): Promise<UserContractDetails | undefined> {
+    return await this.db.userContracts.get({ uuid })
   }
 
   async add(userContract: UserContractDetails): Promise<string> {

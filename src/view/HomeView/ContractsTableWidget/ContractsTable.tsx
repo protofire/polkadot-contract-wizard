@@ -23,13 +23,14 @@ import {
 import { ContractTableItem } from '@/domain/wizard/ContractTableItem'
 import { useRecentlyClicked } from '@/hooks/useRecentlyClicked'
 import { MonoTypography } from '@/components'
-import { StyledTableContainer, TokenWrapper } from './styled'
+import { StyledTableContainer, TableRowStyled, TokenWrapper } from './styled'
 import Link from 'next/link'
 import { ROUTES } from '@/constants/routes'
 import NetworkBadge from '@/components/NetworkBadge'
 import { getChain } from '@/constants/chains'
 import { useNetworkAccountsContext } from '@/context/NetworkAccountsContext'
 import { ContractType } from '@/domain/repositories/DeploymentRepository'
+import router from 'next/router'
 
 const typeMap: Record<ContractType, string> = {
   psp34: 'NFT',
@@ -52,8 +53,13 @@ function ContractTableRow({
   const { ref: refButton, recentlyClicked } = useRecentlyClicked()
   const isDownloading = recentlyClicked || contract.isDownloading
   const type = contract.type
+
+  const handleRowClick = () => {
+    router.push(`/custom-contract/${contract.uuid}`)
+  }
+
   return (
-    <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+    <TableRowStyled onClick={handleRowClick}>
       <TableCell component="th" scope="row">
         <TokenWrapper>
           <TokenIconSvg label={type} />
@@ -80,21 +86,26 @@ function ContractTableRow({
         </Tooltip>
       </TableCell>
       <TableCell align="right">
-        <IconButton
-          ref={refButton}
-          disabled={isDownloading}
-          onClick={() => onDownloadMeta(contract.codeId)}
-        >
-          {isDownloading ? (
-            <HourglassBottomIcon />
-          ) : (
-            <Tooltip title="download .json" placement="top">
-              <FileDownloadIcon color={'inherit'} />
-            </Tooltip>
-          )}
-        </IconButton>
+        {type !== 'custom' && (
+          <IconButton
+            ref={refButton}
+            disabled={isDownloading}
+            onClick={event => {
+              event.stopPropagation()
+              onDownloadMeta(contract.codeId)
+            }}
+          >
+            {isDownloading ? (
+              <HourglassBottomIcon />
+            ) : (
+              <Tooltip title="download .json" placement="top">
+                <FileDownloadIcon color={'inherit'} />
+              </Tooltip>
+            )}
+          </IconButton>
+        )}
       </TableCell>
-    </TableRow>
+    </TableRowStyled>
   )
 }
 

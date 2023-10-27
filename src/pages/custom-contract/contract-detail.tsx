@@ -6,35 +6,30 @@ import { MonoTypography } from '@/view/components/MonoTypography'
 import BasicTabs from '@/view/components/Tabs'
 import { Box, Typography, Stack } from '@mui/material'
 import { useNetworkAccountsContext } from '@/context/NetworkAccountsContext'
-import { useListUserContracts } from '@/hooks/userContracts/useListUserContracts'
 import { DefaultToolTipButton } from '@/view/components/DefaultTooltipButton'
 import EditIcon from '@mui/icons-material/Edit'
 import ShareIcon from '@mui/icons-material/Share'
 import DownloadIcon from '@mui/icons-material/Download'
 import { getChain } from '@/constants/chains'
 import NetworkBadge from '@/view/components/NetworkBadge'
+import { UseModalBehaviour } from '@/hooks/useModalBehaviour'
+import { UserContractDetails } from '@/domain'
 
 type ContractTabType = 'Read Contract' | 'Write Contract'
 const types: ContractTabType[] = ['Read Contract', 'Write Contract']
 
-export default function ContractDetail({
-  setOpenModal
-}: {
-  setOpenModal: React.Dispatch<React.SetStateAction<boolean>>
-}) {
-  const [type, setType] = React.useState(types[0])
-  const { accountConnected, networkConnected } = useNetworkAccountsContext()
-  const { userContracts: contracts, isLoading } = useListUserContracts(
-    accountConnected?.address,
-    networkConnected
-  )
-  const hasMounted = useHasMounted()
+interface Props {
+  modalBehaviour: UseModalBehaviour
+  userContract: UserContractDetails
+}
 
-  if (!hasMounted || isLoading || !contracts.length) {
-    return 'loading'
-  }
-  const contract = contracts[0]
-  const { logo, name: networkName } = getChain(contract.network)
+export default function ContractDetail({
+  modalBehaviour,
+  userContract
+}: Props) {
+  const [type, setType] = React.useState(types[0])
+
+  const { logo, name: networkName } = getChain(userContract.network)
   const isReadContract = type === 'Read Contract'
   const handleChange = (newValue: number) => {
     setType(types[newValue])
@@ -49,7 +44,7 @@ export default function ContractDetail({
       >
         <Stack direction="row" justifyContent="space-between">
           <Stack direction="row" justifyContent="space-between">
-            <Typography variant="h2">{contract.name}</Typography>
+            <Typography variant="h2">{userContract.name}</Typography>
             <DefaultToolTipButton
               id="edit-contract-address"
               sx={{ marginLeft: '0.5rem', color: 'white' }}
@@ -67,17 +62,17 @@ export default function ContractDetail({
               sx={{ marginLeft: '0.5rem', color: 'white' }}
               title="Share"
               Icon={ShareIcon}
-              onClick={() => setOpenModal(true)}
+              onClick={() => modalBehaviour.openModal()}
             ></DefaultToolTipButton>
           </Stack>
-          <Typography variant="body1">Added on: {contract.date}</Typography>
+          <Typography variant="body1">Added on: {userContract.date}</Typography>
         </Stack>
         <Stack direction="row">
-          <MonoTypography>{contract.address}</MonoTypography>
+          <MonoTypography>{userContract.address}</MonoTypography>
           <CopyToClipboardButton
             id="copy-contract-address"
             sx={{ marginLeft: '0.5rem' }}
-            data={contract.address}
+            data={userContract.address}
           />
         </Stack>
         <Box
@@ -91,7 +86,7 @@ export default function ContractDetail({
               TYPE
             </Typography>
             <Typography variant="h5" align="left">
-              {contract.type}
+              {userContract.type}
             </Typography>
           </Box>
           <Box display="flex" flexDirection="column">
@@ -130,63 +125,59 @@ export default function ContractDetail({
             options={['Read Contract', 'Write Contract']}
             onChange={handleChange}
           >
-            {!isLoading ? (
-              <>
-                {/* <Typography variant="h4">{type}</Typography> */}
-                {isReadContract ? (
-                  <>
-                    <Typography variant="h4">
-                      Learn more about your contract 🔁
-                    </Typography>
-                    <Typography variant="body1">
-                      Let&apos;start to work with your contract displaying each
-                      method.
-                    </Typography>
-                  </>
-                ) : (
-                  <>
-                    <Typography variant="h4">
-                      Interact with your contract 🔁
-                    </Typography>
-                    <Typography variant="body1">
-                      Let&apos;s start to work with your contract doing
-                      different querys.
-                    </Typography>
-                  </>
-                )}
-                <SimpleAccordion
-                  elements={
-                    isReadContract
-                      ? [
-                          {
-                            tittle: 'psp22::balance',
-                            content: 'text balance',
-                            id: '1'
-                          },
-                          {
-                            tittle: 'psp22::owners',
-                            content: 'text owners',
-                            id: '2'
-                          }
-                        ]
-                      : [
-                          {
-                            tittle: 'psp22::approve',
-                            content: 'Form approve',
-                            id: '1'
-                          },
-                          {
-                            tittle: 'psp22::tranfer',
-                            content: 'Form transfer',
-                            id: '2'
-                          }
-                        ]
-                  }
-                />
-              </>
-            ) : (
-              <Box mt={2}>Loading</Box>
-            )}
+            <>
+              {/* <Typography variant="h4">{type}</Typography> */}
+              {isReadContract ? (
+                <>
+                  <Typography variant="h4">
+                    Learn more about your contract 🔁
+                  </Typography>
+                  <Typography variant="body1">
+                    Let&apos;start to work with your contract displaying each
+                    method.
+                  </Typography>
+                </>
+              ) : (
+                <>
+                  <Typography variant="h4">
+                    Interact with your contract 🔁
+                  </Typography>
+                  <Typography variant="body1">
+                    Let&apos;s start to work with your contract doing different
+                    querys.
+                  </Typography>
+                </>
+              )}
+              <SimpleAccordion
+                elements={
+                  isReadContract
+                    ? [
+                        {
+                          tittle: 'psp22::balance',
+                          content: 'text balance',
+                          id: '1'
+                        },
+                        {
+                          tittle: 'psp22::owners',
+                          content: 'text owners',
+                          id: '2'
+                        }
+                      ]
+                    : [
+                        {
+                          tittle: 'psp22::approve',
+                          content: 'Form approve',
+                          id: '1'
+                        },
+                        {
+                          tittle: 'psp22::tranfer',
+                          content: 'Form transfer',
+                          id: '2'
+                        }
+                      ]
+                }
+              />
+            </>
           </BasicTabs>
         </Box>{' '}
       </Box>
