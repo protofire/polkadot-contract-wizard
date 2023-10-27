@@ -41,6 +41,10 @@ const backendRouterApi = {
   updateDeployment: {
     pathName: 'deployments',
     method: 'PATCH'
+  },
+  version: {
+    pathName: 'version',
+    method: 'GET'
   }
 }
 

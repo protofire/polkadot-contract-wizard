@@ -16,10 +16,10 @@ export function DeleteContractModal({ open, handleClose, contract }: Props) {
   const { updateContract } = useUpdateUserContracts()
   const handleDelete = () => {
     const updatedContract: UpdateDeployment = {
-      contractAddress: contract.address,
+      address: contract.address,
       userAddress: contract.userAddress,
-      network: contract.blockchain,
-      contractName: contract.name,
+      network: contract.network,
+      name: contract.name,
       hidden: true
     }
 

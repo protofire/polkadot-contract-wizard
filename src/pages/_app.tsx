@@ -1,6 +1,6 @@
 import React from 'react'
 import { NextPage } from 'next'
-import type { AppProps } from 'next/app'
+import type { AppContext, AppProps } from 'next/app'
 import Head from 'next/head'
 import { EmotionCache } from '@emotion/cache'
 import { CacheProvider } from '@emotion/react'
@@ -23,6 +23,7 @@ import { UseInkProvider } from 'useink'
 import { CHAINS } from '@/constants/chains'
 import { LocalDbProvider } from '@/context/LocalDbContext'
 import { Inter } from 'next/font/google'
+import { apiVersionService } from '@/services/backendApi/ApiVersionService'
 
 type CustomAppProps = AppProps & {
   emotionCache: EmotionCache
@@ -81,7 +82,7 @@ export default function App(props: CustomAppProps) {
               </NetworkAccountsContextProvider>
             </LocalDbProvider>
           </UseInkProvider>
-        </PlausibleProvider>{' '}
+        </PlausibleProvider>
       </CacheProvider>
     </div>
   )

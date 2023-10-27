@@ -30,7 +30,7 @@ export const TITLE_MAP_TOKEN: Record<ContractType, TitleMapProps> = {
   custom: {
     title: 'CUSTOM',
     subtitle: 'Standard smart contract for a custom Token',
-    imgPath: TOKEN_PATHS.psp37,
+    imgPath: TOKEN_PATHS.custom,
     imgProps: { width: 45, height: 39 }
   }
 }

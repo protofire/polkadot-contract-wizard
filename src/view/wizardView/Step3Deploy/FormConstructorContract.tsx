@@ -1,13 +1,8 @@
 import { InputAdornment, Stack, Tooltip, Typography } from '@mui/material'
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward'
-import Big from 'big.js'
 
-import {
-  useFormInput,
-  ControlledFormInput,
-  useFormDependentInput
-} from '@/hooks'
+import { ValidationFn } from '@/hooks'
 import { ConstructorTokenField } from '@/constants/index'
 import { StyledTextField } from '@/components'
 import { useMemoizeFields } from './useMemorizeFields'
@@ -18,17 +13,18 @@ import {
   positiveNumberOrZero,
   maxAllowed
 } from '@/utils/inputValidation'
-import { BIG_ZERO } from '@/constants/numbers'
-import { FormEvent } from '@/domain/common/FormEvent'
 import { initialSupplyPowDecimal } from './initialSupplyPowDecimal'
 import { useEffect } from 'react'
+import { useForm } from '@/hooks/useForm'
 
 export const INITIAL_SUPPLY_DECIMAL_FIELD = 'initialSupplyPowDecimal'
 
-type FormStateContract = {
-  [K in ConstructorFieldName]: ControlledFormInput<
-    K extends 'initialSupply' | 'decimal' ? number : string
-  >
+type FieldValues = {
+  initialSupply: number | string
+  name: string
+  symbol: string
+  decimal: number
+  initialSupplyPowDecimal: string
 }
 
 type ConstructorFieldNameExtended =
@@ -36,7 +32,7 @@ type ConstructorFieldNameExtended =
   | typeof INITIAL_SUPPLY_DECIMAL_FIELD
 
 export type ConstructorTokenFieldProps = {
-  [key in ConstructorFieldNameExtended]: string
+  [K in ConstructorFieldNameExtended]: FieldValues[K]
 }
 
 const initialValues = {
@@ -46,69 +42,84 @@ const initialValues = {
   decimal: 18
 }
 
+type ValidationMap = {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  [key in ConstructorFieldName]: Array<ValidationFn<any>>
+}
+
+const mapValidations: ValidationMap = {
+  initialSupply: [notEmpty, positiveNumber],
+  name: [notEmpty],
+  symbol: [notEmpty],
+  decimal: [
+    notEmpty,
+    positiveNumberOrZero,
+    (value: number) => maxAllowed(value, 64)
+  ]
+}
+
 export function FormConstructorContract({
   fields,
   hasMetadata,
-  handleSubmit
+  onSubmit
 }: {
   fields: ConstructorTokenField[]
   hasMetadata: boolean
-  handleSubmit: (event: FormEvent<ConstructorTokenFieldProps>) => void
+  onSubmit: (values: ConstructorTokenFieldProps) => void
 }): JSX.Element {
-  const mapStates: FormStateContract = {
-    initialSupply: useFormInput(initialValues.initialSupply, [
-      notEmpty,
-      positiveNumber
-    ]),
-    name: useFormInput(initialValues.name, [notEmpty]),
-    symbol: useFormInput(initialValues.symbol, [notEmpty]),
-    decimal: useFormInput(initialValues.decimal, [
-      notEmpty,
-      positiveNumberOrZero,
-      (value: number) => maxAllowed(value, 64)
+  const { register, handleSubmit, errors, setValue, values } = useForm({
+    initialSupply: initialValues.initialSupply,
+    name: initialValues.name,
+    symbol: initialValues.symbol,
+    decimal: initialValues.decimal,
+    initialSupplyPowDecimal: initialSupplyPowDecimal([
+      initialValues.initialSupply,
+      initialValues.decimal
     ])
-  }
+      .toExponential()
+      .toString()
+  })
   const { mandatoryFields, metadataFields } = useMemoizeFields(
     fields,
     hasMetadata
   )
   const [initialSupplyField] = mandatoryFields
-  const convertedInitialSupply = useFormInput(
-    initialSupplyPowDecimal([
-      mapStates.initialSupply.value,
-      mapStates.decimal.value
-    ]),
-    [(value: Big) => (value.lt(BIG_ZERO) ? 'Values not allowed' : undefined)]
-  )
 
   useEffect(() => {
-    convertedInitialSupply.setValue(
-      initialSupplyPowDecimal([
-        mapStates.initialSupply.value,
-        mapStates.decimal.value
-      ])
-    )
+    const newConvertedValue = initialSupplyPowDecimal([
+      values.initialSupply,
+      values.decimal
+    ])
+      .toExponential()
+      .toString()
+
+    if (newConvertedValue !== values.initialSupplyPowDecimal) {
+      setValue('initialSupplyPowDecimal', newConvertedValue)
+    }
   }, [
-    mapStates.initialSupply.value,
-    mapStates.decimal.value,
-    convertedInitialSupply
+    values.initialSupply,
+    values.decimal,
+    setValue,
+    values.initialSupplyPowDecimal
   ])
 
-  const _handleSubmit = (event: FormEvent<ConstructorTokenFieldProps>) => {
-    const errors = Object.keys(mapStates).some(
-      key => mapStates[key as keyof FormStateContract].error
-    )
-
-    if (errors) {
-      event.preventDefault()
-      return
+  const _handleSubmit = (values: ConstructorTokenFieldProps) => {
+    let _values = values
+    if (hasMetadata && values.decimal) {
+      _values = {
+        ..._values,
+        initialSupply: initialSupplyPowDecimal([
+          values.initialSupply,
+          values.decimal
+        ]).toFixed()
+      }
     }
 
-    handleSubmit(event)
+    onSubmit(_values)
   }
 
   return (
-    <form id="deploy-form" onSubmit={_handleSubmit}>
+    <form id="deploy-form" onSubmit={handleSubmit(_handleSubmit)}>
       <Stack
         sx={{
           padding: '1rem',
@@ -131,78 +142,60 @@ export function FormConstructorContract({
             }}
           >
             <StyledTextField
+              {...register(initialSupplyField.fieldName, [
+                notEmpty,
+                positiveNumber
+              ])}
               required
               label={initialSupplyField.fieldName}
               type={initialSupplyField.type}
               name={initialSupplyField.fieldName}
               placeholder={initialSupplyField.placeholder}
-              value={mapStates.initialSupply.value}
-              onChange={mapStates.initialSupply.onChange}
-              error={Boolean(mapStates.initialSupply.error)}
+              error={Boolean(errors[initialSupplyField.fieldName])}
               helperText={
-                mapStates.initialSupply.error
-                  ? mapStates.initialSupply.error
+                Boolean(errors[initialSupplyField.fieldName])
+                  ? errors[initialSupplyField.fieldName]
                   : ''
               }
             />
-            {hasMetadata &&
-              mapStates.initialSupply.value &&
-              mapStates.decimal.value && (
-                <>
-                  <StyledTextField
-                    disabled
-                    variant="standard"
-                    InputProps={{
-                      startAdornment: (
-                        <Tooltip
-                          title={`This field represents the calculation of 'Initial Supply' multiplied by 10
-                    to the power of 'decimals' (1e${mapStates.decimal.value}).`}
-                          placement="top"
-                        >
-                          <InputAdornment position="start">
-                            <InfoOutlinedIcon
-                              color="primary"
-                              fontSize="small"
-                            />
-                          </InputAdornment>
-                        </Tooltip>
-                      )
-                    }}
-                    label="Initial supply will be send"
-                    name="formatedInitialSupplyPowDecimal"
-                    value={convertedInitialSupply.value.toExponential()}
-                    error={Boolean(convertedInitialSupply.error)}
-                    helperText={
-                      convertedInitialSupply.error
-                        ? convertedInitialSupply.error
-                        : ''
-                    }
-                  />
-                  <input
-                    hidden={true}
-                    name={INITIAL_SUPPLY_DECIMAL_FIELD}
-                    {...{
-                      onChange: convertedInitialSupply.onChange,
-                      value: convertedInitialSupply.value.toFixed()
-                    }}
-                  />
-                </>
-              )}
+            {hasMetadata && values.initialSupply && values.decimal && (
+              <>
+                <StyledTextField
+                  disabled
+                  variant="standard"
+                  InputProps={{
+                    startAdornment: (
+                      <Tooltip
+                        title={`This field represents the calculation of 'Initial Supply' multiplied by 10
+                    to the power of 'decimals' (1e${values.decimal}).`}
+                        placement="top"
+                      >
+                        <InputAdornment position="start">
+                          <InfoOutlinedIcon color="primary" fontSize="small" />
+                        </InputAdornment>
+                      </Tooltip>
+                    )
+                  }}
+                  label="Initial supply will be send"
+                  name="formatedInitialSupplyPowDecimal"
+                  value={values.initialSupplyPowDecimal}
+                  error={Boolean(errors.initialSupplyPowDecimal)}
+                  helperText={
+                    Boolean(errors.initialSupplyPowDecimal)
+                      ? errors.initialSupplyPowDecimal
+                      : ''
+                  }
+                />
+              </>
+            )}
           </Stack>
         )}
         {metadataFields &&
           metadataFields.map(field => {
-            const fieldState = mapStates[field.fieldName]
-            const props = {
-              value: fieldState.value,
-              onChange: fieldState.onChange,
-              required: fieldState.required,
-              error: Boolean(fieldState.error),
-              helperText: fieldState.error ? fieldState.error : ''
-            }
             return (
               <StyledTextField
                 key={field.name}
+                required
                 label={field.name}
                 type={field.type}
                 {...(field.type === 'number' ? { min: 0 } : null)}
@@ -211,7 +204,13 @@ export function FormConstructorContract({
                 InputLabelProps={{
                   shrink: true
                 }}
-                {...props}
+                {...register(field.fieldName, mapValidations[field.fieldName])}
+                error={Boolean(errors[field.fieldName])}
+                helperText={
+                  Boolean(errors[field.fieldName])
+                    ? errors[field.fieldName]
+                    : ''
+                }
               />
             )
           })}

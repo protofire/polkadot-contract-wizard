@@ -7,7 +7,12 @@ import { Typography, Stack, Link, Box } from '@mui/material'
 import TelegramIcon from '@mui/icons-material/Telegram'
 import GithubIcon from '@mui/icons-material/GitHub'
 
-const DrawerContent = ({ version }: { version: string }) => {
+interface Props {
+  version: string
+  backendApiVersion: string
+}
+
+const DrawerContent = ({ version, backendApiVersion }: Props) => {
   const { pathname } = useRouter()
 
   return (
@@ -97,19 +102,34 @@ const DrawerContent = ({ version }: { version: string }) => {
             />
           </Link>
         </Box>
-        {version && (
-          <Box display="flex" justifyContent={'right'} pr={'1rem'}>
-            <Typography
-              sx={{
-                color: '#ffffff7d',
-                fontSize: '0.6rem',
-                marginTop: '0.1rem'
-              }}
-            >
-              V{version}
-            </Typography>
-          </Box>
-        )}
+        <Stack direction="row" justifyContent="flex-end">
+          {version && (
+            <Box display="flex" justifyContent={'right'} pr={'1rem'}>
+              <Typography
+                sx={{
+                  color: '#ffffff7d',
+                  fontSize: '0.6rem',
+                  marginTop: '0.1rem'
+                }}
+              >
+                UI V{version}
+              </Typography>
+            </Box>
+          )}
+          {backendApiVersion && (
+            <Box display="flex" justifyContent={'right'} pr={'1rem'}>
+              <Typography
+                sx={{
+                  color: '#ffffff7d',
+                  fontSize: '0.6rem',
+                  marginTop: '0.1rem'
+                }}
+              >
+                API V{backendApiVersion}
+              </Typography>
+            </Box>
+          )}
+        </Stack>
       </Stack>
     </>
   )
