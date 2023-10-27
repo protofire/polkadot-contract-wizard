@@ -1,3 +1,6 @@
 [submodule "ink-compiler-be"]
 	path = ink-compiler-be
 	url = https://github.com/protofire/ink-compiler-be.git
+[submodule "cw_docs"]
+	path = cw_docs
+	url = https://github.com/protofire/cw_docs

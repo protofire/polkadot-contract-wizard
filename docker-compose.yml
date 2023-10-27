@@ -49,3 +49,13 @@ services:
     image: mongo:5.0.16
     networks:
       - polkadot-wizard
+  doc:
+    container_name: ${CONTAINER_BASE}_doc
+    build:
+      context: ./cw_docs
+      dockerfile: ./Dockerfile
+      target: runner
+    ports:
+      - ${DOC_EXTERNAL_PORT}:3000
+    networks:
+      - polkadot-wizard
