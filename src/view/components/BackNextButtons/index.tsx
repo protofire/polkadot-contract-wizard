@@ -47,19 +47,17 @@ export default function BackNextButton(props: Props) {
   } = props
 
   return (
-    <Grid
-      item
-      xs={12}
+    <Box
       sx={{
         display: 'flex',
         justifyContent: 'space-between',
-        position: 'fixed',
-        /* width: 'calc(90% - 4rem)', */
-        width: '76%',
+        position: 'sticky',
+        width: '100%',
         bottom: '1rem',
         background: '#222222dd',
         padding: '1rem',
-        borderRadius: '10rem'
+        borderRadius: '10rem',
+        margin: '1rem 0'
       }}
     >
       {hiddenBack ? (
@@ -84,6 +82,6 @@ export default function BackNextButton(props: Props) {
       >
         <BoxStyled>{nextLabel}</BoxStyled>
       </Button>
-    </Grid>
+    </Box>
   )
 }
