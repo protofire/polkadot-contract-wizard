@@ -1,15 +1,18 @@
 import { BackendApiConfig } from '@/constants/config'
 import {
   ContractType,
-  DeploymentItem,
   UpdateDeployment,
   IDeploymentsRepository
 } from '@/domain/repositories/DeploymentRepository'
 import { ChainId } from '@/services/useink/chains'
-import { request } from '@/services/common/request'
+import { createSuffix, request } from '@/services/common/request'
 import { RootApiResponse } from './types'
+import { fromDeploymentItemToRaw } from '@/services/transformers/toDeploymentRaw'
+import { deploymentRawToUserContractDetails } from '../transformers/toUserContractDetails'
+import { UserContractDetails, UserContractDetailsDraft } from '@/domain'
 
-interface DeploymentRaw {
+export interface DeploymentRaw {
+  _id: { $oid: string }
   contract_name: string
   contract_address: string
   network: ChainId
@@ -24,68 +27,53 @@ interface DeploymentRaw {
 
 export type IApiDeploymentRepository = IDeploymentsRepository<
   RootApiResponse<string>,
-  DeploymentItem[]
+  UserContractDetails[]
 >
-
-function adaptDeployment(deploymentRaw: DeploymentRaw): DeploymentItem {
-  return {
-    contractName: deploymentRaw.contract_name as DeploymentItem['contractName'],
-    contractAddress: deploymentRaw.contract_address,
-    network: deploymentRaw.network,
-    codeId: deploymentRaw.code_id,
-    userAddress: deploymentRaw.user_address,
-    txHash: deploymentRaw.tx_hash,
-    date: deploymentRaw.date,
-    contractType: deploymentRaw.contract_type,
-    hidden: deploymentRaw.hidden,
-    externalAbi: deploymentRaw.external_abi
-      ? JSON.parse(deploymentRaw.external_abi)
-      : undefined
-  }
-}
 
 export class ApiDeploymentRepository implements IApiDeploymentRepository {
   constructor(private readonly backenApiConfig: BackendApiConfig) {}
 
-  async add(deployment: DeploymentItem): Promise<RootApiResponse<string>> {
+  async add(
+    deployment: UserContractDetailsDraft
+  ): Promise<RootApiResponse<string>> {
+    const existingDeployments = await this.findBy(
+      deployment.userAddress,
+      deployment.network,
+      deployment.address
+    )
+
+    const exists = existingDeployments.length > 0
+
+    if (exists) {
+      throw new Error('Deployment Already exists in your records.')
+    }
+
     return request<RootApiResponse<string>>(
       this.backenApiConfig.routes.createDeployment.url,
       {
         method: this.backenApiConfig.routes.createCompileContract.method,
-        body: JSON.stringify({
-          contract_name: deployment.contractName,
-          contract_address: deployment.contractAddress,
-          network: deployment.network,
-          code_id: deployment.codeId,
-          user_address: deployment.userAddress,
-          tx_hash: deployment.txHash,
-          date: deployment.date,
-          contract_type: deployment.contractType,
-          ...(deployment.externalAbi && {
-            external_abi: deployment.externalAbi
-          })
-        })
+        body: JSON.stringify(fromDeploymentItemToRaw(deployment))
       }
     )
   }
 
   async findBy(
     userAddress: string,
-    networkId?: ChainId | undefined
-  ): Promise<DeploymentItem[]> {
+    networkId?: ChainId | undefined,
+    address?: string
+  ): Promise<UserContractDetails[]> {
     const { url, method } = this.backenApiConfig.routes.listDeployment
 
-    const suffixUrl = networkId
-      ? `&network=${encodeURIComponent(networkId)}`
-      : ''
+    const suffixUrl = createSuffix('network', networkId)
+    const suffixNetwork = createSuffix('contract_address', address)
 
     const { data } = await request<RootApiResponse<DeploymentRaw[]>>(
-      `${url}${encodeURIComponent(userAddress)}${suffixUrl}`,
+      `${url}${encodeURIComponent(userAddress)}${suffixUrl}${suffixNetwork}`,
       {
         method: method
       }
     )
-    return data.map(e => adaptDeployment(e))
+    return data.map(e => deploymentRawToUserContractDetails(e))
   }
 
   async updateBy(
@@ -96,10 +84,10 @@ export class ApiDeploymentRepository implements IApiDeploymentRepository {
       {
         method: this.backenApiConfig.routes.updateDeployment.method,
         body: JSON.stringify({
-          contract_address: deployment.contractAddress,
+          contract_address: deployment.address,
           user_address: deployment.userAddress,
           network: deployment.network,
-          contract_name: deployment.contractName,
+          contract_name: deployment.name,
           hidden: deployment.hidden ?? false
         })
       }

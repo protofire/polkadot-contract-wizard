@@ -83,7 +83,7 @@ function ContractTableRow({
         <IconButton
           ref={refButton}
           disabled={isDownloading}
-          onClick={() => onDownloadMeta(contract.codeHash)}
+          onClick={() => onDownloadMeta(contract.codeId)}
         >
           {isDownloading ? (
             <HourglassBottomIcon />

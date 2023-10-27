@@ -11,7 +11,7 @@ import {
   factoryControlsToken,
   factoryOptionTokenValues
 } from '@/domain/wizard/factoriesContract'
-import { TokenType, UserContractDetails } from '@/domain'
+import { TokenType, UserContractDetailsDraft } from '@/domain'
 import { StackCard } from '@/components'
 import { GridDeployInfo } from './GridDeployInfo'
 
@@ -33,7 +33,7 @@ export default function FormWizard({
 }): JSX.Element {
   const [activeStep, setActiveStep] = useState(0)
   const [deployedContract, setDeployedContract] =
-    useState<UserContractDetails>()
+    useState<UserContractDetailsDraft>()
   const { extensionFields, constructorFields } = useMemo(() => {
     return factoryControlsToken(token)
   }, [token])

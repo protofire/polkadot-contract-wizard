@@ -3,11 +3,11 @@ import { useCallback, useEffect, useState } from 'react'
 import { useLocalDbContext } from '@/context/LocalDbContext'
 import {
   UserContractDetails,
-  UserContractEvents,
-  WalletConnectionEvents
+  WalletConnectionEvents,
+  UserContractEvents
 } from '@/domain'
-import { useListContractDeployments } from '../deployments/useListContractsDeployments'
-import { useMultiEventListener } from '../useMultipleEventListener'
+import { useListDeployments } from '../deployments/useListDeployments'
+import { useMultiEventListener } from '@/hooks/useMultipleEventListener'
 import { ChainId } from '@/services/useink/chains'
 import { FilterType } from '@/services/localDB/UserContractsRepository'
 
@@ -25,7 +25,7 @@ export function useListUserContracts(
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | undefined>()
   const { userContractsRepository } = useLocalDbContext()
-  const { userContractsFromApi } = useListContractDeployments()
+  const { userContractsFromApi } = useListDeployments()
   const [userContracts, setUserContracts] = useState<UserContractDetails[]>([])
 
   const readInitialData = useCallback(async () => {

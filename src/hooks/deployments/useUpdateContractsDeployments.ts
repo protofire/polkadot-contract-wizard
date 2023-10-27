@@ -22,13 +22,7 @@ export function useUpdateContractsDeployments(): UseAddDeployment {
       setIsLoading(true)
       setError(undefined)
       try {
-        const deployments = await deploymentsRepository.updateBy({
-          contractAddress: deployed.contractAddress,
-          userAddress: deployed.userAddress,
-          network: deployed.network,
-          contractName: deployed.contractName,
-          hidden: deployed.hidden
-        })
+        const deployments = await deploymentsRepository.updateBy(deployed)
         return deployments
       } catch (e) {
         setError(getErrorMessage(e))

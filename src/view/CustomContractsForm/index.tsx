@@ -14,10 +14,17 @@ import { ChainId } from '@/services/useink/chains'
 import BackNextButton from '@/components/BackNextButtons'
 import { ROUTES } from '@/constants'
 import router from 'next/router'
+import { UserContractDetails, WalletConnectionEvents } from '@/domain'
+import { useMultiEventListener } from '@/hooks/useMultipleEventListener'
+
+export type CustomDeploymentDataForm = Pick<
+  UserContractDetails,
+  'name' | 'address' | 'abi'
+>
 
 interface Props {
   network: ChainId
-  onCreate: () => void
+  onCreate: (data: CustomDeploymentDataForm) => void
 }
 
 interface SourceInMetadata {
@@ -28,12 +35,8 @@ export function CustomContractsForm({ network, onCreate }: Props) {
   const { metadataFile, onChange, onRemove, metadata } = useParseMetadataField()
   const { isOnChain, contractHash } = useIsOnChain()
   const formData = {
-    contractAddress: useFormInput<string>('', [
-      notEmpty,
-      onlyAddress,
-      isOnChain
-    ]),
-    contractName: useFormInput<string>(nameWithTimestamp('custom'), [notEmpty])
+    address: useFormInput<string>('', [notEmpty, onlyAddress, isOnChain]),
+    name: useFormInput<string>(nameWithTimestamp('custom'), [notEmpty])
   }
   const anyInvalidField: boolean = Object.values(formData).some(
     field => (field.required && !field.value) || field.error !== null
@@ -47,10 +50,13 @@ export function CustomContractsForm({ network, onCreate }: Props) {
     }
   )
 
+  useMultiEventListener([WalletConnectionEvents.networkChanged], () =>
+    _resetFormData()
+  )
+
   const _resetFormData = () => {
-    formData.contractAddress.setValue('')
-    formData.contractName.setValue(nameWithTimestamp('custom'))
-    router.push(ROUTES.HOME)
+    formData.address.setValue('')
+    formData.name.setValue(nameWithTimestamp('custom'))
   }
 
   const _handlerBack = () => {
@@ -59,7 +65,13 @@ export function CustomContractsForm({ network, onCreate }: Props) {
   }
 
   const _handlerNext = () => {
-    onCreate()
+    if (!metadata) return
+
+    onCreate({
+      address: formData.address.value,
+      name: formData.name.value,
+      abi: metadata.source
+    })
   }
 
   return (
@@ -67,24 +79,20 @@ export function CustomContractsForm({ network, onCreate }: Props) {
       <StyledTextField
         label="Contract Address"
         placeholder="502d1..."
-        value={formData.contractAddress.value}
-        onChange={formData.contractAddress.onChange}
-        error={Boolean(formData.contractAddress.error)}
-        helperText={
-          formData.contractAddress.error ? formData.contractAddress.error : ''
-        }
-        loading={formData.contractAddress.loading}
+        value={formData.address.value}
+        onChange={formData.address.onChange}
+        error={Boolean(formData.address.error)}
+        helperText={formData.address.error ? formData.address.error : ''}
+        loading={formData.address.loading}
       />
       <StyledTextField
         label="Contract Name"
         placeholder="My imported contract"
-        value={formData.contractName.value}
-        disabled={anyInvalidField}
-        onChange={formData.contractName.onChange}
-        error={Boolean(formData.contractName.error)}
-        helperText={
-          formData.contractName.error ? formData.contractName.error : ''
-        }
+        value={formData.name.value}
+        disabled={!Boolean(formData.address.value)}
+        onChange={formData.name.onChange}
+        error={Boolean(formData.name.error)}
+        helperText={formData.name.error ? formData.name.error : ''}
       />
       <DropzoneWrapper>
         <DropZone

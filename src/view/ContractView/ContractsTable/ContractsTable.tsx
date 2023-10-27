@@ -73,10 +73,10 @@ function ContractTableRow({
     const contractName =
       textInput.length > 0 ? textInput : nameWithTimestamp('custom')
     const updatedContract: UpdateDeployment = {
-      contractAddress: contract.address,
+      address: contract.address,
       userAddress: contract.userAddress,
-      network: contract.blockchain,
-      contractName: contractName,
+      network: contract.network,
+      name: textInput,
       hidden: false
     }
     setTextInput(contractName)

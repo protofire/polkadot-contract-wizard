@@ -13,7 +13,7 @@ function updateContractItem(
     'isDownloading' | 'sourceJsonString'
   >
 ) {
-  const index = contractsItem.findIndex(item => item.codeHash === codeId)
+  const index = contractsItem.findIndex(item => item.codeId === codeId)
 
   if (index) {
     contractsItem[index] = {
@@ -50,7 +50,7 @@ export function ContractsTableWidget({
 
   const searchMetadata = async (codeId: string): Promise<string | void> => {
     const contractWithMeta = contractsItem.find(
-      contract => contract.codeHash === codeId && contract.sourceJsonString
+      contract => contract.codeId === codeId && contract.sourceJsonString
     )
 
     if (contractWithMeta) return contractWithMeta.sourceJsonString
