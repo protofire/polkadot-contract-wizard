@@ -1,15 +1,11 @@
 import React from 'react'
 import { Box, Stack } from '@mui/material'
 import { MySkeleton } from '@/view/components/MySkeleton'
+import MainContainer from '@/view/layout/MainContainer'
 
 export function ContractDetailSkeleton() {
   return (
-    <Box
-      sx={{
-        width: { sm: '90%', md: '75%', lg: '80%', xl: '60%' },
-        margin: '0 auto 2rem auto'
-      }}
-    >
+    <MainContainer>
       <Stack direction="row" justifyContent="space-between">
         <MySkeleton variant="text" width={200} height={50} />
         <MySkeleton variant="text" width={150} height={30} />
@@ -33,6 +29,6 @@ export function ContractDetailSkeleton() {
         </Stack>
         <MySkeleton variant="rectangular" height={350} />
       </Box>
-    </Box>
+    </MainContainer>
   )
 }
