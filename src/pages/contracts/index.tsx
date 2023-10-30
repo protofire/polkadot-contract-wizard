@@ -11,7 +11,7 @@ import { useState } from 'react'
 export default function Contracts() {
   const [filterBy, setFilterBy] = useState<FilterType>({ hidden: false })
   const { accountConnected, networkConnected } = useNetworkAccountsContext()
-  const { userContracts: contracts, isLoading } = useListUserContracts(
+  const { userContracts, isLoading } = useListUserContracts(
     accountConnected?.address,
     networkConnected,
     filterBy
@@ -34,7 +34,7 @@ export default function Contracts() {
       </Typography>
       {accountConnected ? (
         <ContractsTableContent
-          contracts={contracts}
+          contracts={userContracts}
           setFilterBy={changeType}
           isLoading={isLoading}
         />

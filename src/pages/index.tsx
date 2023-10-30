@@ -20,7 +20,7 @@ type Token = keyof ContractType
 
 function Home() {
   const { accountConnected, networkConnected } = useNetworkAccountsContext()
-  const { userContracts: contracts } = useListUserContracts(
+  const { userContracts } = useListUserContracts(
     accountConnected?.address,
     networkConnected
   )
@@ -80,7 +80,9 @@ function Home() {
           imgProps={{ width: 60, height: 60 }}
         />
       </Stack>
-      {accountConnected && <ContractsTableWidget contracts={contracts} />}
+      {accountConnected && userContracts && (
+        <ContractsTableWidget contracts={userContracts} />
+      )}
     </MainContainer>
   )
 }
