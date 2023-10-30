@@ -39,7 +39,7 @@ export const DropZone: React.FC<Props> = props => {
       style={{
         opacity: props.disabled ? 0.5 : 1,
         cursor: props.disabled ? 'not-allowed' : 'pointer',
-        borderColor: props.disabled ? '#333333' : '#e6007a'
+        borderColor: props.disabled ? '#333333' : 'white'
       }}
     >
       <input {...getInputProps()} />

@@ -84,6 +84,7 @@ export function CustomContractsForm({ network, onCreate }: Props) {
         error={Boolean(formData.address.error)}
         helperText={formData.address.error ? formData.address.error : ''}
         loading={formData.address.loading}
+        autoFocus
       />
       <StyledTextField
         label="Contract Name"
