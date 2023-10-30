@@ -23,6 +23,7 @@ export function useListUserContracts(
   filterBy?: FilterType
 ): UseAddDeployment {
   const [isLoading, setIsLoading] = useState(false)
+  const [requested, setRequested] = useState(false)
   const [error, setError] = useState<string | undefined>()
   const { userContractsRepository } = useLocalDbContext()
   const { userContractsFromApi } = useListDeployments()
@@ -47,7 +48,6 @@ export function useListUserContracts(
       setIsLoading(false)
       return
     }
-
     userContractsFromApi(userAddress, networkConnected)
       .then(async deployments => {
         deployments &&
@@ -63,6 +63,7 @@ export function useListUserContracts(
       })
       .catch(setError)
       .finally(() => {
+        setRequested(true)
         setIsLoading(false)
       })
   }, [
@@ -75,7 +76,7 @@ export function useListUserContracts(
 
   useEffect(() => {
     readInitialData()
-  }, [filterBy, readInitialData])
+  }, [filterBy, readInitialData, requested])
 
   useMultiEventListener(
     [
