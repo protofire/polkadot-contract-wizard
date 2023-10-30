@@ -12,7 +12,6 @@ import { getChain } from '@/constants/chains'
 import NetworkBadge from '@/view/components/NetworkBadge'
 import { UseModalBehaviour } from '@/hooks/useModalBehaviour'
 import { UserContractDetails } from '@/domain'
-import MainContainer from '@/view/layout/MainContainer'
 import { isoDate, isoToReadableDate } from '@/utils/formatString'
 
 type ContractTabType = 'Read Contract' | 'Write Contract'
