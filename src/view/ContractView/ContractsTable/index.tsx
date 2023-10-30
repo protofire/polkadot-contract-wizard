@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { ContractsTable } from '@/view/ContractView/ContractsTable/ContractsTable'
 import { UserContractDetails } from '@/domain'
-import { ContractTableItem } from '@/domain/wizard/ContractTableItem'
 import { FiltersInput, FiltersInputProps } from '../FiltersInput'
 import { Box, Button, Typography } from '@mui/material'
 import Link from 'next/link'
 import { ROUTES } from '@/constants'
 interface Props extends FiltersInputProps {
-  contracts: UserContractDetails[]
+  contracts?: UserContractDetails[]
   isLoading: boolean
 }
 
@@ -20,11 +19,8 @@ export function ContractsTableContent({
   setFilterBy,
   isLoading
 }: Props) {
-  const [contractsItem, setContractsItem] =
-    useState<ContractTableItem[]>(contracts)
-
-  useEffect(() => setContractsItem(contracts), [contracts])
-
+  const thereAreContracts = contracts !== undefined && contracts.length > 0
+  const _isLoading = !isLoading || contracts === undefined
   return (
     <>
       <Box
@@ -44,9 +40,9 @@ export function ContractsTableContent({
           </Button>
         </Link>
       </Box>
-      <Loading isLoading={isLoading} />
-      {!isLoading && contracts.length > 0 ? (
-        <ContractsTable contracts={contractsItem} />
+      <Loading isLoading={_isLoading} />
+      {thereAreContracts ? (
+        contracts && <ContractsTable contracts={contracts} />
       ) : (
         <Box
           sx={{

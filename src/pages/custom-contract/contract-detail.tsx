@@ -30,7 +30,7 @@ export default function ContractDetail({
   )
   const hasMounted = useHasMounted()
 
-  if (!hasMounted || isLoading || !contracts.length) {
+  if (!hasMounted || isLoading || !contracts?.length) {
     return 'loading'
   }
   const contract = contracts[0]
