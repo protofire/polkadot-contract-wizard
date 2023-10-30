@@ -48,6 +48,7 @@ export function useListUserContracts(
       setIsLoading(false)
       return
     }
+
     userContractsFromApi(userAddress, networkConnected)
       .then(async deployments => {
         deployments &&
@@ -77,14 +78,6 @@ export function useListUserContracts(
   useEffect(() => {
     readInitialData()
   }, [filterBy, readInitialData, requested])
-
-  useMultiEventListener(
-    [
-      WalletConnectionEvents.networkChanged,
-      UserContractEvents.userContractUpdated
-    ],
-    () => readInitialData()
-  )
 
   return { userContracts, isLoading, error }
 }
