@@ -1,4 +1,4 @@
-import { Grid, Box, styled, BoxProps } from '@mui/material'
+import { Box, styled, BoxProps } from '@mui/material'
 import { West as WestIcon, East as EastIcon } from '@mui/icons-material'
 
 import { LoadingButton as Button, LoadingButtonProps } from '@/components'
