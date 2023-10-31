@@ -63,19 +63,23 @@ export interface BackendApiConfig {
   routes: RouteApi
 }
 
-/** URL of the API will be rewritten in next.config */
-const apiBaseUrlPath = `/api`
-
-export const BACKEND_API: BackendApiConfig = {
-  basePath: apiBaseUrlPath,
-  routes: Object.keys(backendRouterApi).reduce((acc, key) => {
-    const currentRoute = backendRouterApi[key as BackendRoutesApi]
-    return {
-      ...acc,
-      [key]: {
-        method: currentRoute.method,
-        url: `${apiBaseUrlPath}/${currentRoute.pathName}`
+export function getBackendApiConfig(basePath: string): BackendApiConfig {
+  return {
+    basePath,
+    routes: Object.keys(backendRouterApi).reduce((acc, key) => {
+      const currentRoute = backendRouterApi[key as BackendRoutesApi]
+      return {
+        ...acc,
+        [key]: {
+          method: currentRoute.method,
+          url: `${basePath}/${currentRoute.pathName}`
+        }
       }
-    }
-  }, {} as RouteApi)
+    }, {} as RouteApi)
+  }
 }
+
+/** URL of the API will be rewritten in next.config */
+export const apiBaseUrlPath = `/api`
+
+export const BACKEND_API = getBackendApiConfig(apiBaseUrlPath)

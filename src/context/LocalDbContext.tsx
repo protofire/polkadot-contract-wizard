@@ -29,8 +29,8 @@ interface DbContext {
   backendApiVersion: string
 }
 
-export const apiDeploymentsRepository = new ApiDeploymentRepository(BACKEND_API)
-export const apiCompileContractRepository = new ApiCompileContractRepository(
+const apiDeploymentsRepository = new ApiDeploymentRepository(BACKEND_API)
+const apiCompileContractRepository = new ApiCompileContractRepository(
   BACKEND_API
 )
 const networkRepository = new LocalStorageNetworkRepository()

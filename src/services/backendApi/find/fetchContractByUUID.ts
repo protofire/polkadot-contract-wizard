@@ -1,12 +1,27 @@
 import {
-  apiCompileContractRepository,
-  apiDeploymentsRepository
-} from '@/context/LocalDbContext'
+  DOMAIN,
+  IS_DEVELOPMENT,
+  IS_PRODUCTION,
+  apiBaseUrlPath,
+  getBackendApiConfig
+} from '@/constants'
 import { UserContractDetails } from '@/domain'
+import { ApiDeploymentRepository } from '@/services/backendApi/ApiDeploymentRepository'
+import { ApiCompileContractRepository } from '@/services/backendApi/ApiCompileContractRepository'
+
+const _basePath = IS_DEVELOPMENT ? `${DOMAIN}${apiBaseUrlPath}` : apiBaseUrlPath
+
+const apiDeploymentsRepository = new ApiDeploymentRepository(
+  getBackendApiConfig(_basePath)
+)
+const apiCompileContractRepository = new ApiCompileContractRepository(
+  getBackendApiConfig(_basePath)
+)
 
 export async function fetchContractByUUID(
   uuid: string
 ): Promise<UserContractDetails | undefined> {
+  console.log('__Domain', getBackendApiConfig(_basePath))
   if (!uuid) {
     throw new Error('UUID is required')
   }
