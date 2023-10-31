@@ -28,7 +28,7 @@ export default function ContractDetail({
 }: Props) {
   const [type, setType] = React.useState(types[0])
 
-  const chainDetails = getChain(userContract.network)
+  const chainDetails = userContract.network && getChain(userContract.network)
   if (!chainDetails) {
     return null
   }
