@@ -42,7 +42,12 @@ export function ContractsTableContent({
       </Box>
       <Loading isLoading={_isLoading} />
       {thereAreContracts ? (
-        contracts && <ContractsTable contracts={contracts} />
+        contracts && (
+          <ContractsTable
+            // onDownloadMeta={onDownloadSource}
+            contracts={contracts}
+          />
+        )
       ) : (
         <Box
           sx={{

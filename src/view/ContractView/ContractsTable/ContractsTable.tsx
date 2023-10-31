@@ -8,7 +8,8 @@ import {
   Stack,
   TextField,
   Typography,
-  Tooltip
+  Tooltip,
+  IconButton
 } from '@mui/material'
 
 import { CopyToClipboardButton, TokenIconSvg } from '@/components'
@@ -27,16 +28,20 @@ import ShareIcon from '@mui/icons-material/Share'
 import DeleteIcon from '@mui/icons-material/Delete'
 import CheckIcon from '@mui/icons-material/CheckCircleOutlineRounded'
 import CancelIcon from '@mui/icons-material/Cancel'
+import FileDownloadIcon from '@mui/icons-material/FileDownload'
+import HourglassBottomIcon from '@mui/icons-material/HourglassBottom'
 
 import { ShareContractModal } from '@/view/components/ShareContractModal'
 import { TITLE_MAP_TOKEN } from '@/constants/titleTokenType'
 import { useUpdateUserContracts } from '@/hooks/userContracts/useUpdateUserContracts'
+import { useRecentlyClicked } from '@/hooks/useRecentlyClicked'
 import { DeleteContractModal } from '@/view/components/DeleteContractModal'
 import { UpdateDeployment } from '@/domain/repositories/DeploymentRepository'
 import { nameWithTimestamp } from '@/utils/generators'
 
 export interface ContractsTableProps {
   contracts: ContractTableItem[]
+  onDownloadMeta: (codeId: string) => void
 }
 
 const MAX_INPUT_LENGTH = 20
@@ -45,16 +50,19 @@ const ERROR_MESSAGE = '20 characters max'
 function ContractTableRow({
   contract,
   setOpenShareModal,
-  setOpenDeleteModal
+  setOpenDeleteModal,
+  onDownloadMeta
 }: {
   contract: ContractTableItem
   setOpenShareModal: React.Dispatch<React.SetStateAction<boolean>>
   setOpenDeleteModal: React.Dispatch<React.SetStateAction<boolean>>
-}) {
+} & Pick<ContractsTableProps, 'onDownloadMeta'>) {
   const [editable, setEditable] = React.useState(false)
   const [error, setError] = React.useState(false)
   const [textInput, setTextInput] = React.useState(contract.name)
   const { updateContract } = useUpdateUserContracts()
+  const { ref: refButton, recentlyClicked } = useRecentlyClicked()
+  const isDownloading = recentlyClicked || contract.isDownloading
 
   const typeMap = TITLE_MAP_TOKEN[contract.type]
 
@@ -184,13 +192,27 @@ function ContractTableRow({
           Icon={DeleteIcon}
           onClick={() => setOpenDeleteModal(true)}
         ></DefaultToolTipButton>
+        <IconButton
+          ref={refButton}
+          disabled={isDownloading}
+          onClick={() => onDownloadMeta(contract.codeId)}
+        >
+          {isDownloading ? (
+            <HourglassBottomIcon />
+          ) : (
+            <Tooltip title="download .json" placement="top">
+              <FileDownloadIcon color={'inherit'} />
+            </Tooltip>
+          )}
+        </IconButton>
       </TableCell>
     </TableRow>
   )
 }
 
 export function ContractsTable({
-  contracts
+  contracts,
+  onDownloadMeta
 }: ContractsTableProps): JSX.Element {
   const [openShareModal, setOpenShareModal] = React.useState(false)
   const [openDeleteModal, setOpenDeleteModal] = React.useState(false)
@@ -228,6 +250,7 @@ export function ContractsTable({
                 <ContractTableRow
                   key={contract.address}
                   contract={contract}
+                  onDownloadMeta={onDownloadMeta}
                   setOpenShareModal={() => {
                     setUrl(url)
                     setOpenShareModal(true)
