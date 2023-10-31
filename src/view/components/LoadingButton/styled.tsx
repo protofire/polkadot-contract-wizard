@@ -46,12 +46,10 @@ export const StyledButton = styled(StyledButtonWrapper, {
   }),
 
   '&.MuiButton-outlined': {
-    color: 'white',
     borderColor: theme.palette.primary.main,
     backgroundColor: 'transparent',
     '&:hover': {
-      backgroundColor: theme.palette.primary.main,
-      border: '1px solid'
+      backgroundColor: '#e6007b83'
     }
   }
 }))

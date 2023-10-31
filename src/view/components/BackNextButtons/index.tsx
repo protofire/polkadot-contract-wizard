@@ -1,4 +1,4 @@
-import { Grid, Box, styled, BoxProps } from '@mui/material'
+import { Box, styled, BoxProps } from '@mui/material'
 import { West as WestIcon, East as EastIcon } from '@mui/icons-material'
 
 import { LoadingButton as Button, LoadingButtonProps } from '@/components'
@@ -47,12 +47,18 @@ export default function BackNextButton(props: Props) {
   } = props
 
   return (
-    <Grid
-      item
-      xs={12}
-      mt={8}
-      mb={1}
-      sx={{ display: 'flex', justifyContent: 'space-between' }}
+    <Box
+      sx={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        position: 'inherit' /* ToDo: Make it fixed. */,
+        width: '100%',
+        bottom: '1rem',
+        background: '#222222dd',
+        padding: '1rem',
+        borderRadius: '10rem',
+        margin: '1rem 0'
+      }}
     >
       {hiddenBack ? (
         <Box sx={{ width: '30%' }} />
@@ -76,6 +82,6 @@ export default function BackNextButton(props: Props) {
       >
         <BoxStyled>{nextLabel}</BoxStyled>
       </Button>
-    </Grid>
+    </Box>
   )
 }
