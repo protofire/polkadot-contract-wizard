@@ -37,6 +37,7 @@ export default function Contracts() {
           contracts={userContracts}
           setFilterBy={changeType}
           isLoading={isLoading}
+          tableConfig={{ onlyTable: false, editName: true }}
         />
       ) : (
         <>

@@ -4,10 +4,9 @@ import { MenuItem, Select, SelectChangeEvent } from '@mui/material'
 import { TITLE_MAP_TOKEN } from '@/constants/titleTokenType'
 import { ContractType } from '@/domain/repositories/DeploymentRepository'
 import { EmptyString } from '@/services/common/EmptyString'
-import { SearchInput } from './SearchInput'
 
 export interface FiltersInputProps {
-  setFilterBy: (type: ContractType | EmptyString) => void
+  setFilterBy?: (type: ContractType | EmptyString) => void
 }
 
 type KeyMapToken = keyof typeof TITLE_MAP_TOKEN
@@ -26,7 +25,9 @@ export function FiltersInput({ setFilterBy }: FiltersInputProps) {
   const handleSelect = (event: SelectChangeEvent) => {
     event.preventDefault()
     const value = event.target.value as KeyMapToken | EmptyString
-    setFilterBy(value)
+    if (setFilterBy) {
+      setFilterBy(value)
+    }
     setContractType(value)
   }
 

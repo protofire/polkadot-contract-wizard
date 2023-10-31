@@ -4,10 +4,10 @@ import { Stack, Typography } from '@mui/material'
 import { HomeButton, HomeButtonCustom } from '@/components'
 import { CUSTOM_CONTRACT, ROUTES, TOKEN_PATHS } from '@/constants/index'
 import { useNetworkAccountsContext } from '@/context/NetworkAccountsContext'
-import { ContractsTableWidget } from '@/view/HomeView/ContractsTableWidget'
 import { useListUserContracts } from '@/hooks/userContracts/useListUserContracts'
 import { ContractType } from '@/domain/repositories/DeploymentRepository'
 import MainContainer from '@/view/layout/MainContainer'
+import { ContractsTableContent } from '@/view/ContractView/ContractsTable'
 
 const Token: Record<ContractType, ContractType> = {
   psp22: 'psp22',
@@ -81,7 +81,11 @@ function Home() {
         />
       </Stack>
       {accountConnected && userContracts && (
-        <ContractsTableWidget contracts={userContracts} />
+        <ContractsTableContent
+          tableConfig={{ onlyTable: true, editName: false }}
+          contracts={userContracts}
+          isLoading={false}
+        />
       )}
     </MainContainer>
   )

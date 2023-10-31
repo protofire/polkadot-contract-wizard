@@ -39,9 +39,15 @@ import { DeleteContractModal } from '@/view/components/DeleteContractModal'
 import { UpdateDeployment } from '@/domain/repositories/DeploymentRepository'
 import { nameWithTimestamp } from '@/utils/generators'
 
+export interface TableConfig {
+  onlyTable: boolean
+  editName: boolean
+}
+
 export interface ContractsTableProps {
   contracts: ContractTableItem[]
   onDownloadMeta: (codeId: string) => void
+  tableConfig?: TableConfig
 }
 
 const MAX_INPUT_LENGTH = 20
@@ -49,6 +55,7 @@ const ERROR_MESSAGE = '20 characters max'
 
 function ContractTableRow({
   contract,
+  config,
   setOpenShareModal,
   setOpenDeleteModal,
   onDownloadMeta
@@ -56,6 +63,7 @@ function ContractTableRow({
   contract: ContractTableItem
   setOpenShareModal: React.Dispatch<React.SetStateAction<boolean>>
   setOpenDeleteModal: React.Dispatch<React.SetStateAction<boolean>>
+  config?: TableConfig
 } & Pick<ContractsTableProps, 'onDownloadMeta'>) {
   const [editable, setEditable] = React.useState(false)
   const [error, setError] = React.useState(false)
@@ -123,6 +131,7 @@ function ContractTableRow({
                 value={textInput}
                 onChange={handleChange}
               ></TextField>
+
               <DefaultToolTipButton
                 id="save-contract-name"
                 sx={{ color: 'green' }}
@@ -141,13 +150,15 @@ function ContractTableRow({
           ) : (
             <>
               <Typography>{textInput}</Typography>
-              <DefaultToolTipButton
-                id="edit-contract-address"
-                sx={{ color: 'white' }}
-                title="Edit"
-                Icon={EditIcon}
-                onClick={() => setEditable(!editable)}
-              ></DefaultToolTipButton>
+              {config?.editName && (
+                <DefaultToolTipButton
+                  id="edit-contract-address"
+                  sx={{ color: 'white' }}
+                  title="Edit"
+                  Icon={EditIcon}
+                  onClick={() => setEditable(!editable)}
+                ></DefaultToolTipButton>
+              )}
             </>
           )}
         </TokenWrapper>
@@ -212,12 +223,14 @@ function ContractTableRow({
 
 export function ContractsTable({
   contracts,
-  onDownloadMeta
+  onDownloadMeta,
+  tableConfig
 }: ContractsTableProps): JSX.Element {
   const [openShareModal, setOpenShareModal] = React.useState(false)
   const [openDeleteModal, setOpenDeleteModal] = React.useState(false)
   const [url, setUrl] = React.useState('')
   const [contract, setContract] = React.useState({} as ContractTableItem)
+
   return (
     <>
       <StyledTableContainer>
@@ -250,6 +263,7 @@ export function ContractsTable({
                 <ContractTableRow
                   key={contract.address}
                   contract={contract}
+                  config={tableConfig}
                   onDownloadMeta={onDownloadMeta}
                   setOpenShareModal={() => {
                     setUrl(url)
