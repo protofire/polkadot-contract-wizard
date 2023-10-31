@@ -79,5 +79,9 @@ export function useListUserContracts(
     readInitialData()
   }, [filterBy, readInitialData, requested])
 
+  useMultiEventListener([UserContractEvents.userContractUpdated], () =>
+    readInitialData()
+  )
+
   return { userContracts, isLoading, error }
 }

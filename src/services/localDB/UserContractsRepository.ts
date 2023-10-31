@@ -66,7 +66,7 @@ export class UserContractsRepository implements IUserContractsRepository {
   async updateBy(deployed: UpdateDeployment): Promise<number> {
     const { userAddress, network, address } = deployed
     return await this.db.userContracts
-      .where({ userAddress, blockchain: network, address })
+      .where({ userAddress, network, address })
       .modify({ name: deployed.name, hidden: deployed.hidden })
   }
 }
