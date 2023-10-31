@@ -17,7 +17,8 @@ interface UseAddDeployment {
 export function useListDeployments(): UseAddDeployment {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | undefined>()
-  const { deploymentsRepository } = useLocalDbContext()
+  const { apiDeploymentsRepository: deploymentsRepository } =
+    useLocalDbContext()
 
   const userContractsFromApi = useCallback(
     async (userAddress: string, network?: ChainId) => {

@@ -27,7 +27,11 @@ const backendRouterApi = {
     method: 'POST'
   },
   listDeployment: {
-    pathName: 'deployments?user_address=',
+    pathName: 'deployments',
+    method: 'GET'
+  },
+  findDeployment: {
+    pathName: 'deployment',
     method: 'GET'
   },
   createCompileContract: {
@@ -60,7 +64,7 @@ export interface BackendApiConfig {
 }
 
 /** URL of the API will be rewritten in next.config */
-const apiBaseUrlPath = '/api'
+const apiBaseUrlPath = `${DOMAIN}/api`
 
 export const BACKEND_API: BackendApiConfig = {
   basePath: apiBaseUrlPath,

@@ -64,16 +64,33 @@ export class ApiDeploymentRepository implements IApiDeploymentRepository {
   ): Promise<UserContractDetails[]> {
     const { url, method } = this.backenApiConfig.routes.listDeployment
 
-    const suffixUrl = createSuffix('network', networkId)
-    const suffixNetwork = createSuffix('contract_address', address)
+    const suffixUserAddress = createSuffix('user_address', userAddress, true)
+    const suffixNetwork = createSuffix('network', networkId)
+    const suffixContractAddress = createSuffix('contract_address', address)
 
     const { data } = await request<RootApiResponse<DeploymentRaw[]>>(
-      `${url}${encodeURIComponent(userAddress)}${suffixUrl}${suffixNetwork}`,
+      `${url}${suffixUserAddress}${suffixNetwork}${suffixContractAddress}`,
       {
         method: method
       }
     )
     return data.map(e => deploymentRawToUserContractDetails(e))
+  }
+
+  async get(uuid: string): Promise<UserContractDetails | undefined> {
+    const { url, method } = this.backenApiConfig.routes.findDeployment
+
+    const suffixUrl = createSuffix('id', uuid, true)
+
+    const { data } = await request<RootApiResponse<DeploymentRaw>>(
+      `${url}${suffixUrl}`,
+      {
+        method: method
+      }
+    )
+    if (!data) return
+
+    return deploymentRawToUserContractDetails(data)
   }
 
   async updateBy(

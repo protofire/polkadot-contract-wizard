@@ -1,36 +1,62 @@
-import { useFindUserContract } from '@/hooks/userContracts/useFindUserContract'
+import { GetServerSidePropsContext } from 'next'
 import { ContractDetailSkeleton } from '@/view/CustomContracts/detail/SkeletonContractDetail'
 import MainContainer from '@/view/layout/MainContainer'
-import { useRouter } from 'next/router'
 import ContractDetail from './contract-detail'
 import { useModalBehaviour } from '@/hooks/useModalBehaviour'
-import { useHasMounted } from '@/hooks/useHasMounted'
+import { UserContractDetails } from '@/domain'
+import { fetchContractByUUID } from '@/services/backendApi/find/fetchContractByUUID'
 
-const CustomContractDetail: React.FC = () => {
-  const router = useRouter()
-  const { uuid } = router.query
-  const { userContract, requested, isLoading } = useFindUserContract(
-    uuid as string
-  )
+interface Props {
+  userContract: UserContractDetails
+}
+
+export default function CustomContractDetailPage({ userContract }: Props) {
+  // const router = useRouter()
+  // const { uuid } = router.query
+  // const { userContract, requested, isLoading } = useFindUserContract(
+  //   uuid as string
+  // )
   const modalBehaviour = useModalBehaviour()
-  const hasMounted = useHasMounted()
 
-  if (!userContract || !hasMounted || isLoading) {
+  if (!userContract) {
     return <ContractDetailSkeleton />
-  }
-
-  if (!userContract && requested) {
-    router.push('/404')
   }
 
   return (
     <MainContainer>
-      <ContractDetail
-        modalBehaviour={modalBehaviour}
-        userContract={userContract}
-      />
+      {userContract && (
+        <ContractDetail
+          modalBehaviour={modalBehaviour}
+          userContract={userContract}
+        />
+      )}
     </MainContainer>
   )
 }
 
-export default CustomContractDetail
+export async function getServerSideProps({
+  params
+}: GetServerSidePropsContext) {
+  const uuid = params?.uuid
+
+  if (typeof uuid !== 'string') {
+    return {
+      notFound: true
+    }
+  }
+
+  const userContract = await fetchContractByUUID(uuid)
+  console.log('__USER', userContract)
+
+  if (!userContract) {
+    return {
+      notFound: true
+    }
+  }
+
+  return {
+    props: {
+      userContract
+    }
+  }
+}
