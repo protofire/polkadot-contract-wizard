@@ -51,7 +51,7 @@ export default function BackNextButton(props: Props) {
       sx={{
         display: 'flex',
         justifyContent: 'space-between',
-        position: 'sticky',
+        position: 'inherit' /* ToDo: Make it fixed. */,
         width: '100%',
         bottom: '1rem',
         background: '#222222dd',
