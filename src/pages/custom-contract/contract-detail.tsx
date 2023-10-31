@@ -27,15 +27,17 @@ export default function ContractDetail({
   userContract
 }: Props) {
   const [type, setType] = React.useState(types[0])
-
-  const chainDetails = userContract.network && getChain(userContract.network)
-  if (!chainDetails) {
+  if (!userContract) {
     return null
   }
+
+  const chainDetails = getChain(userContract.network)
   const isReadContract = type === 'Read Contract'
+
   const handleChange = (newValue: number) => {
     setType(types[newValue])
   }
+
   return (
     <>
       <Stack direction="row" justifyContent="space-between">

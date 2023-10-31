@@ -11,11 +11,6 @@ interface Props {
 }
 
 export default function CustomContractDetailPage({ userContract }: Props) {
-  // const router = useRouter()
-  // const { uuid } = router.query
-  // const { userContract, requested, isLoading } = useFindUserContract(
-  //   uuid as string
-  // )
   const modalBehaviour = useModalBehaviour()
 
   if (!userContract) {
@@ -46,7 +41,6 @@ export async function getServerSideProps({
   }
 
   const userContract = await fetchContractByUUID(uuid)
-  console.log('__USER', userContract)
 
   if (!userContract) {
     return {
