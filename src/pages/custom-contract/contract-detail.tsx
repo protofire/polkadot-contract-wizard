@@ -28,7 +28,10 @@ export default function ContractDetail({
 }: Props) {
   const [type, setType] = React.useState(types[0])
 
-  const { logo, name: networkName } = getChain(userContract.network)
+  const chainDetails = getChain(userContract.network)
+  if (!chainDetails) {
+    return null
+  }
   const isReadContract = type === 'Read Contract'
   const handleChange = (newValue: number) => {
     setType(types[newValue])
@@ -95,10 +98,10 @@ export default function ContractDetail({
           </Typography>
           <Typography variant="h5" align="left">
             <NetworkBadge
-              name={networkName}
-              logo={logo.src}
+              name={chainDetails.name}
+              logo={chainDetails.logo.src}
               logoSize={{ width: 20, height: 20 }}
-              description={logo.alt}
+              description={chainDetails.logo.alt}
               textTooltip="This network is the one that the contract has been deployed."
             />
           </Typography>
