@@ -102,8 +102,9 @@ export function ContractsTable({
   contracts,
   onDownloadMeta
 }: ContractsTableProps): JSX.Element {
-  const totalContracts = contracts.filter(contract => !contract.hidden).length
-  const lastContracts = contracts.slice(-4).reverse()
+  const filterContracts = contracts.filter(contract => !contract.hidden)
+  const totalContracts = filterContracts.length
+  const lastContracts = filterContracts.slice(0, 4)
   const { networkConnected: network } = useNetworkAccountsContext()
   const { logo, name: networkName } = getChain(network)
 

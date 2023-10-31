@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { ContractsTable } from '@/view/ContractView/ContractsTable/ContractsTable'
 import { UserContractDetails } from '@/domain'
 import { FiltersInput, FiltersInputProps } from '../FiltersInput'
@@ -20,7 +20,7 @@ export function ContractsTableContent({
   isLoading
 }: Props) {
   const thereAreContracts = contracts !== undefined && contracts.length > 0
-  const _isLoading = !isLoading || contracts === undefined
+  const _isLoading = !isLoading && contracts === undefined
   return (
     <>
       <Box
