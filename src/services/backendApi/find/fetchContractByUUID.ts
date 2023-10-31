@@ -21,7 +21,6 @@ const apiCompileContractRepository = new ApiCompileContractRepository(
 export async function fetchContractByUUID(
   uuid: string
 ): Promise<UserContractDetails | undefined> {
-  console.log('__Domain', getBackendApiConfig(_basePath))
   if (!uuid) {
     throw new Error('UUID is required')
   }
