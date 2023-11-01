@@ -55,7 +55,7 @@ function ContractTableRow({
   const type = contract.type
 
   const handleRowClick = () => {
-    router.push(`/custom-contract/${contract.uuid}`)
+    router.push(`${ROUTES.CONTRACTDETAIL}?uuid=${contract.uuid}`)
   }
 
   return (
