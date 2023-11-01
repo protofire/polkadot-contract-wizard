@@ -13,7 +13,10 @@ const nextConfig = {
   },
   async rewrites() {
     return [{ source: '/api/:path*', destination: backendApi }]
-  }
+  },
+  env: {
+    NEXT_PUBLIC_DOMAIN: process.env.VERCEL_URL,
+  },
 }
 
 module.exports = nextConfig

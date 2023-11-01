@@ -9,7 +9,7 @@ import { UserContractDetails } from '@/domain'
 import { ApiDeploymentRepository } from '@/services/backendApi/ApiDeploymentRepository'
 import { ApiCompileContractRepository } from '@/services/backendApi/ApiCompileContractRepository'
 
-const _basePath = IS_DEVELOPMENT ? `${DOMAIN}${apiBaseUrlPath}` : apiBaseUrlPath
+const _basePath = `${DOMAIN}${apiBaseUrlPath}`
 
 const apiDeploymentsRepository = new ApiDeploymentRepository(
   getBackendApiConfig(_basePath)
