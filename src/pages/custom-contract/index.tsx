@@ -25,7 +25,7 @@ export default function CustomContractsPage() {
     if (!deploymentId) return
 
     const timer = setTimeout(() => {
-      router.push(ROUTES.CONTRACTDETAIL)
+      router.push(`${ROUTES.CONTRACTDETAIL}?uuid=${deploymentId}`)
     }, 500)
 
     return () => clearTimeout(timer)
