@@ -19,7 +19,8 @@ interface UseServiceAddDeployment {
 export function useCreateDeployments(): UseServiceAddDeployment {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | undefined>()
-  const { deploymentsRepository } = useLocalDbContext()
+  const { apiDeploymentsRepository: deploymentsRepository } =
+    useLocalDbContext()
   const { addUserContract } = useAddUserContracts()
 
   const newDeployment = useCallback(

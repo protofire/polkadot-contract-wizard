@@ -8,6 +8,9 @@ import { FilterType } from '@/services/localDB/UserContractsRepository'
 
 export interface IUserContractsRepository {
   add: (deployment: UserContractDetails) => Promise<string>
+  get: (
+    uuid: UserContractDetails['uuid']
+  ) => Promise<UserContractDetails | undefined>
   list: (userAddress: string) => Promise<UserContractDetails[]>
   searchBy: (
     userAddress: string,

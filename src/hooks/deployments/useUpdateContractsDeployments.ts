@@ -15,7 +15,8 @@ interface UseAddDeployment {
 export function useUpdateContractsDeployments(): UseAddDeployment {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | undefined>()
-  const { deploymentsRepository } = useLocalDbContext()
+  const { apiDeploymentsRepository: deploymentsRepository } =
+    useLocalDbContext()
 
   const updateContractsFromApi = useCallback(
     async (deployed: UpdateDeployment) => {

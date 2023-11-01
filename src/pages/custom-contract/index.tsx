@@ -6,8 +6,8 @@ import { ConnectWalletSection } from '@/view/components/ConnectWalletSection'
 import {
   CustomContractsForm,
   CustomDeploymentDataForm
-} from '@/view/CustomContractsForm'
-import { ImportingContractMessage } from '@/view/CustomContractsForm/CreatingCustomContract'
+} from '@/view/CustomContracts/create/CustomContractsForm'
+import { ImportingContractMessage } from '@/view/CustomContracts/create/CreatingCustomContract'
 import { Typography } from '@mui/material'
 import { useReportError } from '@/hooks/useReportError'
 import router from 'next/router'
@@ -25,7 +25,7 @@ export default function CustomContractsPage() {
     if (!deploymentId) return
 
     const timer = setTimeout(() => {
-      router.push(ROUTES.CONTRACTDETAIL)
+      router.push(`${ROUTES.CONTRACTDETAIL}?uuid=${deploymentId}`)
     }, 500)
 
     return () => clearTimeout(timer)

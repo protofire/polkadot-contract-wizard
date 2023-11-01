@@ -19,6 +19,10 @@ export class UserContractsRepository implements IUserContractsRepository {
     this.db = db
   }
 
+  async get(uuid: string): Promise<UserContractDetails | undefined> {
+    return await this.db.userContracts.get({ uuid })
+  }
+
   async add(userContract: UserContractDetails): Promise<string> {
     return this.db.userContracts.add(userContract)
   }

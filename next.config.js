@@ -11,9 +11,12 @@ const nextConfig = {
   publicRuntimeConfig: {
     version,
   },
+  env: {
+    NEXT_PUBLIC_DOMAIN: process.env.VERCEL_URL,
+  },
   async rewrites() {
     return [{ source: '/api/:path*', destination: backendApi }]
-  }
+  },
 }
 
 module.exports = nextConfig
