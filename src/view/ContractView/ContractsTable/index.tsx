@@ -123,12 +123,19 @@ export function ContractsTableContent({
       ) : (
         <Box
           sx={{
-            width: '100%',
             margin: '2rem',
             textAlign: 'center'
           }}
         >
-          <Typography>There are no contracts to list</Typography>
+          <Typography
+            variant="body1"
+            align="center"
+            color="white"
+            mt="2rem"
+            mb="1rem"
+          >
+            You don&apos;t have any contracts for this network. Build one! ☝️
+          </Typography>
         </Box>
       )}
     </>
