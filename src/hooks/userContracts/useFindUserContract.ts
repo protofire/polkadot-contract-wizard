@@ -14,7 +14,8 @@ export function useFindUserContract(uuid: string): UseFindUserContract {
   >()
   const [isLoading, setIsLoading] = useState(false)
   const [requested, setRequested] = useState(false)
-  const { userContractsRepository } = useLocalDbContext()
+  const { userContractsRepository, apiCompileContractRepository } =
+    useLocalDbContext()
 
   useEffect(() => {
     if (!uuid) return
@@ -22,12 +23,20 @@ export function useFindUserContract(uuid: string): UseFindUserContract {
     setIsLoading(true)
     userContractsRepository
       .get(uuid)
-      .then(response => {
+      .then(async response => {
+        if (response && !response?.abi) {
+          const compiled = await apiCompileContractRepository.search(
+            response.codeId
+          )
+
+          response.abi = JSON.parse(compiled['data'].metadata)
+        }
+
         setUserContract(response)
         setRequested(true)
       })
       .finally(() => setIsLoading(false))
-  }, [userContractsRepository, uuid])
+  }, [apiCompileContractRepository, userContractsRepository, uuid])
 
   return { userContract, isLoading, requested }
 }

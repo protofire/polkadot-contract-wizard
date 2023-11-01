@@ -22,6 +22,10 @@ interface Props {
   userContract: UserContractDetails
 }
 
+interface AbiSource {
+  source: { language: string }
+}
+
 export default function ContractDetail({
   modalBehaviour,
   userContract
@@ -33,6 +37,7 @@ export default function ContractDetail({
 
   const chainDetails = getChain(userContract.network)
   const isReadContract = type === 'Read Contract'
+  const abi = userContract.abi as AbiSource | undefined
 
   const handleChange = (newValue: number) => {
     setType(types[newValue])
@@ -110,18 +115,18 @@ export default function ContractDetail({
         </Box>
         <Box display="flex" flexDirection="column">
           <Typography variant="caption" align="left">
-            CONTRACT VERSION
+            LANGUAGE
           </Typography>
           <Typography variant="h5" align="left">
-            1.2.1
+            {abi?.source.language}
           </Typography>
         </Box>
         <Box display="flex" flexDirection="column">
           <Typography variant="caption" align="left">
-            LANGUAGE
+            Actions
           </Typography>
           <Typography variant="h5" align="left">
-            INK! 4.0.5
+            --
           </Typography>
         </Box>
       </Box>
