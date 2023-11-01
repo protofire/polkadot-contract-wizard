@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { Box, Stack, Typography } from '@mui/material'
+import { Box, Paper, Stack, Typography } from '@mui/material'
 
 import { HomeButton, HomeButtonCustom } from '@/components'
 import { CUSTOM_CONTRACT, ROUTES, TOKEN_PATHS } from '@/constants/index'
@@ -7,9 +7,9 @@ import { useNetworkAccountsContext } from '@/context/NetworkAccountsContext'
 import { useListUserContracts } from '@/hooks/userContracts/useListUserContracts'
 import { ContractType } from '@/domain/repositories/DeploymentRepository'
 import MainContainer from '@/view/layout/MainContainer'
-import { ContractsTableContent } from '@/view/components/ContractsTable'
 import NetworkBadge from '@/view/components/NetworkBadge'
 import { getChain } from '@/constants/chains'
+import { ContractsTableFiltered } from '@/view/components/ContractsTable/ContractsTableFiltered'
 
 const Token: Record<ContractType, ContractType> = {
   psp22: 'psp22',
@@ -22,7 +22,7 @@ type Token = keyof ContractType
 
 function Home() {
   const { accountConnected, networkConnected } = useNetworkAccountsContext()
-  const { userContracts } = useListUserContracts(
+  const { userContracts, isLoading } = useListUserContracts(
     accountConnected?.address,
     networkConnected
   )
@@ -106,11 +106,50 @@ function Home() {
               />
             </Box>
           </Box>
-          <ContractsTableContent
-            tableConfig={{ onlyTable: true, editName: false }}
-            contracts={userContracts}
-            isLoading={false}
-          />
+          {accountConnected ? (
+            <ContractsTableFiltered
+              contracts={userContracts}
+              isLoading={isLoading}
+              tableConfig={{ onlyTable: true, editName: false }}
+            />
+          ) : (
+            <>
+              <Box
+                sx={{
+                  margin: '5rem'
+                }}
+              >
+                <Paper
+                  sx={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    maxWidth: '870px',
+                    minWidth: '700px',
+                    height: '343px',
+                    margin: '0 auto',
+                    borderRadius: '15px',
+                    color: '#ffff'
+                  }}
+                >
+                  <Typography fontSize={'1.5rem'} mb={5}>
+                    ⚠️ Wallet not connected
+                  </Typography>
+
+                  <Typography fontSize={'1.3rem'} variant="body1">
+                    No contracts detected since you have not connected your
+                    wallet.
+                  </Typography>
+
+                  <Typography fontSize={'1.3rem'} variant="body1">
+                    Please, connect your wallet to see and interact with your
+                    contracts
+                  </Typography>
+                </Paper>
+              </Box>
+            </>
+          )}
         </>
       )}
     </MainContainer>
