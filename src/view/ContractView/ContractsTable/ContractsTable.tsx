@@ -204,6 +204,8 @@ function ContractTableRow({
           onClick={() => setOpenDeleteModal(true)}
         ></DefaultToolTipButton>
         <IconButton
+          sx={{ marginLeft: '0.5rem', color: 'white' }}
+          size="small"
           ref={refButton}
           disabled={isDownloading}
           onClick={() => onDownloadMeta(contract.codeId)}

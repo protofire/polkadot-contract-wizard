@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { Stack, Typography } from '@mui/material'
+import { Box, Stack, Typography } from '@mui/material'
 
 import { HomeButton, HomeButtonCustom } from '@/components'
 import { CUSTOM_CONTRACT, ROUTES, TOKEN_PATHS } from '@/constants/index'
@@ -8,6 +8,8 @@ import { useListUserContracts } from '@/hooks/userContracts/useListUserContracts
 import { ContractType } from '@/domain/repositories/DeploymentRepository'
 import MainContainer from '@/view/layout/MainContainer'
 import { ContractsTableContent } from '@/view/ContractView/ContractsTable'
+import NetworkBadge from '@/view/components/NetworkBadge'
+import { getChain } from '@/constants/chains'
 
 const Token: Record<ContractType, ContractType> = {
   psp22: 'psp22',
@@ -24,6 +26,8 @@ function Home() {
     accountConnected?.address,
     networkConnected
   )
+  const { networkConnected: network } = useNetworkAccountsContext()
+  const { logo, name: networkName } = getChain(network)
 
   return (
     <MainContainer>
@@ -81,11 +85,33 @@ function Home() {
         />
       </Stack>
       {accountConnected && userContracts && (
-        <ContractsTableContent
-          tableConfig={{ onlyTable: true, editName: false }}
-          contracts={userContracts}
-          isLoading={false}
-        />
+        <>
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            gap={6}
+            mt="3rem"
+          >
+            <Box display="flex" alignItems="center" gap={1.25}>
+              <Typography variant="h3">Last Contracts</Typography>
+              <Typography variant="body1" component="p">
+                on
+              </Typography>
+              <NetworkBadge
+                name={networkName}
+                logo={logo.src}
+                logoSize={{ width: 20, height: 20 }}
+                description={logo.alt}
+              />
+            </Box>
+          </Box>
+          <ContractsTableContent
+            tableConfig={{ onlyTable: true, editName: false }}
+            contracts={userContracts}
+            isLoading={false}
+          />
+        </>
       )}
     </MainContainer>
   )
