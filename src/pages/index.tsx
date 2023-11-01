@@ -10,6 +10,7 @@ import MainContainer from '@/view/layout/MainContainer'
 import NetworkBadge from '@/view/components/NetworkBadge'
 import { getChain } from '@/constants/chains'
 import { ContractsTableFiltered } from '@/view/components/ContractsTable/ContractsTableFiltered'
+import { downloadMetadata } from '@/utils/downloadMetadata'
 
 const Token: Record<ContractType, ContractType> = {
   psp22: 'psp22',
@@ -28,6 +29,18 @@ function Home() {
   )
   const { networkConnected: network } = useNetworkAccountsContext()
   const { logo, name: networkName } = getChain(network)
+
+  /*  const onDownloadSource = async (codeId: string) => {
+    setContractsItem(prev =>
+      updateContractItem(codeId, prev, { isDownloading: true })
+    )
+    const sourceMetadata = await searchMetadata(codeId)
+
+    sourceMetadata && downloadMetadata(codeId, sourceMetadata)
+    setContractsItem(prev =>
+      updateContractItem(codeId, prev, { isDownloading: false })
+    )
+  } */
 
   return (
     <MainContainer>
@@ -111,6 +124,7 @@ function Home() {
               contracts={userContracts}
               isLoading={isLoading}
               tableConfig={{ onlyTable: true, editName: false }}
+              onDownloadMeta={(codeId: string) => console.log(codeId)}
             />
           ) : (
             <>
