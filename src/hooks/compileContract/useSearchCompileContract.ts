@@ -10,7 +10,7 @@ export const useSearchCompileContract = (): GetServiceData & {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | undefined>()
   const { addNotification } = useAppNotificationContext()
-  const { compileContractRepository } = useLocalDbContext()
+  const { apiCompileContractRepository } = useLocalDbContext()
 
   const searchCompileContract = useCallback(
     async (codeId: string): Promise<ContractCompiledRaw | void> => {
@@ -18,7 +18,7 @@ export const useSearchCompileContract = (): GetServiceData & {
       setIsLoading(true)
 
       try {
-        const response = await compileContractRepository.search(codeId)
+        const response = await apiCompileContractRepository.search(codeId)
 
         setIsLoading(false)
         if (response.error) {
@@ -37,7 +37,7 @@ export const useSearchCompileContract = (): GetServiceData & {
         console.error(error)
       }
     },
-    [addNotification, compileContractRepository]
+    [addNotification, apiCompileContractRepository]
   )
 
   return { searchCompileContract, isLoading, error }

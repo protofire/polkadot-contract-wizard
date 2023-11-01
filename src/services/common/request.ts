@@ -14,7 +14,13 @@ export function createUrl(basePath: string, pathName: string): string {
   return _url.toString()
 }
 
-export function createSuffix(key: string, value?: string | number): string {
+export function createSuffix(
+  key: string,
+  value?: string | number,
+  first?: true
+): string {
   if (!value) return ''
-  return `&${encodeURIComponent(key)}=${encodeURIComponent(value.toString())}`
+  return `${first ? '?' : '&'}${encodeURIComponent(key)}=${encodeURIComponent(
+    value.toString()
+  )}`
 }

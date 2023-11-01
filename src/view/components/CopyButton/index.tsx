@@ -18,7 +18,10 @@ export const CopyToClipboardButton = ({ data, sx }: Props) => {
       <IconButton
         size="small"
         color="primary"
-        onClick={() => copyToClipboard(data)}
+        onClick={event => {
+          event.stopPropagation()
+          copyToClipboard(data)
+        }}
         sx={sx}
       >
         <ContentCopyRoundedIcon fontSize="inherit" />
