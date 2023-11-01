@@ -7,7 +7,7 @@ import { useNetworkAccountsContext } from '@/context/NetworkAccountsContext'
 import { useListUserContracts } from '@/hooks/userContracts/useListUserContracts'
 import { ContractType } from '@/domain/repositories/DeploymentRepository'
 import MainContainer from '@/view/layout/MainContainer'
-import { ContractsTableContent } from '@/view/ContractView/ContractsTable'
+import { ContractsTableContent } from '@/view/components/ContractsTable'
 import NetworkBadge from '@/view/components/NetworkBadge'
 import { getChain } from '@/constants/chains'
 

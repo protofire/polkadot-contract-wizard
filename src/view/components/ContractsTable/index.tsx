@@ -2,9 +2,12 @@ import React, { useEffect, useState } from 'react'
 import {
   ContractsTable,
   TableConfig
-} from '@/view/ContractView/ContractsTable/ContractsTable'
+} from '@/view/components/ContractsTable/ContractsTable'
 import { UserContractDetails } from '@/domain'
-import { FiltersInput, FiltersInputProps } from '../FiltersInput'
+import {
+  FiltersInput,
+  FiltersInputProps
+} from '../../ContractView/FiltersInput'
 import { Box, Button, Typography } from '@mui/material'
 import Link from 'next/link'
 import { ROUTES } from '@/constants'
