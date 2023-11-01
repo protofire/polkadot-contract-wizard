@@ -11,11 +11,11 @@ const nextConfig = {
   publicRuntimeConfig: {
     version,
   },
-  async rewrites() {
-    return [{ source: '/api/:path*', destination: backendApi }]
-  },
   env: {
     NEXT_PUBLIC_DOMAIN: process.env.VERCEL_URL,
+  },
+  async rewrites() {
+    return [{ source: '/api/:path*', destination: backendApi }]
   },
 }
 
