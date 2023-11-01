@@ -10,7 +10,6 @@ import MainContainer from '@/view/layout/MainContainer'
 import NetworkBadge from '@/view/components/NetworkBadge'
 import { getChain } from '@/constants/chains'
 import { ContractsTableFiltered } from '@/view/components/ContractsTable/ContractsTableFiltered'
-import { downloadMetadata } from '@/utils/downloadMetadata'
 
 const Token: Record<ContractType, ContractType> = {
   psp22: 'psp22',
