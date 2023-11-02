@@ -1,8 +1,6 @@
 import React from 'react'
-import SimpleAccordion from '@/view/components/Accordion'
 import { CopyToClipboardButton } from '@/view/components/CopyButton'
 import { MonoTypography } from '@/view/components/MonoTypography'
-import BasicTabs from '@/view/components/Tabs'
 import { Box, Typography, Stack, Tooltip } from '@mui/material'
 import { DefaultToolTipButton } from '@/view/components/DefaultTooltipButton'
 import EditIcon from '@mui/icons-material/Edit'
@@ -13,6 +11,9 @@ import NetworkBadge from '@/view/components/NetworkBadge'
 import { UseModalBehaviour } from '@/hooks/useModalBehaviour'
 import { UserContractDetails } from '@/domain'
 import { isoDate, isoToReadableDate } from '@/utils/formatString'
+import { useNetworkAccountsContext } from '@/context/NetworkAccountsContext'
+import { ContractDetailsInteraction } from '@/view/ContractDetailsInteraction'
+import { ConnectWalletSection } from '@/view/components/ConnectWalletSection'
 
 type ContractTabType = 'Read Contract' | 'Write Contract'
 const types: ContractTabType[] = ['Read Contract', 'Write Contract']
@@ -31,6 +32,7 @@ export default function ContractDetail({
   userContract
 }: Props) {
   const [type, setType] = React.useState(types[0])
+  const { accountConnected } = useNetworkAccountsContext()
   if (!userContract) {
     return null
   }
@@ -130,66 +132,13 @@ export default function ContractDetail({
           </Typography>
         </Box>
       </Box>
-      <Box sx={{ width: '100%' }}>
-        <BasicTabs
-          options={['Read Contract', 'Write Contract']}
-          onChange={handleChange}
-        >
-          <>
-            {/* <Typography variant="h4">{type}</Typography> */}
-            {isReadContract ? (
-              <>
-                <Typography variant="h4">
-                  Learn more about your contract 🔁
-                </Typography>
-                <Typography variant="body1">
-                  Let&apos;start to work with your contract displaying each
-                  method.
-                </Typography>
-              </>
-            ) : (
-              <>
-                <Typography variant="h4">
-                  Interact with your contract 🔁
-                </Typography>
-                <Typography variant="body1">
-                  Let&apos;s start to work with your contract doing different
-                  querys.
-                </Typography>
-              </>
-            )}
-            <SimpleAccordion
-              elements={
-                isReadContract
-                  ? [
-                      {
-                        tittle: 'psp22::balance',
-                        content: 'text balance',
-                        id: '1'
-                      },
-                      {
-                        tittle: 'psp22::owners',
-                        content: 'text owners',
-                        id: '2'
-                      }
-                    ]
-                  : [
-                      {
-                        tittle: 'psp22::approve',
-                        content: 'Form approve',
-                        id: '1'
-                      },
-                      {
-                        tittle: 'psp22::tranfer',
-                        content: 'Form transfer',
-                        id: '2'
-                      }
-                    ]
-              }
-            />
-          </>
-        </BasicTabs>
-      </Box>
+      {accountConnected ? (
+        <ContractDetailsInteraction userContract={userContract} />
+      ) : (
+        <ConnectWalletSection
+          text={'You need to connect a wallet to interact with this contract.'}
+        />
+      )}
     </>
   )
 }
