@@ -1,15 +1,11 @@
 import Link from 'next/link'
-import { Box, Paper, Stack, Typography } from '@mui/material'
+import { Stack, Typography } from '@mui/material'
 
 import { HomeButton, HomeButtonCustom } from '@/components'
 import { CUSTOM_CONTRACT, ROUTES, TOKEN_PATHS } from '@/constants/index'
-import { useNetworkAccountsContext } from '@/context/NetworkAccountsContext'
-import { useListUserContracts } from '@/hooks/userContracts/useListUserContracts'
 import { ContractType } from '@/domain/repositories/DeploymentRepository'
 import MainContainer from '@/view/layout/MainContainer'
-import NetworkBadge from '@/view/components/NetworkBadge'
-import { getChain } from '@/constants/chains'
-import { ContractsTableFiltered } from '@/view/components/ContractsTable/ContractsTableFiltered'
+import { ContractsTableWidget } from '@/view/HomeView/ContractsTableWidget'
 
 const Token: Record<ContractType, ContractType> = {
   psp22: 'psp22',
@@ -20,27 +16,7 @@ const Token: Record<ContractType, ContractType> = {
 
 type Token = keyof ContractType
 
-function Home() {
-  const { accountConnected, networkConnected } = useNetworkAccountsContext()
-  const { userContracts, isLoading } = useListUserContracts(
-    accountConnected?.address,
-    networkConnected
-  )
-  const { networkConnected: network } = useNetworkAccountsContext()
-  const { logo, name: networkName } = getChain(network)
-
-  /*  const onDownloadSource = async (codeId: string) => {
-    setContractsItem(prev =>
-      updateContractItem(codeId, prev, { isDownloading: true })
-    )
-    const sourceMetadata = await searchMetadata(codeId)
-
-    sourceMetadata && downloadMetadata(codeId, sourceMetadata)
-    setContractsItem(prev =>
-      updateContractItem(codeId, prev, { isDownloading: false })
-    )
-  } */
-
+export default function HomePage() {
   return (
     <MainContainer>
       <Typography variant="h1" align="center">
@@ -96,77 +72,7 @@ function Home() {
           imgProps={{ width: 60, height: 60 }}
         />
       </Stack>
-      {accountConnected && userContracts && (
-        <>
-          <Box
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-            gap={6}
-            mt="3rem"
-          >
-            <Box display="flex" alignItems="center" gap={1.25}>
-              <Typography variant="h3">Last Contracts</Typography>
-              <Typography variant="body1" component="p">
-                on
-              </Typography>
-              <NetworkBadge
-                name={networkName}
-                logo={logo.src}
-                logoSize={{ width: 20, height: 20 }}
-                description={logo.alt}
-              />
-            </Box>
-          </Box>
-          {accountConnected ? (
-            <ContractsTableFiltered
-              contracts={userContracts}
-              isLoading={isLoading}
-              tableConfig={{ onlyTable: true, editName: false }}
-              onDownloadMeta={(codeId: string) => console.log(codeId)}
-            />
-          ) : (
-            <>
-              <Box
-                sx={{
-                  margin: '5rem'
-                }}
-              >
-                <Paper
-                  sx={{
-                    display: 'flex',
-                    justifyContent: 'center',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    maxWidth: '870px',
-                    minWidth: '700px',
-                    height: '343px',
-                    margin: '0 auto',
-                    borderRadius: '15px',
-                    color: '#ffff'
-                  }}
-                >
-                  <Typography fontSize={'1.5rem'} mb={5}>
-                    ⚠️ Wallet not connected
-                  </Typography>
-
-                  <Typography fontSize={'1.3rem'} variant="body1">
-                    No contracts detected since you have not connected your
-                    wallet.
-                  </Typography>
-
-                  <Typography fontSize={'1.3rem'} variant="body1">
-                    Please, connect your wallet to see and interact with your
-                    contracts
-                  </Typography>
-                </Paper>
-              </Box>
-            </>
-          )}
-        </>
-      )}
+      <ContractsTableWidget />
     </MainContainer>
   )
 }
-
-export default Home

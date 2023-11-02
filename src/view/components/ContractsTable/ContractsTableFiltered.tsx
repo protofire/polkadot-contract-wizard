@@ -1,9 +1,10 @@
+import Link from 'next/link'
 import {
   ContractsTable,
   ContractsTableProps
 } from '@/components/ContractsTable/ContractsTable'
 import { ROUTES } from '@/constants/routes'
-import { Box, Link, Typography } from '@mui/material'
+import { Box, Typography } from '@mui/material'
 interface Props extends ContractsTableProps {
   isLoading: boolean
 }
@@ -51,7 +52,7 @@ export function ContractsTableFiltered({
       )}
 
       {filterContracts.length > 0 ? (
-        <Link href={ROUTES.CONTRACTS} sx={{ textDecoration: 'none' }}>
+        <Link href={ROUTES.CONTRACTS}>
           <Typography variant="h5" color="primary" textAlign="center" mb="1rem">
             View all contracts ({totalContracts})
           </Typography>
