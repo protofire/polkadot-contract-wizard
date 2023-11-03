@@ -2,6 +2,7 @@ import { UserContractDetails } from '@/domain'
 import { UserContractTableItem } from '@/domain/wizard/ContractTableItem'
 import { useFillMetadata } from '@/hooks/userContracts/useUpdateUserContracts'
 import { downloadMetadata } from '@/utils/downloadMetadata'
+import { takeFirstChars, takeLastChars } from '@/utils/formatString'
 import { useCallback, useEffect, useState } from 'react'
 
 interface UseDownloadMetadata {
@@ -36,27 +37,28 @@ export function useDownloadMetadata(
 
   useEffect(() => setUserContractItems(userContracts), [userContracts])
 
-  const setIsDownloading = useCallback(
-    (suffix: string, isDownloading = true) => {
-      setUserContractItems(prev =>
-        updateContractItem(suffix, prev, { isDownloading })
-      )
-    },
-    []
-  )
+  const setIsDownloading = useCallback((id: string, isDownloading = true) => {
+    setUserContractItems(prev =>
+      updateContractItem(id, prev, { isDownloading })
+    )
+  }, [])
 
   const onDownloadSource = useCallback(
     async (userContract: UserContractTableItem) => {
+      const suffix = `${takeFirstChars(
+        userContract.address,
+        4
+      )}-${takeLastChars(userContract.uuid, 3)}`
       setIsDownloading(userContract.uuid)
       if (userContract.abi) {
-        downloadMetadata(userContract.uuid, JSON.stringify(userContract.abi))
+        downloadMetadata(suffix, JSON.stringify(userContract.abi))
         setIsDownloading(userContract.uuid, false)
         return
       }
 
       const metadataString = await fillMetadata(userContract)
       if (metadataString) {
-        downloadMetadata(userContract.uuid, JSON.stringify(metadataString))
+        downloadMetadata(suffix, JSON.stringify(metadataString))
         setIsDownloading(userContract.uuid, false)
         return
       }

@@ -1,5 +1,3 @@
-import { takeFirstChars } from './formatString'
-
 export const downloadJson = (json: string, filename: string) => {
   const blob = new Blob([json], { type: 'application/json' })
   const url = URL.createObjectURL(blob)
@@ -11,7 +9,7 @@ export const downloadJson = (json: string, filename: string) => {
 }
 
 export const downloadMetadata = (suffix: string, sourceMetadata: string) => {
-  const filename = `${takeFirstChars(suffix)}_metadata.json`
+  const filename = `${suffix}_metadata.json`
 
   downloadJson(sourceMetadata, filename)
 }
