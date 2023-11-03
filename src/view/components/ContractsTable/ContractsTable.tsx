@@ -16,11 +16,12 @@ import { CopyToClipboardButton, TokenIconSvg } from '@/components'
 import {
   isoDate,
   isoToReadableDate,
+  takeLastChars,
   truncateAddress
 } from '@/utils/formatString'
 import { UserContractTableItem } from '@/domain/wizard/ContractTableItem'
 import { MonoTypography } from '@/components'
-import { StyledTableContainer, TokenWrapper } from './styled'
+import { StyledTableContainer, TableRowStyled, TokenWrapper } from './styled'
 import { DefaultToolTipButton } from '@/view/components/DefaultTooltipButton'
 
 import EditIcon from '@mui/icons-material/Edit'
@@ -39,6 +40,10 @@ import { DeleteContractModal } from '@/view/components/DeleteContractModal'
 import { UpdateDeployment } from '@/domain/repositories/DeploymentRepository'
 import { nameWithTimestamp } from '@/utils/generators'
 import { getUserContractUrl } from './getUserContractUrl'
+import router from 'next/router'
+import { ROUTES } from '@/constants'
+import { MuiTextField } from '../MuiTextField'
+import { useRef } from 'react'
 
 export interface TableConfig {
   onlyTable: boolean
@@ -72,8 +77,21 @@ function ContractTableRow({
   const { updateContract } = useUpdateUserContracts()
   const { ref: refButton, recentlyClicked } = useRecentlyClicked()
   const isDownloading = recentlyClicked || contract.isDownloading
+  const textRef = useRef<HTMLInputElement>(null)
 
   const typeMap = TITLE_MAP_TOKEN[contract.type]
+
+  const handleRowClick = () => {
+    router.push(`${ROUTES.CONTRACTDETAIL}?uuid=${contract.uuid}`)
+  }
+
+  const stopPropagation = (
+    event: React.MouseEvent<HTMLButtonElement | HTMLDivElement, MouseEvent>,
+    onFn: () => void
+  ) => {
+    event.stopPropagation()
+    onFn()
+  }
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setError(false)
@@ -103,14 +121,7 @@ function ContractTableRow({
   }
 
   return (
-    <TableRow
-      sx={{
-        '&:last-child td, &:last-child th': { border: 0 },
-        ':hover': {
-          backgroundColor: '#AD093029'
-        }
-      }}
-    >
+    <TableRowStyled onClick={handleRowClick}>
       <TableCell
         sx={{
           minWidth: { lg: '10rem', xl: '16rem' },
@@ -126,26 +137,29 @@ function ContractTableRow({
         <TokenWrapper>
           {editable ? (
             <>
-              <TextField
+              <MuiTextField
                 error={error}
                 helperText={error ? ERROR_MESSAGE : ''}
                 value={textInput}
                 onChange={handleChange}
-              ></TextField>
+                ref={textRef}
+              ></MuiTextField>
 
               <DefaultToolTipButton
-                id="save-contract-name"
+                id={`save-contract-name${takeLastChars(contract.uuid)}`}
                 sx={{ color: 'green' }}
                 title="Save"
                 Icon={CheckIcon}
-                onClick={handleUpdate}
+                onClick={event => stopPropagation(event, () => handleUpdate())}
               ></DefaultToolTipButton>
               <DefaultToolTipButton
-                id="cancel-contract-name"
+                id={`cancel-contract-name${takeLastChars(contract.uuid)}`}
                 sx={{ color: 'tomato' }}
                 title="Cancel"
                 Icon={CancelIcon}
-                onClick={() => setEditable(!editable)}
+                onClick={event =>
+                  stopPropagation(event, () => setEditable(!editable))
+                }
               ></DefaultToolTipButton>
             </>
           ) : (
@@ -153,11 +167,16 @@ function ContractTableRow({
               <Typography>{textInput}</Typography>
               {config?.editName && (
                 <DefaultToolTipButton
-                  id="edit-contract-address"
+                  id={`edit-contract-name${takeLastChars(contract.uuid)}`}
                   sx={{ color: 'white' }}
                   title="Edit"
                   Icon={EditIcon}
-                  onClick={() => setEditable(!editable)}
+                  onClick={event => {
+                    stopPropagation(event, () => {
+                      setEditable(!editable)
+                      textRef.current && textRef.current.focus()
+                    })
+                  }}
                 ></DefaultToolTipButton>
               )}
             </>
@@ -176,7 +195,7 @@ function ContractTableRow({
             {truncateAddress(contract.address, 4)}
           </MonoTypography>
           <CopyToClipboardButton
-            id="copy-contract-address"
+            id={`copy-contract-${takeLastChars(contract.uuid)}`}
             sx={{ marginLeft: '0.5rem' }}
             data={contract.address}
           />
@@ -191,36 +210,36 @@ function ContractTableRow({
       </TableCell>
       <TableCell align="right">
         <DefaultToolTipButton
-          id="share-contract-address"
+          id={`share-contract-${takeLastChars(contract.uuid)}`}
           sx={{ marginLeft: '0.5rem', color: 'white' }}
           title="Share"
           Icon={ShareIcon}
-          onClick={() => setOpenShareModal(true)}
+          onClick={event =>
+            stopPropagation(event, () => setOpenShareModal(true))
+          }
         ></DefaultToolTipButton>
         <DefaultToolTipButton
-          id="delete-contract-address"
+          id={`hide-contract-${takeLastChars(contract.uuid)}`}
           sx={{ marginLeft: '0.5rem', color: 'white' }}
           title="Delete"
           Icon={DeleteIcon}
-          onClick={() => setOpenDeleteModal(true)}
+          onClick={event =>
+            stopPropagation(event, () => setOpenDeleteModal(true))
+          }
         ></DefaultToolTipButton>
-        <IconButton
+        <DefaultToolTipButton
+          id={`download-metadata-${takeLastChars(contract.uuid)}`}
           sx={{ marginLeft: '0.5rem', color: 'white' }}
-          size="small"
           ref={refButton}
           disabled={isDownloading}
-          onClick={() => onDownloadMeta(contract)}
-        >
-          {isDownloading ? (
-            <HourglassBottomIcon />
-          ) : (
-            <Tooltip title="download .json" placement="top">
-              <FileDownloadIcon color={'inherit'} />
-            </Tooltip>
-          )}
-        </IconButton>
+          Icon={isDownloading ? HourglassBottomIcon : FileDownloadIcon}
+          title={isDownloading ? '' : 'download .json'}
+          onClick={event =>
+            stopPropagation(event, () => onDownloadMeta(contract))
+          }
+        ></DefaultToolTipButton>
       </TableCell>
-    </TableRow>
+    </TableRowStyled>
   )
 }
 
@@ -232,7 +251,9 @@ export function ContractsTable({
   const [openShareModal, setOpenShareModal] = React.useState(false)
   const [openDeleteModal, setOpenDeleteModal] = React.useState(false)
   const [url, setUrl] = React.useState('')
-  const [contract, setContract] = React.useState({} as UserContractTableItem)
+  const [contractDeleted, setContractDeleted] = React.useState(
+    {} as UserContractTableItem
+  )
 
   return (
     <>
@@ -271,7 +292,7 @@ export function ContractsTable({
                     setOpenShareModal(true)
                   }}
                   setOpenDeleteModal={() => {
-                    setContract(contract)
+                    setContractDeleted(contract)
                     setOpenDeleteModal(true)
                   }}
                 />
@@ -289,7 +310,7 @@ export function ContractsTable({
       <DeleteContractModal
         open={openDeleteModal}
         handleClose={() => setOpenDeleteModal(false)}
-        contract={contract}
+        contract={contractDeleted}
       ></DeleteContractModal>
     </>
   )
