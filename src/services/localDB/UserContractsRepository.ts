@@ -12,6 +12,7 @@ export type FilterType = Pick<
 type Props = keyof FilterType
 
 const SORT_BY_PROPERTY = 'date'
+
 export class UserContractsRepository implements IUserContractsRepository {
   private db: MyDatabase
 
@@ -73,10 +74,10 @@ export class UserContractsRepository implements IUserContractsRepository {
       .modify({ name: deployed.name, hidden: deployed.hidden })
   }
 
-  addMetadata(
+  async addMetadata(
     uuid: UserContractDetails['uuid'],
     abi: UserContractDetails['abi']
-  ): void {
-    throw new Error('Method not implemented.')
+  ): Promise<number> {
+    return await this.db.userContracts.where({ uuid }).modify({ abi })
   }
 }

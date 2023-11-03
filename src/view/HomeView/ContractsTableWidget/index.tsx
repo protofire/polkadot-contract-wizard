@@ -9,20 +9,7 @@ import { getChain } from '@/constants/chains'
 import { useListUserContracts } from '@/hooks/userContracts/useListUserContracts'
 import { Box, Typography, Paper } from '@mui/material'
 import NetworkBadge from '@/view/components/NetworkBadge'
-
-type DownloadingAbi = Array<UserContractDetails['uuid']>
-
-function updateContractItem(codeId: string, contractsItem: DownloadingAbi) {
-  const exists = contractsItem.includes(codeId)
-
-  if (exists) {
-    return contractsItem.filter(item => item !== codeId)
-  } else {
-    return [...contractsItem, codeId]
-  }
-
-  return contractsItem
-}
+import { useDownloadMetadata } from '@/view/components/ContractsTable/useDownloadMetadata'
 
 export function ContractsTableWidget() {
   const { accountConnected, networkConnected } = useNetworkAccountsContext()
@@ -31,34 +18,8 @@ export function ContractsTableWidget() {
     networkConnected
   )
   const { logo, name: networkName } = getChain(networkConnected)
-  const { searchCompileContract } = useSearchCompileContract()
-  const [downloadingAbi, setDownloadingAbi] = useState<DownloadingAbi>([])
-
-  /* const onDownloadSource = async (codeId: string) => {
-    setDownloadingAbi(prev => updateContractItem(codeId, prev))
-    const sourceMetadata = await searchMetadata(codeId)
-
-    sourceMetadata && downloadMetadata(codeId, sourceMetadata)
-    setDownloadingAbi(prev => updateContractItem(codeId, prev))
-  }
-
-  const searchMetadata = async (codeId: string): Promise<string | void> => {
-    if (!userContracts) return
-
-    const contractWithMeta = userContracts.find(
-      contract => contract.codeId === codeId && contract.abi
-    )
-
-    if (contractWithMeta) return contractWithMeta.abi
-
-    const result = await searchCompileContract(codeId)
-    if (result) {
-      setContractsItem(prev =>
-        updateContractItem(codeId, prev, { sourceJsonString: result.metadata })
-      )
-      return result.metadata
-    }
-  } */
+  const { userContractItems, onDownloadSource } =
+    useDownloadMetadata(userContracts)
 
   return (
     <>
@@ -84,12 +45,12 @@ export function ContractsTableWidget() {
               />
             </Box>
           </Box>
-          {accountConnected ? (
+          {accountConnected && userContractItems ? (
             <ContractsTableFiltered
-              contracts={userContracts}
+              contracts={userContractItems}
               isLoading={isLoading}
               tableConfig={{ onlyTable: true, editName: false }}
-              onDownloadMeta={(codeId: string) => console.log(codeId)}
+              onDownloadMeta={onDownloadSource}
             />
           ) : (
             <>
