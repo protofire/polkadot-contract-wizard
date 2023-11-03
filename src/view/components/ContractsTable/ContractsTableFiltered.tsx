@@ -5,6 +5,7 @@ import {
 } from '@/components/ContractsTable/ContractsTable'
 import { ROUTES } from '@/constants/routes'
 import { Box, Typography } from '@mui/material'
+
 interface Props extends ContractsTableProps {
   isLoading: boolean
 }
@@ -21,6 +22,7 @@ export function ContractsTableFiltered({
   const Loading: React.FC<{ isLoading: boolean }> = ({ isLoading }) => {
     if (isLoading) return <Typography>Loading</Typography>
   }
+
   return (
     <>
       <Loading isLoading={_isLoading} />

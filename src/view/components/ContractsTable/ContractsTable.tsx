@@ -18,7 +18,7 @@ import {
   isoToReadableDate,
   truncateAddress
 } from '@/utils/formatString'
-import { ContractTableItem } from '@/domain/wizard/ContractTableItem'
+import { UserContractTableItem } from '@/domain/wizard/ContractTableItem'
 import { MonoTypography } from '@/components'
 import { StyledTableContainer, TokenWrapper } from './styled'
 import { DefaultToolTipButton } from '@/view/components/DefaultTooltipButton'
@@ -38,6 +38,7 @@ import { useRecentlyClicked } from '@/hooks/useRecentlyClicked'
 import { DeleteContractModal } from '@/view/components/DeleteContractModal'
 import { UpdateDeployment } from '@/domain/repositories/DeploymentRepository'
 import { nameWithTimestamp } from '@/utils/generators'
+import { getUserContractUrl } from './getUserContractUrl'
 
 export interface TableConfig {
   onlyTable: boolean
@@ -45,8 +46,8 @@ export interface TableConfig {
 }
 
 export interface ContractsTableProps {
-  contracts: ContractTableItem[]
-  onDownloadMeta: (codeId: string) => void
+  contracts: UserContractTableItem[]
+  onDownloadMeta: (contract: UserContractTableItem) => void
   tableConfig?: TableConfig
 }
 
@@ -60,7 +61,7 @@ function ContractTableRow({
   setOpenDeleteModal,
   onDownloadMeta
 }: {
-  contract: ContractTableItem
+  contract: UserContractTableItem
   setOpenShareModal: React.Dispatch<React.SetStateAction<boolean>>
   setOpenDeleteModal: React.Dispatch<React.SetStateAction<boolean>>
   config?: TableConfig
@@ -208,7 +209,7 @@ function ContractTableRow({
           size="small"
           ref={refButton}
           disabled={isDownloading}
-          onClick={() => onDownloadMeta(contract.codeId)}
+          onClick={() => onDownloadMeta(contract)}
         >
           {isDownloading ? (
             <HourglassBottomIcon />
@@ -231,7 +232,7 @@ export function ContractsTable({
   const [openShareModal, setOpenShareModal] = React.useState(false)
   const [openDeleteModal, setOpenDeleteModal] = React.useState(false)
   const [url, setUrl] = React.useState('')
-  const [contract, setContract] = React.useState({} as ContractTableItem)
+  const [contract, setContract] = React.useState({} as UserContractTableItem)
 
   return (
     <>
@@ -258,10 +259,8 @@ export function ContractsTable({
           </TableHead>
           <TableBody>
             {contracts.map(contract => {
-              const url = `https://contractwizard.xyz/contract/?user=${contract.userAddress}&contract=${contract.address}`
-              return contract.hidden ? (
-                <></>
-              ) : (
+              const url = getUserContractUrl(contract)
+              return contract.hidden ? null : (
                 <ContractTableRow
                   key={contract.address}
                   contract={contract}

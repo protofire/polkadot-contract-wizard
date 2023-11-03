@@ -18,7 +18,6 @@ export class UserContractsRepository implements IUserContractsRepository {
   constructor(db: MyDatabase) {
     this.db = db
   }
-
   async get(uuid: string): Promise<UserContractDetails | undefined> {
     return await this.db.userContracts.get({ uuid })
   }
@@ -72,5 +71,12 @@ export class UserContractsRepository implements IUserContractsRepository {
     return await this.db.userContracts
       .where({ userAddress, network, address })
       .modify({ name: deployed.name, hidden: deployed.hidden })
+  }
+
+  addMetadata(
+    uuid: UserContractDetails['uuid'],
+    abi: UserContractDetails['abi']
+  ): void {
+    throw new Error('Method not implemented.')
   }
 }

@@ -10,8 +10,8 @@ export const downloadJson = (json: string, filename: string) => {
   URL.revokeObjectURL(url)
 }
 
-export const downloadMetadata = (codeId: string, sourceMetadata: string) => {
-  const filename = `${takeFirstChars(codeId)}_metadata.json`
+export const downloadMetadata = (suffix: string, sourceMetadata: string) => {
+  const filename = `${takeFirstChars(suffix)}_metadata.json`
 
   downloadJson(sourceMetadata, filename)
 }
