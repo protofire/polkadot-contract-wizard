@@ -6,6 +6,9 @@ import { LOGO_PROTOFIRE } from '@/constants/images'
 import { Typography, Stack, Link, Box } from '@mui/material'
 import TelegramIcon from '@mui/icons-material/Telegram'
 import GithubIcon from '@mui/icons-material/GitHub'
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
+import OpenInNewOutlinedIcon from '@mui/icons-material/OpenInNewOutlined'
+import { ROUTES } from '@/constants/routes'
 
 interface Props {
   version: string
@@ -38,7 +41,7 @@ const DrawerContent = ({ version, backendApiVersion }: Props) => {
       >
         <Typography variant="h5" mb={4}>
           <Link
-            href="https://t.me/+u5M4K7vKfbQxZjMx"
+            href={ROUTES.DOCUMENTATION}
             underline="hover"
             target="_blank"
             rel="noopener noreferrer"
@@ -46,16 +49,21 @@ const DrawerContent = ({ version, backendApiVersion }: Props) => {
               color: '#ffffff',
               display: 'flex',
               alignItems: 'center',
-              gap: '1rem'
+              gap: '0.75rem'
             }}
           >
-            <TelegramIcon fontSize="small" sx={{ color: '#ffffff' }} />
-            Need Help?
+            <InfoOutlinedIcon fontSize="small" sx={{ color: '#ffffff' }} />
+            Documentation
+            <OpenInNewOutlinedIcon
+              fontSize="small"
+              style={{ fontSize: 16 }}
+              sx={{ color: '#848997' }}
+            />
           </Link>
         </Typography>
         <Typography variant="h5" mb={4}>
           <Link
-            href="https://github.com/protofire/polkadot-contract-wizard"
+            href={ROUTES.TELEGRAM}
             underline="hover"
             target="_blank"
             rel="noopener noreferrer"
@@ -63,11 +71,38 @@ const DrawerContent = ({ version, backendApiVersion }: Props) => {
               color: '#ffffff',
               display: 'flex',
               alignItems: 'center',
-              gap: '1rem'
+              gap: '0.75rem'
+            }}
+          >
+            <TelegramIcon fontSize="small" sx={{ color: '#ffffff' }} />
+            Need Help?
+            <OpenInNewOutlinedIcon
+              fontSize="small"
+              style={{ fontSize: 16 }}
+              sx={{ color: '#848997' }}
+            />
+          </Link>
+        </Typography>
+        <Typography variant="h5" mb={4}>
+          <Link
+            href={ROUTES.GITHUB}
+            underline="hover"
+            target="_blank"
+            rel="noopener noreferrer"
+            sx={{
+              color: '#ffffff',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.75rem'
             }}
           >
             <GithubIcon fontSize="small" sx={{ color: '#ffffff' }} />
             Github
+            <OpenInNewOutlinedIcon
+              fontSize="small"
+              style={{ fontSize: 16 }}
+              sx={{ color: '#848997' }}
+            />
           </Link>
         </Typography>
         <Box

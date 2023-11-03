@@ -12,13 +12,13 @@ export type FilterType = Pick<
 type Props = keyof FilterType
 
 const SORT_BY_PROPERTY = 'date'
+
 export class UserContractsRepository implements IUserContractsRepository {
   private db: MyDatabase
 
   constructor(db: MyDatabase) {
     this.db = db
   }
-
   async get(uuid: string): Promise<UserContractDetails | undefined> {
     return await this.db.userContracts.get({ uuid })
   }
@@ -72,5 +72,12 @@ export class UserContractsRepository implements IUserContractsRepository {
     return await this.db.userContracts
       .where({ userAddress, network, address })
       .modify({ name: deployed.name, hidden: deployed.hidden })
+  }
+
+  async addMetadata(
+    uuid: UserContractDetails['uuid'],
+    abi: UserContractDetails['abi']
+  ): Promise<number> {
+    return await this.db.userContracts.where({ uuid }).modify({ abi })
   }
 }

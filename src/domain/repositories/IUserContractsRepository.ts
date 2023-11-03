@@ -23,4 +23,8 @@ export interface IUserContractsRepository {
   ): Promise<UserContractDetails[]>
 
   updateBy(deployment: UpdateDeployment): Promise<number>
+  addMetadata(
+    uuid: UserContractDetails['uuid'],
+    abi: UserContractDetails['abi']
+  ): void
 }

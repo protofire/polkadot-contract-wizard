@@ -1,5 +1,3 @@
-import { takeFirstChars } from './formatString'
-
 export const downloadJson = (json: string, filename: string) => {
   const blob = new Blob([json], { type: 'application/json' })
   const url = URL.createObjectURL(blob)
@@ -10,8 +8,8 @@ export const downloadJson = (json: string, filename: string) => {
   URL.revokeObjectURL(url)
 }
 
-export const downloadMetadata = (codeId: string, sourceMetadata: string) => {
-  const filename = `${takeFirstChars(codeId)}_metadata.json`
+export const downloadMetadata = (suffix: string, sourceMetadata: string) => {
+  const filename = `${suffix}_metadata.json`
 
   downloadJson(sourceMetadata, filename)
 }

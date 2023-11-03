@@ -94,6 +94,10 @@ export function takeFirstChars(str: string, nChars = 6): string {
   return str.slice(0, nChars)
 }
 
+export function takeLastChars(str: string, nChars = 6): string {
+  return str.slice(-nChars)
+}
+
 /**
  * Converts a Date or ISO date string to a human-readable format.
  *
