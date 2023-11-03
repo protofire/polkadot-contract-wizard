@@ -37,13 +37,5 @@ export const MENU_ITEMS: NavLink[] = [
     url: ROUTES.CONTRACTS,
     icon: icons.DataArrayRounded,
     target: true
-  },
-  {
-    id: 'docs',
-    title: 'Docs',
-    type: 'item',
-    url: ROUTES.DOCS,
-    icon: icons.LocalLibrary,
-    target: true
   }
 ]

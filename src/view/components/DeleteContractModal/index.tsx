@@ -3,13 +3,13 @@ import { Box, Button, IconButton, Modal, Typography } from '@mui/material'
 import CloseIcon from '@mui/icons-material/Close'
 import { ModalStyled, ModalTypography } from './styled'
 import { useUpdateUserContracts } from '@/hooks/userContracts/useUpdateUserContracts'
-import { ContractTableItem } from '@/domain/wizard/ContractTableItem'
+import { UserContractTableItem } from '@/domain/wizard/ContractTableItem'
 import { UpdateDeployment } from '@/domain/repositories/DeploymentRepository'
 import { UserContractEvents } from '@/domain'
 
 type Props = {
   open: boolean
-  contract: ContractTableItem
+  contract: UserContractTableItem
   handleClose: () => void
 }
 export function DeleteContractModal({ open, handleClose, contract }: Props) {

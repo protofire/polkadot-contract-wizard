@@ -3,7 +3,7 @@ import { ContractType } from '@/domain/repositories/DeploymentRepository'
 import { useListUserContracts } from '@/hooks/userContracts/useListUserContracts'
 import { EmptyString } from '@/services/common/EmptyString'
 import { FilterType } from '@/services/localDB/UserContractsRepository'
-import { ContractsTableContent } from '@/view/ContractView/ContractsTable'
+import { ContractsTableContent } from '@/view/components/ContractsTable'
 import MainContainer from '@/view/layout/MainContainer'
 import { Box, Paper, Typography } from '@mui/material'
 import { useState } from 'react'
@@ -37,6 +37,7 @@ export default function Contracts() {
           contracts={userContracts}
           setFilterBy={changeType}
           isLoading={isLoading}
+          tableConfig={{ onlyTable: false, editName: true }}
         />
       ) : (
         <>

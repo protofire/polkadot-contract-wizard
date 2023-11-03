@@ -3,11 +3,9 @@ import { Stack, Typography } from '@mui/material'
 
 import { HomeButton, HomeButtonCustom } from '@/components'
 import { CUSTOM_CONTRACT, ROUTES, TOKEN_PATHS } from '@/constants/index'
-import { useNetworkAccountsContext } from '@/context/NetworkAccountsContext'
-import { ContractsTableWidget } from '@/view/HomeView/ContractsTableWidget'
-import { useListUserContracts } from '@/hooks/userContracts/useListUserContracts'
 import { ContractType } from '@/domain/repositories/DeploymentRepository'
 import MainContainer from '@/view/layout/MainContainer'
+import { ContractsTableWidget } from '@/view/HomeView/ContractsTableWidget'
 
 const Token: Record<ContractType, ContractType> = {
   psp22: 'psp22',
@@ -18,13 +16,7 @@ const Token: Record<ContractType, ContractType> = {
 
 type Token = keyof ContractType
 
-function Home() {
-  const { accountConnected, networkConnected } = useNetworkAccountsContext()
-  const { userContracts } = useListUserContracts(
-    accountConnected?.address,
-    networkConnected
-  )
-
+export default function HomePage() {
   return (
     <MainContainer>
       <Typography variant="h1" align="center">
@@ -80,11 +72,7 @@ function Home() {
           imgProps={{ width: 60, height: 60 }}
         />
       </Stack>
-      {accountConnected && userContracts && (
-        <ContractsTableWidget contracts={userContracts} />
-      )}
+      <ContractsTableWidget />
     </MainContainer>
   )
 }
-
-export default Home
