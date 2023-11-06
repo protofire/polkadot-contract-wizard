@@ -3,7 +3,7 @@ import SimpleAccordion from '@/view/components/Accordion'
 import { CopyToClipboardButton } from '@/view/components/CopyButton'
 import { MonoTypography } from '@/view/components/MonoTypography'
 import BasicTabs from '@/view/components/Tabs'
-import { Box, Typography, Stack, Tooltip } from '@mui/material'
+import { Box, Typography, Stack, Tooltip, Button } from '@mui/material'
 import { DefaultToolTipButton } from '@/view/components/DefaultTooltipButton'
 import EditIcon from '@mui/icons-material/Edit'
 import ShareIcon from '@mui/icons-material/Share'
@@ -12,7 +12,13 @@ import { getChain } from '@/constants/chains'
 import NetworkBadge from '@/view/components/NetworkBadge'
 import { UseModalBehaviour } from '@/hooks/useModalBehaviour'
 import { UserContractDetails } from '@/domain'
-import { isoDate, isoToReadableDate } from '@/utils/formatString'
+import {
+  isoDate,
+  isoToReadableDate,
+  truncateAddress
+} from '@/utils/formatString'
+import { ShareContractModal } from '@/view/components/ShareContractModal'
+import { getUserContractUrl } from '@/view/components/ContractsTable/getUserContractUrl'
 
 type ContractTabType = 'Read Contract' | 'Write Contract'
 const types: ContractTabType[] = ['Read Contract', 'Write Contract']
@@ -26,15 +32,10 @@ interface AbiSource {
   source: { language: string }
 }
 
-export default function ContractDetail({
-  modalBehaviour,
-  userContract
-}: Props) {
+export default function ContractDetail({ userContract }: Props): JSX.Element {
+  const [openShareModal, setOpenShareModal] = React.useState(false)
+  const url = getUserContractUrl(userContract)
   const [type, setType] = React.useState(types[0])
-  if (!userContract) {
-    return null
-  }
-
   const chainDetails = getChain(userContract.network)
   const isReadContract = type === 'Read Contract'
   const abi = userContract.abi as AbiSource | undefined
@@ -53,19 +54,6 @@ export default function ContractDetail({
             sx={{ marginLeft: '0.5rem', color: 'white' }}
             title="Edit"
             Icon={EditIcon}
-          ></DefaultToolTipButton>
-          <DefaultToolTipButton
-            id="download-contract-address"
-            sx={{ marginLeft: '0.5rem', color: 'white' }}
-            title="Download metadata"
-            Icon={DownloadIcon}
-          ></DefaultToolTipButton>
-          <DefaultToolTipButton
-            id="share-contract-address"
-            sx={{ marginLeft: '0.5rem', color: 'white' }}
-            title="Share"
-            Icon={ShareIcon}
-            onClick={() => modalBehaviour.openModal()}
           ></DefaultToolTipButton>
         </Stack>
         <Typography variant="body1">
@@ -122,12 +110,30 @@ export default function ContractDetail({
           </Typography>
         </Box>
         <Box display="flex" flexDirection="column">
-          <Typography variant="caption" align="left">
-            Actions
-          </Typography>
-          <Typography variant="h5" align="left">
-            --
-          </Typography>
+          <Box>
+            <Button variant="contained" endIcon={<DownloadIcon />}>
+              Download
+            </Button>
+            <Button
+              variant="contained"
+              endIcon={<ShareIcon />}
+              onClick={() => setOpenShareModal(true)}
+            >
+              Share
+            </Button>
+            <Stack direction="row" alignItems="center">
+              <Typography variant="caption">Deployed by</Typography>
+              {''}
+              <MonoTypography>
+                {truncateAddress(userContract.address, 4)}
+              </MonoTypography>
+              <CopyToClipboardButton
+                id="copy-contract-address"
+                sx={{ marginLeft: '0.5rem' }}
+                data={userContract.address}
+              />
+            </Stack>
+          </Box>
         </Box>
       </Box>
       <Box sx={{ width: '100%' }}>
@@ -136,7 +142,6 @@ export default function ContractDetail({
           onChange={handleChange}
         >
           <>
-            {/* <Typography variant="h4">{type}</Typography> */}
             {isReadContract ? (
               <>
                 <Typography variant="h4">
@@ -190,6 +195,11 @@ export default function ContractDetail({
           </>
         </BasicTabs>
       </Box>
+      <ShareContractModal
+        open={openShareModal}
+        handleClose={() => setOpenShareModal(false)}
+        url={url}
+      ></ShareContractModal>
     </>
   )
 }
