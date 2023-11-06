@@ -19,6 +19,7 @@ import {
 import { ShareContractModal } from '@/view/components/ShareContractModal'
 import { getUserContractUrl } from '@/view/components/ContractsTable/getUserContractUrl'
 import SimpleAccordion from '@/view/components/Accordion'
+import InfoOutlined from '@mui/icons-material/InfoOutlined'
 
 type ContractTabType = 'Read Contract' | 'Write Contract'
 const types: ContractTabType[] = ['Read Contract', 'Write Contract']
@@ -63,7 +64,7 @@ export default function ContractDetail({ userContract }: Props): JSX.Element {
             sx={{
               borderRadius: '3rem',
               maxHeight: '3rem',
-              backgroundColor: '#333333'
+              backgroundColor: '#20222D'
             }}
           >
             Download
@@ -97,9 +98,17 @@ export default function ContractDetail({ userContract }: Props): JSX.Element {
         sx={{ margin: '2em 0 3rem' }}
       >
         <Box display="flex" flexDirection="column">
-          <Typography variant="caption" align="left">
-            TYPE
-          </Typography>
+          <Box display="flex" flexDirection="row" gap="0.5rem">
+            <Typography variant="caption" align="left">
+              TYPE
+            </Typography>
+            <Tooltip
+              placement="top"
+              title="Type or category of the smart contract. You can find the categories in the 'Builder' page."
+            >
+              <InfoOutlined style={{ fontSize: 16 }} />
+            </Tooltip>
+          </Box>
           <Typography variant="h5" align="left">
             {userContract.type}
           </Typography>
@@ -119,9 +128,18 @@ export default function ContractDetail({ userContract }: Props): JSX.Element {
           </Typography>
         </Box>
         <Box display="flex" flexDirection="column">
-          <Typography variant="caption" align="left">
-            LANGUAGE
-          </Typography>
+          <Box display="flex" flexDirection="row" gap="0.5rem">
+            <Typography variant="caption" align="left">
+              LANGUAGE{' '}
+            </Typography>
+            <Tooltip
+              placement="top"
+              title="Programming language or technology used to write the smart contract's code."
+            >
+              <InfoOutlined style={{ fontSize: 16 }} />
+            </Tooltip>
+          </Box>
+
           <Typography variant="h5" align="left">
             {abi?.source.language}
           </Typography>
