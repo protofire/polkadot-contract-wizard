@@ -1,5 +1,4 @@
 import React from 'react'
-import SimpleAccordion from '@/view/components/Accordion'
 import { CopyToClipboardButton } from '@/view/components/CopyButton'
 import { MonoTypography } from '@/view/components/MonoTypography'
 import BasicTabs from '@/view/components/Tabs'
@@ -19,6 +18,7 @@ import {
 } from '@/utils/formatString'
 import { ShareContractModal } from '@/view/components/ShareContractModal'
 import { getUserContractUrl } from '@/view/components/ContractsTable/getUserContractUrl'
+import SimpleAccordion from '@/view/components/Accordion'
 
 type ContractTabType = 'Read Contract' | 'Write Contract'
 const types: ContractTabType[] = ['Read Contract', 'Write Contract']
