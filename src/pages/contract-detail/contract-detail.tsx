@@ -56,14 +56,31 @@ export default function ContractDetail({ userContract }: Props): JSX.Element {
             Icon={EditIcon}
           ></DefaultToolTipButton>
         </Stack>
-        <Typography variant="body1">
-          Added {''}
-          <Tooltip placement="top" title={isoDate(userContract.date)}>
-            <Typography variant="body1" component="span">
-              {isoToReadableDate(userContract.date)}
-            </Typography>
-          </Tooltip>
-        </Typography>
+        <Box display="flex" gap="1rem">
+          <Button
+            variant="contained"
+            endIcon={<DownloadIcon />}
+            sx={{
+              borderRadius: '3rem',
+              maxHeight: '3rem',
+              backgroundColor: '#333333'
+            }}
+          >
+            Download
+          </Button>
+          <Button
+            variant="contained"
+            endIcon={<ShareIcon />}
+            color="primary"
+            onClick={() => setOpenShareModal(true)}
+            sx={{
+              borderRadius: '3rem',
+              maxHeight: '3rem'
+            }}
+          >
+            Share
+          </Button>
+        </Box>
       </Stack>
       <Stack direction="row">
         <MonoTypography>{userContract.address}</MonoTypography>
@@ -110,30 +127,26 @@ export default function ContractDetail({ userContract }: Props): JSX.Element {
           </Typography>
         </Box>
         <Box display="flex" flexDirection="column">
-          <Box>
-            <Button variant="contained" endIcon={<DownloadIcon />}>
-              Download
-            </Button>
-            <Button
-              variant="contained"
-              endIcon={<ShareIcon />}
-              onClick={() => setOpenShareModal(true)}
-            >
-              Share
-            </Button>
-            <Stack direction="row" alignItems="center">
-              <Typography variant="caption">Deployed by</Typography>
-              {''}
-              <MonoTypography>
-                {truncateAddress(userContract.address, 4)}
-              </MonoTypography>
-              <CopyToClipboardButton
-                id="copy-contract-address"
-                sx={{ marginLeft: '0.5rem' }}
-                data={userContract.address}
-              />
-            </Stack>
-          </Box>
+          <Typography variant="body1">
+            Added {''}
+            <Tooltip placement="top" title={isoDate(userContract.date)}>
+              <Typography variant="body1" component="span">
+                {isoToReadableDate(userContract.date)}
+              </Typography>
+            </Tooltip>
+          </Typography>
+          <Stack direction="row" alignItems="center">
+            <Typography variant="caption">Deployed by</Typography>
+            {''}
+            <MonoTypography>
+              {truncateAddress(userContract.address, 4)}
+            </MonoTypography>
+            <CopyToClipboardButton
+              id="copy-contract-address"
+              sx={{ marginLeft: '0.5rem' }}
+              data={userContract.address}
+            />
+          </Stack>
         </Box>
       </Box>
       <Box sx={{ width: '100%' }}>
