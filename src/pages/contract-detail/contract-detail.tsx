@@ -114,16 +114,24 @@ export default function ContractDetail({ userContract }: Props): JSX.Element {
           </Typography>
         </Box>
         <Box display="flex" flexDirection="column">
-          <Typography variant="caption" align="left">
-            NETWORK
-          </Typography>
+          <Box display="flex" flexDirection="row" gap="0.5rem">
+            <Typography variant="caption" align="left">
+              NETWORK
+            </Typography>
+            <Tooltip
+              placement="top"
+              title="This network is the one that the contract has been deployed."
+            >
+              <InfoOutlined style={{ fontSize: 16 }} />
+            </Tooltip>
+          </Box>
           <Typography variant="h5" align="left">
             <NetworkBadge
               name={chainDetails.name}
               logo={chainDetails.logo.src}
               logoSize={{ width: 20, height: 20 }}
               description={chainDetails.logo.alt}
-              textTooltip="This network is the one that the contract has been deployed."
+              showTooltip={false}
             />
           </Typography>
         </Box>

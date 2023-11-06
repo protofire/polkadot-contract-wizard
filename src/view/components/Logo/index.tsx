@@ -9,7 +9,7 @@ import { CW_POLKADOT, LOGO_POLKADOT } from '@/constants/images'
 export default function Logo() {
   return (
     <NextLink href={ROUTES.HOME}>
-      <Stack sx={{ marginTop: '1rem' }}>
+      <Stack sx={{ marginTop: '1.3rem' }}>
         <Image
           alt="Logo polkadot"
           src={LOGO_POLKADOT}
