@@ -6,10 +6,8 @@ import {
   TableHead,
   TableRow,
   Stack,
-  TextField,
   Typography,
-  Tooltip,
-  IconButton
+  Tooltip
 } from '@mui/material'
 
 import { CopyToClipboardButton, TokenIconSvg } from '@/components'
@@ -42,7 +40,7 @@ import { nameWithTimestamp } from '@/utils/generators'
 import { getUserContractUrl } from './getUserContractUrl'
 import router from 'next/router'
 import { ROUTES } from '@/constants'
-import { MuiTextField } from '../MuiTextField'
+import { MuiTextField } from '@/view/components/MuiTextField'
 import { useRef } from 'react'
 
 export interface TableConfig {
