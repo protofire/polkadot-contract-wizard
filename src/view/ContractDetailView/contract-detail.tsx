@@ -80,7 +80,11 @@ export default function ContractDetail({
   return (
     <>
       <Stack direction="row" justifyContent="space-between">
-        <Stack direction="row" justifyContent="space-between">
+        <Stack
+          direction="row"
+          justifyContent="space-between"
+          alignItems="center"
+        >
           {isNameEditable ? (
             <>
               <StyledTextField
@@ -97,7 +101,10 @@ export default function ContractDetail({
               />
               <DefaultToolTipButton
                 id="edit-contract-address"
-                sx={{ marginLeft: '0.5rem', color: 'white' }}
+                sx={{
+                  marginLeft: '0.5rem',
+                  color: 'white'
+                }}
                 title="Save"
                 Icon={CheckIcon}
                 onClick={handleUpdateContractName}
@@ -232,7 +239,7 @@ export default function ContractDetail({
             <Typography variant="caption">Deployed by</Typography>
             {''}
             <MonoTypography sx={{ fontSize: '0.8rem' }}>
-              {truncateAddress(userContract.address, 4)}
+              {truncateAddress(userContract.userAddress, 4)}
             </MonoTypography>
             <CopyToClipboardButton
               id="copy-contract-address"
