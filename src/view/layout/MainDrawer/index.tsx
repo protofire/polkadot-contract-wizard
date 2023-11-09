@@ -3,6 +3,7 @@ import { Drawer } from '@mui/material'
 
 import DrawerContent from './DrawerContent'
 import DrawerHeader from './DrawerHeader'
+import { useLocalDbContext } from '@/context/LocalDbContext'
 
 interface Props {
   open: boolean
@@ -19,9 +20,12 @@ const MainDrawer = ({
   drawerwidth = 260,
   version
 }: Props) => {
+  const { backendApiVersion: backendApiVersion } = useLocalDbContext()
   const drawerContent = useMemo(
-    () => <DrawerContent version={version} />,
-    [version]
+    () => (
+      <DrawerContent version={version} backendApiVersion={backendApiVersion} />
+    ),
+    [version, backendApiVersion]
   )
   const drawerHeader = useMemo(() => <DrawerHeader open={open} />, [open])
 

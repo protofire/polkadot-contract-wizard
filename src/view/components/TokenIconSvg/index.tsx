@@ -1,34 +1,32 @@
-import { TokenType, tokenTypes } from '@/domain/TokenType'
+import { tokenTypes } from '@/domain/TokenType'
 import Image from 'next/image'
 
 import { TITLE_MAP_TOKEN, TitleMapProps } from '@/constants/titleTokenType'
 import { calculateNewDimensions } from '@/utils/images'
+import { ContractType } from '@/domain/repositories/DeploymentRepository'
 
 interface Props {
-  label: TokenType
+  label: ContractType
 }
 
 const MAX_SIZE = 25
 type MapSmallIconSize = {
-  [K in TokenType]: TitleMapProps['imgProps']
+  [K in ContractType]: TitleMapProps['imgProps']
 }
 
-const mapSmallIconSize: MapSmallIconSize = tokenTypes
-  .map(psp => {
-    const {
-      imgProps: { width, height }
-    } = TITLE_MAP_TOKEN[psp]
-    const { newWidth, newHeight } = calculateNewDimensions({
-      width,
-      height,
-      newSize: MAX_SIZE
-    })
+const mapSmallIconSize: MapSmallIconSize = {} as MapSmallIconSize
 
-    return { [psp]: { width: newWidth, height: newHeight } } as MapSmallIconSize
+for (const psp of [...tokenTypes, 'custom']) {
+  const {
+    imgProps: { width, height }
+  } = TITLE_MAP_TOKEN[psp as ContractType]
+  const { newWidth, newHeight } = calculateNewDimensions({
+    width,
+    height,
+    newSize: MAX_SIZE
   })
-  .reduce((acc, item) => {
-    return { ...acc, ...item }
-  }, {} as MapSmallIconSize)
+  mapSmallIconSize[psp as ContractType] = { width: newWidth, height: newHeight }
+}
 
 export function TokenIconSvg({ label }: Props) {
   if (!TITLE_MAP_TOKEN[label]) return null

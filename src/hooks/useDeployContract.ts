@@ -10,13 +10,13 @@ import { GetServiceData } from '@/types'
 import { useNetworkAccountsContext } from '@/context/NetworkAccountsContext'
 import { BIG_ZERO_BN } from '@/constants/numbers'
 import { ContractConstructorDataForm } from '@/domain/wizard/step3DeployForm.types'
-import { deployContractService } from '@/infrastructure/deployContract'
-import { ContractMetadata, TokenType, UserContractDetails } from '@/domain'
+import { deployContractService } from '@/services/deployContract'
+import { ContractMetadata, TokenType, UserContractDetailsDraft } from '@/domain'
 import { genRanHex } from '@/utils/blockchain'
-import { contractDryRun, userInput } from '@/infrastructure/contractDryRun'
+import { contractDryRun, userInput } from '@/services/contractDryRun'
 import { useReportError } from './useReportError'
 import { useNetworkApi } from '@/hooks/useNetworkApi'
-import { ChainId } from '@/infrastructure/useink/chains'
+import { ChainId } from '@/services/useink/chains'
 
 type ReturnValue = GetServiceData
 
@@ -24,7 +24,7 @@ export type UseDeployContract = ContractMetadata & {
   argsForm: ContractConstructorDataForm
   tokenType: TokenType
   blockchain: ChainId
-  successCallback?: (contractDeployed: UserContractDetails) => void
+  successCallback?: (contractDeployed: UserContractDetailsDraft) => void
 }
 
 type UIStorageDeposit = {
@@ -105,7 +105,7 @@ function createInstatiateTx(
 export const useDeployContract = (): ReturnValue & {
   deployContract: (
     props: UseDeployContract
-  ) => Promise<UserContractDetails | void>
+  ) => Promise<UserContractDetailsDraft | void>
 } => {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | undefined>()
@@ -123,7 +123,7 @@ export const useDeployContract = (): ReturnValue & {
       tokenType,
       blockchain,
       successCallback
-    }: UseDeployContract): Promise<UserContractDetails | void> => {
+    }: UseDeployContract): Promise<UserContractDetailsDraft | void> => {
       if (!currentAccount || !api) return
       setIsLoading(true)
       setError(undefined)
@@ -155,17 +155,17 @@ export const useDeployContract = (): ReturnValue & {
         )
 
         const result = await deployContractService({ api, tx, currentAccount })
-        const contractDeployed: UserContractDetails = {
+        const contractDeployed: UserContractDetailsDraft = {
           userAddress: currentAccount,
-          blockchain,
+          network: blockchain,
           txHash: result.txHash,
           address: result.contractAddress,
-          codeHash: code_id,
+          codeId: code_id,
           name: tokenType,
           abi: metadataAbi.json,
           type: tokenType,
           date: new Date().toISOString(),
-          external: false
+          hidden: false
         }
 
         successCallback?.(contractDeployed)

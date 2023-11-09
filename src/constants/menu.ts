@@ -1,7 +1,8 @@
 import {
   LocalLibrary,
   SvgIconComponent,
-  HomeRounded
+  SettingsSuggestRounded,
+  DataArrayRounded
 } from '@mui/icons-material'
 import { ROUTES } from '@/constants/routes'
 
@@ -15,25 +16,26 @@ export type NavLink = {
 }
 
 const icons = {
-  HomeRounded,
-  LocalLibrary
+  SettingsSuggestRounded,
+  LocalLibrary,
+  DataArrayRounded
 }
 
 export const MENU_ITEMS: NavLink[] = [
   {
     id: 'home',
-    title: 'Home',
+    title: 'Builder',
     type: 'item',
     url: ROUTES.HOME,
-    icon: icons.HomeRounded,
+    icon: icons.SettingsSuggestRounded,
     target: true
   },
   {
-    id: 'docs',
-    title: 'Docs',
+    id: 'contracts',
+    title: 'Contracts',
     type: 'item',
-    url: ROUTES.DOCS,
-    icon: icons.LocalLibrary,
+    url: ROUTES.CONTRACTS,
+    icon: icons.DataArrayRounded,
     target: true
   }
 ]

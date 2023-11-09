@@ -10,7 +10,7 @@ import {
   Modal
 } from '@mui/material'
 import CloseIcon from '@mui/icons-material/Close'
-import { Wallet } from '@/infrastructure/useink/walletTypes'
+import { Wallet } from '@/services/useink/walletTypes'
 import {
   ModalStyled,
   ModalStyledDivider,

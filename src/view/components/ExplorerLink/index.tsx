@@ -3,7 +3,7 @@ import OpenInNewRoundedIcon from '@mui/icons-material/OpenInNewRounded'
 import { IconButton, Link, Tooltip } from '@mui/material'
 
 import { getChain } from '@/constants/chains'
-import { ChainId } from '@/infrastructure/useink/chains'
+import { ChainId } from '@/services/useink/chains'
 import React from 'react'
 
 interface ExplorerLinkProps {

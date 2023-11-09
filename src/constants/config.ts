@@ -1,4 +1,4 @@
-import { Chain } from '@/infrastructure/useink/chains'
+import { Chain } from '@/services/useink/chains'
 
 export const IS_PRODUCTION = process.env.NODE_ENV === ('production' as string)
 export const IS_DEVELOPMENT = process.env.NODE_ENV === ('development' as string)
@@ -27,7 +27,11 @@ const backendRouterApi = {
     method: 'POST'
   },
   listDeployment: {
-    pathName: 'deployments?user_address=',
+    pathName: 'deployments',
+    method: 'GET'
+  },
+  findDeployment: {
+    pathName: 'deployment',
     method: 'GET'
   },
   createCompileContract: {
@@ -36,6 +40,14 @@ const backendRouterApi = {
   },
   searchCompileContract: {
     pathName: 'contract?code_id=',
+    method: 'GET'
+  },
+  updateDeployment: {
+    pathName: 'deployments',
+    method: 'PATCH'
+  },
+  version: {
+    pathName: 'version',
     method: 'GET'
   }
 }
@@ -51,19 +63,23 @@ export interface BackendApiConfig {
   routes: RouteApi
 }
 
-/** URL of the API will be rewritten in next.config */
-const apiBaseUrlPath = '/api'
-
-export const BACKEND_API: BackendApiConfig = {
-  basePath: apiBaseUrlPath,
-  routes: Object.keys(backendRouterApi).reduce((acc, key) => {
-    const currentRoute = backendRouterApi[key as BackendRoutesApi]
-    return {
-      ...acc,
-      [key]: {
-        method: currentRoute.method,
-        url: `${apiBaseUrlPath}/${currentRoute.pathName}`
+export function getBackendApiConfig(basePath: string): BackendApiConfig {
+  return {
+    basePath,
+    routes: Object.keys(backendRouterApi).reduce((acc, key) => {
+      const currentRoute = backendRouterApi[key as BackendRoutesApi]
+      return {
+        ...acc,
+        [key]: {
+          method: currentRoute.method,
+          url: `${basePath}/${currentRoute.pathName}`
+        }
       }
-    }
-  }, {} as RouteApi)
+    }, {} as RouteApi)
+  }
 }
+
+/** URL of the API will be rewritten in next.config */
+export const apiBaseUrlPath = `/api`
+
+export const BACKEND_API = getBackendApiConfig(apiBaseUrlPath)

@@ -94,6 +94,10 @@ export function takeFirstChars(str: string, nChars = 6): string {
   return str.slice(0, nChars)
 }
 
+export function takeLastChars(str: string, nChars = 6): string {
+  return str.slice(-nChars)
+}
+
 /**
  * Converts a Date or ISO date string to a human-readable format.
  *
@@ -121,4 +125,30 @@ export const isoToReadableDate = (lastUpdate: Date | string): string => {
   }
 
   return `${diffDays} days ago`
+}
+
+/**
+ * Formats an ISO date string into a human-readable date and time string.
+ *
+ * @param isoDateString - The ISO date string to be formatted.
+ * @returns A formatted date and time string in the format "Month Day, Year - hh:mm:ss AM/PM".
+ * @throws {Error} If the input ISO date string is invalid.
+ */
+export const isoDate = (isoDateString: string): string => {
+  const options: Intl.DateTimeFormatOptions = {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: 'numeric',
+    second: 'numeric',
+    hour12: true
+  }
+
+  const date = new Date(isoDateString)
+  if (isNaN(date.getTime())) {
+    throw new Error('Invalid ISO date string')
+  }
+
+  return date.toLocaleString(undefined, options)
 }

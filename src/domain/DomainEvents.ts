@@ -4,6 +4,10 @@ export const enum WalletConnectionEvents {
   networkChanged = 'networkChanged'
 }
 
+export const enum UserContractEvents {
+  userContractUpdated = 'userContractUpdated'
+}
+
 export const enum AppNotificationEvents {
   notificationUpdated = 'notificationUpdated'
 }

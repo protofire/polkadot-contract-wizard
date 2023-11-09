@@ -28,7 +28,15 @@ export const StyledButton = styled(StyledButtonWrapper, {
   '&:hover': {
     backgroundColor: '#e6007b83',
     color: 'white',
-    border: '1px solid #c00569 '
+    border: '1px solid #c00569'
+  },
+
+  '&:disabled': {
+    color: theme.palette.grey[600],
+    opacity: '0.5',
+    '&:hover': {
+      cursor: 'not-allowed'
+    }
   },
 
   ...(!isLoading && {
@@ -38,12 +46,10 @@ export const StyledButton = styled(StyledButtonWrapper, {
   }),
 
   '&.MuiButton-outlined': {
-    color: 'white',
     borderColor: theme.palette.primary.main,
     backgroundColor: 'transparent',
     '&:hover': {
-      backgroundColor: theme.palette.primary.main,
-      border: '1px solid'
+      backgroundColor: '#e6007b83'
     }
   }
 }))

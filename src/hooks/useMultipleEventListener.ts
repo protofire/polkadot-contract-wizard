@@ -1,11 +1,16 @@
 import { useEffect, useRef } from 'react'
 import { IS_DEVELOPMENT } from '../constants'
-import { SmartContractEvents, WalletConnectionEvents } from '@/domain'
+import {
+  SmartContractEvents,
+  UserContractEvents,
+  WalletConnectionEvents
+} from '@/domain'
 
 type EventCallback = () => void
 type EventNames =
   | keyof typeof WalletConnectionEvents
   | keyof typeof SmartContractEvents
+  | keyof typeof UserContractEvents
 
 export function useMultiEventListener(
   events: EventNames[] | EventNames, // accept any array of strings as event names

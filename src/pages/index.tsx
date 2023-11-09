@@ -1,28 +1,24 @@
 import Link from 'next/link'
 import { Stack, Typography } from '@mui/material'
 
-import { HomeButton } from '@/components'
-import { ROUTES, TOKEN_PATHS } from '@/constants/index'
-import { TokenType } from '@/domain'
-import { useNetworkAccountsContext } from '@/context/NetworkAccountsContext'
+import { HomeButton, HomeButtonCustom } from '@/components'
+import { CUSTOM_CONTRACT, ROUTES, TOKEN_PATHS } from '@/constants/index'
+import { ContractType } from '@/domain/repositories/DeploymentRepository'
+import MainContainer from '@/view/layout/MainContainer'
 import { ContractsTableWidget } from '@/view/HomeView/ContractsTableWidget'
-import { useListUserContracts } from '@/hooks/userContracts/useListUserContracts'
 
-const Token: Record<TokenType, TokenType> = {
+const Token: Record<ContractType, ContractType> = {
   psp22: 'psp22',
   psp34: 'psp34',
-  psp37: 'psp37'
+  psp37: 'psp37',
+  custom: 'custom'
 }
 
-function Home() {
-  const { accountConnected, networkConnected } = useNetworkAccountsContext()
-  const { userContracts: contracts } = useListUserContracts(
-    accountConnected?.address,
-    networkConnected
-  )
+type Token = keyof ContractType
 
+export default function HomePage() {
   return (
-    <>
+    <MainContainer>
       <Typography variant="h1" align="center">
         Start building something amazing on Polkadot
       </Typography>
@@ -31,9 +27,9 @@ function Home() {
       </Typography>
       <Stack
         spacing={{ xs: 1, sm: 2, md: 4 }}
-        direction="column"
+        direction={{ xs: 'column', md: 'row' }}
         alignItems="center"
-        m={{ xs: 2, sm: 4, md: 8 }}
+        m={{ xs: 2, sm: 4, md: 4 }}
       >
         <HomeButton
           LinkComponent={Link}
@@ -60,9 +56,23 @@ function Home() {
           imgProps={{ width: 75, height: 65 }}
         />
       </Stack>
-      {accountConnected && <ContractsTableWidget contracts={contracts} />}
-    </>
+      <Stack
+        spacing={{ xs: 1, sm: 2, md: 4 }}
+        direction="column"
+        alignItems="center"
+        m={{ xs: 2, sm: 4, md: 3 }}
+      >
+        <Typography variant="h5">Import your own contract ⚡</Typography>
+        <HomeButtonCustom
+          LinkComponent={Link}
+          href={`${ROUTES.CUSTOM}/`}
+          title="CUSTOM CONTRACT"
+          subtitle="Upload a new contract code"
+          imgPath={CUSTOM_CONTRACT}
+          imgProps={{ width: 60, height: 60 }}
+        />
+      </Stack>
+      <ContractsTableWidget />
+    </MainContainer>
   )
 }
-
-export default Home

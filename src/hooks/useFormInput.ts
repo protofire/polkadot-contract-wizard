@@ -1,71 +1,85 @@
 import { getErrorMessage } from '@/utils/error'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 export interface ControlledFormInput<I> {
   value: I
   onChange: (e: React.BaseSyntheticEvent) => void
   error: string | null
+  loading: boolean
+  required: boolean
+  touched: boolean
+  setValue: (value: I) => void
 }
 
-export type ValidationFn<I> = (value: I) => string | void
+export type ValidationFn<I> = (
+  value: I
+) => string | void | Promise<string | void>
 
 interface UseFormInput<I> {
   initialValue: I
   validations?: Array<ValidationFn<I>>
+  required?: boolean
+}
+
+interface FormInputState<I> {
+  value: I
+  error: null | string
+  loading: boolean
+  touched: boolean
 }
 
 export function useFormInput<I>(
   initialValue: UseFormInput<I>['initialValue'],
-  validations: UseFormInput<I>['validations'] = []
+  validations: UseFormInput<I>['validations'] = [],
+  required: UseFormInput<I>['required'] = true
 ): ControlledFormInput<I> {
-  const [value, setValue] = useState(initialValue)
-  const [error, setError] = useState<string | null>(null)
+  const [inputState, setInputState] = useState<FormInputState<I>>({
+    value: initialValue,
+    error: null,
+    loading: false,
+    touched: false
+  })
 
-  function handleChange(e: React.BaseSyntheticEvent) {
+  async function handleChange(e: React.BaseSyntheticEvent) {
     const newValue = e.target.value
-    _setvalue(newValue)
+    await _setvalue(newValue)
   }
 
-  const _setvalue = (newValue: I) => {
-    setError(null)
+  const _setvalue = async (newValue: I) => {
+    setInputState(prevState => ({
+      ...prevState,
+      value: newValue,
+      error: null,
+      loading: true,
+      touched: true
+    }))
+
     try {
-      validations.forEach(validate => {
-        const errorMessage = validate(newValue)
-        if (errorMessage) throw new Error(errorMessage)
-      })
+      const errorMessages = await Promise.all(
+        validations.map(validate => validate(newValue))
+      )
+      const firstError = errorMessages.find(message => !!message)
+      if (firstError) throw new Error(firstError)
+      setInputState(prevState => ({
+        ...prevState,
+        loading: false
+      }))
     } catch (e) {
-      setError(getErrorMessage(e))
-    } finally {
-      setValue(newValue)
+      setInputState(prevState => ({
+        ...prevState,
+        error: getErrorMessage(e),
+        loading: false
+      }))
     }
   }
 
   return {
-    value,
+    value: inputState.value,
     onChange: handleChange,
-    error
+    error: inputState.error,
+    loading: inputState.loading,
+    required,
+    touched: inputState.touched,
+    setValue: _setvalue
   }
-}
-
-interface UseFormDependentInput<I, D>
-  extends Omit<UseFormInput<I>, 'initialSupply'> {
-  dependencies: Array<D>
-  onCallback: (inputs: Array<D>) => I
-}
-
-export function useFormDependentInput<I, D>({
-  validations,
-  dependencies,
-  onCallback
-}: UseFormDependentInput<I, D>): ControlledFormInput<I> {
-  const input = useFormInput<I>(onCallback(dependencies), validations)
-
-  useEffect(() => {
-    const event = {
-      target: { value: onCallback(dependencies) }
-    } as unknown as React.ChangeEvent<HTMLInputElement>
-    input.onChange(event)
-  }, [input, dependencies, onCallback])
-
-  return input
 }

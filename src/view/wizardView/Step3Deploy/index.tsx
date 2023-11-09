@@ -3,17 +3,16 @@ import { Grid, Typography } from '@mui/material'
 import Image from 'next/image'
 
 import { useStepsSCWizard } from '@/context'
-import BackNextButton from '../BackNextButtons'
-import { TokenType, UserContractDetails } from '@/domain'
+import BackNextButton from '@/components/BackNextButtons'
+import { TokenType, UserContractDetailsDraft } from '@/domain'
 import {
   ControlsToken,
   GIF_COMPILING,
   SVG_AWESOME,
   SVG_SUCCESSFULLY
 } from '@/constants/index'
-import { FormEvent } from '@/domain/common/FormEvent'
 import { useCompileContract } from '@/hooks/compileContract'
-import { ContractCompiledRaw } from '@/infrastructure'
+import { ContractCompiledRaw } from '@/services'
 import { generateCode } from '../Step2Compile/generator'
 import { useDeployContract } from '@/hooks/useDeployContract'
 import { ContractConstructorDataForm } from '@/domain/wizard/step3DeployForm.types'
@@ -23,15 +22,13 @@ import {
   FormConstructorContract,
   ConstructorTokenFieldProps
 } from './FormConstructorContract'
-import { useCreateContractDeployments } from '@/hooks/deployments/useCreateContractsDeployments'
-import { ChainId } from '@/infrastructure/useink/chains'
+import { useCreateDeployments } from '@/hooks/deployments/useCreateDeployments'
 import { StackStyled } from './styled'
-import { useAddUserContracts } from '@/hooks/userContracts/useAddUserContracts'
 
 interface StepDeployProps {
   tokenType: TokenType
   constructorFields?: ControlsToken<'Constructor'>
-  onDeployContract: (deployedContract: UserContractDetails) => void
+  onDeployContract: (deployedContract: UserContractDetailsDraft) => void
 }
 
 export default function Step3Deploy({
@@ -56,8 +53,7 @@ export default function Step3Deploy({
   const { deployContract, isLoading: isDeploying } = useDeployContract()
   const { ref: refButton, recentlyClicked } = useRecentlyClicked(500)
   const _isDeploying = recentlyClicked || isDeploying
-  const { newDeployment } = useCreateContractDeployments()
-  const { addUserContract } = useAddUserContracts()
+  const { newDeployment } = useCreateDeployments()
 
   useEffect(() => {
     if (!dataForm.currentAccount || !mustLoad.current) return
@@ -83,22 +79,11 @@ export default function Step3Deploy({
     dataForm.extensions.Pausable
   ])
 
-  const handleSubmit = async (event: FormEvent<ConstructorTokenFieldProps>) => {
-    event.preventDefault()
-    const { elements } = event.target
+  const onSubmit = async (elements: ConstructorTokenFieldProps) => {
     const _dataForm: ContractConstructorDataForm = []
-
     contractConstructorFields.forEach(field => {
-      if (hasMetadata && field.fieldName === 'initialSupply') {
-        _dataForm.push([
-          field.fieldName,
-          elements.initialSupplyPowDecimal.value
-        ])
-
-        return
-      }
       if (elements[field.fieldName]) {
-        _dataForm.push([field.fieldName, elements[field.fieldName].value])
+        _dataForm.push([field.fieldName, elements[field.fieldName]])
       }
     })
 
@@ -110,7 +95,7 @@ export default function Step3Deploy({
   ) => {
     if (!contractCompiled || !networkConnected || !accountConnected) return
 
-    const result = await deployContract({
+    await deployContract({
       wasm: contractCompiled.wasm,
       metadata: contractCompiled.metadata,
       argsForm: constructorParams,
@@ -118,24 +103,11 @@ export default function Step3Deploy({
       tokenType,
       blockchain: networkConnected,
       successCallback: userContractsDetail => {
-        newDeployment({
-          contractName: userContractsDetail.name as TokenType,
-          contractAddress: userContractsDetail.address,
-          network: userContractsDetail.blockchain as ChainId,
-          codeId: userContractsDetail.codeHash,
-          userAddress: accountConnected.address,
-          txHash: userContractsDetail.txHash,
-          date: userContractsDetail.date,
-          contractType: userContractsDetail.type
-        })
-        addUserContract(userContractsDetail)
+        newDeployment({ userContract: userContractsDetail })
+        onDeployContract(userContractsDetail)
+        handleNext()
       }
     })
-
-    if (result) {
-      onDeployContract(result)
-      handleNext()
-    }
   }
 
   return (
@@ -169,7 +141,7 @@ export default function Step3Deploy({
             <FormConstructorContract
               fields={contractConstructorFields}
               hasMetadata={hasMetadata}
-              handleSubmit={handleSubmit}
+              onSubmit={onSubmit}
             />
           )}
         </Grid>
