@@ -111,8 +111,14 @@ export function ContractDetailsInteraction({ userContract }: Props) {
             <SimpleAccordion
               elements={
                 isReadContract
-                  ? getElements(sortedAbiMessages.nonMutating, contractPromise)
-                  : getElements(sortedAbiMessages.mutating, contractPromise)
+                  ? getElements(
+                      sortedAbiMessages.nonMutating,
+                      contractPromise.abi.registry
+                    )
+                  : getElements(
+                      sortedAbiMessages.mutating,
+                      contractPromise.abi.registry
+                    )
               }
             />
           </>
