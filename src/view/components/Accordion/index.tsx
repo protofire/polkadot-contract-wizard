@@ -9,7 +9,7 @@ import {
 import { StyledAccordionContainer } from './styled'
 
 interface AccordionRow {
-  tittle: string
+  title: string
   content: React.ReactNode
   id: string
 }
@@ -31,7 +31,7 @@ export default function SimpleAccordion({
             aria-controls={row.id}
             id={row.id}
           >
-            <Typography variant="h4">{row.tittle}</Typography>
+            <Typography variant="h4">{row.title}</Typography>
           </AccordionSummary>
           <AccordionDetails>{row.content}</AccordionDetails>
         </Accordion>
