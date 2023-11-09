@@ -9,41 +9,36 @@ import DownloadIcon from '@mui/icons-material/Download'
 import { getChain } from '@/constants/chains'
 import NetworkBadge from '@/view/components/NetworkBadge'
 import { UseModalBehaviour } from '@/hooks/useModalBehaviour'
-import { UserContractDetails } from '@/domain'
+import {
+  UserContractDetails,
+  UserContractDetailsWithAbi,
+  isAbiSource
+} from '@/domain'
 import { isoDate, isoToReadableDate } from '@/utils/formatString'
 import { useNetworkAccountsContext } from '@/context/NetworkAccountsContext'
-import { ContractDetailsInteraction } from '@/view/ContractDetailsInteraction'
+import { ContractsTabInteraction } from '@/view/ContractDetailView/ContractsTabInteraction'
 import { ConnectWalletSection } from '@/view/components/ConnectWalletSection'
-
-type ContractTabType = 'Read Contract' | 'Write Contract'
-const types: ContractTabType[] = ['Read Contract', 'Write Contract']
 
 interface Props {
   modalBehaviour: UseModalBehaviour
   userContract: UserContractDetails
 }
 
-interface AbiSource {
-  source: { language: string }
-}
-
 export default function ContractDetail({
   modalBehaviour,
   userContract
 }: Props) {
-  const [type, setType] = React.useState(types[0])
   const { accountConnected } = useNetworkAccountsContext()
   if (!userContract) {
     return null
   }
+  const { abi } = userContract
+
+  if (!isAbiSource(abi)) {
+    return null
+  }
 
   const chainDetails = getChain(userContract.network)
-  const isReadContract = type === 'Read Contract'
-  const abi = userContract.abi as AbiSource | undefined
-
-  const handleChange = (newValue: number) => {
-    setType(types[newValue])
-  }
 
   return (
     <>
@@ -133,7 +128,9 @@ export default function ContractDetail({
         </Box>
       </Box>
       {accountConnected ? (
-        <ContractDetailsInteraction userContract={userContract} />
+        <ContractsTabInteraction
+          userContract={userContract as UserContractDetailsWithAbi}
+        />
       ) : (
         <ConnectWalletSection
           text={'You need to connect a wallet to interact with this contract.'}
