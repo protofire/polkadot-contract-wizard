@@ -16,7 +16,7 @@ import {
 } from '@/domain'
 import { isoDate, isoToReadableDate } from '@/utils/formatString'
 import { useNetworkAccountsContext } from '@/context/NetworkAccountsContext'
-import { ContractsTabInteraction } from '@/view/ContractDetailView'
+import { ContractsTabInteraction } from '@/view/ContractDetailView/ContractsTabInteraction'
 import { ConnectWalletSection } from '@/view/components/ConnectWalletSection'
 
 interface Props {
