@@ -21,6 +21,20 @@ export class MetadataManager {
 
   private utf8decoder = new TextDecoder()
 
+  /**
+   * Derives contract metadata state from a provided JSON source.
+   * The function takes an options object and optionally a JSON object
+   * representing the contract's ABI and an ApiPromise instance.
+   * If no source is provided, it returns an empty metadata state.
+   *
+   * Usage Example:
+   * const metadataManager = new MetadataManager();
+   * const derivedMetadata = metadataManager.deriveFromJson(
+   *   { isWasmRequired: true/false, name: 'MyContract' },
+   *   jsonSource,
+   *   apiPromise
+   * );
+   */
   deriveFromJson(
     options: DeriveOptions,
     source?: Record<string, unknown>,

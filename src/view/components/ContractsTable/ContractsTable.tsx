@@ -6,10 +6,8 @@ import {
   TableHead,
   TableRow,
   Stack,
-  TextField,
   Typography,
-  Tooltip,
-  IconButton
+  Tooltip
 } from '@mui/material'
 
 import { CopyToClipboardButton, TokenIconSvg } from '@/components'
