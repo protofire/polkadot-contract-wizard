@@ -16,6 +16,7 @@ export function ContractsTableWidget() {
   const { logo, name: networkName } = getChain(networkConnected)
   const { userContractItems, onDownloadSource } =
     useDownloadMetadata(userContracts)
+
   return (
     <>
       {accountConnected && userContracts && (

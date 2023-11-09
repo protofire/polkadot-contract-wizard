@@ -1,7 +1,11 @@
 import { useCallback, useEffect, useState } from 'react'
 
 import { useLocalDbContext } from '@/context/LocalDbContext'
-import { UserContractDetails, UserContractEvents } from '@/domain'
+import {
+  UserContractDetails,
+  WalletConnectionEvents,
+  UserContractEvents
+} from '@/domain'
 import { useListDeployments } from '../deployments/useListDeployments'
 import { useMultiEventListener } from '@/hooks/useMultipleEventListener'
 import { ChainId } from '@/services/useink/chains'

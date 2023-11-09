@@ -1,6 +1,6 @@
 import { ContractDetailSkeleton } from '@/view/CustomContracts/detail/SkeletonContractDetail'
 import MainContainer from '@/view/layout/MainContainer'
-import ContractDetail from '@/view/ContractDetailView/contract-detail'
+import ContractDetail from '@/view/ContractDetailView'
 import { useModalBehaviour } from '@/hooks/useModalBehaviour'
 import { useRouter } from 'next/router'
 import { useFindUserContract } from '@/hooks/userContracts/useFindUserContract'

@@ -46,6 +46,7 @@ import { ROUTES } from '@/constants'
 import { useRef } from 'react'
 import { useFormInput } from '@/hooks'
 import { maxLength, notEmpty } from '@/utils/inputValidation'
+import { MuiTextField } from '../MuiTextField'
 
 export interface TableConfig {
   onlyTable: boolean
@@ -141,6 +142,7 @@ function ContractTableRow({
                 ref={textRef}
                 autoFocus
               />
+
               <DefaultToolTipButton
                 id={`save-contract-name${takeLastChars(contract.uuid)}`}
                 sx={{ color: 'green' }}

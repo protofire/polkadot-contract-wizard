@@ -1,6 +1,7 @@
 import { ContractCompiledRaw } from '@/services'
 import { ContractType } from '@/domain/repositories/DeploymentRepository'
 import { ChainId } from '@/services/useink/chains'
+import { AbiSource } from './Metadata'
 
 export type ContractMetadata = ContractCompiledRaw
 
@@ -23,3 +24,7 @@ export type UserContractDetailsDraft = Omit<
   UserContractDetails,
   'uuid' | 'external'
 >
+
+export type UserContractDetailsWithAbi = Omit<UserContractDetails, 'abi'> & {
+  abi: AbiSource
+}
