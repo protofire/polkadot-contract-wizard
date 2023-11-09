@@ -64,7 +64,7 @@ export function ContractsTableContent({
           <ContractsTable
             onDownloadMeta={onDownloadSource}
             tableConfig={tableConfig}
-            contracts={userContractItems}
+            contracts={userContractItems as UserContractDetails[]}
           />
         )
       ) : (

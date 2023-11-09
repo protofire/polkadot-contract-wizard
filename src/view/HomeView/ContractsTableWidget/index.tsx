@@ -5,6 +5,7 @@ import { useListUserContracts } from '@/hooks/userContracts/useListUserContracts
 import { Box, Typography, Paper } from '@mui/material'
 import NetworkBadge from '@/view/components/NetworkBadge'
 import { useDownloadMetadata } from '@/view/components/ContractsTable/useDownloadMetadata'
+import { UserContractTableItem } from '@/domain/wizard/ContractTableItem'
 
 export function ContractsTableWidget() {
   const { accountConnected, networkConnected } = useNetworkAccountsContext()
@@ -41,7 +42,7 @@ export function ContractsTableWidget() {
           </Box>
           {accountConnected && userContractItems ? (
             <ContractsTableFiltered
-              contracts={userContractItems}
+              contracts={userContractItems as UserContractTableItem[]}
               isLoading={isLoading}
               tableConfig={{ onlyTable: true, editName: false }}
               onDownloadMeta={onDownloadSource}
