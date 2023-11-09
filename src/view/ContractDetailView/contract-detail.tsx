@@ -21,47 +21,104 @@ import { useNetworkAccountsContext } from '@/context/NetworkAccountsContext'
 import { ContractDetailsInteraction } from '@/view/ContractDetailsInteraction'
 import { ConnectWalletSection } from '@/view/components/ConnectWalletSection'
 import InfoOutlined from '@mui/icons-material/InfoOutlined'
-
-type ContractTabType = 'Read Contract' | 'Write Contract'
-const types: ContractTabType[] = ['Read Contract', 'Write Contract']
-
+import { useFormInput } from '@/hooks'
+import { maxLength, notEmpty } from '@/utils/inputValidation'
+import { StyledTextField } from '../components'
+import CheckIcon from '@mui/icons-material/CheckCircleOutlineRounded'
+import { UpdateDeployment } from '@/domain/repositories/DeploymentRepository'
+import { useUpdateUserContracts } from '@/hooks/userContracts/useUpdateUserContracts'
+import { UserContractTableItem } from '@/domain/wizard/ContractTableItem'
 interface Props {
   modalBehaviour: UseModalBehaviour
   userContract: UserContractDetails
+  onDownloadSource: (contract: UserContractTableItem) => void
 }
 
 interface AbiSource {
   source: { language: string }
 }
 
-export default function ContractDetail({ userContract }: Props): JSX.Element {
+export default function ContractDetail({
+  userContract,
+  onDownloadSource
+}: Props): JSX.Element {
   const [openShareModal, setOpenShareModal] = React.useState(false)
   const url = getUserContractUrl(userContract)
-  const [type, setType] = React.useState(types[0])
   const { accountConnected } = useNetworkAccountsContext()
-  /*   if (!userContract) {
-    return null
-  } */
+  const { updateContract } = useUpdateUserContracts()
 
+  const [isNameEditable, setIsNameEditable] = React.useState(false)
   const chainDetails = getChain(userContract.network)
-  const isReadContract = type === 'Read Contract'
   const abi = userContract.abi as AbiSource | undefined
+  const formData = {
+    contractName: useFormInput<string>(userContract.name, [notEmpty, maxLength])
+  }
 
-  const handleChange = (newValue: number) => {
-    setType(types[newValue])
+  const handleUpdateContractName = () => {
+    const updatedContract: UpdateDeployment = {
+      address: userContract.address,
+      userAddress: userContract.userAddress,
+      network: userContract.network,
+      name: formData.contractName.value,
+      hidden: false
+    }
+    formData.contractName.setValue(updatedContract.name as string)
+    updateContract({
+      deployment: updatedContract
+    })
+    setIsNameEditable(!isNameEditable)
+  }
+
+  const stopPropagation = (
+    event: React.MouseEvent<HTMLButtonElement | HTMLDivElement, MouseEvent>,
+    onFn: () => void
+  ) => {
+    event.stopPropagation()
+    onFn()
   }
 
   return (
     <>
       <Stack direction="row" justifyContent="space-between">
         <Stack direction="row" justifyContent="space-between">
-          <Typography variant="h2">{userContract.name}</Typography>
-          <DefaultToolTipButton
-            id="edit-contract-address"
-            sx={{ marginLeft: '0.5rem', color: 'white' }}
-            title="Edit"
-            Icon={EditIcon}
-          ></DefaultToolTipButton>
+          {isNameEditable ? (
+            <>
+              <StyledTextField
+                label="Contract Name"
+                placeholder={userContract.name}
+                value={formData.contractName.value}
+                onChange={formData.contractName.onChange}
+                error={Boolean(formData.contractName.error)}
+                helperText={
+                  formData.contractName.error ? formData.contractName.error : ''
+                }
+                loading={formData.contractName.loading}
+                autoFocus
+              />
+              <DefaultToolTipButton
+                id="edit-contract-address"
+                sx={{ marginLeft: '0.5rem', color: 'white' }}
+                title="Save"
+                Icon={CheckIcon}
+                onClick={handleUpdateContractName}
+              ></DefaultToolTipButton>
+            </>
+          ) : (
+            <>
+              <Typography variant="h2">
+                {formData.contractName.value}
+              </Typography>
+              <DefaultToolTipButton
+                id="edit-contract-address"
+                sx={{ marginLeft: '0.5rem', color: 'white' }}
+                title="Edit"
+                Icon={EditIcon}
+                onClick={event =>
+                  stopPropagation(event, () => setIsNameEditable(true))
+                }
+              ></DefaultToolTipButton>
+            </>
+          )}
         </Stack>
         <Box display="flex" gap="1rem">
           <Button
@@ -72,6 +129,9 @@ export default function ContractDetail({ userContract }: Props): JSX.Element {
               maxHeight: '3rem',
               backgroundColor: '#20222D'
             }}
+            onClick={event =>
+              stopPropagation(event, () => onDownloadSource(userContract))
+            }
           >
             Download
           </Button>
@@ -79,7 +139,9 @@ export default function ContractDetail({ userContract }: Props): JSX.Element {
             variant="contained"
             endIcon={<ShareIcon />}
             color="primary"
-            onClick={() => setOpenShareModal(true)}
+            onClick={event =>
+              stopPropagation(event, () => setOpenShareModal(true))
+            }
             sx={{
               borderRadius: '3rem',
               maxHeight: '3rem'

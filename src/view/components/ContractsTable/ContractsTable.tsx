@@ -10,7 +10,11 @@ import {
   Tooltip
 } from '@mui/material'
 
-import { CopyToClipboardButton, TokenIconSvg } from '@/components'
+import {
+  CopyToClipboardButton,
+  StyledTextField,
+  TokenIconSvg
+} from '@/components'
 import {
   isoDate,
   isoToReadableDate,
@@ -36,12 +40,12 @@ import { useUpdateUserContracts } from '@/hooks/userContracts/useUpdateUserContr
 import { useRecentlyClicked } from '@/hooks/useRecentlyClicked'
 import { DeleteContractModal } from '@/view/components/DeleteContractModal'
 import { UpdateDeployment } from '@/domain/repositories/DeploymentRepository'
-import { nameWithTimestamp } from '@/utils/generators'
 import { getUserContractUrl } from './getUserContractUrl'
 import router from 'next/router'
 import { ROUTES } from '@/constants'
-import { MuiTextField } from '@/view/components/MuiTextField'
 import { useRef } from 'react'
+import { useFormInput } from '@/hooks'
+import { maxLength, notEmpty } from '@/utils/inputValidation'
 
 export interface TableConfig {
   onlyTable: boolean
@@ -53,9 +57,6 @@ export interface ContractsTableProps {
   onDownloadMeta: (contract: UserContractTableItem) => void
   tableConfig?: TableConfig
 }
-
-const MAX_INPUT_LENGTH = 20
-const ERROR_MESSAGE = '20 characters max'
 
 function ContractTableRow({
   contract,
@@ -70,14 +71,15 @@ function ContractTableRow({
   config?: TableConfig
 } & Pick<ContractsTableProps, 'onDownloadMeta'>) {
   const [editable, setEditable] = React.useState(false)
-  const [error, setError] = React.useState(false)
-  const [textInput, setTextInput] = React.useState(contract.name)
   const { updateContract } = useUpdateUserContracts()
   const { ref: refButton, recentlyClicked } = useRecentlyClicked()
   const isDownloading = recentlyClicked || contract.isDownloading
   const textRef = useRef<HTMLInputElement>(null)
-
   const typeMap = TITLE_MAP_TOKEN[contract.type]
+
+  const formData = {
+    contractName: useFormInput<string>(contract.name, [notEmpty, maxLength])
+  }
 
   const handleRowClick = () => {
     router.push(`${ROUTES.CONTRACTDETAIL}?uuid=${contract.uuid}`)
@@ -91,31 +93,22 @@ function ContractTableRow({
     onFn()
   }
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setError(false)
-    const value = event.target.value
-    if (value.length >= MAX_INPUT_LENGTH) {
-      setError(true)
+  const handleUpdate = () => {
+    if (Boolean(formData.contractName.error)) {
       return
     }
-    setTextInput(value)
-  }
-
-  const handleUpdate = () => {
-    setEditable(!editable)
-    const contractName =
-      textInput.length > 0 ? textInput : nameWithTimestamp('custom')
     const updatedContract: UpdateDeployment = {
       address: contract.address,
       userAddress: contract.userAddress,
       network: contract.network,
-      name: textInput,
+      name: formData.contractName.value,
       hidden: false
     }
-    setTextInput(contractName)
+    formData.contractName.setValue(updatedContract.name as string)
     updateContract({
       deployment: updatedContract
     })
+    setEditable(!editable)
   }
 
   return (
@@ -135,14 +128,19 @@ function ContractTableRow({
         <TokenWrapper>
           {editable ? (
             <>
-              <MuiTextField
-                error={error}
-                helperText={error ? ERROR_MESSAGE : ''}
-                value={textInput}
-                onChange={handleChange}
+              <StyledTextField
+                label="Contract Name"
+                placeholder={contract.name}
+                value={formData.contractName.value}
+                onChange={formData.contractName.onChange}
+                error={Boolean(formData.contractName.error)}
+                helperText={
+                  formData.contractName.error ? formData.contractName.error : ''
+                }
+                loading={formData.contractName.loading}
                 ref={textRef}
-              ></MuiTextField>
-
+                autoFocus
+              />
               <DefaultToolTipButton
                 id={`save-contract-name${takeLastChars(contract.uuid)}`}
                 sx={{ color: 'green' }}
@@ -162,7 +160,7 @@ function ContractTableRow({
             </>
           ) : (
             <>
-              <Typography>{textInput}</Typography>
+              <Typography>{formData.contractName.value}</Typography>
               {config?.editName && (
                 <DefaultToolTipButton
                   id={`edit-contract-name${takeLastChars(contract.uuid)}`}
