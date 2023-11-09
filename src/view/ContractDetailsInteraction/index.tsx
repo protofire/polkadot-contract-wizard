@@ -6,7 +6,8 @@ import SimpleAccordion from '@/components/Accordion'
 import { groupAndSortAbiMessages } from './groupAndSortAbiMessages'
 import { useContractPromiseFromSource } from '@/hooks/useContractPromise'
 import { FallbackSpinner } from '@/components/FallbackSpinner'
-import { AbiMessage } from '@/services/substrate/types'
+import { AbiMessage, Registry } from '@/services/substrate/types'
+import { ContractInteractionForm } from './ContractInteractionForm'
 
 type ContractTabType = 'Read Contract' | 'Write Contract'
 const types: ContractTabType[] = ['Read Contract', 'Write Contract']
@@ -17,14 +18,22 @@ interface Props {
 
 interface AccordionElement {
   title: string
-  content: string
+  content: React.ReactNode
   id: string
 }
 
-function getElements(abiMessages: AbiMessage[]): AccordionElement[] {
+function getElements(
+  abiMessages: AbiMessage[],
+  substrateRegistry: Registry
+): AccordionElement[] {
   return abiMessages.map(msg => ({
     title: msg.method,
-    content: msg.docs.join(','),
+    content: (
+      <ContractInteractionForm
+        abiMessage={msg}
+        substrateRegistry={substrateRegistry}
+      />
+    ),
     id: msg.identifier
   }))
 }
@@ -102,8 +111,8 @@ export function ContractDetailsInteraction({ userContract }: Props) {
             <SimpleAccordion
               elements={
                 isReadContract
-                  ? getElements(sortedAbiMessages.nonMutating)
-                  : getElements(sortedAbiMessages.mutating)
+                  ? getElements(sortedAbiMessages.nonMutating, contractPromise)
+                  : getElements(sortedAbiMessages.mutating, contractPromise)
               }
             />
           </>
