@@ -1,4 +1,4 @@
-import { Box, Stack } from '@mui/material'
+import { Box, Button, Stack, Typography } from '@mui/material'
 import { MethodDocumentation } from './MethodDocumentation'
 import { MethodInputForm, MethodInputFormProps } from './MethodInputForm'
 
@@ -25,6 +25,14 @@ export function ContractInteractionForm({
         <Box sx={{ maxWidth: '45%', minWidth: '40%' }}>
           <MethodDocumentation abiMessage={abiMessage} />
         </Box>
+        <Stack direction="row">
+          <Box>
+            <Typography>Outcome</Typography>
+          </Box>
+          <Box sx={{ maxWidth: '45%', minWidth: '40%' }}>
+            <Button>Call</Button>
+          </Box>
+        </Stack>
       </Stack>
     </Box>
   )
