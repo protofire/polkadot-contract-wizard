@@ -38,7 +38,7 @@ function getElements(
   }))
 }
 
-export function ContractDetailsInteraction({ userContract }: Props) {
+export function ContractsTabInteraction({ userContract }: Props) {
   const [type, setType] = React.useState(types[0])
   const isReadContract = type === 'Read Contract'
   const contractPromise = useContractPromiseFromSource(userContract)

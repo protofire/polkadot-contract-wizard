@@ -16,7 +16,7 @@ import {
 } from '@/domain'
 import { isoDate, isoToReadableDate } from '@/utils/formatString'
 import { useNetworkAccountsContext } from '@/context/NetworkAccountsContext'
-import { ContractDetailsInteraction } from '@/view/ContractDetailsInteraction'
+import { ContractsTabInteraction } from '@/view/ContractDetailView'
 import { ConnectWalletSection } from '@/view/components/ConnectWalletSection'
 
 interface Props {
@@ -128,7 +128,7 @@ export default function ContractDetail({
         </Box>
       </Box>
       {accountConnected ? (
-        <ContractDetailsInteraction
+        <ContractsTabInteraction
           userContract={userContract as UserContractDetailsWithAbi}
         />
       ) : (
