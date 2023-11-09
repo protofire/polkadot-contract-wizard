@@ -49,7 +49,7 @@ export function ContractDetailsInteraction({ userContract }: Props) {
                 </Typography>
               </>
             )}
-            <SimpleAccordion
+            {/* <SimpleAccordion
               elements={
                 isReadContract
                   ? [
@@ -77,7 +77,7 @@ export function ContractDetailsInteraction({ userContract }: Props) {
                       }
                     ]
               }
-            />
+            /> */}
           </>
         </BasicTabs>
       </Box>

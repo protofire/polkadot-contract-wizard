@@ -46,7 +46,6 @@ import { ROUTES } from '@/constants'
 import { useRef } from 'react'
 import { useFormInput } from '@/hooks'
 import { maxLength, notEmpty } from '@/utils/inputValidation'
-import { MuiTextField } from '../MuiTextField'
 
 export interface TableConfig {
   onlyTable: boolean
@@ -81,6 +80,10 @@ function ContractTableRow({
   const formData = {
     contractName: useFormInput<string>(contract.name, [notEmpty, maxLength])
   }
+
+  const anyInvalidField: boolean = Object.values(formData).some(
+    field => (field.required && !field.value) || field.error !== null
+  )
 
   const handleRowClick = () => {
     router.push(`${ROUTES.CONTRACTDETAIL}?uuid=${contract.uuid}`)
@@ -149,6 +152,7 @@ function ContractTableRow({
                 title="Save"
                 Icon={CheckIcon}
                 onClick={event => stopPropagation(event, () => handleUpdate())}
+                disabled={anyInvalidField}
               ></DefaultToolTipButton>
               <DefaultToolTipButton
                 id={`cancel-contract-name${takeLastChars(contract.uuid)}`}
@@ -156,7 +160,10 @@ function ContractTableRow({
                 title="Cancel"
                 Icon={CancelIcon}
                 onClick={event =>
-                  stopPropagation(event, () => setEditable(!editable))
+                  stopPropagation(event, () => {
+                    formData.contractName.setValue(contract.name)
+                    setEditable(!editable)
+                  })
                 }
               ></DefaultToolTipButton>
             </>

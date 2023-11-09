@@ -9,14 +9,11 @@ import DownloadIcon from '@mui/icons-material/Download'
 import { getChain } from '@/constants/chains'
 import NetworkBadge from '@/view/components/NetworkBadge'
 import { UseModalBehaviour } from '@/hooks/useModalBehaviour'
-import {
-  UserContractDetails,
-  UserContractDetailsWithAbi,
-  isAbiSource
-} from '@/domain'
+import { UserContractDetails, UserContractDetailsWithAbi } from '@/domain'
 import {
   isoDate,
   isoToReadableDate,
+  takeLastChars,
   truncateAddress
 } from '@/utils/formatString'
 import { ShareContractModal } from '@/view/components/ShareContractModal'
@@ -24,11 +21,14 @@ import { getUserContractUrl } from '@/view/components/ContractsTable/getUserCont
 import { useNetworkAccountsContext } from '@/context/NetworkAccountsContext'
 import { ContractsTabInteraction } from '@/view/ContractDetailView/ContractsTabInteraction'
 import { ConnectWalletSection } from '@/view/components/ConnectWalletSection'
-import InfoOutlined from '@mui/icons-material/InfoOutlined'
+
 import { useFormInput } from '@/hooks'
 import { maxLength, notEmpty } from '@/utils/inputValidation'
 import { StyledTextField } from '../components'
 import CheckIcon from '@mui/icons-material/CheckCircleOutlineRounded'
+import InfoOutlined from '@mui/icons-material/InfoOutlined'
+import CancelIcon from '@mui/icons-material/Cancel'
+
 import { UpdateDeployment } from '@/domain/repositories/DeploymentRepository'
 import { useUpdateUserContracts } from '@/hooks/userContracts/useUpdateUserContracts'
 import { UserContractTableItem } from '@/domain/wizard/ContractTableItem'
@@ -44,23 +44,19 @@ export default function ContractDetail({
   userContract,
   onDownloadSource
 }: Props): JSX.Element {
-  /* if (!userContract) {
-    return null
-  }
-  if (!isAbiSource(abi)) {
-    return null
-  } */
   const [openShareModal, setOpenShareModal] = React.useState(false)
   const url = getUserContractUrl(userContract)
   const { accountConnected } = useNetworkAccountsContext()
   const { updateContract } = useUpdateUserContracts()
-
   const [isNameEditable, setIsNameEditable] = React.useState(false)
   const chainDetails = getChain(userContract.network)
   const abi = userContract.abi as AbiSource | undefined
   const formData = {
     contractName: useFormInput<string>(userContract.name, [notEmpty, maxLength])
   }
+  const anyInvalidField: boolean = Object.values(formData).some(
+    field => (field.required && !field.value) || field.error !== null
+  )
 
   const handleUpdateContractName = () => {
     const updatedContract: UpdateDeployment = {
@@ -111,11 +107,24 @@ export default function ContractDetail({
                 id="edit-contract-address"
                 sx={{
                   marginLeft: '0.5rem',
-                  color: 'white'
+                  color: 'green'
                 }}
                 title="Save"
                 Icon={CheckIcon}
                 onClick={handleUpdateContractName}
+                disabled={anyInvalidField}
+              ></DefaultToolTipButton>
+              <DefaultToolTipButton
+                id={`cancel-contract-name${takeLastChars(userContract.uuid)}`}
+                sx={{ color: 'tomato' }}
+                title="Cancel"
+                Icon={CancelIcon}
+                onClick={event =>
+                  stopPropagation(event, () => {
+                    formData.contractName.setValue(userContract.name)
+                    setIsNameEditable(!isNameEditable)
+                  })
+                }
               ></DefaultToolTipButton>
             </>
           ) : (
