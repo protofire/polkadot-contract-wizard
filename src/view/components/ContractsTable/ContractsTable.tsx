@@ -214,11 +214,11 @@ function ContractTableRow({
           </Typography>
         </Tooltip>
       </TableCell>
-      <TableCell align="right">
+      <TableCell>
         <Box display="flex">
           <DefaultToolTipButton
             id={`share-contract-${takeLastChars(contract.uuid)}`}
-            sx={{ marginLeft: '0.5rem', color: 'white' }}
+            sx={{ color: 'white' }}
             title="Share"
             Icon={ShareIcon}
             onClick={event =>
@@ -281,7 +281,7 @@ export function ContractsTable({
               <TableCell>
                 <Typography variant="caption">ADDED ON</Typography>
               </TableCell>
-              <TableCell align="right">
+              <TableCell>
                 <Typography variant="caption">ACTIONS</Typography>
               </TableCell>
             </TableRow>
