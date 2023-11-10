@@ -9,6 +9,7 @@ import GithubIcon from '@mui/icons-material/GitHub'
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
 import OpenInNewOutlinedIcon from '@mui/icons-material/OpenInNewOutlined'
 import { ROUTES } from '@/constants/routes'
+import { DOCUMENTATION_URL } from '@/constants'
 
 interface Props {
   version: string
@@ -41,7 +42,7 @@ const DrawerContent = ({ version, backendApiVersion }: Props) => {
       >
         <Typography variant="h5" mb={4}>
           <Link
-            href={ROUTES.DOCUMENTATION}
+            href={DOCUMENTATION_URL}
             underline="hover"
             target="_blank"
             rel="noopener noreferrer"

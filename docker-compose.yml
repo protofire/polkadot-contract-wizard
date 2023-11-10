@@ -34,6 +34,7 @@ services:
       - ${BACKEND_EXTERNAL_PORT}:8000
     environment:
       - MONGOURI=mongodb://mongodb:27017
+      - NEXT_PUBLIC_DOCUMENTATION_URL=http://localhost:${DOC_EXTERNAL_PORT}
     networks:
       - polkadot-wizard
     depends_on:
@@ -47,5 +48,14 @@ services:
         options:
             max-size: 1g
     image: mongo:5.0.16
+    networks:
+      - polkadot-wizard
+  doc:
+    container_name: ${CONTAINER_BASE}_doc
+    build:
+      context: ./cw_docs
+      dockerfile: ./Dockerfile
+    ports:
+      - ${DOC_EXTERNAL_PORT}:3000
     networks:
       - polkadot-wizard
