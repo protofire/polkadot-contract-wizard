@@ -63,44 +63,6 @@ export const NetworkAccountsContext = createContext<NetworkContextProps>({
   disconnectWallet: () => createNotImplementedWarning('disconnectWallet')
 })
 
-// const connectApi = async (
-//   state: NetworkAccountsContextState,
-//   updateState: React.Dispatch<
-//     React.SetStateAction<NetworkAccountsContextState>
-//   >,
-//   wallet: Wallet
-// ) => {
-//   if (state.accountStatus !== 'DISCONNECTED') return
-//   const defaultRpc = getChain(state.currentChain)?.rpcs[0]
-//   console.log(defaultRpc)
-//   console.info(`Connecting socket: ${DAPP_CONFIG.providerSocket}`)
-//   const provider = new WsProvider(DAPP_CONFIG.providerSocket)
-//   const _api = new ApiPromise({ provider, rpc: jsonrpc })
-
-//   _api.on('connected', () => {
-//     updateState(prev => ({ ...prev, api: _api }))
-//     _api.isReady.then(async _api => {
-//       const chainInfo = await getChainInfo(_api)
-//       const accounts = await wallet.getAccounts()
-//       updateState(prev => ({
-//         ...prev,
-//         accountStatus: 'CONNECTED',
-//         // Select the fist account from the wallet by default
-//         currentAccount: accounts[0].address,
-//         walletKey: wallet.extensionName,
-//         api: _api,
-//         chainInfo
-//       }))
-//     })
-//   })
-//   _api.on('ready', () =>
-//     updateState(prev => ({ ...prev, accountStatus: 'CONNECTED' }))
-//   )
-//   _api.on('error', err =>
-//     updateState(prev => ({ ...prev, accountStatus: 'ERROR', apiError: err }))
-//   )
-// }
-
 export function NetworkAccountsContextProvider({
   children
 }: {

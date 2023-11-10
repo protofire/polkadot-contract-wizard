@@ -6,7 +6,11 @@ import SimpleAccordion from '@/components/Accordion'
 import { groupAndSortAbiMessages } from './groupAndSortAbiMessages'
 import { useContractPromiseFromSource } from '@/hooks/useContractPromise'
 import { FallbackSpinner } from '@/components/FallbackSpinner'
-import { AbiMessage, Registry } from '@/services/substrate/types'
+import {
+  AbiMessage,
+  ContractPromise,
+  Registry
+} from '@/services/substrate/types'
 import { ContractInteractionForm } from './ContractInteractionForm'
 
 type ContractTabType = 'Read Contract' | 'Write Contract'
@@ -24,7 +28,8 @@ interface AccordionElement {
 
 function getElements(
   abiMessages: AbiMessage[],
-  substrateRegistry: Registry
+  substrateRegistry: Registry,
+  contractPromise: ContractPromise
 ): AccordionElement[] {
   return abiMessages.map(msg => ({
     title: msg.method,
@@ -32,6 +37,7 @@ function getElements(
       <ContractInteractionForm
         abiMessage={msg}
         substrateRegistry={substrateRegistry}
+        contractPromise={contractPromise}
       />
     ),
     id: msg.identifier
@@ -59,7 +65,7 @@ export function ContractsTabInteraction({ userContract }: Props) {
           mt: '3rem',
           justifyContent: 'start'
         }}
-        text="Getting the metadata interface (ABI) to interact with the Smart Contract"
+        text="Getting the connected network API..."
       />
     )
   }
@@ -71,7 +77,7 @@ export function ContractsTabInteraction({ userContract }: Props) {
           mt: '3rem',
           justifyContent: 'start'
         }}
-        text="Getting the methods of the Smart Contract"
+        text="Getting the metadata interface (ABI) to interact with the Smart Contract"
       />
     )
   }
@@ -113,11 +119,13 @@ export function ContractsTabInteraction({ userContract }: Props) {
                 isReadContract
                   ? getElements(
                       sortedAbiMessages.nonMutating,
-                      contractPromise.abi.registry
+                      contractPromise.abi.registry,
+                      contractPromise.contractPromise
                     )
                   : getElements(
                       sortedAbiMessages.mutating,
-                      contractPromise.abi.registry
+                      contractPromise.abi.registry,
+                      contractPromise.contractPromise
                     )
               }
             />
