@@ -7,7 +7,8 @@ import {
   TableRow,
   Stack,
   Typography,
-  Tooltip
+  Tooltip,
+  Box
 } from '@mui/material'
 
 import {
@@ -214,35 +215,37 @@ function ContractTableRow({
         </Tooltip>
       </TableCell>
       <TableCell align="right">
-        <DefaultToolTipButton
-          id={`share-contract-${takeLastChars(contract.uuid)}`}
-          sx={{ marginLeft: '0.5rem', color: 'white' }}
-          title="Share"
-          Icon={ShareIcon}
-          onClick={event =>
-            stopPropagation(event, () => setOpenShareModal(true))
-          }
-        ></DefaultToolTipButton>
-        <DefaultToolTipButton
-          id={`hide-contract-${takeLastChars(contract.uuid)}`}
-          sx={{ marginLeft: '0.5rem', color: 'white' }}
-          title="Delete"
-          Icon={DeleteIcon}
-          onClick={event =>
-            stopPropagation(event, () => setOpenDeleteModal(true))
-          }
-        ></DefaultToolTipButton>
-        <DefaultToolTipButton
-          id={`download-metadata-${takeLastChars(contract.uuid)}`}
-          sx={{ marginLeft: '0.5rem', color: 'white' }}
-          ref={refButton}
-          disabled={isDownloading}
-          Icon={isDownloading ? HourglassBottomIcon : FileDownloadIcon}
-          title={isDownloading ? '' : 'download .json'}
-          onClick={event =>
-            stopPropagation(event, () => onDownloadMeta(contract))
-          }
-        ></DefaultToolTipButton>
+        <Box display="flex">
+          <DefaultToolTipButton
+            id={`share-contract-${takeLastChars(contract.uuid)}`}
+            sx={{ marginLeft: '0.5rem', color: 'white' }}
+            title="Share"
+            Icon={ShareIcon}
+            onClick={event =>
+              stopPropagation(event, () => setOpenShareModal(true))
+            }
+          ></DefaultToolTipButton>
+          <DefaultToolTipButton
+            id={`hide-contract-${takeLastChars(contract.uuid)}`}
+            sx={{ marginLeft: '0.5rem', color: 'white' }}
+            title="Delete"
+            Icon={DeleteIcon}
+            onClick={event =>
+              stopPropagation(event, () => setOpenDeleteModal(true))
+            }
+          ></DefaultToolTipButton>
+          <DefaultToolTipButton
+            id={`download-metadata-${takeLastChars(contract.uuid)}`}
+            sx={{ marginLeft: '0.5rem', color: 'white' }}
+            ref={refButton}
+            disabled={isDownloading}
+            Icon={isDownloading ? HourglassBottomIcon : FileDownloadIcon}
+            title={isDownloading ? '' : 'download .json'}
+            onClick={event =>
+              stopPropagation(event, () => onDownloadMeta(contract))
+            }
+          ></DefaultToolTipButton>
+        </Box>
       </TableCell>
     </TableRowStyled>
   )
