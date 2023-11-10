@@ -6,16 +6,27 @@ import {
   SelectChangeEvent,
   Stack,
   styled,
-  Avatar
+  Avatar,
+  Box
 } from '@mui/material'
-import { CHAINS_ALLOWED, getChain } from '@/constants/chains'
+import {
+  CHAINS_ALLOWED,
+  OPTION_FOR_CUSTOM_NETWORK,
+  UNKNOWN_CHAIN,
+  getChain
+} from '@/constants/chains'
 import { ChainId } from '@/services/useink/chains/types'
 import ConfirmationDialog from '../ConfirmationDialog'
 import { useModalBehaviour } from '@/hooks/useModalBehaviour'
 import { useCompareCurrentPath } from '@/hooks/useCompareCurrentPath'
 import { ROUTES } from '@/constants'
 import { useEffect, useState } from 'react'
-import { useRouter } from 'next/router'
+import AddIcon from '@mui/icons-material/Add'
+import ModalView from '../ModalView'
+import { useFormInput } from '@/hooks'
+import { notEmpty } from '@/utils/inputValidation'
+import { onlyAddress } from '@/utils/blockchain'
+import { StyledTextField } from '../Input'
 
 const StyledSelect = styled(Select)<SelectProps>(() => ({
   color: 'white',
@@ -66,24 +77,39 @@ export function NetworkSelect({
   onChange: (chain: ChainId) => void
 }) {
   const chain = getChain(currentChain)
+  const {
+    closeModal: closeDialog,
+    isOpen: isOpenDialog,
+    openModal: openDialog
+  } = useModalBehaviour()
   const { closeModal, isOpen, openModal } = useModalBehaviour()
   const { isEqual: isCurrentPathHome } = useCompareCurrentPath(ROUTES.HOME)
   const [newChainId, setNewChainId] = useState(currentChain)
-  const router = useRouter()
 
   useEffect(() => {
     setNewChainId(currentChain)
   }, [currentChain])
 
   const _handleChangeChain = (event: SelectChangeEvent<unknown>) => {
+    console.log('event', event.target.value)
+    if (event.target.value === OPTION_FOR_CUSTOM_NETWORK) {
+      openModal()
+      return
+    }
+    console.log('pase')
     const chainId = event.target.value as ChainId
     setNewChainId(chainId)
 
     if (isCurrentPathHome) {
       onChange(chainId)
     } else {
-      openModal()
+      openDialog()
     }
+  }
+
+  const formData = {
+    name: useFormInput<string>('', [notEmpty]),
+    rpc: useFormInput<string>('', [notEmpty])
   }
 
   return (
@@ -108,10 +134,23 @@ export function NetworkSelect({
             </Stack>
           </StyledMenuItem>
         ))}
+        <StyledMenuItem
+          sx={{ color: 'white' }}
+          selected={chain.name === OPTION_FOR_CUSTOM_NETWORK}
+          key={UNKNOWN_CHAIN.id}
+          value={OPTION_FOR_CUSTOM_NETWORK}
+        >
+          <Stack sx={{ display: 'flex', flexDirection: 'row' }}>
+            <AddIcon sx={{ marginTop: '8px', fontSize: '1.4rem' }} />
+            <Stack>
+              <p> Add chain </p>
+            </Stack>
+          </Stack>
+        </StyledMenuItem>
       </StyledSelect>
       <ConfirmationDialog
-        open={isOpen}
-        onClose={closeModal}
+        open={isOpenDialog}
+        onClose={closeDialog}
         title="Change Network confirmation"
         message="Are you sure you want to change the network?"
         onConfirm={() => {
@@ -119,6 +158,40 @@ export function NetworkSelect({
           onChange(newChainId)
         }}
       />
+      <ModalView
+        open={isOpen}
+        onClose={closeModal}
+        title="Add Network"
+        subTitle="Add network details"
+      >
+        <Box
+          sx={{
+            margin: '2rem 0rem',
+            display: 'flex',
+            flexDirection: 'column'
+          }}
+        >
+          <StyledTextField
+            sx={{ marginBottom: '2rem' }}
+            label="Network Name"
+            placeholder="502d1..."
+            value={formData.name.value}
+            onChange={formData.name.onChange}
+            error={Boolean(formData.name.error)}
+            helperText={formData.name.error ? formData.name.error : ''}
+            loading={formData.name.loading}
+            autoFocus
+          />
+          <StyledTextField
+            label="Rpc url"
+            placeholder="My imported contract"
+            value={formData.rpc.value}
+            onChange={formData.rpc.onChange}
+            error={Boolean(formData.rpc.error)}
+            helperText={formData.rpc.error ? formData.rpc.error : ''}
+          />
+        </Box>
+      </ModalView>
     </>
   )
 }

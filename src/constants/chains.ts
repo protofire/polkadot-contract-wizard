@@ -10,6 +10,7 @@ import { ArrayOneOrMore, ChainExtended } from '@/types'
 import { CHAINS_IMG_PATH } from './images'
 
 export const DEFAULT_DECIMALS = 12
+export const OPTION_FOR_CUSTOM_NETWORK = 'custom'
 
 export const CHAINS: ArrayOneOrMore<Chain> = [
   Astar,
@@ -17,7 +18,6 @@ export const CHAINS: ArrayOneOrMore<Chain> = [
   ShidenKusama,
   RococoContractsTestnet
 ]
-
 export const CHAINS_ALLOWED: ChainExtended[] = CHAINS.map(chain => {
   return {
     ...chain,

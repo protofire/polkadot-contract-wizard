@@ -106,7 +106,6 @@ export function DeleteContractModal({ open, handleClose, contract }: Props) {
         >
           <CloseIcon />
         </IconButton>
-        <Box></Box>
       </ModalStyled>
     </Modal>
   )

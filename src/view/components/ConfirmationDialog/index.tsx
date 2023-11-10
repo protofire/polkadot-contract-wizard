@@ -8,7 +8,6 @@ import {
   Typography,
   Box
 } from '@mui/material'
-import { title } from 'process'
 
 const style = {
   backgroundColor: 'background.paper'
