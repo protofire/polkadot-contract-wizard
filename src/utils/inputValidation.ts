@@ -24,3 +24,9 @@ export function maxAllowed(value: unknown, max = 64): string | void {
   if (typeof _value !== 'number' || isNaN(_value) || _value > max)
     return `The number can not be greater than ${max}`
 }
+
+export function maxLength(value: unknown, max = 20): string | void {
+  if (typeof value !== 'string' || value.length > max) {
+    return `The field only accepts 20 letters`
+  }
+}
