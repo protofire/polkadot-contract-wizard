@@ -29,7 +29,6 @@ export interface NetworkAccountsContextState {
   accountStatus: NetworkState
   currentWallet?: WalletState
   allWallets?: Wallet[]
-  currentChain?: ChainId
   walletKey?: WalletKeys
   accounts?: WalletAccount[]
 }

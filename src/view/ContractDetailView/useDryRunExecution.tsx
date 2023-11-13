@@ -1,12 +1,15 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import { AbiMessage, ContractPromise } from '@/services/substrate/types'
 import { useGetDryRun } from '@/hooks/useGetDryRun'
 import { useDebouncedEffect } from '@/hooks/useDebouncedEffect'
+import { MySkeleton } from '../components/MySkeleton'
+import { pickDecodedError } from '@/services/useink/utils/pickDecodedError'
 
 interface UseDryRunExecutionProps {
   contractPromise: ContractPromise
   message: AbiMessage
   params: unknown[] | undefined
+  autoRun: boolean
 }
 
 interface DryRunExecutionResult {
@@ -18,26 +21,32 @@ interface DryRunExecutionResult {
 export function useDryRunExecution({
   contractPromise,
   message,
-  params
+  params,
+  autoRun = false
 }: UseDryRunExecutionProps): DryRunExecutionResult {
   const dryRun = useGetDryRun(contractPromise, message.method)
   const [outcome, setOutcome] = useState<string>('No results yet...')
+  const memoizedParams = useMemo(() => params, [params])
 
-  console.log('__dryRun', dryRun)
   const executeDryRun = useCallback(async () => {
-    const result = await dryRun.send(params)
-    console.log('__result', result)
-
+    const result = await dryRun.send(memoizedParams)
+    console.log('__dryRun', dryRun)
     if (result?.ok) {
       setOutcome(
         `Contract call will be successful executed with ${result.value.partialFee.toString()} fee`
       )
     } else {
+      // pickDecodedError(result, cRococoContract, {}, '--')
       setOutcome('Contract will be reverted')
     }
-  }, [dryRun, params])
+  }, [dryRun, memoizedParams])
 
-  // useDebouncedEffect(executeDryRun, 0, [message, params])
+  useDebouncedEffect({
+    effect: executeDryRun,
+    delay: 300,
+    deps: [message, params],
+    autoRun: autoRun
+  })
 
   return {
     outcome,

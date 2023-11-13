@@ -7,12 +7,10 @@ export function useGetDryRun(
   contract: ContractPromise | undefined,
   messageName: string
 ) {
-  const {
-    state: { currentChain }
-  } = useNetworkAccountsContext()
+  const { networkConnected } = useNetworkAccountsContext()
   const genericDryRun = useDryRun(
-    contract && currentChain && { contract, chainId: currentChain },
-    messageName || ''
+    contract && { contract, chainId: networkConnected },
+    messageName
   )
 
   return genericDryRun

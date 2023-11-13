@@ -1,20 +1,22 @@
 import { Box, Typography } from '@mui/material'
 import React, { useMemo } from 'react'
-import { UserContractDetailsWithAbi } from '@/domain'
+import { ContractTabType, UserContractDetailsWithAbi } from '@/domain'
 import BasicTabs from '@/components/Tabs'
 import SimpleAccordion from '@/components/Accordion'
-import { groupAndSortAbiMessages } from './groupAndSortAbiMessages'
+import {
+  GroupedAbiMessages,
+  groupAndSortAbiMessages
+} from './groupAndSortAbiMessages'
 import { useContractPromiseFromSource } from '@/hooks/useContractPromise'
 import { FallbackSpinner } from '@/components/FallbackSpinner'
-import {
-  AbiMessage,
-  ContractPromise,
-  Registry
-} from '@/services/substrate/types'
-import { ContractInteractionForm } from './ContractInteractionForm'
+import { ContractPromise, Registry } from '@/services/substrate/types'
+import { ContractInteractionForm } from './ContractInteractionForm.'
 
-type ContractTabType = 'Read Contract' | 'Write Contract'
 const types: ContractTabType[] = ['Read Contract', 'Write Contract']
+const groupedIndex: Record<ContractTabType, keyof GroupedAbiMessages> = {
+  'Read Contract': 'nonMutating',
+  'Write Contract': 'mutating'
+}
 
 interface Props {
   userContract: UserContractDetailsWithAbi
@@ -27,17 +29,21 @@ interface AccordionElement {
 }
 
 function getElements(
-  abiMessages: AbiMessage[],
+  abiMessages: GroupedAbiMessages,
   substrateRegistry: Registry,
-  contractPromise: ContractPromise
+  contractPromise: ContractPromise,
+  type: ContractTabType
 ): AccordionElement[] {
-  return abiMessages.map(msg => ({
+  const group = abiMessages[groupedIndex[type]]
+
+  return group.map(msg => ({
     title: msg.method,
     content: (
       <ContractInteractionForm
         abiMessage={msg}
         substrateRegistry={substrateRegistry}
         contractPromise={contractPromise}
+        type={type}
       />
     ),
     id: msg.identifier
@@ -118,14 +124,16 @@ export function ContractsTabInteraction({ userContract }: Props) {
               elements={
                 isReadContract
                   ? getElements(
-                      sortedAbiMessages.nonMutating,
+                      sortedAbiMessages,
                       contractPromise.abi.registry,
-                      contractPromise.contractPromise
+                      contractPromise.contractPromise,
+                      types[0]
                     )
                   : getElements(
-                      sortedAbiMessages.mutating,
+                      sortedAbiMessages,
                       contractPromise.abi.registry,
-                      contractPromise.contractPromise
+                      contractPromise.contractPromise,
+                      types[1]
                     )
               }
             />

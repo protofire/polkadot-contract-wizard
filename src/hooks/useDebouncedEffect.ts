@@ -2,6 +2,13 @@ import { useEffect, useRef, useState } from 'react'
 
 type AsyncFunction = (...args: unknown[]) => Promise<void>
 
+interface UseDebouncedEffectProps {
+  effect: AsyncFunction
+  delay: number // milliseconds
+  deps: unknown[]
+  autoRun?: boolean
+}
+
 /**
  * Executes a provided asynchronous function after a specified delay,
  * but only if the dependencies have changed. This is useful for
@@ -20,22 +27,27 @@ type AsyncFunction = (...args: unknown[]) => Promise<void>
  *
  * @returns {void}
  */
-export function useDebouncedEffect(
-  effect: AsyncFunction,
-  delay: number, // milliseconds
-  deps: unknown[]
-): void {
+export function useDebouncedEffect({
+  effect,
+  delay,
+  deps,
+  autoRun = true
+}: UseDebouncedEffectProps): void {
   const callback = useRef(effect)
   const [counter, setCounter] = useState(0)
 
   // Remember the latest effect
   useEffect(() => {
-    callback.current = effect
-  }, [effect])
+    if (autoRun) {
+      callback.current = effect
+    }
+  }, [autoRun, effect])
 
   // Increment counter when dependencies change.
   useEffect(() => {
-    setCounter(prevCounter => prevCounter + 1)
+    if (autoRun) {
+      setCounter(prevCounter => prevCounter + 1)
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, deps)
 
