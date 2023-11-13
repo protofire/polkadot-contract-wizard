@@ -12,6 +12,7 @@ type ReturnChainId = ChainId
 
 export class LocalStorageNetworkRepository implements INetworkRepository {
   private readonly storageKey = 'networkSelected'
+  private readonly customChainKey = 'customChain'
 
   getNetworkSelected(): ChainExtended {
     const result = getLocalStorageState<ReturnChainId | null>(
@@ -20,6 +21,19 @@ export class LocalStorageNetworkRepository implements INetworkRepository {
     ) as ChainId
 
     return getChain(result) as ChainExtended
+  }
+
+  getCustomChain(): ChainExtended {
+    const result = getLocalStorageState(
+      this.customChainKey,
+      DEFAULT_CHAIN
+    ) as ChainId
+
+    return getChain(result) as ChainExtended
+  }
+
+  setCustomChain(chain: ChainExtended): void {
+    setLocalStorageState(this.customChainKey, JSON.stringify(chain))
   }
 
   setNetworkSelected(networkId: ReturnChainId): void {

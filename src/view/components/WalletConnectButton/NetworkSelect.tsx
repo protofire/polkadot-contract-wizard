@@ -11,8 +11,9 @@ import {
 } from '@mui/material'
 import {
   CHAINS_ALLOWED,
+  OPTION_FOR_ADD_CUSTOM_NETWORK,
   OPTION_FOR_CUSTOM_NETWORK,
-  UNKNOWN_CHAIN,
+  OPTION_FOR_EDIT_CUSTOM_NETWORK,
   addNewChain,
   createIChainWithRPCAndSave,
   getChain
@@ -24,6 +25,7 @@ import { useCompareCurrentPath } from '@/hooks/useCompareCurrentPath'
 import { ROUTES } from '@/constants'
 import { useEffect, useState } from 'react'
 import AddIcon from '@mui/icons-material/Add'
+import EditIcon from '@mui/icons-material/Edit'
 import ModalView from '../ModalView'
 import { useFormInput } from '@/hooks'
 import { notEmpty } from '@/utils/inputValidation'
@@ -74,10 +76,12 @@ const StyledMenuItem = styled(MenuItem)<MenuItemProps>(() => ({
 
 export function NetworkSelect({
   currentChain,
-  onChange
+  onChange,
+  setCustomChain
 }: {
   currentChain: ChainId
   onChange: (chain: ChainId) => void
+  setCustomChain: (chain: ChainExtended) => void
 }) {
   const chain = getChain(currentChain)
   const {
@@ -88,25 +92,28 @@ export function NetworkSelect({
   const { closeModal, isOpen, openModal } = useModalBehaviour()
   const { isEqual: isCurrentPathHome } = useCompareCurrentPath(ROUTES.HOME)
   const [newChainId, setNewChainId] = useState(currentChain)
+  const [editNetwork, setEditNetwork] = useState(false)
+
+  if (chain.id === 'custom' && CHAINS_ALLOWED.length <= 4) {
+    CHAINS_ALLOWED.push(chain)
+  }
 
   const [chains, setChains] = useState<ChainExtended[]>(CHAINS_ALLOWED)
-
-  // useEffect(() => {
-  //   setNewChainId(chains)
-  // }, [chains])
 
   useEffect(() => {
     setNewChainId(currentChain)
   }, [currentChain])
 
   const _handleChangeChain = (event: SelectChangeEvent<unknown>) => {
-    if (event.target.value === OPTION_FOR_CUSTOM_NETWORK) {
+    const chainId = event.target.value as ChainId
+
+    if (
+      event.target.value === OPTION_FOR_ADD_CUSTOM_NETWORK ||
+      OPTION_FOR_EDIT_CUSTOM_NETWORK
+    ) {
       openModal()
       return
     }
-    const chainId = event.target.value as ChainId
-    setNewChainId(chainId)
-
     if (isCurrentPathHome) {
       onChange(chainId)
     } else {
@@ -116,69 +123,73 @@ export function NetworkSelect({
 
   const formData = {
     name: useFormInput<string>('test', [notEmpty]),
-    // rpc: useFormInput<string>('ws://127.0.0.1:9944', [notEmpty, validWslUrl])
-    rpc: useFormInput<RpcUrl>('wss://rococo-contracts-rpc.polkadot.io', [
-      notEmpty
-    ])
+    rpc: useFormInput<RpcUrl>('wss://rpc.shibuya.astar.network', [notEmpty])
   }
 
   const anyInvalidField: boolean = Object.values(formData).some(
     field => (field.required && !field.value) || field.error !== null
   )
 
-  const addCustomNetwork = async () => {
-    const chain = createIChainWithRPCAndSave(formData.rpc.value)
-    const newChainList = addNewChain(chain)
-    setChains(newChainList)
-    closeModal()
-    return undefined
+  const _resetModalInputs = () => {
+    formData.name.setValue('')
+    formData.rpc.setValue('' as RpcUrl)
   }
 
+  const addCustomNetwork = async () => {
+    _resetModalInputs()
+    const customChain = createIChainWithRPCAndSave(formData.rpc.value)
+    const newChainList = addNewChain(customChain)
+    setCustomChain(customChain)
+    setChains(newChainList)
+    closeModal()
+  }
+
+  const customExist = chains.some(
+    element => element.id === OPTION_FOR_CUSTOM_NETWORK
+  )
   return (
     <>
       <StyledSelect
         placeholder="Select Network..."
-        value={chain.id}
+        value={chain?.id}
         onChange={_handleChangeChain}
       >
         {chains.map(option => (
           <StyledMenuItem
             sx={{ color: 'white' }}
-            selected={chain.name === option.name}
+            selected={chain?.name === option.name}
             key={option.id}
             value={option.id}
           >
             <Stack sx={{ display: 'flex', flexDirection: 'row' }}>
-              <Avatar src={option.logo.src} alt={option.logo.alt} />{' '}
+              <Avatar src={option?.logo?.src} alt={option.logo?.alt} />{' '}
               <Stack>
                 <p>{option.name}</p>
               </Stack>
             </Stack>
           </StyledMenuItem>
         ))}
-        {chains.length === 4 ? (
+        {customExist ? (
           <StyledMenuItem
             sx={{ color: 'white' }}
-            selected={chain.name === OPTION_FOR_CUSTOM_NETWORK}
-            key={UNKNOWN_CHAIN.id}
-            value={OPTION_FOR_CUSTOM_NETWORK}
+            key={OPTION_FOR_EDIT_CUSTOM_NETWORK}
+            value={OPTION_FOR_EDIT_CUSTOM_NETWORK}
           >
             <Stack sx={{ display: 'flex', flexDirection: 'row' }}>
-              <AddIcon sx={{ marginTop: '8px', fontSize: '1.4rem' }} />
-              <Stack>
-                <p> Add chain </p>
-              </Stack>
+              <EditIcon sx={{ marginTop: '8px', fontSize: '1.4rem' }} />
+              <p> Edit Chain </p>
             </Stack>
           </StyledMenuItem>
         ) : (
           <StyledMenuItem
             sx={{ color: 'white' }}
-            selected={chain.name === 'edit'}
-            key={UNKNOWN_CHAIN.id}
-            value={OPTION_FOR_CUSTOM_NETWORK}
+            selected={chain?.name === OPTION_FOR_ADD_CUSTOM_NETWORK}
+            key={OPTION_FOR_CUSTOM_NETWORK}
+            value={OPTION_FOR_ADD_CUSTOM_NETWORK}
           >
             <Stack sx={{ display: 'flex', flexDirection: 'row' }}>
-              <p> Edit Chain </p>
+              <AddIcon sx={{ marginTop: '8px', fontSize: '1.4rem' }} />
+              <p> Add chain </p>
             </Stack>
           </StyledMenuItem>
         )}
@@ -190,6 +201,7 @@ export function NetworkSelect({
         message="Are you sure you want to change the network?"
         onConfirm={() => {
           closeModal()
+          setEditNetwork(true)
           onChange(newChainId)
         }}
       />
@@ -197,8 +209,8 @@ export function NetworkSelect({
         open={isOpen}
         onClose={closeModal}
         onFunction={addCustomNetwork}
-        title="Add Network"
-        subTitle="Add network details"
+        title={`${editNetwork ? 'Add ' : 'Edit'} network`}
+        subTitle={`${editNetwork ? 'Add ' : 'Edit'} network details`}
         okBtn={{ text: 'Add', validation: anyInvalidField }}
       >
         <Box
@@ -221,7 +233,7 @@ export function NetworkSelect({
           />
           <StyledTextField
             label="Rpc url"
-            placeholder="My imported contract"
+            placeholder="wss://"
             value={formData.rpc.value}
             onChange={formData.rpc.onChange}
             error={Boolean(formData.rpc.error)}

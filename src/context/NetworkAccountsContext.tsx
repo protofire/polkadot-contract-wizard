@@ -17,6 +17,8 @@ import { useLocalDbContext } from './LocalDbContext'
 import { ChainId } from '@/services/useink/chains'
 import { createNotImplementedWarning } from '@/utils/error'
 import { WalletConnectionEvents } from '@/domain'
+import { OPTION_FOR_CUSTOM_NETWORK } from '@/constants/chains'
+import { ChainExtended } from '@/types'
 
 type NetworkState = 'DISCONNECTED' | 'CONNECTING' | 'CONNECTED' | 'ERROR'
 export const OPTION_FOR_DISCONNECTING = 'disconnect'
@@ -47,6 +49,7 @@ interface NetworkContextProps {
   setCurrentAccount: (account: WalletAccount) => void
   setCurrentWallet: (wallet: Wallet) => void
   setCurrentChain: (chain: ChainId) => void
+  setCustomChain: (chain: ChainExtended) => void
   connect: (walletName: string) => void
   disconnectWallet: () => void
 }
@@ -59,6 +62,7 @@ export const NetworkAccountsContext = createContext<NetworkContextProps>({
   setCurrentAccount: () => createNotImplementedWarning('setCurrentAccount'),
   setCurrentWallet: () => createNotImplementedWarning('setCurrentWallet'),
   setCurrentChain: () => createNotImplementedWarning('setCurrentChain'),
+  setCustomChain: () => createNotImplementedWarning('setCustomChain'),
   connect: () => createNotImplementedWarning('connect'),
   disconnectWallet: () => createNotImplementedWarning('disconnectWallet')
 })
@@ -114,8 +118,10 @@ export function NetworkAccountsContextProvider({
   const [networkId, setNetworkId] = useState<ChainId>(DEFAULT_CHAIN)
 
   const loadNetworkConnected = useCallback(() => {
-    const networkSelected = networkRepository.getNetworkSelected()
-
+    let networkSelected = networkRepository.getNetworkSelected()
+    if (networkSelected.id === OPTION_FOR_CUSTOM_NETWORK) {
+      networkSelected = networkRepository.getCustomChain()
+    }
     setNetworkId(networkSelected.id)
   }, [networkRepository])
 
@@ -161,6 +167,16 @@ export function NetworkAccountsContextProvider({
     [networkRepository]
   )
 
+  const setCustomChain = useCallback(
+    async (chain: ChainExtended) => {
+      networkRepository.setCustomChain(chain)
+      document.dispatchEvent(
+        new CustomEvent(WalletConnectionEvents.networkChanged)
+      )
+    },
+    [networkRepository]
+  )
+
   return (
     <NetworkAccountsContext.Provider
       value={{
@@ -171,6 +187,7 @@ export function NetworkAccountsContextProvider({
         setCurrentAccount: _setAccount,
         setCurrentWallet,
         setCurrentChain,
+        setCustomChain,
         disconnectWallet: disconnect,
         connect
       }}
