@@ -83,3 +83,7 @@ export function getBackendApiConfig(basePath: string): BackendApiConfig {
 export const apiBaseUrlPath = `/api`
 
 export const BACKEND_API = getBackendApiConfig(apiBaseUrlPath)
+
+export const DOCUMENTATION_URL =
+  process.env.NEXT_PUBLIC_DOCUMENTATION_URL ||
+  'https://contractwizard-docs.vercel.app/'
