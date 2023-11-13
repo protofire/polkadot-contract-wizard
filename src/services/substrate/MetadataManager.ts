@@ -35,6 +35,7 @@ export class MetadataManager {
    *   apiPromise
    * );
    */
+
   deriveFromJson(
     options: DeriveOptions,
     source?: Record<string, unknown>,

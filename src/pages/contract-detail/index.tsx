@@ -5,6 +5,7 @@ import { useModalBehaviour } from '@/hooks/useModalBehaviour'
 import { useRouter } from 'next/router'
 import { useFindUserContract } from '@/hooks/userContracts/useFindUserContract'
 import { useHasMounted } from '@/hooks/useHasMounted'
+import { useDownloadMetadata } from '@/view/components/ContractsTable/useDownloadMetadata'
 
 export default function CustomContractDetailPage() {
   const router = useRouter()
@@ -12,6 +13,7 @@ export default function CustomContractDetailPage() {
   const { userContract, requested, isLoading } = useFindUserContract(
     uuid as string
   )
+  const { onDownloadSource } = useDownloadMetadata(userContract)
   const modalBehaviour = useModalBehaviour()
   const hasMounted = useHasMounted()
 
@@ -29,6 +31,7 @@ export default function CustomContractDetailPage() {
       {userContract && (
         <ContractDetail
           modalBehaviour={modalBehaviour}
+          onDownloadSource={onDownloadSource}
           userContract={userContract}
         />
       )}
