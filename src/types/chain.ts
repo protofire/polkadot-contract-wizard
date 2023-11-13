@@ -1,8 +1,8 @@
-import { Chain, ProductionChainId } from '@/services/useink/chains'
+import { IChain } from '@/services/useink/chains/data/types'
 import { ChainId } from 'useink/dist/chains'
 
-export type ChainExtended = Chain & {
-  id: ChainId | 'custom'
+export type ChainExtended = IChain<string> & {
+  id: unknown
   logo: {
     src: string
     alt: string

@@ -2,11 +2,6 @@ import React, { ReactNode } from 'react'
 import { Button, Typography, Box, Modal, IconButton } from '@mui/material'
 import { ModalStyled, ModalTypography } from './styled'
 import CloseIcon from '@mui/icons-material/Close'
-
-const style = {
-  backgroundColor: 'background.paper'
-}
-
 interface ModalViewProps {
   open: boolean
   onClose: () => void
@@ -14,7 +9,7 @@ interface ModalViewProps {
   message?: string
   title?: string
   subTitle?: string
-  okBtn?: string
+  okBtn?: { text: string; validation: boolean }
   children: ReactNode
 }
 
@@ -28,7 +23,7 @@ function ModalView({
   onFunction,
   title = MODAL_TITLE,
   subTitle = MODAL_SUBTITLE,
-  okBtn = OK_BTN,
+  okBtn = { text: OK_BTN, validation: false },
   children
 }: ModalViewProps) {
   return (
@@ -68,8 +63,9 @@ function ModalView({
             variant="contained"
             sx={{ borderRadius: '20px', maxHeight: '3rem' }}
             onClick={onFunction}
+            disabled={okBtn.validation}
           >
-            {okBtn}
+            {okBtn.text}
           </Button>
         </Box>
 
