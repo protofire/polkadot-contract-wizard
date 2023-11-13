@@ -1,7 +1,5 @@
-import Box from '@mui/material/Box'
-import Tab from '@mui/material/Tab'
-import Tabs from '@mui/material/Tabs'
 import * as React from 'react'
+import { Box, Typography, Tab, Tabs } from '@mui/material'
 import { StyledTabsContainer } from './styled'
 
 interface TabPanelProps {
@@ -51,7 +49,11 @@ export default function BasicTabs(props: BasicTabsProps) {
     <StyledTabsContainer>
       <Tabs value={value} onChange={handleChange}>
         {props.options.map((option, index) => (
-          <Tab key={option} label={option} {...a11yProps(index)} />
+          <Tab
+            key={option}
+            label={<Typography variant="h5">{option}</Typography>}
+            {...a11yProps(index)}
+          />
         ))}
       </Tabs>
       <CustomTabPanel value={value} index={value}>
