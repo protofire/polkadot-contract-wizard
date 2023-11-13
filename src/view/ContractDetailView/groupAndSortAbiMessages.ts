@@ -1,5 +1,10 @@
 import { AbiMessage } from '@/services/substrate/types'
 
+export interface GroupedAbiMessages {
+  nonMutating: AbiMessage[]
+  mutating: AbiMessage[]
+}
+
 export function groupAndSortAbiMessages(
   abiMessages: AbiMessage[] | undefined
 ): { mutating: AbiMessage[]; nonMutating: AbiMessage[] } {
@@ -13,7 +18,7 @@ export function groupAndSortAbiMessages(
     .sort((a, b) => a.method.localeCompare(b.method))
 
   return {
-    mutating,
-    nonMutating
+    nonMutating,
+    mutating
   }
 }

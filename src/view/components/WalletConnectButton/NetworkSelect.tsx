@@ -69,7 +69,6 @@ export function NetworkSelect({
   const { closeModal, isOpen, openModal } = useModalBehaviour()
   const { isEqual: isCurrentPathHome } = useCompareCurrentPath(ROUTES.HOME)
   const [newChainId, setNewChainId] = useState(currentChain)
-  const router = useRouter()
 
   useEffect(() => {
     setNewChainId(currentChain)

@@ -1,16 +1,22 @@
 import { Box, Typography } from '@mui/material'
 import React, { useMemo } from 'react'
-import { UserContractDetailsWithAbi } from '@/domain'
+import { ContractTabType, UserContractDetailsWithAbi } from '@/domain'
 import BasicTabs from '@/components/Tabs'
 import SimpleAccordion from '@/components/Accordion'
-import { groupAndSortAbiMessages } from './groupAndSortAbiMessages'
+import {
+  GroupedAbiMessages,
+  groupAndSortAbiMessages
+} from './groupAndSortAbiMessages'
 import { useContractPromiseFromSource } from '@/hooks/useContractPromise'
 import { FallbackSpinner } from '@/components/FallbackSpinner'
-import { AbiMessage, Registry } from '@/services/substrate/types'
-import { ContractInteractionForm } from './ContractInteractionForm'
+import { ContractPromise, Registry } from '@/services/substrate/types'
+import { ContractInteractionForm } from './ContractInteractionForm.'
 
-type ContractTabType = 'Read Contract' | 'Write Contract'
 const types: ContractTabType[] = ['Read Contract', 'Write Contract']
+const groupedIndex: Record<ContractTabType, keyof GroupedAbiMessages> = {
+  'Read Contract': 'nonMutating',
+  'Write Contract': 'mutating'
+}
 
 interface Props {
   userContract: UserContractDetailsWithAbi
@@ -23,15 +29,21 @@ interface AccordionElement {
 }
 
 function getElements(
-  abiMessages: AbiMessage[],
-  substrateRegistry: Registry
+  abiMessages: GroupedAbiMessages,
+  substrateRegistry: Registry,
+  contractPromise: ContractPromise,
+  type: ContractTabType
 ): AccordionElement[] {
-  return abiMessages.map(msg => ({
+  const group = abiMessages[groupedIndex[type]]
+
+  return group.map(msg => ({
     title: msg.method,
     content: (
       <ContractInteractionForm
         abiMessage={msg}
         substrateRegistry={substrateRegistry}
+        contractPromise={contractPromise}
+        type={type}
       />
     ),
     id: msg.identifier
@@ -59,7 +71,7 @@ export function ContractsTabInteraction({ userContract }: Props) {
           mt: '3rem',
           justifyContent: 'start'
         }}
-        text="Getting the metadata interface (ABI) to interact with the Smart Contract"
+        text="Getting the connected network API..."
       />
     )
   }
@@ -71,7 +83,7 @@ export function ContractsTabInteraction({ userContract }: Props) {
           mt: '3rem',
           justifyContent: 'start'
         }}
-        text="Getting the methods of the Smart Contract"
+        text="Getting the metadata interface (ABI) to interact with the Smart Contract"
       />
     )
   }
@@ -112,12 +124,16 @@ export function ContractsTabInteraction({ userContract }: Props) {
               elements={
                 isReadContract
                   ? getElements(
-                      sortedAbiMessages.nonMutating,
-                      contractPromise.abi.registry
+                      sortedAbiMessages,
+                      contractPromise.abi.registry,
+                      contractPromise.contractPromise,
+                      types[0]
                     )
                   : getElements(
-                      sortedAbiMessages.mutating,
-                      contractPromise.abi.registry
+                      sortedAbiMessages,
+                      contractPromise.abi.registry,
+                      contractPromise.contractPromise,
+                      types[1]
                     )
               }
             />
