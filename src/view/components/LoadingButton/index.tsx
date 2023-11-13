@@ -8,7 +8,14 @@ import { StyledButton } from './styled'
 export interface LoadingButtonProps
   extends Pick<
     ButtonProps,
-    'ref' | 'onClick' | 'variant' | 'size' | 'children' | 'sx' | 'disabled'
+    | 'ref'
+    | 'onClick'
+    | 'variant'
+    | 'size'
+    | 'children'
+    | 'sx'
+    | 'disabled'
+    | 'hidden'
   > {
   isLoading?: boolean
   startIcon?: ReactNode

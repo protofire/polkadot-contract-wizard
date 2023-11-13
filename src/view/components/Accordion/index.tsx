@@ -1,4 +1,4 @@
-import * as React from 'react'
+import { cloneElement, isValidElement, useState } from 'react'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import {
   Accordion,
@@ -22,10 +22,24 @@ export default function SimpleAccordion({
   elements,
   expandIcon = <ExpandMoreIcon />
 }: SimpleAccordionProps) {
+  const [expandedIds, setExpandedIds] = useState<{ [key: string]: boolean }>({})
+
+  const handleChange =
+    (id: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
+      setExpandedIds(prevExpandedIds => ({
+        ...prevExpandedIds,
+        [id]: isExpanded ? true : !prevExpandedIds[id]
+      }))
+    }
+
   return (
     <StyledAccordionContainer mt={8}>
       {elements.map(row => (
-        <Accordion key={row.id}>
+        <Accordion
+          key={row.id}
+          expanded={!!expandedIds[row.id]}
+          onChange={handleChange(row.id)}
+        >
           <AccordionSummary
             expandIcon={expandIcon}
             aria-controls={row.id}
@@ -33,7 +47,13 @@ export default function SimpleAccordion({
           >
             <Typography variant="h4">{row.title}</Typography>
           </AccordionSummary>
-          <AccordionDetails>{row.content}</AccordionDetails>
+          <AccordionDetails>
+            {row.content && isValidElement(row.content)
+              ? cloneElement(row.content as React.ReactElement, {
+                  expanded: !!expandedIds[row.id]
+                })
+              : row.content}
+          </AccordionDetails>
         </Accordion>
       ))}
     </StyledAccordionContainer>

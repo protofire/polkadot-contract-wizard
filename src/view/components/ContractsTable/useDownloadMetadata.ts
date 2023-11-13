@@ -6,7 +6,7 @@ import { takeFirstChars, takeLastChars } from '@/utils/formatString'
 import { useCallback, useEffect, useState } from 'react'
 
 interface UseDownloadMetadata {
-  userContractItems: UserContractTableItem[] | undefined
+  userContractItems: UserContractTableItem | UserContractTableItem[] | undefined
   onDownloadSource: (userContract: UserContractTableItem) => void
 }
 
@@ -28,19 +28,20 @@ function updateContractItem(
 }
 
 export function useDownloadMetadata(
-  userContracts: UserContractDetails[] | undefined
+  userContracts: UserContractDetails | UserContractDetails[] | undefined
 ): UseDownloadMetadata {
   const [userContractItems, setUserContractItems] = useState<
-    UserContractTableItem[] | undefined
+    UserContractTableItem | UserContractTableItem[] | undefined
   >(userContracts)
   const { fillMetadata } = useFillMetadata()
-
   useEffect(() => setUserContractItems(userContracts), [userContracts])
 
   const setIsDownloading = useCallback((id: string, isDownloading = true) => {
-    setUserContractItems(prev =>
-      updateContractItem(id, prev, { isDownloading })
-    )
+    setUserContractItems(prev => {
+      if (Array.isArray(prev)) {
+        return updateContractItem(id, prev, { isDownloading })
+      }
+    })
   }, [])
 
   const onDownloadSource = useCallback(

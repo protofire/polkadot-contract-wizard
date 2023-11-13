@@ -4,7 +4,7 @@ import { useParseMetadataField } from '@/hooks/useParseMetadataField'
 import { DropZone } from '@/view/components/DropZone'
 import { DropzoneWrapper } from '@/view/components/DropZone/DropzoneWrapper'
 import { useFormInput } from '@/hooks'
-import { notEmpty } from '@/utils/inputValidation'
+import { notEmpty, maxLength } from '@/utils/inputValidation'
 import { onlyAddress } from '@/utils/blockchain'
 import { nameWithTimestamp } from '@/utils/generators'
 import { useIsOnChain } from '@/hooks/validationForms/useIsOnChain'
@@ -36,7 +36,10 @@ export function CustomContractsForm({ network, onCreate }: Props) {
   const { isOnChain, contractHash } = useIsOnChain()
   const formData = {
     address: useFormInput<string>('', [notEmpty, onlyAddress, isOnChain]),
-    name: useFormInput<string>(nameWithTimestamp('custom'), [notEmpty])
+    name: useFormInput<string>(nameWithTimestamp('custom'), [
+      notEmpty,
+      maxLength
+    ])
   }
   const anyInvalidField: boolean = Object.values(formData).some(
     field => (field.required && !field.value) || field.error !== null

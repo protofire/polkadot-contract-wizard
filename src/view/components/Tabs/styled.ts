@@ -8,7 +8,7 @@ export const StyledTabsContainer = styled(Box)(({ theme }) => ({
   },
   '& .MuiTabs-root button': {
     fontSize: '1.1rem',
-    padding: '1.2rem 3rem',
+    padding: '0.7rem 1.7rem',
     color: theme.palette.common.white,
     fontWeight: '800'
   },
