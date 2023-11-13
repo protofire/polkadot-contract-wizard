@@ -33,7 +33,7 @@ export default function SimpleAccordion({
     }
 
   return (
-    <StyledAccordionContainer mt={8}>
+    <StyledAccordionContainer mt={6}>
       {elements.map(row => (
         <Accordion
           key={row.id}
