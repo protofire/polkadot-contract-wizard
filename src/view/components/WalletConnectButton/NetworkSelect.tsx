@@ -105,17 +105,16 @@ export function NetworkSelect({
   }, [currentChain])
 
   const _handleChangeChain = (event: SelectChangeEvent<unknown>) => {
-    const chainId = event.target.value as ChainId
-
+    const chainId = event.target.value
     if (
-      event.target.value === OPTION_FOR_ADD_CUSTOM_NETWORK ||
-      OPTION_FOR_EDIT_CUSTOM_NETWORK
+      chainId === OPTION_FOR_ADD_CUSTOM_NETWORK ||
+      chainId == OPTION_FOR_EDIT_CUSTOM_NETWORK
     ) {
       openModal()
       return
     }
     if (isCurrentPathHome) {
-      onChange(chainId)
+      onChange(chainId as ChainId)
     } else {
       openDialog()
     }
