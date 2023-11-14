@@ -5,7 +5,7 @@ import {
   UserContractDetailsDraft
 } from '../UserContractDetails'
 
-export type ContractType = TokenType | 'custom'
+export type ContractType = TokenType | 'custom' // custom contracts are generally deployed outside the PCW
 export type UpdateDeployment = Partial<UserContractDetailsDraft>
 
 export interface IDeploymentsRepository<A, B> {
