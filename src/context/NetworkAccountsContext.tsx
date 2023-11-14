@@ -17,7 +17,7 @@ import { useLocalDbContext } from './LocalDbContext'
 import { ChainId } from '@/services/useink/chains'
 import { createNotImplementedWarning } from '@/utils/error'
 import { WalletConnectionEvents } from '@/domain'
-import { OPTION_FOR_CUSTOM_NETWORK } from '@/constants/chains'
+import { CHAINS_ALLOWED, OPTION_FOR_CUSTOM_NETWORK } from '@/constants/chains'
 import { ChainExtended } from '@/types'
 
 type NetworkState = 'DISCONNECTED' | 'CONNECTING' | 'CONNECTED' | 'ERROR'
@@ -44,6 +44,7 @@ interface NetworkContextProps {
   state: NetworkAccountsContextState
   isConnected: boolean
   accountConnected: WalletAccount | undefined
+  networkSelected: ChainExtended
   networkConnected: ChainId
   setCurrentAccount: (account: WalletAccount) => void
   setCurrentWallet: (wallet: Wallet) => void
@@ -57,6 +58,9 @@ export const NetworkAccountsContext = createContext<NetworkContextProps>({
   state: initialState,
   isConnected: false,
   accountConnected: undefined,
+  networkSelected: CHAINS_ALLOWED.find(
+    chain => chain.id === DEFAULT_CHAIN
+  ) as ChainExtended,
   networkConnected: DEFAULT_CHAIN,
   setCurrentAccount: () => createNotImplementedWarning('setCurrentAccount'),
   setCurrentWallet: () => createNotImplementedWarning('setCurrentWallet'),
@@ -76,6 +80,9 @@ export function NetworkAccountsContextProvider({
   const { account, accounts, connect, disconnect, isConnected, setAccount } =
     useWallet()
   const { networkRepository } = useLocalDbContext()
+  const [network, setNetwork] = useState<ChainExtended>(
+    CHAINS_ALLOWED.find(chain => chain.id === DEFAULT_CHAIN) as ChainExtended
+  )
   const [networkId, setNetworkId] = useState<ChainId>(DEFAULT_CHAIN)
 
   const loadNetworkConnected = useCallback(() => {
@@ -83,12 +90,18 @@ export function NetworkAccountsContextProvider({
     if (networkSelected.id === OPTION_FOR_CUSTOM_NETWORK) {
       networkSelected = networkRepository.getCustomChain()
     }
+    setNetwork(networkSelected)
     setNetworkId(networkSelected.id)
   }, [networkRepository])
 
   useEffect(() => {
     loadNetworkConnected()
   }, [loadNetworkConnected])
+
+  useEffect(() => {
+    console.log('networkId', networkId)
+    console.log('network', network)
+  }, [networkId, network])
 
   useEffect(() => {
     setState(prev => ({
@@ -119,6 +132,11 @@ export function NetworkAccountsContextProvider({
   const setCurrentChain = useCallback(
     async (chainId: ChainId) => {
       networkRepository.setNetworkSelected(chainId)
+      let networkSelected = networkRepository.getNetworkSelected()
+      if (networkSelected.id === OPTION_FOR_CUSTOM_NETWORK) {
+        networkSelected = networkRepository.getCustomChain()
+      }
+      setNetwork(networkSelected)
       setNetworkId(chainId)
 
       document.dispatchEvent(
@@ -144,6 +162,7 @@ export function NetworkAccountsContextProvider({
         state,
         isConnected,
         accountConnected: account,
+        networkSelected: network,
         networkConnected: networkId,
         setCurrentAccount: _setAccount,
         setCurrentWallet,
