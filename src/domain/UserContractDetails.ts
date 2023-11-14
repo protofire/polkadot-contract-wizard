@@ -16,7 +16,8 @@ export interface UserContractDetails {
   date: string
   type: ContractType
   abi?: Record<string, unknown>
-  external: boolean // Contracts not deployed by PCW are custom and external
+  // TODO
+  external: boolean // Represents a contract that has not been aggregated by the connected wallet accounts.
   hidden: boolean
 }
 

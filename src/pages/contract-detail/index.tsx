@@ -1,11 +1,9 @@
 import { ContractDetailSkeleton } from '@/view/CustomContracts/detail/SkeletonContractDetail'
 import MainContainer from '@/view/layout/MainContainer'
 import ContractDetail from '@/view/ContractDetailView'
-import { useModalBehaviour } from '@/hooks/useModalBehaviour'
 import { useRouter } from 'next/router'
 import { useFindUserContract } from '@/hooks/userContracts/useFindUserContract'
 import { useHasMounted } from '@/hooks/useHasMounted'
-import { useDownloadMetadata } from '@/view/components/ContractsTable/useDownloadMetadata'
 
 export default function CustomContractDetailPage() {
   const router = useRouter()
@@ -13,8 +11,6 @@ export default function CustomContractDetailPage() {
   const { userContract, requested, isLoading } = useFindUserContract(
     uuid as string
   )
-  const { onDownloadSource } = useDownloadMetadata(userContract)
-  const modalBehaviour = useModalBehaviour()
   const hasMounted = useHasMounted()
 
   if (!userContract || !hasMounted || isLoading) {
@@ -28,13 +24,7 @@ export default function CustomContractDetailPage() {
 
   return (
     <MainContainer>
-      {userContract && (
-        <ContractDetail
-          modalBehaviour={modalBehaviour}
-          onDownloadSource={onDownloadSource}
-          userContract={userContract}
-        />
-      )}
+      {userContract && <ContractDetail userContract={userContract} />}
     </MainContainer>
   )
 }
