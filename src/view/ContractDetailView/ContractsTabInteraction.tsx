@@ -10,7 +10,7 @@ import {
 import { useContractPromiseFromSource } from '@/hooks/useContractPromise'
 import { FallbackSpinner } from '@/components/FallbackSpinner'
 import { ContractPromise, Registry } from '@/services/substrate/types'
-import { ContractInteractionForm } from './ContractInteractionForm.'
+import { ContractInteractionForm } from './ContractInteractionForm'
 
 const types: ContractTabType[] = ['Read Contract', 'Write Contract']
 const groupedIndex: Record<ContractTabType, keyof GroupedAbiMessages> = {
