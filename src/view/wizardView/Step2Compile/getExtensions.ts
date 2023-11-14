@@ -47,8 +47,6 @@ export function getExtensions(
         []
       )
     )
-
-    usesStandardExtensions = true
   }
 
   // Batch extension
