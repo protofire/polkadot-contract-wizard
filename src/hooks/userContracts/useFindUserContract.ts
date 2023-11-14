@@ -1,6 +1,6 @@
 import { useLocalDbContext } from '@/context/LocalDbContext'
 import { UserContractDetails } from '@/domain'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 interface UseFindUserContract {
   userContract: UserContractDetails | undefined
@@ -14,15 +14,30 @@ export function useFindUserContract(uuid: string): UseFindUserContract {
   >()
   const [isLoading, setIsLoading] = useState(false)
   const [requested, setRequested] = useState(false)
-  const { userContractsRepository, apiCompileContractRepository } =
-    useLocalDbContext()
+  const {
+    userContractsRepository,
+    apiCompileContractRepository,
+    apiDeploymentsRepository
+  } = useLocalDbContext()
+
+  const getUserContract = useCallback(
+    async (uuid: UserContractDetails['uuid']) => {
+      let knownUserContract = await userContractsRepository.get(uuid)
+
+      if (!knownUserContract) {
+        knownUserContract = await apiDeploymentsRepository.get(uuid)
+      }
+
+      return knownUserContract
+    },
+    [apiDeploymentsRepository, userContractsRepository]
+  )
 
   useEffect(() => {
     if (!uuid) return
 
     setIsLoading(true)
-    userContractsRepository
-      .get(uuid)
+    getUserContract(uuid)
       .then(async response => {
         if (response && !response?.abi) {
           const compiled = await apiCompileContractRepository.search(
@@ -36,7 +51,12 @@ export function useFindUserContract(uuid: string): UseFindUserContract {
         setRequested(true)
       })
       .finally(() => setIsLoading(false))
-  }, [apiCompileContractRepository, userContractsRepository, uuid])
+  }, [
+    apiCompileContractRepository,
+    getUserContract,
+    userContractsRepository,
+    uuid
+  ])
 
   return { userContract, isLoading, requested }
 }

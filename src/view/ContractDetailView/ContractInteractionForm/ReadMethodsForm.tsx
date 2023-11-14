@@ -28,9 +28,10 @@ export function ReadMethodsForm({
   const [outcome, setOutcome] = useState<string>('')
 
   useEffect(() => {
+    if (!expanded) return
     caller.send(inputData)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [inputData])
+  }, [inputData, expanded])
 
   useEffect(() => {
     if (caller.result?.ok) {

@@ -8,7 +8,6 @@ import ShareIcon from '@mui/icons-material/Share'
 import DownloadIcon from '@mui/icons-material/Download'
 import { getChain } from '@/constants/chains'
 import NetworkBadge from '@/view/components/NetworkBadge'
-import { UseModalBehaviour } from '@/hooks/useModalBehaviour'
 import { UserContractDetails, UserContractDetailsWithAbi } from '@/domain'
 import {
   isoDate,
@@ -31,19 +30,15 @@ import CancelIcon from '@mui/icons-material/Cancel'
 
 import { UpdateDeployment } from '@/domain/repositories/DeploymentRepository'
 import { useUpdateUserContracts } from '@/hooks/userContracts/useUpdateUserContracts'
-import { UserContractTableItem } from '@/domain/wizard/ContractTableItem'
+import { useDownloadMetadata } from '@/components/ContractsTable/useDownloadMetadata'
+
 interface Props {
-  modalBehaviour: UseModalBehaviour
   userContract: UserContractDetails
-  onDownloadSource: (contract: UserContractTableItem) => void
 }
 interface AbiSource {
   source: { language: string }
 }
-export default function ContractDetail({
-  userContract,
-  onDownloadSource
-}: Props): JSX.Element {
+export default function ContractDetail({ userContract }: Props): JSX.Element {
   const [openShareModal, setOpenShareModal] = React.useState(false)
   const url = getUserContractUrl(userContract)
   const { accountConnected } = useNetworkAccountsContext()
@@ -57,6 +52,7 @@ export default function ContractDetail({
   const anyInvalidField: boolean = Object.values(formData).some(
     field => (field.required && !field.value) || field.error !== null
   )
+  const { onDownloadSource } = useDownloadMetadata(userContract)
 
   const handleUpdateContractName = () => {
     const updatedContract: UpdateDeployment = {
@@ -253,7 +249,7 @@ export default function ContractDetail({
             </Tooltip>
           </Typography>
           <Stack direction="row" alignItems="center">
-            <Typography variant="caption">Deployed by</Typography>
+            <Typography variant="caption">Added by</Typography>
             {''}
             <MonoTypography sx={{ fontSize: '0.8rem' }}>
               {truncateAddress(userContract.userAddress, 4)}
