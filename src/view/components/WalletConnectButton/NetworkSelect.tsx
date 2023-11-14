@@ -16,7 +16,8 @@ import {
   OPTION_FOR_EDIT_CUSTOM_NETWORK,
   addNewChain,
   createIChainWithRPCAndSave,
-  getChain
+  getChain,
+  updateChain
 } from '@/constants/chains'
 import { ChainId } from '@/services/useink/chains/types'
 import ConfirmationDialog from '../ConfirmationDialog'
@@ -92,9 +93,8 @@ export function NetworkSelect({
   const { closeModal, isOpen, openModal } = useModalBehaviour()
   const { isEqual: isCurrentPathHome } = useCompareCurrentPath(ROUTES.HOME)
   const [newChainId, setNewChainId] = useState(currentChain)
-  const [editNetwork, setEditNetwork] = useState(false)
 
-  if (chain.id === 'custom' && CHAINS_ALLOWED.length <= 4) {
+  if (chain.id === OPTION_FOR_CUSTOM_NETWORK && CHAINS_ALLOWED.length <= 4) {
     CHAINS_ALLOWED.push(chain)
   }
 
@@ -113,6 +113,7 @@ export function NetworkSelect({
       openModal()
       return
     }
+    setNewChainId(chainId as ChainId)
     if (isCurrentPathHome) {
       onChange(chainId as ChainId)
     } else {
@@ -125,6 +126,10 @@ export function NetworkSelect({
     rpc: useFormInput<RpcUrl>('wss://rpc.shibuya.astar.network', [notEmpty])
   }
 
+  const editNetwork =
+    chains.some(chain => chain.id === OPTION_FOR_CUSTOM_NETWORK) &&
+    chains.length === 5
+
   const anyInvalidField: boolean = Object.values(formData).some(
     field => (field.required && !field.value) || field.error !== null
   )
@@ -135,11 +140,21 @@ export function NetworkSelect({
   }
 
   const addCustomNetwork = async () => {
-    _resetModalInputs()
-    const customChain = createIChainWithRPCAndSave(formData.rpc.value)
-    const newChainList = addNewChain(customChain)
+    let newChainList: ChainExtended[] = []
+    const customChain = createIChainWithRPCAndSave(
+      formData.name.value,
+      formData.rpc.value
+    )
+
+    if (editNetwork) {
+      newChainList = updateChain(chains, customChain)
+    } else {
+      _resetModalInputs()
+      newChainList = addNewChain(customChain)
+    }
     setCustomChain(customChain)
     setChains(newChainList)
+    onChange(customChain.id)
     closeModal()
   }
 
@@ -156,12 +171,12 @@ export function NetworkSelect({
         {chains.map(option => (
           <StyledMenuItem
             sx={{ color: 'white' }}
-            selected={chain?.name === option.name}
+            selected={chain.name === option.name}
             key={option.id}
             value={option.id}
           >
             <Stack sx={{ display: 'flex', flexDirection: 'row' }}>
-              <Avatar src={option?.logo?.src} alt={option.logo?.alt} />{' '}
+              <Avatar src={option.logo.src} alt={option.logo.alt} />{' '}
               <Stack>
                 <p>{option.name}</p>
               </Stack>
@@ -182,7 +197,7 @@ export function NetworkSelect({
         ) : (
           <StyledMenuItem
             sx={{ color: 'white' }}
-            selected={chain?.name === OPTION_FOR_ADD_CUSTOM_NETWORK}
+            selected={chain.name === OPTION_FOR_CUSTOM_NETWORK}
             key={OPTION_FOR_CUSTOM_NETWORK}
             value={OPTION_FOR_ADD_CUSTOM_NETWORK}
           >
@@ -199,18 +214,23 @@ export function NetworkSelect({
         title="Change Network confirmation"
         message="Are you sure you want to change the network?"
         onConfirm={() => {
-          closeModal()
-          setEditNetwork(true)
+          closeDialog()
           onChange(newChainId)
         }}
       />
+
       <ModalView
         open={isOpen}
         onClose={closeModal}
-        onFunction={addCustomNetwork}
-        title={`${editNetwork ? 'Add ' : 'Edit'} network`}
-        subTitle={`${editNetwork ? 'Add ' : 'Edit'} network details`}
-        okBtn={{ text: 'Add', validation: anyInvalidField }}
+        onFunction={() => {
+          addCustomNetwork()
+        }}
+        title={`${editNetwork ? 'Edit' : 'Add '} network`}
+        subTitle={`${editNetwork ? 'Edit' : 'Add '} network details`}
+        okBtn={{
+          text: `${editNetwork ? 'Update' : 'Add'}`,
+          validation: anyInvalidField
+        }}
       >
         <Box
           sx={{

@@ -101,10 +101,3 @@ export const ShidenKusama: IChain<'shiden-kusama'> = {
   paraId: 2007,
   relay: { id: 'kusama' }
 } as const
-
-export const Custom: IChain<'custom'> = {
-  id: 'custom',
-  name: 'Custom',
-  account: '*25519',
-  rpcs: []
-} as const

@@ -35,20 +35,25 @@ export const CHAINS_ALLOWED = CHAINS.map(chain => {
 })
 
 export const addNewChain = (chain: ChainExtended): ChainExtended[] => {
-  const chainExist = CHAINS_ALLOWED.some(
-    element => element.id === OPTION_FOR_CUSTOM_NETWORK
-  )
-  if (chainExist) {
-    return []
-  }
-  const newChains: ChainExtended[] = [...CHAINS_ALLOWED, chain]
+  const newChains = [...CHAINS_ALLOWED, chain]
   return newChains
 }
 
-export function createIChainWithRPCAndSave(rpc: RpcUrl): ChainExtended {
+export const updateChain = (chains: ChainExtended[], chain: ChainExtended) => {
+  const chainIndex = CHAINS_ALLOWED.findIndex(
+    chain => chain.id === OPTION_FOR_CUSTOM_NETWORK
+  )
+  chains[chainIndex] = chain
+  return chains
+}
+
+export function createIChainWithRPCAndSave(
+  name: string,
+  rpc: RpcUrl
+): ChainExtended {
   const customChain: ChainExtended = {
     id: OPTION_FOR_CUSTOM_NETWORK,
-    name: 'Custom',
+    name: `Custom ${name}`,
     account: '*25519',
     rpcs: [rpc],
     logo: {
