@@ -47,7 +47,9 @@ export function ReadMethodsForm({
     >
       <Box minWidth="50%">
         <>
-          {abiParams.length > 0 && <Typography>Message to send</Typography>}
+          {abiParams.length > 0 && (
+            <Typography variant="body1">Message to send</Typography>
+          )}
           {children}
         </>
         <Box display="block">
