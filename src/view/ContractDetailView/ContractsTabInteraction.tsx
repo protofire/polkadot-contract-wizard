@@ -1,5 +1,5 @@
-import { Box, Typography } from '@mui/material'
 import React, { useMemo } from 'react'
+import { Box, Typography } from '@mui/material'
 import { ContractTabType, UserContractDetailsWithAbi } from '@/domain'
 import BasicTabs from '@/components/Tabs'
 import SimpleAccordion from '@/components/Accordion'
