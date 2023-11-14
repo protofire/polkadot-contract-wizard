@@ -10,9 +10,16 @@ export function ContractDetailSkeleton() {
         <Stack spacing={3}>
           <MySkeleton variant="text" width={200} height={60} />
         </Stack>
-        <Stack direction="row" width={'100%'} spacing={3} display="flex">
-          <MySkeleton variant="rounded" width={'25%'} height={30} />
-          <MySkeleton variant="rounded" width={'25%'} height={30} />
+        <Stack
+          direction="row"
+          width={'100%'}
+          spacing={3}
+          display="flex"
+          alignItems="center"
+          justifyContent="flex-end"
+        >
+          <MySkeleton variant="rounded" width={'22%'} height={35} />
+          <MySkeleton variant="rounded" width={'22%'} height={35} />
         </Stack>
       </Stack>
       <MySkeleton variant="text" width={400} height={30} />
@@ -29,8 +36,8 @@ export function ContractDetailSkeleton() {
       </Box>
       <Box mt={8}>
         <Stack direction="row" width={'100%'} spacing={1}>
-          <MySkeleton variant="rectangular" width={'10%'} height={50} />
-          <MySkeleton variant="rectangular" width={'10%'} height={50} />
+          <MySkeleton variant="rectangular" width={'12%'} height={50} />
+          <MySkeleton variant="rectangular" width={'12%'} height={50} />
         </Stack>
         <MySkeleton variant="rectangular" height={350} />
       </Box>
