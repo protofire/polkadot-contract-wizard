@@ -6,12 +6,10 @@ import { AbiParam } from '@/services/substrate/types'
 import { ButtonCall } from './styled'
 import { useContractCaller } from '@/hooks/useContractCaller'
 import { CopyBlock, atomOneDark } from 'react-code-blocks'
+import { getDecodedOutput } from '@/utils/contractExecResult'
 
 type Props = React.PropsWithChildren<
-  Pick<
-    ContractInteractionProps,
-    'abiMessage' | 'expanded' | 'contractPromise'
-  > & {
+  Omit<ContractInteractionProps, 'type'> & {
     abiParams: AbiParam[]
     inputData: unknown[] | undefined
   }
@@ -23,21 +21,31 @@ export function ReadMethodsForm({
   abiMessage,
   abiParams,
   contractPromise,
+  substrateRegistry,
   expanded
 }: Props) {
   const { caller } = useContractCaller(contractPromise, abiMessage.method)
   const [outcome, setOutcome] = useState<string>('')
 
   useEffect(() => {
+    if (!expanded) return
     caller.send(inputData)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [inputData])
+  }, [inputData, expanded])
 
   useEffect(() => {
     if (caller.result?.ok) {
-      setOutcome(caller.result.value.decoded)
+      const { decodedOutput, isError } = getDecodedOutput(
+        {
+          debugMessage: caller.result.value.raw.debugMessage,
+          result: caller.result.value.raw.result
+        },
+        abiMessage,
+        substrateRegistry
+      )
+      setOutcome(decodedOutput)
     }
-  }, [caller.result])
+  }, [abiMessage, caller.result, substrateRegistry])
 
   return (
     <Stack
@@ -73,10 +81,12 @@ export function ReadMethodsForm({
                 language="text"
                 theme={atomOneDark}
                 showLineNumbers={false}
+                codeBlock
+                wrapLongLines={true}
               />
             )}
           </Box>
-          <ButtonCall onClick={() => caller.send(inputData)}>Call</ButtonCall>
+          <ButtonCall onClick={() => caller.send(inputData)}>Recall</ButtonCall>
         </Stack>
       </Box>
       <Box sx={{ maxWidth: '45%', minWidth: '40%' }}>
