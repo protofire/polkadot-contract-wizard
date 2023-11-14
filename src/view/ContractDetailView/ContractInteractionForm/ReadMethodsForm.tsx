@@ -61,7 +61,7 @@ export function ReadMethodsForm({
           {children}
         </>
         <Box display="block">
-          <Typography variant="caption">Outcome</Typography>
+          <Typography variant="body1">Outcome</Typography>
         </Box>
 
         <Stack direction="row" justifyContent="space-between">

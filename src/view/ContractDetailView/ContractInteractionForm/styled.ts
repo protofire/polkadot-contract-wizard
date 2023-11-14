@@ -7,6 +7,8 @@ export const ButtonCall = styled(LoadingButton)<LoadingButtonProps>(
     height: '2.5rem',
     borderRadius: '1.5rem',
     textTransform: 'none',
-    background: theme.palette.primary.main
+    border: theme.palette.primary.main,
+    background: theme.palette.primary.main,
+    color: theme.palette.common.white
   })
 )
