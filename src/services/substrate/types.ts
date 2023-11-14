@@ -15,6 +15,18 @@ export type {
   RegistryError,
   TypeDef
 } from '@polkadot/types/types'
+export type {
+  ContractInstantiateResult,
+  DispatchError,
+  EventRecord,
+  Weight,
+  WeightV2,
+  ChainType,
+  Hash,
+  ContractExecResult,
+  Balance,
+  ContractReturnFlags
+} from '@polkadot/types/interfaces'
 
 // classes
 export { ApiPromise, SubmittableResult } from '@polkadot/api'
