@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { ContractInteractionProps } from '.'
-import { Box, Stack, Typography } from '@mui/material'
+import { Box, FormHelperText, Stack, Typography } from '@mui/material'
 import { MethodDocumentation } from '../MethodDocumentation'
 import { AbiParam } from '@/services/substrate/types'
 import { ButtonCall } from './styled'
@@ -91,6 +91,11 @@ export function ReadMethodsForm({
                 Recall
               </ButtonCall>
             </Box>
+            {error && (
+              <FormHelperText error id={`error-${abiMessage.method}`}>
+                {error}
+              </FormHelperText>
+            )}
           </Box>
         </Stack>
       </Box>
