@@ -73,36 +73,35 @@ export function ReadMethodsForm({
               justifyContent: 'center'
             }}
           >
-            {caller.isSubmitting ? (
-              <CircularProgress color="primary" />
-            ) : (
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+                gap: '1rem'
+              }}
+            >
               <Box
                 sx={{
                   display: 'flex',
                   flexDirection: 'row',
-                  alignItems: 'center',
-                  gap: '1rem'
+                  alignItems: 'center'
                 }}
               >
-                <Box
-                  sx={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    alignItems: 'center'
-                  }}
-                >
-                  <StyledTextField placeholder="0" value={outcome} />
-                  <CopyToClipboardButton
-                    id="copy-contract-address"
-                    sx={{ marginLeft: '0.5rem' }}
-                    data={outcome}
-                  />
-                </Box>
-                <ButtonCall onClick={() => caller.send(inputData)}>
-                  Recall
-                </ButtonCall>
+                <StyledTextField placeholder="0" value={outcome} />
+                <CopyToClipboardButton
+                  id="copy-contract-address"
+                  sx={{ marginLeft: '0.5rem' }}
+                  data={outcome}
+                />
               </Box>
-            )}
+              <ButtonCall
+                isLoading={caller.isSubmitting}
+                onClick={() => caller.send(inputData)}
+              >
+                Recall
+              </ButtonCall>
+            </Box>
           </Box>
         </Stack>
       </Box>

@@ -30,7 +30,7 @@ export function ArgTextField({
   }
 
   return (
-    <div className={`w-full ${isError ? 'isError' : ''}`}>
+    <>
       <StyledTextField
         className={`w-full rounded text-sm ${
           isDisabled ? 'dark:text-gray-500' : ''
@@ -47,6 +47,6 @@ export function ArgTextField({
         fullWidth
       />
       {children}
-    </div>
+    </>
   )
 }
