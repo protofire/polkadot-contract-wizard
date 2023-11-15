@@ -28,11 +28,13 @@ export function WriteMethodsForm({ children, abiParams }: Props) {
     >
       <Box minWidth="50%">
         <>
-          {abiParams.length > 0 && <Typography>Message to send</Typography>}
+          {abiParams.length > 0 && (
+            <Typography variant="overline">Message to send</Typography>
+          )}
           {children}
         </>
         <Box display="block">
-          <Typography variant="caption">Outcome</Typography>
+          <Typography variant="overline">Outcome</Typography>
         </Box>
 
         {/* <Stack direction="row" justifyContent="space-between">

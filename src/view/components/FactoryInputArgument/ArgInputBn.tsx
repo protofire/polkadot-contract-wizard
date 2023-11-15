@@ -1,9 +1,9 @@
-import { TextField } from '@mui/material'
 import BN from 'bn.js'
 import { useCallback, useState } from 'react'
 
 import { ArgumentComponentProps } from '@/domain/common/substrateInputTypes'
 import { getMinMax } from '@/services/substrate/utils'
+import { StyledTextField } from '../Input'
 
 type Props = ArgumentComponentProps<BN>
 
@@ -30,7 +30,7 @@ export function InputBn({
   )
 
   return (
-    <TextField
+    <StyledTextField
       onChange={handleChange}
       placeholder="Input a number"
       value={displayValue}

@@ -71,6 +71,7 @@ export function ArgEnum({
           />
         </InputLabel>
         <Select
+          sx={{ color: 'white' }}
           labelId="enum-select-label"
           value={variantIndex}
           onChange={event => setVariantIndex(event.target.value as number)}
@@ -82,7 +83,7 @@ export function ArgEnum({
           }
         >
           {variants.map(({ name }, index) => (
-            <MenuItem key={index} value={index}>
+            <MenuItem sx={{ color: 'white' }} key={index} value={index}>
               {name}
             </MenuItem>
           ))}
