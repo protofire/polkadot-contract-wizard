@@ -13,14 +13,13 @@ export function MethodDocumentation({ abiMessage }: Props) {
         borderColor: 'primary.main',
         borderRadius: '0.5rem',
         borderStyle: 'solid',
-        p: 2,
-        bgcolor: 'background.paper'
+        p: 2
       }}
     >
       <Typography variant="h5" component="h2" gutterBottom>
         {abiMessage.method}
       </Typography>
-      <Typography variant="body1">{abiMessage.docs}</Typography>
+      <Typography variant="caption">{abiMessage.docs}</Typography>
     </Box>
   )
 }

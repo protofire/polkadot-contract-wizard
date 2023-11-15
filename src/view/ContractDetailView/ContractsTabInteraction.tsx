@@ -10,7 +10,7 @@ import {
 import { useContractPromiseFromSource } from '@/hooks/useContractPromise'
 import { FallbackSpinner } from '@/components/FallbackSpinner'
 import { ContractPromise, Registry } from '@/services/substrate/types'
-import { ContractInteractionForm } from './ContractInteractionForm'
+import { ContractInteractionForm } from '@/view/ContractDetailView/ContractInteractionForm'
 
 const types: ContractTabType[] = ['Read Contract', 'Write Contract']
 const groupedIndex: Record<ContractTabType, keyof GroupedAbiMessages> = {
@@ -93,8 +93,8 @@ export function ContractsTabInteraction({ userContract }: Props) {
       <Box sx={{ width: '100%' }}>
         <BasicTabs
           options={[
-            `Read Contract (${sortedAbiMessages.nonMutating.length})`,
-            `Write Contract (${sortedAbiMessages.mutating.length})`
+            `Read (${sortedAbiMessages.nonMutating.length})`,
+            `Write (${sortedAbiMessages.mutating.length})`
           ]}
           onChange={handleChange}
         >
@@ -105,8 +105,8 @@ export function ContractsTabInteraction({ userContract }: Props) {
                   Learn more about your contract 🔁
                 </Typography>
                 <Typography variant="body1">
-                  Let&apos;start to work with your contract displaying each
-                  method.
+                  Explore the smart contract&apos;s data by selecting the
+                  desired information.
                 </Typography>
               </>
             ) : (
@@ -115,8 +115,8 @@ export function ContractsTabInteraction({ userContract }: Props) {
                   Interact with your contract 🔁
                 </Typography>
                 <Typography variant="body1">
-                  Let&apos;s start to work with your contract doing different
-                  querys.
+                  Select the method you want to execute and fill in the required
+                  parameters to perform a transaction.
                 </Typography>
               </>
             )}

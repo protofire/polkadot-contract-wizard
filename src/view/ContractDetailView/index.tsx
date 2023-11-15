@@ -249,7 +249,7 @@ export default function ContractDetail({ userContract }: Props): JSX.Element {
             </Tooltip>
           </Typography>
           <Stack direction="row" alignItems="center">
-            <Typography variant="caption">Added by</Typography>
+            <Typography variant="caption">By</Typography>
             {''}
             <MonoTypography sx={{ fontSize: '0.8rem' }}>
               {truncateAddress(userContract.userAddress, 4)}

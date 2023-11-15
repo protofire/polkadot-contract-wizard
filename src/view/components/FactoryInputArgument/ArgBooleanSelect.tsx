@@ -20,9 +20,18 @@ export function ArgBooleanSelect({
   return (
     <>
       <InputLabel>{label}</InputLabel>
-      <Select value={stringValue} onChange={handleChange} label={label}>
-        <MenuItem value="true">True</MenuItem>
-        <MenuItem value="false">False</MenuItem>
+      <Select
+        sx={{ color: 'white' }}
+        value={stringValue}
+        onChange={handleChange}
+        label={label}
+      >
+        <MenuItem sx={{ color: 'white' }} value="true">
+          True
+        </MenuItem>
+        <MenuItem sx={{ color: 'white' }} value="false">
+          False
+        </MenuItem>
       </Select>
     </>
   )

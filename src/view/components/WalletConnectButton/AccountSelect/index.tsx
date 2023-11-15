@@ -41,10 +41,7 @@ export function AccountSelect({
 
   if (!accounts)
     return (
-      <StyledSelect
-        value={'Select Account...'}
-        placeholder="Select Account..."
-      ></StyledSelect>
+      <StyledSelect value={''} placeholder="Select Account..."></StyledSelect>
     )
 
   if (!currentAccount)
