@@ -1,4 +1,4 @@
-import { TextField } from '@mui/material'
+import { StyledTextField } from '@/view/components'
 
 import { SimpleSpread } from '@/domain/common/utilityTsTypes'
 
@@ -31,7 +31,7 @@ export function ArgTextField({
 
   return (
     <div className={`w-full ${isError ? 'isError' : ''}`}>
-      <TextField
+      <StyledTextField
         className={`w-full rounded text-sm ${
           isDisabled ? 'dark:text-gray-500' : ''
         } ${className}`}
