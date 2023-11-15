@@ -55,6 +55,7 @@ export function ContractInteractionForm({
           contractPromise={contractPromise}
           abiParams={abiParams}
           inputData={inputData}
+          substrateRegistry={substrateRegistry}
           expanded={expanded}
         >
           <ArgumentsForm
