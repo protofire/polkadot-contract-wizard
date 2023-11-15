@@ -63,7 +63,7 @@ export function WriteMethodsForm({
               />
             )}
           </Box>
-          <ButtonCall onClick={() => executeDryRun(inputData)}>Call</ButtonCall>
+          <ButtonCall onClick={executeDryRun}>Call</ButtonCall>
         </Stack>
       </Box>
       <Box sx={{ maxWidth: '45%', minWidth: '40%' }}>
