@@ -2,7 +2,6 @@ import { useCallback, useMemo, useState } from 'react'
 import { AbiMessage, ContractPromise } from '@/services/substrate/types'
 import { useGetDryRun } from '@/hooks/useGetDryRun'
 import { useDebouncedEffect } from '@/hooks/useDebouncedEffect'
-import { pickDecodedError } from '@/services/useink/utils/pickDecodedError'
 
 interface UseDryRunExecutionProps {
   contractPromise: ContractPromise
