@@ -2,8 +2,6 @@ import { useCallback, useMemo, useState } from 'react'
 import { AbiMessage, ContractPromise } from '@/services/substrate/types'
 import { useGetDryRun } from '@/hooks/useGetDryRun'
 import { useDebouncedEffect } from '@/hooks/useDebouncedEffect'
-import { MySkeleton } from '../components/MySkeleton'
-import { pickDecodedError } from '@/services/useink/utils/pickDecodedError'
 
 interface UseDryRunExecutionProps {
   contractPromise: ContractPromise
@@ -30,13 +28,12 @@ export function useDryRunExecution({
 
   const executeDryRun = useCallback(async () => {
     const result = await dryRun.send(memoizedParams)
-    console.log('__dryRun', dryRun)
     if (result?.ok) {
       setOutcome(
         `Contract call will be successful executed with ${result.value.partialFee.toString()} fee`
       )
     } else {
-      // pickDecodedError(result, cRococoContract, {}, '--')
+      // pickDecodedError(result, contractPromise, {}, '--')
       setOutcome('Contract will be reverted')
     }
   }, [dryRun, memoizedParams])

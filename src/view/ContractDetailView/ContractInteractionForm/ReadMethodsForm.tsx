@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { ContractInteractionProps } from '.'
-import { Box, Stack, Typography } from '@mui/material'
+import { Box, FormHelperText, Stack, Typography } from '@mui/material'
 import { MethodDocumentation } from '../MethodDocumentation'
 import { AbiParam } from '@/services/substrate/types'
 import { ButtonCall } from './styled'
@@ -24,28 +24,17 @@ export function ReadMethodsForm({
   substrateRegistry,
   expanded
 }: Props) {
-  const { caller } = useContractCaller(contractPromise, abiMessage.method)
-  const [outcome, setOutcome] = useState<string>('')
+  const { caller, outcome, error } = useContractCaller({
+    contractPromise,
+    abiMessage,
+    substrateRegistry
+  })
 
   useEffect(() => {
     if (!expanded) return
     caller.send(inputData)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [inputData, expanded])
-
-  useEffect(() => {
-    if (caller.result?.ok) {
-      const { decodedOutput, isError } = getDecodedOutput(
-        {
-          debugMessage: caller.result.value.raw.debugMessage,
-          result: caller.result.value.raw.result
-        },
-        abiMessage,
-        substrateRegistry
-      )
-      setOutcome(decodedOutput)
-    }
-  }, [abiMessage, caller.result, substrateRegistry])
 
   return (
     <Stack
@@ -102,6 +91,11 @@ export function ReadMethodsForm({
                 Recall
               </ButtonCall>
             </Box>
+            {error && (
+              <FormHelperText error id={`error-${abiMessage.method}`}>
+                {error}
+              </FormHelperText>
+            )}
           </Box>
         </Stack>
       </Box>

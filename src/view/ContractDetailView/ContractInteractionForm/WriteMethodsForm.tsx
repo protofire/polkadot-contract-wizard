@@ -1,24 +1,31 @@
 import { Box, CircularProgress, Stack, Typography } from '@mui/material'
 import { ContractInteractionProps } from '.'
 import { AbiParam } from '@/services/substrate/types'
+import { useDryRunExecution } from '../useDryRunExecution'
+import { MethodDocumentation } from '../MethodDocumentation'
+import { ButtonCall } from './styled'
+import { CopyBlock, atomOneDark } from 'react-code-blocks'
 
 type Props = React.PropsWithChildren<
-  Pick<
-    ContractInteractionProps,
-    'abiMessage' | 'expanded' | 'contractPromise'
-  > & {
+  Omit<ContractInteractionProps, 'type'> & {
     abiParams: AbiParam[]
     inputData: unknown[] | undefined
   }
 >
 
-export function WriteMethodsForm({ children, abiParams }: Props) {
-  // const { outcome, executeDryRun } = useDryRunExecution({
-  //   contractPromise,
-  //   message: abiMessage,
-  //   params: inputData,
-  //   autoRun: false
-  // })
+export function WriteMethodsForm({
+  children,
+  abiParams,
+  abiMessage,
+  contractPromise,
+  inputData
+}: Props) {
+  const { outcome, executeDryRun, isSubmitting } = useDryRunExecution({
+    contractPromise,
+    message: abiMessage,
+    params: inputData,
+    autoRun: false
+  })
 
   return (
     <Stack
@@ -37,7 +44,7 @@ export function WriteMethodsForm({ children, abiParams }: Props) {
           <Typography variant="overline">Outcome</Typography>
         </Box>
 
-        {/* <Stack direction="row" justifyContent="space-between">
+        <Stack direction="row" justifyContent="space-between">
           <Box
             sx={{
               minWidth: '45%',
@@ -46,7 +53,7 @@ export function WriteMethodsForm({ children, abiParams }: Props) {
               justifyContent: 'center'
             }}
           >
-            {caller.isSubmitting ? (
+            {isSubmitting ? (
               <CircularProgress color="primary" />
             ) : (
               <CopyBlock
@@ -54,14 +61,15 @@ export function WriteMethodsForm({ children, abiParams }: Props) {
                 language="text"
                 theme={atomOneDark}
                 showLineNumbers={false}
+                wrapLongLines={true}
               />
             )}
           </Box>
-          <ButtonCall onClick={() => caller.send(inputData)}>Call</ButtonCall>
-        </Stack> */}
+          <ButtonCall onClick={executeDryRun}>Call</ButtonCall>
+        </Stack>
       </Box>
       <Box sx={{ maxWidth: '45%', minWidth: '40%' }}>
-        {/* <MethodDocumentation abiMessage={abiMessage} /> */}
+        <MethodDocumentation abiMessage={abiMessage} />
       </Box>
     </Stack>
   )

@@ -24,7 +24,7 @@ function getReturnTypeName(type: TypeDef | null | undefined): string {
   return type?.lookupName || type?.type || ''
 }
 
-function stringify(obj: unknown): string {
+export function stringify(obj: unknown): string {
   return JSON5.stringify(obj, null, 2)
 }
 
@@ -53,6 +53,10 @@ function extractOutcome(returnValue: AnyJson): AnyJson {
 }
 
 function getOutcomeText(outcome: AnyJson): string {
+  if (isContractResult(outcome) && outcome.Ok === null) {
+    return 'null'
+  }
+
   if (!isContractResult(outcome)) {
     return typeof outcome === 'object' && outcome !== null
       ? stringify(outcome)
