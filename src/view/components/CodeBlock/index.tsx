@@ -30,17 +30,7 @@ export const CodeBlock: React.FC<PropsWithChildren<CodeBlockProps>> = ({
         ...sx
       }}
     >
-      <FormLabel
-        sx={{
-          marginTop: '-2em',
-          zIndex: 2,
-          position: 'absolute',
-          fontSize: '0.75em',
-          width: 'auto'
-        }}
-      >
-        {label}
-      </FormLabel>
+      <FormLabel>{label}</FormLabel>
       {_children}
     </Box>
   )

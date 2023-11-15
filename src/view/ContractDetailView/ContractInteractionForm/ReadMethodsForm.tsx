@@ -1,17 +1,12 @@
 import { useEffect } from 'react'
 import { ContractInteractionProps } from '.'
-import {
-  Box,
-  CircularProgress,
-  Stack,
-  Typography,
-  FormHelperText
-} from '@mui/material'
+import { Box, Stack, Typography } from '@mui/material'
 import { MethodDocumentation } from '../MethodDocumentation'
 import { AbiParam } from '@/services/substrate/types'
 import { ButtonCall } from './styled'
 import { useContractCaller } from '@/hooks/useContractCaller'
-import { CopyBlock, atomOneDark } from 'react-code-blocks'
+import { getDecodedOutput } from '@/utils/contractExecResult'
+import { CopyToClipboardButton, StyledTextField } from '@/view/components'
 
 type Props = React.PropsWithChildren<
   Omit<ContractInteractionProps, 'type'> & {
@@ -49,11 +44,13 @@ export function ReadMethodsForm({
     >
       <Box minWidth="50%">
         <>
-          {abiParams.length > 0 && <Typography>Message to send</Typography>}
+          {abiParams.length > 0 && (
+            <Typography variant="overline">Message to send</Typography>
+          )}
           {children}
         </>
         <Box display="block">
-          <Typography variant="caption">Outcome</Typography>
+          <Typography variant="overline">Outcome</Typography>
         </Box>
 
         <Stack direction="row" justifyContent="space-between">
@@ -65,27 +62,36 @@ export function ReadMethodsForm({
               justifyContent: 'center'
             }}
           >
-            {caller.isSubmitting ? (
-              <CircularProgress color="primary" />
-            ) : (
-              <>
-                <CopyBlock
-                  text={outcome}
-                  language="text"
-                  theme={atomOneDark}
-                  showLineNumbers={false}
-                  codeBlock={true}
-                  wrapLongLines={true}
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+                gap: '1rem'
+              }}
+            >
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  alignItems: 'center'
+                }}
+              >
+                <StyledTextField placeholder="0" value={outcome} />
+                <CopyToClipboardButton
+                  id="copy-contract-address"
+                  sx={{ marginLeft: '0.5rem' }}
+                  data={outcome}
                 />
-                {error && (
-                  <FormHelperText error id={`error-${abiMessage.method}`}>
-                    {error}
-                  </FormHelperText>
-                )}
-              </>
-            )}
+              </Box>
+              <ButtonCall
+                isLoading={caller.isSubmitting}
+                onClick={() => caller.send(inputData)}
+              >
+                Recall
+              </ButtonCall>
+            </Box>
           </Box>
-          <ButtonCall onClick={() => caller.send(inputData)}>Recall</ButtonCall>
         </Stack>
       </Box>
       <Box sx={{ maxWidth: '45%', minWidth: '40%' }}>
