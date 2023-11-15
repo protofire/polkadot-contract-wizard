@@ -9,6 +9,9 @@ export const ButtonCall = styled(LoadingButton)<LoadingButtonProps>(
     textTransform: 'none',
     border: theme.palette.primary.main,
     background: theme.palette.primary.main,
-    color: theme.palette.common.white
+    color: theme.palette.common.white,
+    '& .MuiCircularProgress-root': {
+      color: theme.palette.common.white
+    }
   })
 )
