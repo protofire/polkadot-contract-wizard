@@ -28,7 +28,6 @@ export function useDryRunExecution({
 
   const executeDryRun = useCallback(async () => {
     const result = await dryRun.send(memoizedParams)
-    console.log('__dryRun', dryRun)
     if (result?.ok) {
       setOutcome(
         `Contract call will be successful executed with ${result.value.partialFee.toString()} fee`
