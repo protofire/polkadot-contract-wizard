@@ -1,18 +1,17 @@
 import { Box, CircularProgress, Stack, Typography } from '@mui/material'
 import { ContractInteractionProps } from '.'
 import { AbiParam } from '@/services/substrate/types'
+import { useDryRunExecution } from '../useDryRunExecution'
+import { MethodDocumentation } from '../MethodDocumentation'
 
 type Props = React.PropsWithChildren<
-  Pick<
-    ContractInteractionProps,
-    'abiMessage' | 'expanded' | 'contractPromise'
-  > & {
+  Omit<ContractInteractionProps, 'type'> & {
     abiParams: AbiParam[]
     inputData: unknown[] | undefined
   }
 >
 
-export function WriteMethodsForm({ children, abiParams }: Props) {
+export function WriteMethodsForm({ children, abiParams, abiMessage }: Props) {
   // const { outcome, executeDryRun } = useDryRunExecution({
   //   contractPromise,
   //   message: abiMessage,
@@ -59,7 +58,7 @@ export function WriteMethodsForm({ children, abiParams }: Props) {
         </Stack> */}
       </Box>
       <Box sx={{ maxWidth: '45%', minWidth: '40%' }}>
-        {/* <MethodDocumentation abiMessage={abiMessage} /> */}
+        <MethodDocumentation abiMessage={abiMessage} />
       </Box>
     </Stack>
   )
