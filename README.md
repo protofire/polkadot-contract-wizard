@@ -72,7 +72,7 @@ To run the application it is necessary to copy the environment variables file `.
 3. Run the following command to start the container (Will do a build previously in the first run):
 
     ```bash
-    docker-compose --env-file .docker/dev.docker.env up
+    docker-compose --env-file .docker/dev.docker.env up --build
     ```
 
 4. Your application should now be running on the specified port. You can access it by visiting `localhost:<EXTERNAL_PORT>` (Port 3000 by default) in your browser.
