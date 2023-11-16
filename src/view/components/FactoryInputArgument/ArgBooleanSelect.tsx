@@ -12,7 +12,7 @@ export function ArgBooleanSelect({
   onChange,
   label
 }: BooleanSelectProps) {
-  const handleChange = (event: SelectChangeEvent) => {
+  const handleChange = (event: SelectChangeEvent<unknown>) => {
     onChange(event.target.value === 'true')
   }
 

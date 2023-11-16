@@ -35,7 +35,7 @@ export function AddressAccountSelect({
       <StyledSelect
         label={label}
         value={value || ''}
-        onChange={event => onChange(event.target.value)}
+        onChange={event => onChange(event.target.value as string)}
         renderValue={selected => {
           if (!accounts) return
 
