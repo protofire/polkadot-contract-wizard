@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react'
-import { Box, Typography } from '@mui/material'
+import { Box, Stack, Typography } from '@mui/material'
 import { ContractTabType, UserContractDetailsWithAbi } from '@/domain'
 import BasicTabs from '@/components/Tabs'
 import SimpleAccordion from '@/components/Accordion'
@@ -11,6 +11,9 @@ import { useContractPromiseFromSource } from '@/hooks/useContractPromise'
 import { FallbackSpinner } from '@/components/FallbackSpinner'
 import { ContractPromise, Registry } from '@/services/substrate/types'
 import { ContractInteractionForm } from '@/view/ContractDetailView/ContractInteractionForm'
+import { useNetworkApi } from '@/hooks/useNetworkApi'
+import NetworkBadge from '../components/NetworkBadge'
+import { getChain } from '@/constants/chains'
 
 const types: ContractTabType[] = ['Read Contract', 'Write Contract']
 const groupedIndex: Record<ContractTabType, keyof GroupedAbiMessages> = {
@@ -53,12 +56,14 @@ function getElements(
 export function ContractsTabInteraction({ userContract }: Props) {
   const [type, setType] = React.useState(types[0])
   const isReadContract = type === 'Read Contract'
-  const contractPromise = useContractPromiseFromSource(userContract)
+  const { apiPromise, network } = useNetworkApi()
+  const contractPromise = useContractPromiseFromSource(userContract, apiPromise)
   const sortedAbiMessages = useMemo(
     () =>
       contractPromise && groupAndSortAbiMessages(contractPromise.abi.messages),
     [contractPromise]
   )
+  const { logo, name: networkName } = getChain(userContract.network)
 
   const handleChange = (newValue: number) => {
     setType(types[newValue])
@@ -85,6 +90,36 @@ export function ContractsTabInteraction({ userContract }: Props) {
         }}
         text="Getting the metadata interface (ABI) to interact with the Smart Contract"
       />
+    )
+  }
+
+  if (network !== userContract.network) {
+    return (
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        gap={6}
+        mt="3rem"
+        flexDirection="column"
+      >
+        <Box display="flex" alignItems="center" gap={1.25}>
+          <Typography variant="h3">Your contract is deployed</Typography>
+          <Typography variant="body1" component="p">
+            on
+          </Typography>
+          <NetworkBadge
+            name={networkName}
+            logo={logo.src}
+            logoSize={{ width: 20, height: 20 }}
+            description={logo.alt}
+            textTooltip="The network selected is different to this network."
+          />
+        </Box>
+        <Typography variant="body1">
+          You need to change the network in order to interact with this. 👆
+        </Typography>
+      </Box>
     )
   }
 
