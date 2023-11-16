@@ -1,9 +1,9 @@
-import { Chain } from '@/services/useink/chains'
+import { Chain, ChainId } from '@/services/useink/chains'
 
 export const IS_PRODUCTION = process.env.NODE_ENV === ('production' as string)
 export const IS_DEVELOPMENT = process.env.NODE_ENV === ('development' as string)
 
-export const DEFAULT_CHAIN: Chain['id'] = IS_DEVELOPMENT
+export const DEFAULT_CHAIN: ChainId = IS_DEVELOPMENT
   ? 'shibuya-testnet'
   : 'astar'
 
@@ -86,4 +86,4 @@ export const BACKEND_API = getBackendApiConfig(apiBaseUrlPath)
 
 export const DOCUMENTATION_URL =
   process.env.NEXT_PUBLIC_DOCUMENTATION_URL ||
-  'https://contractwizard-docs.vercel.app/'
+  'https://docs.contractwizard.xyz/'

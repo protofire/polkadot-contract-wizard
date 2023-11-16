@@ -23,7 +23,6 @@ import { UseInkProvider } from 'useink'
 import { CHAINS } from '@/constants/chains'
 import { LocalDbProvider } from '@/context/LocalDbContext'
 import { Inter } from 'next/font/google'
-import { apiVersionService } from '@/services/backendApi/ApiVersionService'
 
 type CustomAppProps = AppProps & {
   emotionCache: EmotionCache

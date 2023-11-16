@@ -8,7 +8,7 @@ import { useContractCaller } from '@/hooks/useContractCaller'
 import { CopyToClipboardButton, StyledTextField } from '@/view/components'
 
 type Props = React.PropsWithChildren<
-  Omit<ContractInteractionProps, 'type'> & {
+  Omit<ContractInteractionProps, 'type' | 'userContract'> & {
     abiParams: AbiParam[]
     inputData: unknown[] | undefined
   }

@@ -9,6 +9,7 @@ import { DryRunMessage } from './DryRunMessage'
 import { useContractTx } from '@/hooks/useContractTx'
 import { shouldDisable } from '@/services/useink/utils/txUtils'
 import { useRecentlyClicked } from '@/hooks/useRecentlyClicked'
+import { ExplorerLink } from '@/view/components/ExplorerLink'
 
 type Props = React.PropsWithChildren<
   Omit<ContractInteractionProps, 'type'> & {
@@ -26,7 +27,8 @@ export function WriteMethodsForm({
   inputData,
   expanded,
   onCallback,
-  substrateRegistry
+  substrateRegistry,
+  userContract
 }: Props) {
   const {
     outcome: outcomeDryRun = '',
@@ -62,7 +64,16 @@ export function WriteMethodsForm({
           {children}
         </>
         <Box display="flex" justifyContent="space-between" alignItems="center">
-          <Typography variant="overline">Tx hash</Typography>
+          <Stack direction="row">
+            <Typography variant="overline">Tx hash</Typography>
+            {outcome && (
+              <ExplorerLink
+                blockchain={userContract.network}
+                txHash={outcome}
+              />
+            )}
+          </Stack>
+
           {shouldDisable(tx) ? (
             <Typography variant="caption">{tx.status}</Typography>
           ) : (
