@@ -5,7 +5,6 @@ import { MethodDocumentation } from '../MethodDocumentation'
 import { AbiParam } from '@/services/substrate/types'
 import { ButtonCall } from './styled'
 import { useContractCaller } from '@/hooks/useContractCaller'
-import { getDecodedOutput } from '@/utils/contractExecResult'
 import { CopyToClipboardButton, StyledTextField } from '@/view/components'
 
 type Props = React.PropsWithChildren<

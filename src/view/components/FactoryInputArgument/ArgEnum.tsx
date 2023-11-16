@@ -1,4 +1,4 @@
-import { Box, FormControl, InputLabel, MenuItem, Select } from '@mui/material'
+import { Box, FormControl, InputLabel, MenuItem } from '@mui/material'
 import { useCallback, useState } from 'react'
 
 import { useNetworkAccountsContext } from '@/context/NetworkAccountsContext'
