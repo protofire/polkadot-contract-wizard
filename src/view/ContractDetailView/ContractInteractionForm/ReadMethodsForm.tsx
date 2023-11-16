@@ -3,7 +3,7 @@ import { ContractInteractionProps } from '.'
 import { Box, FormHelperText, Stack, Typography } from '@mui/material'
 import { MethodDocumentation } from '../MethodDocumentation'
 import { AbiParam } from '@/services/substrate/types'
-import { ButtonCall } from './styled'
+import { ButtonCall, MinimalTextField } from './styled'
 import { useContractCaller } from '@/hooks/useContractCaller'
 import { CopyToClipboardButton, StyledTextField } from '@/view/components'
 
@@ -76,8 +76,8 @@ export function ReadMethodsForm({
                   alignItems: 'center'
                 }}
               >
-                <StyledTextField
-                  placeholder="Not results yet..."
+                <MinimalTextField
+                  placeholder="Result not yet available."
                   value={outcome}
                 />
                 <CopyToClipboardButton
