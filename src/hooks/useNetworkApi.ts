@@ -4,7 +4,7 @@ import { useApi } from 'useink'
 import { useNetworkAccountsContext } from '@/context/NetworkAccountsContext'
 import { useDelay } from './useDelay'
 import { ChainId } from '@/services/useink/chains'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { getChain } from '@/constants/chains'
 import { ChainExtended } from '@/types'
 
@@ -32,17 +32,17 @@ export function useNetworkApi(): UseNetworkApi {
 
   const fetchApi = useApi(networkConnected)
 
-  useEffect(() => {
-    if (networkConnected) {
-      if (!fetchApi) {
-        ;(async () => {
-          const chain = getChain(networkConnected)
-          const apiInstance = await initializeApi(chain)
-          setApi(apiInstance)
-        })()
-      }
-    }
+  const fetchCustomChain = useCallback(async () => {
+    const chain = getChain(networkConnected)
+    const apiInstance = await initializeApi(chain)
+    setApi(apiInstance)
   }, [networkConnected])
+
+  useEffect(() => {
+    if (!fetchApi) {
+      fetchCustomChain()
+    }
+  }, [fetchApi, fetchCustomChain])
 
   const firstLoadCompleted = useDelay(5000)
   return {

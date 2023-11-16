@@ -30,3 +30,11 @@ export function maxLength(value: unknown, max = 20): string | void {
     return `The field only accepts 20 letters`
   }
 }
+
+export function validateWsUrl(value: string): string | void {
+  const validation = value.startsWith('wss://')
+
+  if (!validation) {
+    return `This is not a valid websocket url`
+  }
+}
