@@ -242,7 +242,7 @@ export function NetworkSelect({
           <StyledTextField
             sx={{ marginBottom: '2rem' }}
             label="Network Name"
-            placeholder="New testChain"
+            placeholder="Custom Chain"
             value={formData.name.value}
             onChange={formData.name.onChange}
             error={Boolean(formData.name.error)}
