@@ -49,7 +49,7 @@ export function ReadMethodsForm({
           )}
           {children}
         </>
-        <Box display="block">
+        <Box mt={2}>
           <Typography variant="overline">Outcome</Typography>
         </Box>
 

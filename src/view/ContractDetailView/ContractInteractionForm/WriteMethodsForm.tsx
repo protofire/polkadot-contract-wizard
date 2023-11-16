@@ -1,10 +1,11 @@
-import { Box, CircularProgress, Stack, Typography } from '@mui/material'
+import { Box, Stack, Typography } from '@mui/material'
 import { ContractInteractionProps } from '.'
 import { AbiParam } from '@/services/substrate/types'
 import { useDryRunExecution } from '../useDryRunExecution'
 import { MethodDocumentation } from '../MethodDocumentation'
+
 import { ButtonCall } from './styled'
-import { CopyBlock, atomOneDark } from 'react-code-blocks'
+import { CopyToClipboardButton, StyledTextField } from '@/view/components'
 
 type Props = React.PropsWithChildren<
   Omit<ContractInteractionProps, 'type'> & {
@@ -20,7 +21,7 @@ export function WriteMethodsForm({
   contractPromise,
   inputData
 }: Props) {
-  const { outcome, executeDryRun, isSubmitting } = useDryRunExecution({
+  const { outcome, executeDryRun } = useDryRunExecution({
     contractPromise,
     message: abiMessage,
     params: inputData,
@@ -40,7 +41,7 @@ export function WriteMethodsForm({
           )}
           {children}
         </>
-        <Box display="block">
+        <Box mt={2}>
           <Typography variant="overline">Outcome</Typography>
         </Box>
 
@@ -53,19 +54,38 @@ export function WriteMethodsForm({
               justifyContent: 'center'
             }}
           >
-            {isSubmitting ? (
-              <CircularProgress color="primary" />
-            ) : (
-              <CopyBlock
-                text={outcome}
-                language="text"
-                theme={atomOneDark}
-                showLineNumbers={false}
-                wrapLongLines={true}
-              />
-            )}
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+                gap: '1rem'
+              }}
+            >
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  alignItems: 'center'
+                }}
+              >
+                <StyledTextField placeholder="0" value={outcome} />
+                <CopyToClipboardButton
+                  id="copy-contract-address"
+                  sx={{ marginLeft: '0.5rem' }}
+                  data={outcome}
+                />
+              </Box>
+              <ButtonCall isLoading={false} onClick={executeDryRun}>
+                Recall
+              </ButtonCall>
+            </Box>
+            {/* {error && (
+              <FormHelperText error id={`error-${abiMessage.method}`}>
+                {error}
+              </FormHelperText>
+            )} */}
           </Box>
-          <ButtonCall onClick={executeDryRun}>Call</ButtonCall>
         </Stack>
       </Box>
       <Box sx={{ maxWidth: '45%', minWidth: '40%' }}>

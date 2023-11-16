@@ -9,6 +9,7 @@ import { TypeDef } from '@/services/substrate/types'
 import { isNumber } from '@/utils/dataTypeGuard'
 
 import { ArgumentSignature } from './FunctionSignatureName'
+import { StyledSelect } from '../AddressAccountSelect/styled'
 
 interface Props extends ArgumentComponentProps<Record<string, unknown>> {
   components: React.ComponentType<ArgumentComponentProps<unknown>>[]
@@ -70,7 +71,7 @@ export function ArgEnum({
             registry={registry}
           />
         </InputLabel>
-        <Select
+        <StyledSelect
           sx={{ color: 'white' }}
           labelId="enum-select-label"
           value={variantIndex}
@@ -87,7 +88,7 @@ export function ArgEnum({
               {name}
             </MenuItem>
           ))}
-        </Select>
+        </StyledSelect>
       </FormControl>
       {variants[variantIndex].type !== 'Null' && (
         <FormControl sx={{ marginLeft: 2 }} fullWidth>
