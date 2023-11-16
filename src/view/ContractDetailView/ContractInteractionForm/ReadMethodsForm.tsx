@@ -76,7 +76,10 @@ export function ReadMethodsForm({
                   alignItems: 'center'
                 }}
               >
-                <StyledTextField placeholder="0" value={outcome} />
+                <StyledTextField
+                  placeholder="Not results yet..."
+                  value={outcome}
+                />
                 <CopyToClipboardButton
                   id="copy-contract-address"
                   sx={{ marginLeft: '0.5rem' }}

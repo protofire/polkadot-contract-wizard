@@ -6,7 +6,7 @@ import {
   Registry
 } from '@/services/substrate/types'
 import { useNetworkApi } from './useNetworkApi'
-import { getDecodedOutput, stringify } from '@/utils/contractExecResult'
+import { getDecodedOutput } from '@/utils/contractExecResult'
 import { decodeError } from '@/services/useink/utils/decodeError'
 
 interface Props {

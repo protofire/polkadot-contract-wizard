@@ -1,15 +1,20 @@
-import { Box, CircularProgress, Stack, Typography } from '@mui/material'
+import { Box, FormHelperText, Stack, Typography } from '@mui/material'
 import { ContractInteractionProps } from '.'
 import { AbiParam } from '@/services/substrate/types'
-import { useDryRunExecution } from '../useDryRunExecution'
-import { MethodDocumentation } from '../MethodDocumentation'
+import { useDryRunExecution } from '@/view/ContractDetailView/useDryRunExecution'
+import { MethodDocumentation } from '@/view/ContractDetailView/MethodDocumentation'
 import { ButtonCall } from './styled'
-import { CopyBlock, atomOneDark } from 'react-code-blocks'
+import { CopyToClipboardButton, StyledTextField } from '@/view/components'
+import { DryRunMessage } from './DryRunMessage'
+import { useContractTx } from '@/hooks/useContractTx'
+import { shouldDisable } from '@/services/useink/utils/txUtils'
+import { useRecentlyClicked } from '@/hooks/useRecentlyClicked'
 
 type Props = React.PropsWithChildren<
   Omit<ContractInteractionProps, 'type'> & {
     abiParams: AbiParam[]
     inputData: unknown[] | undefined
+    onCallback?: () => void
   }
 >
 
@@ -18,14 +23,30 @@ export function WriteMethodsForm({
   abiParams,
   abiMessage,
   contractPromise,
-  inputData
+  inputData,
+  expanded,
+  onCallback,
+  substrateRegistry
 }: Props) {
-  const { outcome, executeDryRun, isSubmitting } = useDryRunExecution({
+  const {
+    outcome: outcomeDryRun = '',
+    error: errorDryrun,
+    isRunning: isDryRunning
+  } = useDryRunExecution({
     contractPromise,
     message: abiMessage,
     params: inputData,
-    autoRun: false
+    substrateRegistry,
+    autoRun: Boolean(expanded)
   })
+  const { signAndSend, tx, outcome } = useContractTx({
+    contractPromise,
+    abiMessage,
+    onCallback
+  })
+  const { ref: refButton, recentlyClicked } = useRecentlyClicked(2000)
+  const isLoading = shouldDisable(tx) || recentlyClicked
+  const _error = errorDryrun
 
   return (
     <Stack
@@ -40,8 +61,17 @@ export function WriteMethodsForm({
           )}
           {children}
         </>
-        <Box display="block">
-          <Typography variant="overline">Outcome</Typography>
+        <Box display="flex" justifyContent="space-between">
+          <Typography variant="overline">Tx hash</Typography>
+          {shouldDisable(tx) ? (
+            <Typography variant="caption">{tx.status}</Typography>
+          ) : (
+            <DryRunMessage
+              error={errorDryrun}
+              outcome={outcomeDryRun}
+              isRunning={isDryRunning}
+            />
+          )}
         </Box>
 
         <Stack direction="row" justifyContent="space-between">
@@ -53,19 +83,49 @@ export function WriteMethodsForm({
               justifyContent: 'center'
             }}
           >
-            {isSubmitting ? (
-              <CircularProgress color="primary" />
-            ) : (
-              <CopyBlock
-                text={outcome}
-                language="text"
-                theme={atomOneDark}
-                showLineNumbers={false}
-                wrapLongLines={true}
-              />
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+                gap: '1rem'
+              }}
+            >
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  alignItems: 'center'
+                }}
+              >
+                <StyledTextField
+                  disabled={isDryRunning || isLoading || Boolean(errorDryrun)}
+                  placeholder="Not results yet..."
+                  value={outcome}
+                />
+                <CopyToClipboardButton
+                  id="copy-contract-address"
+                  sx={{ marginLeft: '0.5rem' }}
+                  data={outcome}
+                  disabled={isDryRunning || isLoading || Boolean(errorDryrun)}
+                />
+              </Box>
+
+              <ButtonCall
+                ref={refButton}
+                disabled={isDryRunning}
+                onClick={() => signAndSend(inputData)}
+                isLoading={isLoading}
+              >
+                Call
+              </ButtonCall>
+            </Box>
+            {_error && (
+              <FormHelperText error id={`error-${abiMessage.method}`}>
+                {_error}
+              </FormHelperText>
             )}
           </Box>
-          <ButtonCall onClick={executeDryRun}>Call</ButtonCall>
         </Stack>
       </Box>
       <Box sx={{ maxWidth: '45%', minWidth: '40%' }}>
