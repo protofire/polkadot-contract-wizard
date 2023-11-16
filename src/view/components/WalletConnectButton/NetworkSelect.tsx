@@ -245,7 +245,6 @@ export function NetworkSelect({
           <StyledTextField
             sx={{ marginBottom: '2rem' }}
             label="Network Name"
-            placeholder="Custom name"
             placeholder="Custom Chain"
             value={formData.name.value}
             onChange={formData.name.onChange}
