@@ -29,7 +29,7 @@ import AddIcon from '@mui/icons-material/Add'
 import EditIcon from '@mui/icons-material/Edit'
 import ModalView from '../ModalView'
 import { useFormInput } from '@/hooks'
-import { notEmpty } from '@/utils/inputValidation'
+import { notEmpty, validateWsUrl } from '@/utils/inputValidation'
 import { StyledTextField } from '../Input'
 import { RpcUrl } from '@/services/useink/chains/data/types'
 import { ChainExtended } from '@/types'
@@ -122,8 +122,11 @@ export function NetworkSelect({
   }
 
   const formData = {
-    name: useFormInput<string>('test', [notEmpty]),
-    rpc: useFormInput<RpcUrl>('wss://rpc.shibuya.astar.network', [notEmpty])
+    name: useFormInput<string>('Test', [notEmpty]),
+    rpc: useFormInput<RpcUrl>('wss://rpc.shibuya.astar.network', [
+      notEmpty,
+      validateWsUrl
+    ])
   }
 
   const editNetwork =

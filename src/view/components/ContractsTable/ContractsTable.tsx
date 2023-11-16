@@ -11,11 +11,7 @@ import {
   Box
 } from '@mui/material'
 
-import {
-  CopyToClipboardButton,
-  StyledTextField,
-  TokenIconSvg
-} from '@/components'
+import { CopyToClipboardButton, TokenIconSvg } from '@/components'
 import {
   isoDate,
   isoToReadableDate,
@@ -47,6 +43,7 @@ import { ROUTES } from '@/constants'
 import { useRef } from 'react'
 import { useFormInput } from '@/hooks'
 import { maxLength, notEmpty } from '@/utils/inputValidation'
+import { MuiTextField } from '../MuiTextField'
 
 export interface TableConfig {
   onlyTable: boolean
@@ -133,19 +130,16 @@ function ContractTableRow({
         <TokenWrapper>
           {editable ? (
             <>
-              <StyledTextField
-                label="Contract Name"
-                placeholder={contract.name}
-                value={formData.contractName.value}
-                onChange={formData.contractName.onChange}
+              <MuiTextField
                 error={Boolean(formData.contractName.error)}
                 helperText={
                   formData.contractName.error ? formData.contractName.error : ''
                 }
-                loading={formData.contractName.loading}
+                value={formData.contractName.value}
+                onChange={formData.contractName.onChange}
                 ref={textRef}
                 autoFocus
-              />
+              ></MuiTextField>
 
               <DefaultToolTipButton
                 id={`save-contract-name${takeLastChars(contract.uuid)}`}
