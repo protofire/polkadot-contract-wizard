@@ -16,3 +16,10 @@ export const ShibuyaTestnet: IChain<'shibuya-testnet'> = {
   subscanUrl: 'https://shibuya.subscan.io/',
   rpcs: ['wss://rpc.shibuya.astar.network', 'wss://shibuya-rpc.dwellir.com']
 } as const
+
+export const Custom: IChain<'custom'> = {
+  id: 'custom',
+  name: 'Custom',
+  account: '*25519',
+  rpcs: []
+} as const

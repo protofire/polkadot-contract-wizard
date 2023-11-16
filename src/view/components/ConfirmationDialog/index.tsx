@@ -8,7 +8,6 @@ import {
   Typography,
   Box
 } from '@mui/material'
-import { title } from 'process'
 
 const style = {
   backgroundColor: 'background.paper'
@@ -36,7 +35,7 @@ function ConfirmationDialog({
     <Dialog open={open} onClose={onClose}>
       <Box sx={style}>
         <DialogTitle>
-          <Typography variant="h5" color="white">
+          <Typography sx={{ fontSize: '1.2rem' }} color="white">
             {title}
           </Typography>
         </DialogTitle>

@@ -32,7 +32,8 @@ export const WalletConnectButton = () => {
     networkConnected,
     setCurrentAccount,
     setCurrentWallet,
-    setCurrentChain
+    setCurrentChain,
+    setCustomChain
   } = useNetworkAccountsContext()
   const isDelayFinished = useDelay()
   const [openModal, setOpenModal] = useState(false)
@@ -70,6 +71,7 @@ export const WalletConnectButton = () => {
               <NetworkSelect
                 currentChain={networkConnected}
                 onChange={setCurrentChain}
+                setCustomChain={setCustomChain}
               />
             )}
             <AccountSelect
