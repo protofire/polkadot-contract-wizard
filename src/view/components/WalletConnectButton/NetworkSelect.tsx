@@ -246,6 +246,7 @@ export function NetworkSelect({
             sx={{ marginBottom: '2rem' }}
             label="Network Name"
             placeholder="Custom name"
+            placeholder="Custom Chain"
             value={formData.name.value}
             onChange={formData.name.onChange}
             error={Boolean(formData.name.error)}
