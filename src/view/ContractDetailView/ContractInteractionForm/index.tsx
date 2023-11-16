@@ -7,7 +7,7 @@ import {
   Registry
 } from '@/services/substrate/types'
 import { ReadMethodsForm } from './ReadMethodsForm'
-import { ContractTabType } from '@/domain'
+import { ContractTabType, UserContractDetailsWithAbi } from '@/domain'
 import { WriteMethodsForm } from './WriteMethodsForm'
 
 export type ContractInteractionProps = {
@@ -16,6 +16,7 @@ export type ContractInteractionProps = {
   contractPromise: ContractPromise
   expanded?: boolean
   type: ContractTabType
+  userContract: UserContractDetailsWithAbi
 }
 
 export function ContractInteractionForm({
@@ -23,7 +24,8 @@ export function ContractInteractionForm({
   substrateRegistry,
   contractPromise,
   type,
-  expanded
+  expanded,
+  userContract
 }: ContractInteractionProps) {
   const { argValues, setArgValues, inputData } = useArgValues(
     abiMessage,
@@ -57,6 +59,7 @@ export function ContractInteractionForm({
           inputData={inputData}
           substrateRegistry={substrateRegistry}
           expanded={expanded}
+          userContract={userContract}
         >
           <ArgumentsForm
             argValues={argValues}

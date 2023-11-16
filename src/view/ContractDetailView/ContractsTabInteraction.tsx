@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react'
-import { Box, Stack, Typography } from '@mui/material'
+import { Box, Typography } from '@mui/material'
 import { ContractTabType, UserContractDetailsWithAbi } from '@/domain'
 import BasicTabs from '@/components/Tabs'
 import SimpleAccordion from '@/components/Accordion'
@@ -35,7 +35,8 @@ function getElements(
   abiMessages: GroupedAbiMessages,
   substrateRegistry: Registry,
   contractPromise: ContractPromise,
-  type: ContractTabType
+  type: ContractTabType,
+  userContract: UserContractDetailsWithAbi
 ): AccordionElement[] {
   const group = abiMessages[groupedIndex[type]]
 
@@ -47,6 +48,7 @@ function getElements(
         substrateRegistry={substrateRegistry}
         contractPromise={contractPromise}
         type={type}
+        userContract={userContract}
       />
     ),
     id: msg.identifier
@@ -162,13 +164,15 @@ export function ContractsTabInteraction({ userContract }: Props) {
                       sortedAbiMessages,
                       contractPromise.abi.registry,
                       contractPromise.contractPromise,
-                      types[0]
+                      types[0],
+                      userContract
                     )
                   : getElements(
                       sortedAbiMessages,
                       contractPromise.abi.registry,
                       contractPromise.contractPromise,
-                      types[1]
+                      types[1],
+                      userContract
                     )
               }
             />
