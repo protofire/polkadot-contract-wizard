@@ -52,7 +52,7 @@ function extractOutcome(returnValue: AnyJson): AnyJson {
   return returnValue.Err ?? returnValue.Ok ?? returnValue
 }
 
-function getOutcomeText(outcome: AnyJson): string {
+export function getOutcomeText(outcome: AnyJson): string {
   if (isContractResult(outcome) && outcome.Ok === null) {
     return 'null'
   }
