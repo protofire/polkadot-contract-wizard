@@ -53,7 +53,7 @@ export function createIChainWithRPCAndSave(
 ): ChainExtended {
   const customChain: ChainExtended = {
     id: OPTION_FOR_CUSTOM_NETWORK,
-    name: `Custom ${name}`,
+    name: `${name}`,
     account: '*25519',
     rpcs: [rpc],
     logo: {

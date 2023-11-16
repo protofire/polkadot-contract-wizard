@@ -1,4 +1,4 @@
-import { Abi, ContractPromise } from '@/services/substrate/types'
+import { Abi, ApiPromise, ContractPromise } from '@/services/substrate/types'
 import { useEffect, useMemo, useState } from 'react'
 
 import { MetadataState, UserContractDetailsWithAbi } from '@/domain'
@@ -42,9 +42,9 @@ export function useContractPromise(
 const metadataManager = new MetadataManager()
 
 export function useContractPromiseFromSource(
-  userContract: UserContractDetailsWithAbi
+  userContract: UserContractDetailsWithAbi,
+  apiPromise: ApiPromise | undefined
 ) {
-  const { apiPromise } = useNetworkApi()
   const derivedMetadata = useMemo(
     () =>
       metadataManager.deriveFromJson(
