@@ -8,9 +8,10 @@ interface Props {
   data: string
   sx?: SxProps
   id: string
+  disabled?: boolean
 }
 
-export const CopyToClipboardButton = ({ data, sx }: Props) => {
+export const CopyToClipboardButton = ({ data, sx, disabled }: Props) => {
   const [recentlyCopied, copyToClipboard] = useCopyToClipboard()
 
   return (
@@ -23,6 +24,7 @@ export const CopyToClipboardButton = ({ data, sx }: Props) => {
           copyToClipboard(data)
         }}
         sx={sx}
+        disabled={disabled}
       >
         <ContentCopyRoundedIcon fontSize="inherit" />
       </IconButton>
