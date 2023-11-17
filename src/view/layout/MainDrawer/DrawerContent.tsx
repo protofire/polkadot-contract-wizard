@@ -3,7 +3,7 @@ import Image from 'next/image'
 import Navigation from './Navigation'
 import SimpleBar from '@/view/components/third-party/SimpleBar'
 import { LOGO_PROTOFIRE } from '@/constants/images'
-import { Typography, Stack, Link, Box } from '@mui/material'
+import { Typography, Stack, Link, Box, Tooltip } from '@mui/material'
 import TelegramIcon from '@mui/icons-material/Telegram'
 import GithubIcon from '@mui/icons-material/GitHub'
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
@@ -40,7 +40,7 @@ const DrawerContent = ({ version, backendApiVersion }: Props) => {
           padding: '1.2rem'
         }}
       >
-        <Typography variant="h5" mb={4}>
+        <Typography variant="h6" mb={4}>
           <Link
             href={DOCUMENTATION_URL}
             underline="hover"
@@ -62,7 +62,7 @@ const DrawerContent = ({ version, backendApiVersion }: Props) => {
             />
           </Link>
         </Typography>
-        <Typography variant="h5" mb={4}>
+        <Typography variant="h6" mb={4}>
           <Link
             href={ROUTES.TELEGRAM}
             underline="hover"
@@ -77,28 +77,6 @@ const DrawerContent = ({ version, backendApiVersion }: Props) => {
           >
             <TelegramIcon fontSize="small" sx={{ color: '#ffffff' }} />
             Need Help?
-            <OpenInNewOutlinedIcon
-              fontSize="small"
-              style={{ fontSize: 16 }}
-              sx={{ color: '#848997' }}
-            />
-          </Link>
-        </Typography>
-        <Typography variant="h5" mb={4}>
-          <Link
-            href={ROUTES.GITHUB}
-            underline="hover"
-            target="_blank"
-            rel="noopener noreferrer"
-            sx={{
-              color: '#ffffff',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '0.75rem'
-            }}
-          >
-            <GithubIcon fontSize="small" sx={{ color: '#ffffff' }} />
-            Github
             <OpenInNewOutlinedIcon
               fontSize="small"
               style={{ fontSize: 16 }}
@@ -138,14 +116,34 @@ const DrawerContent = ({ version, backendApiVersion }: Props) => {
             />
           </Link>
         </Box>
-        <Stack direction="row" justifyContent="flex-end">
+        <Stack
+          direction="row"
+          justifyContent="space-evenly"
+          alignContent="center"
+          gap="1rem"
+        >
+          <Tooltip title="Check our Github repository.">
+            <Link
+              href={ROUTES.GITHUB}
+              underline="hover"
+              target="_blank"
+              rel="noopener noreferrer"
+              sx={{
+                color: '#ffffff',
+                display: 'flex',
+                alignItems: 'center'
+              }}
+            >
+              <GithubIcon fontSize="small" sx={{ color: '#ffffff' }} />
+            </Link>
+          </Tooltip>
           {version && (
             <Box display="flex" justifyContent={'right'} pr={'1rem'}>
               <Typography
                 sx={{
                   color: '#ffffff7d',
-                  fontSize: '0.6rem',
-                  marginTop: '0.1rem'
+                  fontSize: '0.65rem',
+                  marginTop: '0.2rem'
                 }}
               >
                 UI V{version}
@@ -157,8 +155,8 @@ const DrawerContent = ({ version, backendApiVersion }: Props) => {
               <Typography
                 sx={{
                   color: '#ffffff7d',
-                  fontSize: '0.6rem',
-                  marginTop: '0.1rem'
+                  fontSize: '0.65rem',
+                  marginTop: '0.2rem'
                 }}
               >
                 API V{backendApiVersion}
