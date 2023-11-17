@@ -84,28 +84,6 @@ const DrawerContent = ({ version, backendApiVersion }: Props) => {
             />
           </Link>
         </Typography>
-        {/* <Typography variant="h6" mb={4}>
-          <Link
-            href={ROUTES.GITHUB}
-            underline="hover"
-            target="_blank"
-            rel="noopener noreferrer"
-            sx={{
-              color: '#ffffff',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '0.75rem'
-            }}
-          >
-            <GithubIcon fontSize="small" sx={{ color: '#ffffff' }} />
-            Github
-            <OpenInNewOutlinedIcon
-              fontSize="small"
-              style={{ fontSize: 16 }}
-              sx={{ color: '#848997' }}
-            />
-          </Link>
-        </Typography> */}
         <Box
           sx={{
             display: 'flex',
