@@ -27,7 +27,7 @@ export function maxAllowed(value: unknown, max = 64): string | void {
 
 export function maxLength(value: unknown, max = 20): string | void {
   if (typeof value !== 'string' || value.length > max) {
-    return `The field only accepts 20 letters`
+    return `The field only accepts ${max} letters`
   }
 }
 

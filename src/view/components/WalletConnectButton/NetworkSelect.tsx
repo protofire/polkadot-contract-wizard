@@ -11,6 +11,8 @@ import {
 } from '@mui/material'
 import {
   CHAINS_ALLOWED,
+  MAX_CHAIN_NUMBER,
+  MAX_CUSTOM_NAME_LENGTH,
   OPTION_FOR_ADD_CUSTOM_NETWORK,
   OPTION_FOR_CUSTOM_NETWORK,
   OPTION_FOR_EDIT_CUSTOM_NETWORK,
@@ -29,7 +31,7 @@ import AddIcon from '@mui/icons-material/Add'
 import EditIcon from '@mui/icons-material/Edit'
 import ModalView from '../ModalView'
 import { useFormInput } from '@/hooks'
-import { notEmpty, validateWsUrl } from '@/utils/inputValidation'
+import { maxLength, notEmpty, validateWsUrl } from '@/utils/inputValidation'
 import { StyledTextField } from '../Input'
 import { RpcUrl } from '@/services/useink/chains/data/types'
 import { ChainExtended } from '@/types'
@@ -122,25 +124,23 @@ export function NetworkSelect({
   }
 
   const formData = {
-    name: useFormInput<string>('Test', [notEmpty]),
-    rpc: useFormInput<RpcUrl>('wss://rpc.shibuya.astar.network', [
+    name: useFormInput<string>(chain.name, [
       notEmpty,
-      validateWsUrl
-    ])
+      value => maxLength(value, MAX_CUSTOM_NAME_LENGTH)
+    ]),
+    rpc: useFormInput<RpcUrl>(
+      chain.rpcs[0] ?? 'wss://rpc.shibuya.astar.network',
+      [notEmpty, validateWsUrl]
+    )
   }
 
   const editNetwork =
     chains.some(chain => chain.id === OPTION_FOR_CUSTOM_NETWORK) &&
-    chains.length === 5
+    chains.length === MAX_CHAIN_NUMBER
 
   const anyInvalidField: boolean = Object.values(formData).some(
     field => (field.required && !field.value) || field.error !== null
   )
-
-  const _resetModalInputs = () => {
-    formData.name.setValue('')
-    formData.rpc.setValue('' as RpcUrl)
-  }
 
   const addCustomNetwork = async () => {
     let newChainList: ChainExtended[] = []
@@ -152,7 +152,6 @@ export function NetworkSelect({
     if (editNetwork) {
       newChainList = updateChain(chains, customChain)
     } else {
-      _resetModalInputs()
       newChainList = addNewChain(customChain)
     }
     setCustomChain(customChain)
