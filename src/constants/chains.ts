@@ -11,6 +11,8 @@ import { CHAINS_IMG_PATH } from './images'
 import { RpcUrl } from '@/services/useink/chains/data/types'
 
 export const DEFAULT_DECIMALS = 12
+export const MAX_CUSTOM_NAME_LENGTH = 10
+export const MAX_CHAIN_NUMBER = 5
 export const OPTION_FOR_CUSTOM_NETWORK = 'custom'
 export const OPTION_FOR_ADD_CUSTOM_NETWORK = 'add-custom'
 export const OPTION_FOR_EDIT_CUSTOM_NETWORK = 'edit-custom'
