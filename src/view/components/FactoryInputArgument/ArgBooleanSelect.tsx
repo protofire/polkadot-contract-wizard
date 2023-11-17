@@ -1,4 +1,5 @@
-import { InputLabel, MenuItem, Select, SelectChangeEvent } from '@mui/material'
+import { InputLabel, MenuItem, SelectChangeEvent } from '@mui/material'
+import { StyledSelect } from '../AddressAccountSelect/styled'
 
 interface BooleanSelectProps {
   label: string
@@ -11,7 +12,7 @@ export function ArgBooleanSelect({
   onChange,
   label
 }: BooleanSelectProps) {
-  const handleChange = (event: SelectChangeEvent) => {
+  const handleChange = (event: SelectChangeEvent<unknown>) => {
     onChange(event.target.value === 'true')
   }
 
@@ -20,7 +21,7 @@ export function ArgBooleanSelect({
   return (
     <>
       <InputLabel>{label}</InputLabel>
-      <Select
+      <StyledSelect
         sx={{ color: 'white' }}
         value={stringValue}
         onChange={handleChange}
@@ -32,7 +33,7 @@ export function ArgBooleanSelect({
         <MenuItem sx={{ color: 'white' }} value="false">
           False
         </MenuItem>
-      </Select>
+      </StyledSelect>
     </>
   )
 }

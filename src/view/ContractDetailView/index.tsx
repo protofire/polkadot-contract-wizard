@@ -250,8 +250,7 @@ export default function ContractDetail({ userContract }: Props): JSX.Element {
           </Typography>
           <Stack direction="row" alignItems="center">
             <Typography variant="caption">By</Typography>
-            {''}
-            <MonoTypography sx={{ fontSize: '0.8rem' }}>
+            <MonoTypography sx={{ fontSize: '0.8rem', marginLeft: '0.4rem' }}>
               {truncateAddress(userContract.userAddress, 4)}
             </MonoTypography>
             <CopyToClipboardButton

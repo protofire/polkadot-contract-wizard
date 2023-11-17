@@ -48,6 +48,7 @@ export const HeadLine = ({ tokenType }: { tokenType: TokenType }) => {
           spacing={{ xs: '0', lg: '2' }}
           direction={{ xs: 'column', md: 'row', lg: 'row' }}
           alignItems="center"
+          gap="0.8rem"
         >
           <Typography variant="h3">{title}</Typography>
           <Typography

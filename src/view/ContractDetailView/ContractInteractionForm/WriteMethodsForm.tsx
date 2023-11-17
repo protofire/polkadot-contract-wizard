@@ -3,7 +3,7 @@ import { ContractInteractionProps } from '.'
 import { AbiParam } from '@/services/substrate/types'
 import { useDryRunExecution } from '@/view/ContractDetailView/useDryRunExecution'
 import { MethodDocumentation } from '@/view/ContractDetailView/MethodDocumentation'
-import { ButtonCall } from './styled'
+import { ButtonCall, MinimalTextField } from './styled'
 import { CopyToClipboardButton, StyledTextField } from '@/view/components'
 import { DryRunMessage } from './DryRunMessage'
 import { useContractTx } from '@/hooks/useContractTx'
@@ -63,7 +63,7 @@ export function WriteMethodsForm({
           )}
           {children}
         </>
-        <Box display="flex" justifyContent="space-between">
+        <Box display="flex" justifyContent="space-between" alignItems="center">
           <Stack direction="row">
             <Typography variant="overline">Tx hash</Typography>
             {outcome && (
@@ -109,10 +109,12 @@ export function WriteMethodsForm({
                   alignItems: 'center'
                 }}
               >
-                <StyledTextField
+                <MinimalTextField
                   disabled={isDryRunning || isLoading || Boolean(errorDryrun)}
-                  placeholder="Not results yet..."
+                  placeholder="Result not yet available."
                   value={outcome}
+                  fullWidth
+                  multiline
                 />
                 <CopyToClipboardButton
                   id="copy-contract-address"

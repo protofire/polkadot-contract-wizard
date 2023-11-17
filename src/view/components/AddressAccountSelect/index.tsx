@@ -1,9 +1,10 @@
-import { InputLabel, MenuItem, Select } from '@mui/material'
+import { InputLabel, MenuItem } from '@mui/material'
 
 import { useNetworkAccountsContext } from '@/context/NetworkAccountsContext'
 import useSetDefaultItem from '@/hooks/useSetDefaultFirstItem'
 
 import { AccountAvatar } from './AccountAvatar'
+import { StyledSelect } from './styled'
 
 type Props = {
   label?: string
@@ -31,10 +32,10 @@ export function AddressAccountSelect({
   return (
     <>
       <InputLabel>{label}</InputLabel>
-      <Select
+      <StyledSelect
         label={label}
         value={value || ''}
-        onChange={event => onChange(event.target.value)}
+        onChange={event => onChange(event.target.value as string)}
         renderValue={selected => {
           if (!accounts) return
 
@@ -47,7 +48,7 @@ export function AddressAccountSelect({
             <AccountAvatar address={account.address} />
           </MenuItem>
         ))}
-      </Select>
+      </StyledSelect>
     </>
   )
 }
