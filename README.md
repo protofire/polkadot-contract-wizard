@@ -43,7 +43,7 @@ We are continually working to expand the capabilities of the Polkadot Contract W
 
 ### 🚀 Run app
 
-To run the application it is necessary to copy the environment variables file `.env.example` and paste it as `.env`, in this file you will find environment variables like as the default RPC.
+To run the application locally it is necessary to copy the environment variables file `.env.local.example` and paste it as `.env`. In this file you will find environment variables like as the default RPC.
 
 > 🚨🚨🚨 It is mandatory to create the `.env` to run the application.
 
