@@ -12,11 +12,14 @@ export function ContractsTableWidget() {
   const { userContracts, isLoading } = useListUserContracts(
     accountConnected?.address,
     networkConnected
+    // { hidden: false }
   )
   const { logo, name: networkName } = getChain(networkConnected)
   const { userContractItems, onDownloadSource } =
     useDownloadMetadata(userContracts)
-
+  /* const userContractItems = userContractItems?.filter(
+    userContract => userContract.hidden === false
+  ) */
   return (
     <>
       {accountConnected && userContracts && (
