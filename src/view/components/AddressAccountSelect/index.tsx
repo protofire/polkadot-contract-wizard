@@ -1,10 +1,8 @@
-import { InputLabel, MenuItem } from '@mui/material'
-
-import { useNetworkAccountsContext } from '@/context/NetworkAccountsContext'
-import useSetDefaultItem from '@/hooks/useSetDefaultFirstItem'
+import { Autocomplete, InputLabel, TextField } from '@mui/material'
+import { useEffect, useState } from 'react'
 
 import { AccountAvatar } from './AccountAvatar'
-import { StyledSelect } from './styled'
+import { useNetworkAccountsContext } from '@/context/NetworkAccountsContext'
 
 type Props = {
   label?: string
@@ -20,35 +18,50 @@ export function AddressAccountSelect({
   const {
     state: { accounts }
   } = useNetworkAccountsContext()
+  const [inputValue, setInputValue] = useState('')
+  const [recentAddresses, setRecentAddresses] = useState<string[]>([])
 
-  // Set first item as default
-  useSetDefaultItem({
-    value,
-    setValue: onChange,
-    options: accounts,
-    getValue: account => account.address
-  })
+  useEffect(() => {
+    if (value && !recentAddresses.includes(value)) {
+      setRecentAddresses([...recentAddresses, value])
+    }
+  }, [value, recentAddresses])
+
+  const options = accounts ? accounts.map(account => account.address) : []
+  const combinedOptions = Array.from(new Set([...recentAddresses, ...options]))
 
   return (
     <>
       <InputLabel>{label}</InputLabel>
-      <StyledSelect
-        label={label}
-        value={value || ''}
-        onChange={event => onChange(event.target.value as string)}
-        renderValue={selected => {
-          if (!accounts) return
-
-          const account = accounts.find(account => account.address === selected)
-          return account && <AccountAvatar address={account.address} />
+      <Autocomplete
+        value={value}
+        inputValue={inputValue}
+        onInputChange={(event, newInputValue) => {
+          setInputValue(newInputValue)
         }}
-      >
-        {accounts?.map(account => (
-          <MenuItem key={account.address} value={account.address}>
-            <AccountAvatar address={account.address} />
-          </MenuItem>
-        ))}
-      </StyledSelect>
+        onChange={(event, newValue) => {
+          if (newValue === null) {
+            onChange('')
+            return
+          }
+
+          onChange(newValue)
+          if (newValue && !recentAddresses.includes(newValue)) {
+            setRecentAddresses([...recentAddresses, newValue])
+          }
+        }}
+        options={combinedOptions}
+        getOptionLabel={option => {
+          const account = accounts?.find(acc => acc.address === option)
+          return account ? account.address : option
+        }}
+        renderOption={(props, option) => (
+          <li {...props}>
+            <AccountAvatar address={option} />
+          </li>
+        )}
+        renderInput={params => <TextField {...params} label={label} />}
+      />
     </>
   )
 }

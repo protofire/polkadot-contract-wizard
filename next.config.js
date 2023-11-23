@@ -8,6 +8,14 @@ const backendApi = `${process.env.NEXT_PUBLIC_BACKEND_API}/:path*`
 
 const nextConfig = {
   reactStrictMode: true,
+  modularizeImports: {
+    "@mui/material": {
+      transform: "@mui/material/{{member}}",
+    },
+    "@mui/icons-material": {
+      transform: "@mui/icons-material/{{member}}",
+    },
+  },
   publicRuntimeConfig: {
     version,
   },

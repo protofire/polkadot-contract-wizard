@@ -1,5 +1,4 @@
 import {
-  styled,
   ListItemButton,
   ListItemButtonProps,
   Box,
@@ -10,6 +9,7 @@ import {
   List,
   ListProps
 } from '@mui/material'
+import { styled } from '@mui/material/styles'
 
 export const ModalStyledList = styled(List)<ListProps>(() => ({
   margin: '0 auto',
