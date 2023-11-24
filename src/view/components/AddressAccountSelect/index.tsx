@@ -1,4 +1,4 @@
-import { Autocomplete, InputLabel, TextField } from '@mui/material'
+import { Autocomplete, TextField } from '@mui/material'
 import { useEffect, useState } from 'react'
 
 import { AccountAvatar } from './AccountAvatar'
@@ -12,49 +12,52 @@ type Props = {
 
 export function AddressAccountSelect({
   label = 'My Accounts',
-  value,
+  value = '',
   onChange
 }: Props) {
   const {
     state: { accounts }
   } = useNetworkAccountsContext()
-  const [inputValue, setInputValue] = useState('')
+  const [inputValue, setInputValue] = useState(value)
   const [recentAddresses, setRecentAddresses] = useState<string[]>([])
 
   useEffect(() => {
-    if (value && !recentAddresses.includes(value)) {
-      setRecentAddresses([...recentAddresses, value])
+    if (value) {
+      setRecentAddresses(prevAddresses => {
+        if (prevAddresses.includes(value)) return prevAddresses
+
+        return [...recentAddresses, value]
+      })
     }
-  }, [value, recentAddresses])
+  }, [recentAddresses, value])
 
   const options = accounts ? accounts.map(account => account.address) : []
   const combinedOptions = Array.from(new Set([...recentAddresses, ...options]))
 
+  const handleAutoCompleteChange = (event: any, newValue: string | null) => {
+    if (newValue !== null) {
+      onChange(newValue)
+      setRecentAddresses(prevAddresses => {
+        if (!prevAddresses.includes(newValue)) {
+          return [...prevAddresses, newValue]
+        }
+        return prevAddresses
+      })
+    } else {
+      onChange('')
+    }
+  }
+
   return (
     <>
-      <InputLabel>{label}</InputLabel>
       <Autocomplete
-        value={value}
+        value={value ?? ''}
         inputValue={inputValue}
         onInputChange={(event, newInputValue) => {
           setInputValue(newInputValue)
         }}
-        onChange={(event, newValue) => {
-          if (newValue === null) {
-            onChange('')
-            return
-          }
-
-          onChange(newValue)
-          if (newValue && !recentAddresses.includes(newValue)) {
-            setRecentAddresses([...recentAddresses, newValue])
-          }
-        }}
+        onChange={handleAutoCompleteChange}
         options={combinedOptions}
-        getOptionLabel={option => {
-          const account = accounts?.find(acc => acc.address === option)
-          return account ? account.address : option
-        }}
         renderOption={(props, option) => (
           <li {...props}>
             <AccountAvatar address={option} />
