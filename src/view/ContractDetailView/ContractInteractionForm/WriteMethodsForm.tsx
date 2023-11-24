@@ -4,12 +4,14 @@ import { AbiParam } from '@/services/substrate/types'
 import { useDryRunExecution } from '@/view/ContractDetailView/useDryRunExecution'
 import { MethodDocumentation } from '@/view/ContractDetailView/MethodDocumentation'
 import { ButtonCall, MinimalTextField } from './styled'
-import { CopyToClipboardButton, StyledTextField } from '@/view/components'
+import { CopyToClipboardButton } from '@/view/components'
 import { DryRunMessage } from './DryRunMessage'
 import { useContractTx } from '@/hooks/useContractTx'
 import { shouldDisable } from '@/services/useink/utils/txUtils'
 import { useRecentlyClicked } from '@/hooks/useRecentlyClicked'
 import { ExplorerLink } from '@/view/components/ExplorerLink'
+import React from 'react'
+import { TextFieldWithLoadingProps } from '@/view/components/Input/TextFieldWithLoading'
 
 type Props = React.PropsWithChildren<
   Omit<ContractInteractionProps, 'type'> & {
@@ -18,6 +20,12 @@ type Props = React.PropsWithChildren<
     onCallback?: () => void
   }
 >
+
+const TextFieldMemoized: React.FC<TextFieldWithLoadingProps> = React.memo(
+  function Memoized(props) {
+    return <MinimalTextField {...props} />
+  }
+)
 
 export function WriteMethodsForm({
   children,
@@ -109,7 +117,7 @@ export function WriteMethodsForm({
                   alignItems: 'center'
                 }}
               >
-                <MinimalTextField
+                <TextFieldMemoized
                   disabled={isDryRunning || isLoading || Boolean(errorDryrun)}
                   placeholder="Result not yet available."
                   value={outcome}

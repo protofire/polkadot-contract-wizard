@@ -19,18 +19,19 @@ export function AddressAccountSelect({
   const [inputValue, setInputValue] = useState(value ?? options[0])
   const [recentAddresses, setRecentAddresses] = useState<string[]>([])
 
-  // useEffect(() => {
-  //   if (value) {
-  //     setRecentAddresses(prevAddresses => {
-  //       if (prevAddresses.includes(value)) return prevAddresses
+  useEffect(() => {
+    if (value) {
+      setRecentAddresses(prevAddresses => {
+        if (prevAddresses.includes(value)) return prevAddresses
 
-  //       return [...recentAddresses, value]
-  //     })
-  //   }
-  // }, [recentAddresses, value])
+        return [...recentAddresses, value]
+      })
+    }
+  }, [recentAddresses, value])
 
-  // const combinedOptions = Array.from(new Set([...recentAddresses, ...options]))
+  const combinedOptions = Array.from(new Set([...recentAddresses, ...options]))
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleAutoCompleteChange = (event: any, newValue: string | null) => {
     if (newValue !== null) {
       onChange(newValue)
@@ -47,7 +48,6 @@ export function AddressAccountSelect({
 
   return (
     <>
-      <InputLabel>{label}</InputLabel>
       <Autocomplete
         value={value ?? ''}
         inputValue={inputValue}
