@@ -26,10 +26,10 @@ export function AddressAccountSelect({
       setRecentAddresses(prevAddresses => {
         if (prevAddresses.includes(value)) return prevAddresses
 
-        return [...recentAddresses, value]
+        return [...prevAddresses, value]
       })
     }
-  }, [recentAddresses, value])
+  }, [value])
 
   const options = accounts ? accounts.map(account => account.address) : []
   const combinedOptions = Array.from(new Set([...recentAddresses, ...options]))
@@ -58,6 +58,24 @@ export function AddressAccountSelect({
         }}
         onChange={handleAutoCompleteChange}
         options={combinedOptions}
+        freeSolo
+        filterOptions={(options, params) => {
+          const filtered = options.filter(option => {
+            return option
+              .toLowerCase()
+              .includes(params.inputValue.toLowerCase())
+          })
+
+          // Add new option if no in.
+          if (
+            params.inputValue !== '' &&
+            !filtered.includes(params.inputValue)
+          ) {
+            filtered.push(params.inputValue)
+          }
+
+          return filtered
+        }}
         renderOption={(props, option) => (
           <li {...props}>
             <AccountAvatar address={option} />
