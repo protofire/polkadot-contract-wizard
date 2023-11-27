@@ -1,5 +1,6 @@
 import { useMemo } from 'react'
-import { Box, Typography, styled } from '@mui/material'
+import { Box, Typography } from '@mui/material'
+import { styled } from '@mui/material/styles'
 import { CopyBlock, atomOneDark } from 'react-code-blocks'
 
 import { useStepsSCWizard } from '@/context'
