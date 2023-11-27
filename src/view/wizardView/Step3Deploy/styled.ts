@@ -1,4 +1,5 @@
-import { Stack, StackProps, styled } from '@mui/material'
+import { Stack, StackProps } from '@mui/material'
+import { styled } from '@mui/material/styles'
 
 export const StackStyled = styled(Stack)<StackProps>(() => ({
   background: '#20222D',
