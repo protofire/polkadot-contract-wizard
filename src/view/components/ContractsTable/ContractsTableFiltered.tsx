@@ -5,7 +5,6 @@ import {
 } from '@/components/ContractsTable/ContractsTable'
 import { ROUTES } from '@/constants/routes'
 import { Box, Typography } from '@mui/material'
-//import { useListUserContracts } from '@/hooks/userContracts/useListUserContracts'
 
 interface Props extends ContractsTableProps {
   isLoading: boolean
