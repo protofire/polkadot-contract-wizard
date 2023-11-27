@@ -19,6 +19,7 @@ export function ContractsTableFiltered({
   const _isLoading = !isLoading && contracts === undefined
   const filterContracts = contracts.filter(contract => !contract.hidden)
   const totalContracts = filterContracts.length
+
   const Loading: React.FC<{ isLoading: boolean }> = ({ isLoading }) => {
     if (isLoading) return <Typography>Loading</Typography>
   }
