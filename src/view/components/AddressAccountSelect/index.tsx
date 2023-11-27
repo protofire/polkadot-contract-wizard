@@ -1,13 +1,24 @@
-import { Autocomplete, InputLabel, TextField } from '@mui/material'
-import { useEffect, useState } from 'react'
+import { Autocomplete, TextField } from '@mui/material'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { AccountAvatar } from './AccountAvatar'
+
+interface OptionItemGroup {
+  address: string
+  type: string
+}
 
 type Props = {
   label?: string
   value: string
   onChange: (value: string) => void
-  options?: string[]
+  options?: OptionItemGroup[]
+}
+
+function combineOptions(recentAddresses: string[], options: OptionItemGroup[]) {
+  return recentAddresses
+    .map(a => ({ address: a, type: 'Recents' }))
+    .concat(options)
 }
 
 export function AddressAccountSelect({
@@ -18,31 +29,57 @@ export function AddressAccountSelect({
 }: Props) {
   const [inputValue, setInputValue] = useState(value ?? options[0])
   const [recentAddresses, setRecentAddresses] = useState<string[]>([])
+  const optionsAddress = useMemo(() => options.map(e => e.address), [options])
 
-  useEffect(() => {
-    if (value) {
+  const addNewAddress = useCallback(
+    (value: string) => {
+      if (optionsAddress.includes(value)) {
+        return
+      }
+
       setRecentAddresses(prevAddresses => {
         if (prevAddresses.includes(value)) return prevAddresses
 
         return [...recentAddresses, value]
       })
+    },
+    [optionsAddress, recentAddresses]
+  )
+
+  useEffect(() => {
+    if (value) {
+      addNewAddress(value)
     }
-  }, [recentAddresses, value])
+  }, [addNewAddress, recentAddresses, value])
 
-  const combinedOptions = Array.from(new Set([...recentAddresses, ...options]))
+  const combinedOptions = combineOptions(recentAddresses, options)
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const handleAutoCompleteChange = (event: any, newValue: string | null) => {
-    if (newValue !== null) {
-      onChange(newValue)
-      setRecentAddresses(prevAddresses => {
-        if (!prevAddresses.includes(newValue)) {
-          return [...prevAddresses, newValue]
-        }
-        return prevAddresses
-      })
-    } else {
+  const handleAutoCompleteChange = (
+    event: any,
+    newValue: string | OptionItemGroup | null
+  ) => {
+    if (newValue === null) {
       onChange('')
+      return
+    }
+
+    if (typeof newValue === 'string') {
+      addNewAddress(newValue)
+      onChange(newValue)
+    } else {
+      onChange(newValue.address)
+    }
+  }
+
+  const handleKeyDown = (event: React.KeyboardEvent) => {
+    switch (event.key) {
+      case 'Tab': {
+        if (inputValue.length > 0) {
+          handleAutoCompleteChange(event, inputValue)
+        }
+        break
+      }
+      default:
     }
   }
 
@@ -55,13 +92,19 @@ export function AddressAccountSelect({
           setInputValue(newInputValue)
         }}
         onChange={handleAutoCompleteChange}
-        options={options}
+        options={combinedOptions}
+        freeSolo
+        groupBy={option => option.type}
+        getOptionLabel={o => (typeof o === 'string' ? o : o.address)}
         renderOption={(props, option) => (
           <li {...props}>
-            <AccountAvatar address={option} />
+            <AccountAvatar address={option.address} />
           </li>
         )}
-        renderInput={params => <TextField {...params} label={label} />}
+        renderInput={params => {
+          params.inputProps.onKeyDown = handleKeyDown
+          return <TextField {...params} label={label} />
+        }}
       />
     </>
   )

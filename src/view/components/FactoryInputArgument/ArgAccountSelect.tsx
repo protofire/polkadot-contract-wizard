@@ -10,7 +10,13 @@ export function ArgAccountSelect({ ...props }: ArgAccountSelectProps) {
     state: { accounts }
   } = useNetworkAccountsContext()
   const options = useMemo(
-    () => (accounts ? accounts.map(account => account.address) : []),
+    () =>
+      accounts
+        ? accounts.map(account => ({
+            address: account.address,
+            type: 'Accounts'
+          }))
+        : [],
     [accounts]
   )
 
