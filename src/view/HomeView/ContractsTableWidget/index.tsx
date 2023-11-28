@@ -5,6 +5,9 @@ import { useListUserContracts } from '@/hooks/userContracts/useListUserContracts
 import { Box, Typography, Paper } from '@mui/material'
 import NetworkBadge from '@/view/components/NetworkBadge'
 import { useDownloadMetadata } from '@/view/components/ContractsTable/useDownloadMetadata'
+import { WalletConnectionEvents } from '@/domain'
+import { useMultiEventListener } from '@/hooks/useMultipleEventListener'
+import { useCallback, useEffect, useState } from 'react'
 
 export function ContractsTableWidget() {
   const { accountConnected, networkConnected } = useNetworkAccountsContext()
@@ -12,7 +15,8 @@ export function ContractsTableWidget() {
     accountConnected?.address,
     networkConnected
   )
-  const { logo, name: networkName } = getChain(networkConnected)
+  const [chain, setChain] = useState(getChain(networkConnected))
+
   const { userContractItems: items, onDownloadSource } =
     useDownloadMetadata(userContracts)
 
@@ -20,6 +24,19 @@ export function ContractsTableWidget() {
   if (Array.isArray(items)) {
     userContractItems = items.filter(item => item.hidden === false)
   }
+
+  const updateChain = useCallback(() => {
+    const chain = getChain(networkConnected)
+    setChain(chain)
+  }, [networkConnected])
+
+  useEffect(() => {
+    updateChain()
+  }, [updateChain])
+
+  useMultiEventListener([WalletConnectionEvents.customChainNameChanged], () => {
+    updateChain()
+  })
 
   return (
     <>
@@ -38,10 +55,10 @@ export function ContractsTableWidget() {
                 on
               </Typography>
               <NetworkBadge
-                name={networkName}
-                logo={logo.src}
+                name={chain.name}
+                logo={chain.logo.src}
                 logoSize={{ width: 20, height: 20 }}
-                description={logo.alt}
+                description={chain.logo.alt}
               />
             </Box>
           </Box>
