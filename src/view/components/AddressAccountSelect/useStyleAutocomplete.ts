@@ -4,14 +4,13 @@ export function useStyleAutocomplete() {
   const theme = useTheme()
 
   return {
-    border: 'none !important',
+    border: 'transparent !important',
     color: theme.palette.primary.main,
     '& fieldset': {
       borderColor: 'white'
     },
     '& .MuiInputBase-root': {
-      borderColor: 'white !important',
-      color: '#D9D9D9 !important'
+      color: theme.palette.secondary.light
     }
   }
 }
