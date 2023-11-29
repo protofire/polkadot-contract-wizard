@@ -1,9 +1,10 @@
-import { Autocomplete, TextField } from '@mui/material'
+import { TextField, Autocomplete } from '@mui/material'
 import { useCallback, useMemo, useState } from 'react'
 
 import { AccountAvatar } from './AccountAvatar'
 import { useForm } from '@/hooks/useForm'
 import { isValidAddress, onlyAddress } from '@/utils/blockchain'
+import { useStyleAutocomplete } from './useStyleAutocomplete'
 
 interface OptionItemGroup {
   address: string
@@ -44,7 +45,7 @@ export function AddressAccountSelect({
     address: ''
   })
   const addressInput = register('address', [onlyAddress])
-
+  const styles = useStyleAutocomplete()
   const addNewAddress = useCallback(
     (value: string) => {
       if (optionsAddress.includes(value)) {
@@ -102,6 +103,7 @@ export function AddressAccountSelect({
   return (
     <>
       <Autocomplete
+        sx={styles}
         value={value ?? ''}
         inputValue={inputValue}
         onInputChange={(event, newInputValue) => {
