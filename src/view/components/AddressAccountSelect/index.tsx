@@ -1,7 +1,9 @@
 import { Autocomplete, TextField } from '@mui/material'
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 
 import { AccountAvatar } from './AccountAvatar'
+import { useForm } from '@/hooks/useForm'
+import { isValidAddress, onlyAddress } from '@/utils/blockchain'
 
 interface OptionItemGroup {
   address: string
@@ -27,9 +29,21 @@ export function AddressAccountSelect({
   onChange,
   options = []
 }: Props) {
-  const [inputValue, setInputValue] = useState(value ?? options[0])
+  const [inputValue, setInputValue] = useState(value)
   const [recentAddresses, setRecentAddresses] = useState<string[]>([])
   const optionsAddress = useMemo(() => options.map(e => e.address), [options])
+  const combinedOptions = useMemo(
+    () => combineOptions(recentAddresses, options),
+    [recentAddresses, options]
+  )
+  const {
+    register,
+    errors,
+    setValue: setValueTexfield
+  } = useForm<{ address: string }>({
+    address: ''
+  })
+  const addressInput = register('address', [onlyAddress])
 
   const addNewAddress = useCallback(
     (value: string) => {
@@ -46,30 +60,26 @@ export function AddressAccountSelect({
     [optionsAddress, recentAddresses]
   )
 
-  useEffect(() => {
-    if (value) {
-      addNewAddress(value)
-    }
-  }, [addNewAddress, recentAddresses, value])
+  const handleAutoCompleteChange = useCallback(
+    (event: any, newValue: string | OptionItemGroup | null) => {
+      if (newValue === null) {
+        onChange('')
+        return
+      }
 
-  const combinedOptions = combineOptions(recentAddresses, options)
-
-  const handleAutoCompleteChange = (
-    event: any,
-    newValue: string | OptionItemGroup | null
-  ) => {
-    if (newValue === null) {
-      onChange('')
-      return
-    }
-
-    if (typeof newValue === 'string') {
-      addNewAddress(newValue)
-      onChange(newValue)
-    } else {
-      onChange(newValue.address)
-    }
-  }
+      if (typeof newValue === 'string') {
+        const validAddress = isValidAddress(newValue)
+        validAddress && addNewAddress(newValue)
+        setValueTexfield('address', newValue)
+        validAddress && onChange(newValue)
+      } else if ('address' in newValue) {
+        const validAddress = isValidAddress(newValue.address)
+        validAddress && onChange(newValue.address)
+        validAddress && setValueTexfield('address', newValue.address)
+      }
+    },
+    [addNewAddress, onChange, setValueTexfield]
+  )
 
   const handleKeyDown = (event: React.KeyboardEvent) => {
     switch (event.key) {
@@ -81,6 +91,12 @@ export function AddressAccountSelect({
       }
       default:
     }
+  }
+
+  const handlePaste = (event: React.ClipboardEvent) => {
+    const pastedValue = event.clipboardData.getData('text')
+
+    handleAutoCompleteChange(event, pastedValue)
   }
 
   return (
@@ -103,7 +119,17 @@ export function AddressAccountSelect({
         )}
         renderInput={params => {
           params.inputProps.onKeyDown = handleKeyDown
-          return <TextField {...params} label={label} />
+          params.inputProps.onPaste = handlePaste
+
+          return (
+            <TextField
+              {...params}
+              {...addressInput}
+              label={label}
+              error={!!errors.address}
+              helperText={errors.address}
+            />
+          )
         }}
       />
     </>
