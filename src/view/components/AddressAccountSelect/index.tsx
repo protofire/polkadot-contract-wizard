@@ -29,7 +29,7 @@ export function AddressAccountSelect({
   onChange,
   options = []
 }: Props) {
-  const [inputValue, setInputValue] = useState(value)
+  const [inputValue, setInputValue] = useState(value ?? '')
   const [recentAddresses, setRecentAddresses] = useState<string[]>([])
   const optionsAddress = useMemo(() => options.map(e => e.address), [options])
   const combinedOptions = useMemo(
