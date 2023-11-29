@@ -13,6 +13,5 @@ export function useStyleAutocomplete() {
       borderColor: 'white !important',
       color: '#D9D9D9 !important'
     }
-    // Agrega más estilos según sea necesario
   }
 }
