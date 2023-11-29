@@ -1,4 +1,6 @@
-import { Stack, Typography, useTheme, alpha } from '@mui/material'
+import { Stack, Typography } from '@mui/material'
+import { alpha } from '@mui/system'
+import { useTheme } from '@mui/material/styles'
 import { DryRunExecutionResult } from '../useDryRunExecution'
 import { MySkeleton } from '@/view/components/MySkeleton'
 import InfoIcon from '@mui/icons-material/Info'

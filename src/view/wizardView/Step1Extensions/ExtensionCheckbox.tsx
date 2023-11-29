@@ -1,10 +1,10 @@
 import {
-  styled,
   FormControlLabel,
   Checkbox,
   Typography,
   CheckboxProps
 } from '@mui/material'
+import { styled } from '@mui/material/styles'
 
 import { OptionTokenField } from '@/constants/index'
 

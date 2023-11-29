@@ -1,5 +1,6 @@
-import { Typography, TypographyProps, alpha } from '@mui/material'
+import { Typography, TypographyProps } from '@mui/material'
 import { styled } from '@mui/material/styles'
+import { alpha } from '@mui/system'
 
 export const MonoTypography = styled(Typography)<TypographyProps>(
   ({ theme }) => {

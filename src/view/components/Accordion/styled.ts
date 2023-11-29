@@ -1,4 +1,6 @@
-import { styled, Box, alpha } from '@mui/material'
+import { Box } from '@mui/material'
+import { alpha } from '@mui/system'
+import { styled } from '@mui/material/styles'
 
 export const StyledAccordionContainer = styled(Box)(({ theme }) => ({
   [theme.breakpoints.down('md')]: {

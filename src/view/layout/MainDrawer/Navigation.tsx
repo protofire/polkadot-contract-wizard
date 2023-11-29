@@ -1,13 +1,13 @@
 import {
   ListItemIcon,
   MenuItem as MuiMenuItem,
-  styled,
   Stack,
   Paper,
   Typography,
   ButtonProps,
   Link as MuiLink
 } from '@mui/material'
+import { styled } from '@mui/material/styles'
 import NextLink from 'next/link'
 
 import { MENU_ITEMS, NavLink } from '@/constants/index'

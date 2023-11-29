@@ -5,10 +5,10 @@ import {
   SelectProps,
   SelectChangeEvent,
   Stack,
-  styled,
   Avatar,
   Box
 } from '@mui/material'
+import { styled } from '@mui/material/styles'
 import {
   CHAINS_ALLOWED,
   MAX_CHAIN_NUMBER,

@@ -13,7 +13,7 @@ export function AccountAvatar({ address, name, truncateLenght = 4 }: Props) {
   return (
     <Box display="flex" alignItems="center">
       <Avatar>
-        <Identicon value={address} size={32} theme="beachball" />
+        <Identicon value={address} size={32} theme="jdenticon" />
       </Avatar>
       <Box marginLeft={1}>
         {name === undefined ? <></> : <span>{shortNameLonger(name)}</span>}
