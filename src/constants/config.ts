@@ -3,23 +3,13 @@ import { ChainId } from '@/services/useink/chains'
 export const IS_PRODUCTION = process.env.NODE_ENV === ('production' as string)
 export const IS_DEVELOPMENT = process.env.NODE_ENV === ('development' as string)
 
-/** URL of the API will be rewritten in next.config */
-export const apiBaseUrlPath = `/api`
-
-export const BACKEND_API = getBackendApiConfig(apiBaseUrlPath)
-
-export const DOCUMENTATION_URL =
-  process.env.NEXT_PUBLIC_DOCUMENTATION_URL ||
-  'https://docs.contractwizard.xyz/'
-
-export const ANALYTICS_ID = (process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID ||
-  '') as string
-
 export const DEFAULT_CHAIN: ChainId = IS_DEVELOPMENT
   ? 'shibuya-testnet'
   : 'astar'
 
 export const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN as string
+export const ANALYTICS_ID = (process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID ||
+  '') as string
 
 export interface DappConfig {
   name: string
@@ -90,3 +80,12 @@ export function getBackendApiConfig(basePath: string): BackendApiConfig {
     }, {} as RouteApi)
   }
 }
+
+/** URL of the API will be rewritten in next.config */
+export const apiBaseUrlPath = `/api`
+
+export const BACKEND_API = getBackendApiConfig(apiBaseUrlPath)
+
+export const DOCUMENTATION_URL =
+  process.env.NEXT_PUBLIC_DOCUMENTATION_URL ||
+  'https://docs.contractwizard.xyz/'
