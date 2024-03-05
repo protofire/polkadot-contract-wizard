@@ -16,7 +16,7 @@ export default function Document() {
         <Main />
         <NextScript />
       </body>
-      <GoogleAnalytics gaId={ANALYTICS_ID} />
+      {ANALYTICS_ID && <GoogleAnalytics gaId={ANALYTICS_ID} />}
     </Html>
   )
 }
