@@ -9,6 +9,7 @@ import {
 import { ArrayOneOrMore, ChainExtended } from '@/types'
 import { CHAINS_IMG_PATH } from './images'
 import { RpcUrl } from '@/services/useink/chains/data/types'
+import { WalletConnectionEvents } from '@/domain'
 
 export const DEFAULT_DECIMALS = 12
 export const MAX_CUSTOM_NAME_LENGTH = 10
@@ -46,6 +47,11 @@ export const updateChain = (chains: ChainExtended[], chain: ChainExtended) => {
     chain => chain.id === OPTION_FOR_CUSTOM_NETWORK
   )
   chains[chainIndex] = chain
+
+  document.dispatchEvent(
+    new CustomEvent(WalletConnectionEvents.customChainNameChanged)
+  )
+
   return chains
 }
 

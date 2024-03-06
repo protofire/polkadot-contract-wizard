@@ -1,7 +1,8 @@
 export const enum WalletConnectionEvents {
   walletConnectInit = 'walletConnectInit',
   changeAccountAddress = 'changeAccountAddress',
-  networkChanged = 'networkChanged'
+  networkChanged = 'networkChanged',
+  customChainNameChanged = 'customChainNameChanged'
 }
 
 export const enum UserContractEvents {
