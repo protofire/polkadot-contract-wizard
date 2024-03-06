@@ -1,11 +1,10 @@
 import React from 'react'
 import { NextPage } from 'next'
-import type { AppContext, AppProps } from 'next/app'
+import type { AppProps } from 'next/app'
 import Head from 'next/head'
 import { EmotionCache } from '@emotion/cache'
 import { CacheProvider } from '@emotion/react'
-import PlausibleProvider from 'next-plausible'
-import 'styles/globals.css'
+/* import 'styles/globals.css' */
 import 'react-toastify/dist/ReactToastify.css'
 
 import ThemeCustomization from '@/themes'
@@ -18,7 +17,7 @@ import {
   StorageNotificationsRepository
 } from '@/context/AppNotificationContext'
 import { CustomSnackBar as AppNotification } from '@/view/components/Snackbar'
-import { DAPP_CONFIG, DOMAIN } from '@/constants/config'
+import { DAPP_CONFIG } from '@/constants/config'
 import { UseInkProvider } from 'useink'
 import { CHAINS } from '@/constants/chains'
 import { LocalDbProvider } from '@/context/LocalDbContext'
@@ -55,33 +54,31 @@ export default function App(props: CustomAppProps) {
             `}
           </style>
         </Head>
-        <PlausibleProvider domain={DOMAIN}>
-          <UseInkProvider
-            config={{
-              dappName: DAPP_CONFIG.name,
-              chains: CHAINS
-            }}
-          >
-            <LocalDbProvider>
-              <NetworkAccountsContextProvider>
-                <AppNotificationContextProvider
-                  repository={repositoryAppNotification}
-                >
-                  <SettingsConsumer>
-                    {({ settings }) => {
-                      return (
-                        <ThemeCustomization settings={settings}>
-                          {getLayout(<Component {...pageProps} />)}
-                        </ThemeCustomization>
-                      )
-                    }}
-                  </SettingsConsumer>
-                  <AppNotification />
-                </AppNotificationContextProvider>
-              </NetworkAccountsContextProvider>
-            </LocalDbProvider>
-          </UseInkProvider>
-        </PlausibleProvider>
+        <UseInkProvider
+          config={{
+            dappName: DAPP_CONFIG.name,
+            chains: CHAINS
+          }}
+        >
+          <LocalDbProvider>
+            <NetworkAccountsContextProvider>
+              <AppNotificationContextProvider
+                repository={repositoryAppNotification}
+              >
+                <SettingsConsumer>
+                  {({ settings }) => {
+                    return (
+                      <ThemeCustomization settings={settings}>
+                        {getLayout(<Component {...pageProps} />)}
+                      </ThemeCustomization>
+                    )
+                  }}
+                </SettingsConsumer>
+                <AppNotification />
+              </AppNotificationContextProvider>
+            </NetworkAccountsContextProvider>
+          </LocalDbProvider>
+        </UseInkProvider>
       </CacheProvider>
     </div>
   )
