@@ -1,4 +1,4 @@
-import { Chain, ChainId } from '@/services/useink/chains'
+import { ChainId } from '@/services/useink/chains'
 
 export const IS_PRODUCTION = process.env.NODE_ENV === ('production' as string)
 export const IS_DEVELOPMENT = process.env.NODE_ENV === ('development' as string)
@@ -8,6 +8,8 @@ export const DEFAULT_CHAIN: ChainId = IS_DEVELOPMENT
   : 'astar'
 
 export const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN as string
+export const ANALYTICS_ID = (process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID ||
+  '') as string
 
 export interface DappConfig {
   name: string
