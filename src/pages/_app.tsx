@@ -17,11 +17,12 @@ import {
   StorageNotificationsRepository
 } from '@/context/AppNotificationContext'
 import { CustomSnackBar as AppNotification } from '@/view/components/Snackbar'
-import { DAPP_CONFIG } from '@/constants/config'
+import { ANALYTICS_ID, DAPP_CONFIG } from '@/constants/config'
 import { UseInkProvider } from 'useink'
 import { CHAINS } from '@/constants/chains'
 import { LocalDbProvider } from '@/context/LocalDbContext'
 import { Inter } from 'next/font/google'
+import { GoogleAnalytics } from '@next/third-parties/google'
 
 type CustomAppProps = AppProps & {
   emotionCache: EmotionCache
@@ -79,6 +80,7 @@ export default function App(props: CustomAppProps) {
             </NetworkAccountsContextProvider>
           </LocalDbProvider>
         </UseInkProvider>
+        {ANALYTICS_ID && <GoogleAnalytics gaId={ANALYTICS_ID} />}
       </CacheProvider>
     </div>
   )
