@@ -20,7 +20,7 @@ jobs:
       # Env variables
       ACCOUNT_ID: 711012187398
       REPOSITORY: 'polkadot-contract-wizard-web'
-      DEPLOYMENT_SERVER_IP: '3.139.60.27' 
+      DEPLOYMENT_SERVER_IP: '18.118.65.98' 
 
       CONTAINER_BASE: "pkw"
       DB_EXTERNAL_PORT: 27027
