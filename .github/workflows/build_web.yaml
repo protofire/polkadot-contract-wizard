@@ -16,6 +16,7 @@ jobs:
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       AWS_REGION: ${{ secrets.AWS_REGION }}
       SSH_KEY: ${{ secrets.SSH_KEY }}
+      GOOGLE_ID: ${{ secrets.GOOGLE_ID }}
 
       # Env variables
       ACCOUNT_ID: 711012187398
@@ -50,6 +51,7 @@ jobs:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
       run: |
         cp .env.example .env
+        sed -i 's/NEXT_PUBLIC_GOOGLE_ANALYTICS_ID="G-ID"/NEXT_PUBLIC_GOOGLE_ANALYTICS_ID="'$GOOGLE_ID'"/' .env
         docker build -f .docker/web/dev.Dockerfile -t ${{ env.REPOSITORY }}:$GITHUB_REF_NAME . 
 
     - name: Set tag and push web image to Amazon ECR
