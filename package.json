@@ -48,7 +48,7 @@
     "sharp": "^0.33.2",
     "simplebar-react": "^3.2.0",
     "useink": "^1.14.1",
-    "whatwg-url": "^13.0.0"
+    "whatwg-url": "^14.0.0"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^5.16.5",
